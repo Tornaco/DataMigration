@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="polluted_waves">
+        <item>#394948</item>
+        <item>#5a7874</item>
+        <item>#499092</item>
+        <item>#43abae</item>
+    </string-array>
+
+    <string-array name="medical_express">
+        <item>#a3a3a3</item>
+        <item>#bbbbbb</item>
+        <item>#cccccc</item>
+        <item>#dddddd</item>
+    </string-array>
+
+</resources>
