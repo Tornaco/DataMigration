@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.vlonjatg.progressactivity.ProgressRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/progressLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    app:emptyBackgroundColor="@color/accent"
+    app:emptyContentTextColor="@color/white"
+    app:emptyTitleTextColor="@color/white"
+    app:emptyTitleTextSize="@dimen/text_size_large"
+    app:errorBackgroundColor="@color/accent"
+    app:errorTitleTextColor="@color/white"
+    app:loadingBackgroundColor="@color/white">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -15,10 +22,13 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:focusable="true"
         android:clickable="true"
+        android:focusable="true"
         app:srcCompat="@drawable/ic_ok" />
 
-</android.support.design.widget.CoordinatorLayout>
+</com.vlonjatg.progressactivity.ProgressRelativeLayout>

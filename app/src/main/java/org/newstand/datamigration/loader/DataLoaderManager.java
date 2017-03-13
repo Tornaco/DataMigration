@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.ContextWireable;
-import org.newstand.datamigration.model.DataCategory;
-import org.newstand.datamigration.model.DataRecord;
+import org.newstand.datamigration.data.DataCategory;
+import org.newstand.datamigration.data.DataRecord;
 import org.newstand.datamigration.thread.SharedExecutor;
 import org.newstand.datamigration.worker.backup.session.Session;
 
@@ -34,7 +34,7 @@ public class DataLoaderManager {
 
     public void loadAsync(@NonNull DataCategory dataCategory,
                           @NonNull LoaderListener<DataRecord> listener) {
-        LoaderSource fromResolver = LoaderSource.builder().parent(LoaderSource.Parent.ContentProvider)
+        LoaderSource fromResolver = LoaderSource.builder().parent(LoaderSource.Parent.Android)
                 .session(Session.create()).build();
         loadAsync(fromResolver, dataCategory, listener, null);
     }

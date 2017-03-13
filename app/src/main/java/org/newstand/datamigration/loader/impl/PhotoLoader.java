@@ -8,9 +8,9 @@ import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.loader.LoaderFilter;
-import org.newstand.datamigration.model.DataCategory;
-import org.newstand.datamigration.model.DataRecord;
-import org.newstand.datamigration.model.PhotoRecord;
+import org.newstand.datamigration.data.DataCategory;
+import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.PhotoRecord;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
@@ -28,7 +28,7 @@ import java.util.Collection;
 public class PhotoLoader extends BaseLoader {
 
     @Override
-    public Collection<DataRecord> loadFromContentProvider(final LoaderFilter<DataRecord> filter) {
+    public Collection<DataRecord> loadFromAndroid(final LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = newList();
         String[] projection = {MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DISPLAY_NAME,
@@ -45,11 +45,6 @@ public class PhotoLoader extends BaseLoader {
                             records.add(record);
                     }
                 });
-        try {
-            Thread.sleep(3 * 1000);
-        } catch (InterruptedException e) {
-
-        }
         return records;
     }
 

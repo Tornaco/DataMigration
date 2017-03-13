@@ -1,6 +1,6 @@
 package org.newstand.datamigration.worker.backup;
 
-import org.newstand.datamigration.model.ContactRecord;
+import org.newstand.datamigration.data.ContactRecord;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

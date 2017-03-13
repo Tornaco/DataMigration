@@ -8,9 +8,9 @@ import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.loader.LoaderFilter;
-import org.newstand.datamigration.model.DataCategory;
-import org.newstand.datamigration.model.DataRecord;
-import org.newstand.datamigration.model.VideoRecord;
+import org.newstand.datamigration.data.DataCategory;
+import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.VideoRecord;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
@@ -27,7 +27,7 @@ import java.util.Collection;
 
 public class VideoLoader extends BaseLoader {
     @Override
-    public Collection<DataRecord> loadFromContentProvider(final LoaderFilter<DataRecord> filter) {
+    public Collection<DataRecord> loadFromAndroid(final LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = new ArrayList<>();
         consumeCursor(createCursor(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null,
                 null, MediaStore.Video.Media.DATE_MODIFIED + " desc"), new Consumer<Cursor>() {

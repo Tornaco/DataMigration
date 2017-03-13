@@ -2,7 +2,7 @@ package org.newstand.datamigration.provider;
 
 import android.os.Environment;
 
-import org.newstand.datamigration.model.DataCategory;
+import org.newstand.datamigration.data.DataCategory;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.io.File;

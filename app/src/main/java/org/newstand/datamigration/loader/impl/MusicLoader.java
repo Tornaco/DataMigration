@@ -11,9 +11,9 @@ import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.loader.LoaderFilter;
-import org.newstand.datamigration.model.DataCategory;
-import org.newstand.datamigration.model.DataRecord;
-import org.newstand.datamigration.model.MusicRecord;
+import org.newstand.datamigration.data.DataCategory;
+import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.MusicRecord;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
@@ -33,7 +33,7 @@ public class MusicLoader extends BaseLoader {
     static String sArtworkUri = "content://media/external/audio/albumart";
 
     @Override
-    public Collection<DataRecord> loadFromContentProvider(final LoaderFilter<DataRecord> filter) {
+    public Collection<DataRecord> loadFromAndroid(final LoaderFilter<DataRecord> filter) {
 
         final Collection<DataRecord> records = new ArrayList<>();
 

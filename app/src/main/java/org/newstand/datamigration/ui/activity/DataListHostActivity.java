@@ -8,13 +8,15 @@ import android.support.v4.app.Fragment;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.data.DataCategory;
+import org.newstand.datamigration.data.event.EventDefinations;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.model.DataCategory;
-import org.newstand.datamigration.model.message.EventDefinations;
+import org.newstand.datamigration.ui.fragment.AppListFragment;
 import org.newstand.datamigration.ui.fragment.ContactListFragment;
 import org.newstand.datamigration.ui.fragment.DataListViewerFragment;
 import org.newstand.datamigration.ui.fragment.MusicListFragment;
 import org.newstand.datamigration.ui.fragment.PhotoListFragment;
+import org.newstand.datamigration.ui.fragment.SmsListFragment;
 import org.newstand.datamigration.ui.fragment.VideoListFragment;
 
 /**
@@ -32,19 +34,19 @@ public class DataListHostActivity extends TransactionSafeActivity implements Dat
         DataCategory category = DataCategory.valueOf(DataCategory.class, extra);
         Fragment fragment = getFragmentByCategory(category);
         placeFragment(R.id.container, fragment, null);
-        setTitleWithTypeface(getString(category.nameRes()));
+        setTitle(getString(category.nameRes()));
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_container_template);
-        setTitleWithTypeface(getString(R.string.title_category));
+        showHomeAsUp();
     }
 
     @Override
-    protected void onSmooth() {
-        super.onSmooth();
+    protected void onStart() {
+        super.onStart();
         resolveIntent();
     }
 
@@ -73,6 +75,10 @@ public class DataListHostActivity extends TransactionSafeActivity implements Dat
                 return new PhotoListFragment();
             case Video:
                 return new VideoListFragment();
+            case App:
+                return new AppListFragment();
+            case Sms:
+                return new SmsListFragment();
             default:
                 return null;
         }

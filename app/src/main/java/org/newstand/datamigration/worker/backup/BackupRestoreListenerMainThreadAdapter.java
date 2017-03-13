@@ -1,10 +1,11 @@
 package org.newstand.datamigration.worker.backup;
 
 import android.os.Handler;
+import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
-import org.newstand.datamigration.model.DataRecord;
+import org.newstand.datamigration.data.DataRecord;
 
 
 /**
@@ -84,7 +85,7 @@ public class BackupRestoreListenerMainThreadAdapter extends BackupRestoreListene
     }
 
     public void onPieceFailMainThread(DataRecord record, Throwable err) {
-        Logger.d("onPieceFailMainThread:%s, %s", record.getDisplayName(), err);
+        Logger.d("onPieceFailMainThread:%s, %s", record.getDisplayName(), Log.getStackTraceString(err));
     }
 
     public void onCompleteMainThread() {

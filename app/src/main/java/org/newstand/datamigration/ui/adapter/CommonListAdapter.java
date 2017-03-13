@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.norbsoft.typefacehelper.TypefaceHelper;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.model.DataRecord;
+import org.newstand.datamigration.data.DataRecord;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,6 +1,5 @@
 package org.newstand.datamigration.ui.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
@@ -14,18 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.norbsoft.typefacehelper.TypefaceHelper;
+import com.orhanobut.logger.Logger;
+import com.vlonjatg.progressactivity.ProgressRelativeLayout;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.ActionListenerMainThreadAdapter;
+import org.newstand.datamigration.data.DataCategory;
+import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.event.EventDefinations;
 import org.newstand.datamigration.loader.DataLoaderManager;
 import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.model.DataCategory;
-import org.newstand.datamigration.model.DataRecord;
-import org.newstand.datamigration.model.message.EventDefinations;
 import org.newstand.datamigration.service.DataSelectionKeeperServiceProxy;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
-import org.newstand.datamigration.ui.widget.ProgressDialogCompat;
 import org.newstand.datamigration.utils.Collections;
 
 import java.util.ArrayList;
@@ -60,12 +60,26 @@ public abstract class DataListViewerFragment extends Fragment {
     private LoaderSourceProvider loaderSourceProvider;
 
     @Getter
-    private ProgressDialog progressDialog;
+    private ListStateListener listStateListener;
+
+    @Getter
+    private ProgressRelativeLayout progressLayout;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         loaderSourceProvider = (LoaderSourceProvider) getActivity();
+        listStateListener = new ListStateListener() {
+            @Override
+            public void onScroll() {
+                fab.hide();
+            }
+
+            @Override
+            public void onIdle() {
+                fab.show();
+            }
+        };
     }
 
     private void loadFresh() {
@@ -78,6 +92,7 @@ public abstract class DataListViewerFragment extends Fragment {
                             @Override
                             public void onCompleteMainThread(Collection<DataRecord> collection) {
                                 super.onCompleteMainThread(collection);
+                                Logger.d("onCompleteMainThread~");
                                 callLoadFinish(collection);
                             }
                         });
@@ -86,8 +101,7 @@ public abstract class DataListViewerFragment extends Fragment {
     }
 
     private void startLoading() {
-        progressDialog = ProgressDialogCompat.createUnCancelableIndeterminate(getActivity());
-        progressDialog.show();
+        progressLayout.showLoading();
         // From cache.
         DataSelectionKeeperServiceProxy.getSelectionByCategoryAsync(getActivity(), getDataType(),
                 new ActionListenerMainThreadAdapter<List<DataRecord>>(Looper.getMainLooper()) {
@@ -104,7 +118,11 @@ public abstract class DataListViewerFragment extends Fragment {
     }
 
     private void callLoadFinish(Collection<DataRecord> dataRecords) {
-        progressDialog.dismiss();
+        boolean isEmpty = Collections.isEmpty(dataRecords);
+        if (isEmpty)
+            progressLayout.showEmpty(R.drawable.ic_mood_bad_white, getString(R.string.empty_title), getString(R.string.empty_summary));
+        else
+            progressLayout.showContent();
         onLoadFinish(dataRecords);
     }
 
@@ -127,6 +145,21 @@ public abstract class DataListViewerFragment extends Fragment {
         adapter = onCreateAdapter();
         recyclerView.setAdapter(adapter);
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        listStateListener.onIdle();
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        listStateListener.onScroll();
+                        break;
+                }
+            }
+        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,6 +176,8 @@ public abstract class DataListViewerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.recycler_view_with_fab_template, container, false);
+        TypefaceHelper.typeface(root);
+        progressLayout = (ProgressRelativeLayout) root;
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
         fab = (FloatingActionButton) root.findViewById(R.id.fab);
         return root;
@@ -169,5 +204,11 @@ public abstract class DataListViewerFragment extends Fragment {
 
     public interface LoaderSourceProvider {
         LoaderSource onRequestLoaderSource();
+    }
+
+    public interface ListStateListener {
+        void onScroll();
+
+        void onIdle();
     }
 }

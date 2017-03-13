@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import org.newstand.datamigration.worker.backup.session.Session;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Builder;
 
@@ -56,7 +54,7 @@ public class LoaderSource implements Parcelable {
     }
 
     public enum Parent {
-        ContentProvider,
+        Android,
         Backup
     }
 }

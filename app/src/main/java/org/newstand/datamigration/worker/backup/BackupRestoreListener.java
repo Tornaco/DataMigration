@@ -1,6 +1,6 @@
 package org.newstand.datamigration.worker.backup;
 
-import org.newstand.datamigration.model.DataRecord;
+import org.newstand.datamigration.data.DataRecord;
 
 import lombok.AccessLevel;
 import lombok.Getter;

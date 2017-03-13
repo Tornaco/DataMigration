@@ -22,6 +22,14 @@ public abstract class Collections {
         }
     }
 
+    public static <C> void consumeRemaining(C[] dataArr, Consumer<C> consumer) {
+        Preconditions.checkNotNull(dataArr);
+        Preconditions.checkNotNull(consumer);
+        for (C c : dataArr) {
+            consumer.consume(c);
+        }
+    }
+
     public static <C> void consumeRemaining(Iterable<C> collection, Consumer<C> consumer) {
         Preconditions.checkNotNull(collection);
         Preconditions.checkNotNull(consumer);

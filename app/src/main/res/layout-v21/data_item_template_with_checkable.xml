@@ -49,28 +49,29 @@
 
         <TextView
             android:id="@android:id/title"
+            style="@style/ListItemMainText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_toEndOf="@+id/checkable_img_view"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/primary_text"
-            android:textStyle="normal" />
+            android:layout_toRightOf="@+id/checkable_img_view"
+            android:text="AAAABBBCCC" />
 
 
         <TextView
             android:id="@android:id/text1"
+            style="@style/ListItemSecondaryText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/checkable_img_view"
+            android:layout_alignLeft="@android:id/title"
             android:layout_alignStart="@android:id/title"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:singleLine="true"
-            android:textColor="@color/secondary_text"
-            android:textSize="12sp" />
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="AAAABBBCCC" />
 
     </RelativeLayout>
 

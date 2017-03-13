@@ -9,10 +9,11 @@ import org.newstand.datamigration.common.AbortException;
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
-import org.newstand.datamigration.model.ContactRecord;
-import org.newstand.datamigration.model.DataCategory;
-import org.newstand.datamigration.model.DataRecord;
-import org.newstand.datamigration.model.MiltMediaRecord;
+import org.newstand.datamigration.data.ContactRecord;
+import org.newstand.datamigration.data.DataCategory;
+import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.FileBasedRecord;
+import org.newstand.datamigration.data.SMSRecord;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.thread.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
@@ -77,9 +78,10 @@ public class DataBackupManager {
             case Music:
             case Photo:
             case Video:
+            case App:
                 FileBackupSettings fileBackupSettings = new FileBackupSettings();
-                MiltMediaRecord miltMediaRecord = (MiltMediaRecord) record;
-                fileBackupSettings.setSourcePath(miltMediaRecord.getPath());
+                FileBasedRecord fileBasedRecord = (FileBasedRecord) record;
+                fileBackupSettings.setSourcePath(fileBasedRecord.getPath());
                 fileBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
                         + File.separator + record.getDisplayName());
                 return fileBackupSettings;
@@ -89,6 +91,12 @@ public class DataBackupManager {
                 contactBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
                         + File.separator + record.getDisplayName() + "@" + record.getId() + ContactBackupSettings.SUBFIX);
                 return contactBackupSettings;
+            case Sms:
+                SMSBackupSettings smsBackupSettings = new SMSBackupSettings();
+                smsBackupSettings.setSmsRecord((SMSRecord) record);
+                smsBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
+                + File.separator + record.getId());
+                return smsBackupSettings;
         }
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
     }
@@ -99,16 +107,20 @@ public class DataBackupManager {
             case Photo:
             case Video:
                 FileRestoreSettings fileRestoreSettings = new FileRestoreSettings();
-                MiltMediaRecord miltMediaRecord = (MiltMediaRecord) record;
-                fileRestoreSettings.setSourcePath(((MiltMediaRecord) record).getPath());
+                FileBasedRecord fileBasedRecord = (FileBasedRecord) record;
+                fileRestoreSettings.setSourcePath(((FileBasedRecord) record).getPath());
                 fileRestoreSettings.setDestPath(SettingsProvider.getRestoreDirByCategory(dataCategory, session)
-                        + File.separator + miltMediaRecord.getDisplayName());
+                        + File.separator + fileBasedRecord.getDisplayName());
                 return fileRestoreSettings;
             case Contact:
                 ContactRestoreSettings contactRestoreSettings = new ContactRestoreSettings();
                 ContactRecord contactRecord = (ContactRecord) record;
                 contactRestoreSettings.setSourcePath(contactRecord.getUrl());
                 return contactRestoreSettings;
+            case Sms:
+                SMSRestoreSettings smsRestoreSettings = new SMSRestoreSettings();
+                smsRestoreSettings.setSourcePath(((SMSRecord) record).getPath());
+                return smsRestoreSettings;
 
         }
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
@@ -124,6 +136,10 @@ public class DataBackupManager {
                 return new VideoBackupAgent();
             case Contact:
                 return new ContactBackupAgent();
+            case App:
+                return new AppBackupAgent();
+            case Sms:
+                return new SMSBackupAgent();
         }
         throw new IllegalArgumentException("Unknown for:" + category.name());
     }

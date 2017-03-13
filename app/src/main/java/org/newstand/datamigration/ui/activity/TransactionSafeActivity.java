@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.norbsoft.typefacehelper.ActionBarHelper;
-
-import static com.norbsoft.typefacehelper.TypefaceHelper.typeface;
+import com.norbsoft.typefacehelper.TypefaceHelper;
+import com.orhanobut.logger.Logger;
 
 public class TransactionSafeActivity extends AppCompatActivity {
 
@@ -24,7 +24,6 @@ public class TransactionSafeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -34,14 +33,22 @@ public class TransactionSafeActivity extends AppCompatActivity {
         }, UI_TRANSACTION_TIME_MILLS);
     }
 
-    protected void onSmooth() {
-
+    protected void showHomeAsUp() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    protected void setTitleWithTypeface(String title) {
-        ActionBarHelper.setTitle(
-                getSupportActionBar(),
-                typeface(title));
+    @Override
+    public void setTitle(CharSequence title) {
+        super.setTitle(TypefaceHelper.typeface(title));
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        super.setTitle(TypefaceHelper.typeface(this, titleId));
+    }
+
+    protected void onSmooth() {
+
     }
 
     /**

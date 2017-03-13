@@ -16,11 +16,21 @@
     <string name="category_contact">Contact</string>
     <string name="category_sms">Sms</string>
     <string name="category_photo">Photo</string>
+    <string name="category_app">App</string>
 
     <string name="title_category">Category</string>
 
     <string name="title_backup">Backup</string>
     <string name="title_restore">Restore</string>
+
+
+    <string name="summary_category_viewer">Total: <i>%1$s</i> \t\t Selection: <i>%2$s</i></string>
+    <string name="summary_category_viewer_need_click">Click to choose items</string>
+    <string name="summary_app_template">Version: <i>%1$s</i> \t\t Size: <i>%2$s</i></string>
+    <string name="unknown">Unknown</string>
+    <string name="empty_title">Oooops</string>
+    <string name="empty_summary">No content here</string>
+
     <string name="intro_backup"> "Motion respects and reinforces the user as the prime mover. Primary user actions are "
         "inflection points that initiate motion, transforming the whole design.\n"
         "All action takes place in a single environment. Objects are presented to the user without "

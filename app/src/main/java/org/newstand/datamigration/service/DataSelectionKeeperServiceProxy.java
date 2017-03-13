@@ -9,8 +9,8 @@ import android.support.annotation.WorkerThread;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.ActionListener;
-import org.newstand.datamigration.model.DataCategory;
-import org.newstand.datamigration.model.DataRecord;
+import org.newstand.datamigration.data.DataCategory;
+import org.newstand.datamigration.data.DataRecord;
 import org.newstand.datamigration.thread.SharedExecutor;
 
 import java.util.List;

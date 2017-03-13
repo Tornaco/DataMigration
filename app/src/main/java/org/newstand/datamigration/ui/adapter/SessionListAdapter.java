@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.norbsoft.typefacehelper.TypefaceHelper;
+
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.worker.backup.session.Session;
 
@@ -48,6 +50,7 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListViewHold
     @Override
     public SessionListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.data_item_template_with_checkable, parent, false);
+        TypefaceHelper.typeface(view);
         final SessionListViewHolder holder = new SessionListViewHolder(view);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

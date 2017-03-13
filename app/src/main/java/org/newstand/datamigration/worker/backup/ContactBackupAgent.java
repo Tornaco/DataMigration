@@ -18,7 +18,7 @@ import com.google.common.io.Files;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.ContextWireable;
-import org.newstand.datamigration.model.ContactRecord;
+import org.newstand.datamigration.data.ContactRecord;
 import org.newstand.datamigration.utils.Closer;
 
 import java.io.File;

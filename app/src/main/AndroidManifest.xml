@@ -2,10 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.newstand.datamigration">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:name=".DataMigrationApp"
@@ -24,13 +34,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.ContentProviderCategoryViewerActivity"
+            android:name=".ui.activity.AndroidCategoryViewerActivity"
+            android:label="@string/title_backup"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupSessionPickerActivity"
+            android:label="@string/title_restore"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupCategoryViewerActivity"
+            android:label="@string/title_restore"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.DataListHostActivity"
@@ -41,6 +54,7 @@
         <activity
             android:name=".ui.activity.DataTransportActivity"
             android:theme="@style/AppTheme" />
+        <activity android:name=".ui.activity.WifiSetupActivity" />
     </application>
 
 </manifest>

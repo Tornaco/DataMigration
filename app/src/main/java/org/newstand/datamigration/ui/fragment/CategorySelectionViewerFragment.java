@@ -17,10 +17,10 @@ import com.google.common.base.Preconditions;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.datamigration.model.CategoryRecord;
-import org.newstand.datamigration.model.DataCategory;
-import org.newstand.datamigration.model.DataRecord;
-import org.newstand.datamigration.model.message.EventDefinations;
+import org.newstand.datamigration.data.CategoryRecord;
+import org.newstand.datamigration.data.DataCategory;
+import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.event.EventDefinations;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.utils.Collections;
@@ -131,6 +131,7 @@ public class CategorySelectionViewerFragment extends Fragment {
                 dr.setId(type.name());
                 dr.setDisplayName(type.name());
                 dr.setCategory(type);
+                dr.setSummary(getString(R.string.summary_category_viewer_need_click));
                 mokes.add(dr);
             }
         });
@@ -165,7 +166,8 @@ public class CategorySelectionViewerFragment extends Fragment {
     }
 
     private String buildSelectionSummary(int total, int selectionCnt) {
-        return "Total:" + total + "\t" + "Selection:" + selectionCnt;
+        if (isDetached()) return null;
+        return getString(R.string.summary_category_viewer, String.valueOf(total), String.valueOf(selectionCnt));
     }
 
     @ReceiverMethod
@@ -176,6 +178,12 @@ public class CategorySelectionViewerFragment extends Fragment {
         List<DataRecord> dataRecords = data.getParcelableArrayList(EventDefinations.KEY_CATEGORY_DATA_LIST);
         DataCategory category = DataCategory.valueOf(DataCategory.class, Preconditions.checkNotNull(data.getString(EventDefinations.KEY_CATEGORY)));
         updateSelectionCount(category, dataRecords);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.from(getContext()).unSubscribe(this);
     }
 
     private void onCategorySelect(CategoryRecord cr) {

@@ -19,6 +19,7 @@ public class DataTransportActivity extends TransactionSafeActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_container_template);
+        showHomeAsUp();
     }
 
     @Override

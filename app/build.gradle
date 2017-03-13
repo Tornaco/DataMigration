@@ -20,7 +20,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -50,4 +50,6 @@ dependencies {
     compile project(':vcard-android')
     compile 'com.norbsoft.typefacehelper:library:0.9.0'
     compile project(':eventbus')
+    compile project(':progress-activity')
+    compile project(path: ':netty-android')
 }

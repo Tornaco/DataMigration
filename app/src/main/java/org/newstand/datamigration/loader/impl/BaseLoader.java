@@ -13,7 +13,7 @@ import org.newstand.datamigration.common.PermissionRelyed;
 import org.newstand.datamigration.loader.DataLoader;
 import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.model.DataRecord;
+import org.newstand.datamigration.data.DataRecord;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public abstract class BaseLoader implements DataLoader<DataRecord>, PermissionRe
     @Setter(AccessLevel.PRIVATE)
     private Context context;
 
-    public abstract Collection<DataRecord> loadFromContentProvider(LoaderFilter<DataRecord> filter);
+    public abstract Collection<DataRecord> loadFromAndroid(LoaderFilter<DataRecord> filter);
 
     public abstract Collection<DataRecord> loadFromBackup(Session session, LoaderFilter<DataRecord> filter);
 
@@ -44,8 +44,8 @@ public abstract class BaseLoader implements DataLoader<DataRecord>, PermissionRe
         switch (source.getParent()) {
             case Backup:
                 return loadFromBackup(source.getSession(), filter);
-            case ContentProvider:
-                return loadFromContentProvider(filter);
+            case Android:
+                return loadFromAndroid(filter);
         }
         return null;
     }

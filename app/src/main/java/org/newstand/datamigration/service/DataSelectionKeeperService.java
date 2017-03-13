@@ -10,9 +10,9 @@ import android.support.annotation.Nullable;
 import com.google.common.base.Preconditions;
 import com.orhanobut.logger.Logger;
 
-import org.newstand.datamigration.model.DataCategory;
-import org.newstand.datamigration.model.DataRecord;
-import org.newstand.datamigration.model.message.EventDefinations;
+import org.newstand.datamigration.data.DataCategory;
+import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.event.EventDefinations;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -5,8 +5,8 @@ import android.os.Bundle;
 
 import com.google.common.base.Preconditions;
 
+import org.newstand.datamigration.data.event.EventDefinations;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.model.message.EventDefinations;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/9 16:58
@@ -21,6 +21,8 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showHomeAsUp();
+        setTitle(getTitle());
         resolveIntent();
     }
 
