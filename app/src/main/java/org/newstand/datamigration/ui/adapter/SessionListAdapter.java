@@ -40,10 +40,10 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListViewHold
             sessionList.clear();
             sessionList.addAll(src);
         }
-        onUpdate();
+        update();
     }
 
-    public void onUpdate() {
+    public void update() {
         notifyDataSetChanged();
     }
 

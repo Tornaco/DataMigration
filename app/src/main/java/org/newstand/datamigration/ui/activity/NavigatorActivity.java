@@ -2,6 +2,7 @@ package org.newstand.datamigration.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -28,7 +29,7 @@ public class NavigatorActivity extends TransactionSafeActivity {
                     }
                 });
 
-        findViewById(R.id.card_2).findViewById(android.R.id.button1)
+        findViewById(R.id.card_1).findViewById(android.R.id.button2)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -40,10 +41,24 @@ public class NavigatorActivity extends TransactionSafeActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(NavigatorActivity.this, WifiSetupActivity.class));
+                        startActivity(new Intent(NavigatorActivity.this, WFDDataSenderActivity.class));
                     }
                 });
 
+        findViewById(R.id.card_3).findViewById(android.R.id.button2)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(NavigatorActivity.this, WFDDataReceiverActivity.class));
+                    }
+                });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navigator, menu);
+        return true;
     }
 
     @Override
@@ -53,6 +68,9 @@ public class NavigatorActivity extends TransactionSafeActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
 
         return super.onOptionsItemSelected(item);
     }

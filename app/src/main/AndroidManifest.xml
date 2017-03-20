@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -49,12 +49,25 @@
             android:name=".ui.activity.DataListHostActivity"
             android:theme="@style/AppTheme" />
 
-        <service android:name=".service.DataSelectionKeeperService" />
+        <activity
+            android:name=".ui.activity.DataImportActivity"
+            android:label="@string/title_restore"
+            android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".ui.activity.DataTransportActivity"
+            android:name=".ui.activity.DataExportActivity"
+            android:label="@string/title_backup"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.activity.WifiSetupActivity" />
+
+        <activity
+            android:name=".ui.activity.WFDDataSenderActivity"
+            android:label="@string/title_setup_wfd" />
+
+        <activity
+            android:name=".ui.activity.WFDDataReceiverActivity"
+            android:label="@string/title_setup_wfd" />
+
+        <activity android:name=".ui.activity.SettingsActivity" />
     </application>
 
 </manifest>

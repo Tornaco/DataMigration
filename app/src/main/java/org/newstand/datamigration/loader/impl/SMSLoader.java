@@ -8,10 +8,10 @@ import com.google.common.io.Files;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.DataRecord;
-import org.newstand.datamigration.data.MsgBox;
-import org.newstand.datamigration.data.SMSRecord;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.data.model.MsgBox;
+import org.newstand.datamigration.data.model.SMSRecord;
 import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Closer;

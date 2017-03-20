@@ -8,8 +8,8 @@ import android.support.v4.app.Fragment;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.event.EventDefinations;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.ui.fragment.AppListFragment;
 import org.newstand.datamigration.ui.fragment.ContactListFragment;
@@ -30,10 +30,10 @@ public class DataListHostActivity extends TransactionSafeActivity implements Dat
     private LoaderSource mLoaderSource;
 
     private void showList() {
-        String extra = getIntent().getStringExtra(EventDefinations.KEY_CATEGORY);
+        String extra = getIntent().getStringExtra(IntentEvents.KEY_CATEGORY);
         DataCategory category = DataCategory.valueOf(DataCategory.class, extra);
         Fragment fragment = getFragmentByCategory(category);
-        placeFragment(R.id.container, fragment, null);
+        replaceV4(R.id.container, fragment, null);
         setTitle(getString(category.nameRes()));
     }
 
@@ -61,7 +61,7 @@ public class DataListHostActivity extends TransactionSafeActivity implements Dat
             Logger.e("No intent, ignored.");
             return;
         }
-        mLoaderSource = intent.getParcelableExtra(EventDefinations.KEY_SOURCE);
+        mLoaderSource = intent.getParcelableExtra(IntentEvents.KEY_SOURCE);
         showList();
     }
 

@@ -22,9 +22,6 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
-import android.util.Log;
-
-import java.util.Arrays;
 
 import dev.nick.eventbus.internal.EventsWirer;
 import dev.nick.eventbus.internal.PublisherService;
@@ -35,10 +32,6 @@ import dev.nick.eventbus.utils.Preconditions;
  * Email: nick.guo.dev@icloud.com
  */
 public class EventBus {
-
-    private static final String LOG_TAG = "EventBus";
-
-    public static boolean DEBUG = false;
 
     private static EventBus sBus;
     private PublisherService mService;
@@ -53,7 +46,6 @@ public class EventBus {
         mHandler = new Handler(handlerThread.getLooper());
 
         mWirer = new EventsWirer(mService);
-        log("Event bus created!");
     }
 
     private synchronized static EventBus create(Context context) {
@@ -66,7 +58,6 @@ public class EventBus {
     }
 
     public void publish(@NonNull final Event event) {
-        log("publish:" + event);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -76,7 +67,6 @@ public class EventBus {
     }
 
     public void publishEmptyEvent(final int... events) {
-        log("publishEmptyEvent:" + Arrays.toString(events));
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -92,7 +82,6 @@ public class EventBus {
     }
 
     private void subscribeBinder(@NonNull final IEventReceiver receiver) {
-        log("subscribe:" + receiver);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -102,7 +91,6 @@ public class EventBus {
     }
 
     public void subscribe(@NonNull final Object object) {
-        log("subscribe:" + object);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -112,7 +100,6 @@ public class EventBus {
     }
 
     public void unSubscribe(@NonNull final EventReceiver receiver) {
-        log("unSubscribe:" + receiver);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -122,17 +109,12 @@ public class EventBus {
     }
 
     public void unSubscribe(@NonNull final Object object) {
-        log("unSubscribe:" + object);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                 mWirer.unWire(object);
             }
         });
-    }
-
-    private void log(Object message) {
-        if (DEBUG) Log.d(LOG_TAG, String.valueOf(message));
     }
 
     public IBinder generateStub() {

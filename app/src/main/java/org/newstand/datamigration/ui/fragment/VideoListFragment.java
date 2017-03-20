@@ -5,9 +5,9 @@ import android.support.v4.content.ContextCompat;
 import com.bumptech.glide.Glide;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.DataRecord;
-import org.newstand.datamigration.data.VideoRecord;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.data.model.VideoRecord;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.utils.Files;

@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">迁移</string>
+    <string name="app_intro">数据备份以及迁移助手</string>
+
+    <string name="title_activity_navigator">@string/app_name</string>
+
+    <string name="action_settings">设置</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="category_music">音乐</string>
+    <string name="category_video">视频</string>
+    <string name="category_contact">联系人</string>
+    <string name="category_sms">短信息</string>
+    <string name="category_photo">照片</string>
+    <string name="category_app">应用</string>
+
+    <string name="title_setup_wfd">寻找连接</string>
+    <string name="title_setup_wfd_note">注意：</string>
+    <string name="title_restart_connector"><b><i>点此重新初始化连接器</i></b></string>
+    <string name="summary_setup_wfd_note_name">*\t\t你的设备昵称为&#160;</string>
+    <string name="summary_setup_wfd_note_item">*\t\t可用设备会出现在上面列表中</string>
+    <string name="summary_setup_wfd_note_click">*\t\t点击你想连接的设备即可进行连接并传输</string>
+    <string name="summary_setup_wfd_note_restart">*\t\t如果经过了很长时间仍然没有结果，你可以&#160;</string>
+    <string name="title_wfd_conn_fail">连接失败</string>
+    <string name="summary_wfd_conn_fail">当前无法与该设备建立连接，请稍候再试</string>
+    <string name="summary_wfd_conn">正在连接</string>
+    <string name="summary_wfd_requesting_conn_info">尝试获取连接信息</string>
+    <string name="summary_wfd_requesting_conn_res">等待反馈</string>
+    <string name="title_set_device_id">你的设备昵称</string>
+
+    <string name="title_err_wfd_device_not_support">看起来你的设备不支持WIFI-DIRECT技术，或者请检查你是否开启了WIFI热点，如果有，请关闭~</string>
+    <string name="title_err_wfd_device_not_support_action">再试试</string>
+
+    <string name="title_err_wfd_device_not_found">未搜索到任何可用设备</string>
+    <string name="title_err_wfd_device_not_found_action">再试试</string>
+
+    <string name="title_category">类别</string>
+    <string name="title_backup_restore">备份与恢复</string>
+    <string name="title_backup">备份</string>
+    <string name="title_restore">恢复</string>
+
+
+    <string name="summary_category_viewer">总共: <i>%1$s</i> \t\t 已选: <i>%2$s</i></string>
+    <string name="summary_category_viewer_need_click">点击选择条目</string>
+    <string name="summary_app_template">版本号: <i>%1$s</i> \t\t 文件大小: <i>%2$s</i></string>
+    <string name="unknown">未知</string>
+    <string name="empty_title">天哪</string>
+    <string name="empty_summary">这里没有内容</string>
+
+
+    <string name="title_transport_sender_receiver">空中传输</string>
+    <string name="title_transport_sender">发送</string>
+    <string name="title_transport_receiver">接收</string>
+
+
+    <string name="title_start">开始</string>
+    <string name="large_text">Android++ 是一个免费的Visual Studio扩展，同时关联了MSBuild脚本，使Visual Studio支持Android App开发。其初衷是为了基于C/C++上的NDK，另外还也包括可定制的部署、资源管理，集成了Java代码编译器"
+    </string>
+</resources>

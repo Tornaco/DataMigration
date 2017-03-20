@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
-import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.model.DataRecord;
 
 
 /**

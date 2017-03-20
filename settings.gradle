@@ -1,1 +1,1 @@
-include ':app', ':vcard-android', ':eventbus', ':progress-activity', ':netty-android'
+include ':app', ':vcard-android', ':eventbus', ':progress-activity', ':tiles', ':statemachine', ':wfdhook'

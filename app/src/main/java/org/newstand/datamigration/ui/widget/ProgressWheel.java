@@ -116,7 +116,7 @@ public class ProgressWheel extends View {
 
         // Finally we have some simple logic that calculates the size of the view
         // and calls setMeasuredDimension() to set that size.
-        // Before we compare the width and height of the view, we remove the padding,
+        // Before we compare the width and height of the view, we removeV4 the padding,
         // and when we set the dimension we add it back again. Now the actual content
         // of the view will be square, but, depending on the padding, the total dimensions
         // of the view might not be.

@@ -4,9 +4,9 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.data.AppRecord;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.model.AppRecord;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.utils.ApkUtil;

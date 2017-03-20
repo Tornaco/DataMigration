@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.common.base.Preconditions;
+import com.orhanobut.logger.Logger;
 
-import org.newstand.datamigration.data.event.EventDefinations;
+import org.newstand.datamigration.cache.SelectionCache;
+import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 
 /**
@@ -29,17 +31,26 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
     @Override
     public void onSubmit() {
         super.onSubmit();
-        startActivity(new Intent(this, DataTransportActivity.class));
+        Intent intent = new Intent(this, DataImportActivity.class);
+        intent.putExtra(IntentEvents.KEY_SOURCE, mSource);
+        startActivity(intent);
     }
 
     private void resolveIntent() {
         Intent intent = getIntent();
-        mSource = intent.getParcelableExtra(EventDefinations.KEY_SOURCE);
+        mSource = intent.getParcelableExtra(IntentEvents.KEY_SOURCE);
         Preconditions.checkNotNull(mSource);
+        Logger.d("Source = " + mSource);
     }
 
     @Override
-    LoaderSource onRequestSource() {
+    public LoaderSource onRequestLoaderSource() {
         return mSource;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SelectionCache.from(this).cleanUp();
     }
 }

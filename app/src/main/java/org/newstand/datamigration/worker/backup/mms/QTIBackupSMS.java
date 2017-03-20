@@ -8,9 +8,9 @@ import android.net.Uri;
 import android.provider.Telephony;
 import android.util.Log;
 
-import org.newstand.datamigration.data.MsgBox;
-import org.newstand.datamigration.data.SMSBackup;
-import org.newstand.datamigration.data.SMSRecord;
+import org.newstand.datamigration.data.model.MsgBox;
+import org.newstand.datamigration.data.model.SMSBackup;
+import org.newstand.datamigration.data.model.SMSRecord;
 
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;

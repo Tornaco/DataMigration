@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.newstand.datamigration.ui.activity.ScrollingActivity"
-    tools:showIn="@layout/activity_scrolling">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,7 +28,7 @@
             android:padding="2dp"
             app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="3dp"
-            app:cardElevation="3dp"
+            app:cardElevation="2dp"
             app:cardMaxElevation="3dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="false"
@@ -50,7 +47,7 @@
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:singleLine="true"
-                    android:text="@string/title_backup"
+                    android:text="@string/title_backup_restore"
                     android:textAllCaps="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="@color/primary_text"
@@ -66,7 +63,7 @@
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:text="@string/intro_backup"
+                    android:text="@string/large_text"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/secondary_text" />
 
@@ -78,7 +75,16 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@android:id/text1"
-                    android:text="@string/title_start" />
+                    android:text="@string/title_backup" />
+
+                <Button
+                    android:id="@android:id/button2"
+                    style="@style/ActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@android:id/text1"
+                    android:layout_toLeftOf="@android:id/button1"
+                    android:text="@string/title_restore" />
 
 
             </RelativeLayout>
@@ -87,7 +93,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/card_2"
+            android:id="@+id/card_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -103,7 +109,7 @@
             android:padding="2dp"
             app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="3dp"
-            app:cardElevation="3dp"
+            app:cardElevation="2dp"
             app:cardMaxElevation="3dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="false"
@@ -122,7 +128,7 @@
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:singleLine="true"
-                    android:text="@string/title_restore"
+                    android:text="@string/title_transport_sender_receiver"
                     android:textAllCaps="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="@color/primary_text"
@@ -138,7 +144,7 @@
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:text="@string/intro_restore"
+                    android:text="@string/large_text"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/secondary_text" />
 
@@ -150,153 +156,20 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@android:id/text1"
-                    android:text="@string/title_start" />
-
-
-            </RelativeLayout>
-
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/card_2"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin_small"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:clickable="true"
-            android:padding="2dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="3dp"
-            app:cardElevation="3dp"
-            app:cardMaxElevation="3dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="false"
-            app:contentPadding="3dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin">
-
-                <TextView
-                    android:id="@android:id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:singleLine="true"
-                    android:text="@string/title_transport_sender"
-                    android:textAllCaps="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/primary_text"
-                    android:textStyle="normal" />
-
-                <TextView
-                    android:id="@android:id/text1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@android:id/title"
-                    android:layout_alignStart="@android:id/title"
-                    android:layout_below="@android:id/title"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:text="@string/intro_transport_sender"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="@color/secondary_text" />
+                    android:text="@string/title_transport_sender" />
 
                 <Button
-                    android:id="@android:id/button1"
+                    android:id="@android:id/button2"
                     style="@style/ActionButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_below="@android:id/text1"
-                    android:text="@string/title_start" />
+                    android:layout_toLeftOf="@android:id/button1"
+                    android:text="@string/title_transport_receiver" />
 
 
             </RelativeLayout>
 
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card_4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/card_3"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin_small"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:clickable="true"
-            android:padding="2dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="3dp"
-            app:cardElevation="3dp"
-            app:cardMaxElevation="3dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="false"
-            app:contentPadding="3dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin">
-
-                <TextView
-                    android:id="@android:id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:singleLine="true"
-                    android:text="@string/title_transport_receiver"
-                    android:textAllCaps="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/primary_text"
-                    android:textStyle="normal" />
-
-                <TextView
-                    android:id="@android:id/text1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@android:id/title"
-                    android:layout_alignStart="@android:id/title"
-                    android:layout_below="@android:id/title"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:text="@string/intro_transport_receiver"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="@color/secondary_text" />
-
-                <Button
-                    android:id="@android:id/button1"
-                    style="@style/ActionButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@android:id/text1"
-                    android:text="@string/title_start" />
-
-            </RelativeLayout>
 
         </android.support.v7.widget.CardView>
 

@@ -2,7 +2,6 @@ package org.newstand.datamigration.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,24 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.norbsoft.typefacehelper.TypefaceHelper;
-import com.orhanobut.logger.Logger;
 import com.vlonjatg.progressactivity.ProgressRelativeLayout;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.common.ActionListenerMainThreadAdapter;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.DataRecord;
-import org.newstand.datamigration.data.event.EventDefinations;
-import org.newstand.datamigration.loader.DataLoaderManager;
-import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
+import org.newstand.datamigration.cache.SelectionCache;
+import org.newstand.datamigration.data.event.IntentEvents;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.service.DataSelectionKeeperServiceProxy;
+import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.utils.Collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
@@ -52,9 +48,6 @@ public abstract class DataListViewerFragment extends Fragment {
 
     @Getter
     private CommonListAdapter adapter;
-
-    @Getter
-    private DataLoaderManager dataLoaderManager;
 
     @Getter
     private LoaderSourceProvider loaderSourceProvider;
@@ -82,45 +75,34 @@ public abstract class DataListViewerFragment extends Fragment {
         };
     }
 
-    private void loadFresh() {
-        dataLoaderManager = DataLoaderManager.from(getContext());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                dataLoaderManager.loadAsync(onCreateLoaderSource(), getDataType(),
-                        new LoaderListenerMainThreadAdapter<DataRecord>() {
-                            @Override
-                            public void onCompleteMainThread(Collection<DataRecord> collection) {
-                                super.onCompleteMainThread(collection);
-                                Logger.d("onCompleteMainThread~");
-                                callLoadFinish(collection);
-                            }
-                        });
-            }
-        });
-    }
-
     private void startLoading() {
         progressLayout.showLoading();
         // From cache.
-        DataSelectionKeeperServiceProxy.getSelectionByCategoryAsync(getActivity(), getDataType(),
-                new ActionListenerMainThreadAdapter<List<DataRecord>>(Looper.getMainLooper()) {
-                    @Override
-                    public void onActionMainThread(@Nullable List<DataRecord> dataRecords) {
-                        if (!Collections.isEmpty(dataRecords)) {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final Collection<DataRecord> dataRecords = SelectionCache.from(getContext())
+                            .fromSource(onCreateLoaderSource(), getContext())
+                            .get(getDataType());
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
                             callLoadFinish(dataRecords);
-                            return;
                         }
-                        // From new...
-                        loadFresh();
-                    }
-                });
+                    });
+                } catch (ExecutionException e) {
+                    // FIXME Handle err.
+                }
+            }
+        };
+        SharedExecutor.execute(r);
     }
 
     private void callLoadFinish(Collection<DataRecord> dataRecords) {
         boolean isEmpty = Collections.isEmpty(dataRecords);
         if (isEmpty)
-            progressLayout.showEmpty(R.drawable.ic_mood_bad_white, getString(R.string.empty_title), getString(R.string.empty_summary));
+            progressLayout.showEmpty(R.drawable.ic_mood_bad_white, null, getString(R.string.empty_summary));
         else
             progressLayout.showContent();
         onLoadFinish(dataRecords);
@@ -196,9 +178,9 @@ public abstract class DataListViewerFragment extends Fragment {
         ArrayList<DataRecord> dataRecords = (ArrayList<DataRecord>) getAdapter().getDataRecords();
         DataCategory category = getDataType();
         Bundle data = new Bundle();
-        data.putParcelableArrayList(EventDefinations.KEY_CATEGORY_DATA_LIST, dataRecords);
-        data.putString(EventDefinations.KEY_CATEGORY, category.name());
-        Event event = new Event(EventDefinations.ON_CATEGORY_OF_DATA_SELECT_COMPLETE, data);
+        data.putParcelableArrayList(IntentEvents.KEY_CATEGORY_DATA_LIST, dataRecords);
+        data.putString(IntentEvents.KEY_CATEGORY, category.name());
+        Event event = Event.builder().eventType(IntentEvents.ON_CATEGORY_OF_DATA_SELECT_COMPLETE).data(data).build();
         EventBus.from(getContext()).publish(event);
     }
 

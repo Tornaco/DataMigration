@@ -10,9 +10,9 @@ import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.loader.LoaderFilter;
-import org.newstand.datamigration.data.AppRecord;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.model.AppRecord;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.ApkUtil;
 import org.newstand.datamigration.utils.Collections;

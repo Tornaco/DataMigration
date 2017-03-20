@@ -10,7 +10,7 @@ import com.google.common.io.Files;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.ContextWireable;
-import org.newstand.datamigration.data.SMSRecord;
+import org.newstand.datamigration.data.model.SMSRecord;
 import org.newstand.datamigration.utils.Closer;
 
 import java.io.File;

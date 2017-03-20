@@ -10,11 +10,11 @@ import com.orhanobut.logger.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.DataLoaderManager;
 import org.newstand.datamigration.loader.LoaderListener;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.DataRecord;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.worker.backup.BackupRestoreListener;
 import org.newstand.datamigration.worker.backup.ContactBackupAgent;
@@ -44,86 +44,91 @@ public class DataBackupManagerTest {
 
         final CountDownLatch latch = new CountDownLatch(2);
 
-        DataLoaderManager.from(appContext).loadAsync(DataCategory.Contact, new LoaderListener<DataRecord>() {
-            @Override
-            public void onStart() {
-                Logger.d("onStart");
-            }
+        LoaderSource fromResolver = LoaderSource.builder().parent(LoaderSource.Parent.Android)
+                .session(Session.create()).build();
 
-            @Override
-            public void onComplete(Collection<DataRecord> collection) {
-                latch.countDown();
-                DataBackupManager.from(appContext).performBackup(collection, DataCategory.Contact, new BackupRestoreListener() {
+        DataLoaderManager.from(appContext).loadAsync(
+                fromResolver,
+                DataCategory.Contact, new LoaderListener<DataRecord>() {
                     @Override
                     public void onStart() {
                         Logger.d("onStart");
                     }
 
                     @Override
-                    public void onPieceStart(DataRecord record) {
-                        Logger.d("onPieceStart:" + record);
+                    public void onComplete(Collection<DataRecord> collection) {
+                        latch.countDown();
+                        DataBackupManager.from(appContext).performBackup(collection, DataCategory.Contact, new BackupRestoreListener() {
+                            @Override
+                            public void onStart() {
+                                Logger.d("onStart");
+                            }
+
+                            @Override
+                            public void onPieceStart(DataRecord record) {
+                                Logger.d("onPieceStart:" + record);
+                            }
+
+                            @Override
+                            public void onPieceSuccess(DataRecord record) {
+                                Logger.d("onPieceSuccess:" + record);
+                                Logger.w(getStatus().toString());
+                            }
+
+                            @Override
+                            public void onPieceFail(DataRecord record, Throwable err) {
+                                Logger.d("onPieceFail:" + record + err);
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Logger.d("onComplete");
+
+                                ContactRestoreSettings settings = new ContactRestoreSettings();
+                                settings.setSourcePath(SettingsProvider.getBackupDirByCategory(DataCategory.Contact, session)
+                                        + "/Nick@7.vcf");
+                                try {
+                                    ContactBackupAgent agent = new ContactBackupAgent();
+                                    agent.setContext(appContext);
+                                    agent.restore(settings);
+                                } catch (Exception e) {
+                                    Logger.e(Log.getStackTraceString(e));
+                                    Assert.fail();
+                                }
+
+
+                                // TEST LOAD FROM BACKUP
+                                LoaderSource loaderSource = LoaderSource.builder()
+                                        .parent(LoaderSource.Parent.Backup)
+                                        .session(session).build();
+                                DataLoaderManager.from(appContext)
+                                        .loadAsync(loaderSource, DataCategory.Contact, new LoaderListener<DataRecord>() {
+                                            @Override
+                                            public void onStart() {
+                                                Logger.d("Load from backup.start");
+                                            }
+
+                                            @Override
+                                            public void onComplete(Collection<DataRecord> collection) {
+                                                Logger.d("Load from backup.onComplete:%s", collection);
+                                                latch.countDown();
+                                            }
+
+                                            @Override
+                                            public void onErr(Throwable throwable) {
+                                                Logger.d("Load from backup.err:" + Log.getStackTraceString(throwable));
+                                            }
+                                        });
+
+                            }
+                        });
                     }
 
                     @Override
-                    public void onPieceSuccess(DataRecord record) {
-                        Logger.d("onPieceSuccess:" + record);
-                        Logger.w(getStatus().toString());
-                    }
-
-                    @Override
-                    public void onPieceFail(DataRecord record, Throwable err) {
-                        Logger.d("onPieceFail:" + record + err);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Logger.d("onComplete");
-
-                        ContactRestoreSettings settings = new ContactRestoreSettings();
-                        settings.setSourcePath(SettingsProvider.getBackupDirByCategory(DataCategory.Contact, session)
-                                + "/Nick@7.vcf");
-                        try {
-                            ContactBackupAgent agent = new ContactBackupAgent();
-                            agent.setContext(appContext);
-                            agent.restore(settings);
-                        } catch (Exception e) {
-                            Logger.e(Log.getStackTraceString(e));
-                            Assert.fail();
-                        }
-
-
-                        // TEST LOAD FROM BACKUP
-                        LoaderSource loaderSource = LoaderSource.builder()
-                                .parent(LoaderSource.Parent.Backup)
-                                .session(session).build();
-                        DataLoaderManager.from(appContext)
-                                .loadAsync(loaderSource, DataCategory.Contact, new LoaderListener<DataRecord>() {
-                                    @Override
-                                    public void onStart() {
-                                        Logger.d("Load from backup.start");
-                                    }
-
-                                    @Override
-                                    public void onComplete(Collection<DataRecord> collection) {
-                                        Logger.d("Load from backup.onComplete:%s", collection);
-                                        latch.countDown();
-                                    }
-
-                                    @Override
-                                    public void onErr(Throwable throwable) {
-                                        Logger.d("Load from backup.err:" + Log.getStackTraceString(throwable));
-                                    }
-                                });
-
+                    public void onErr(Throwable throwable) {
+                        Assert.fail();
                     }
                 });
-            }
-
-            @Override
-            public void onErr(Throwable throwable) {
-                Assert.fail();
-            }
-        });
 
         try {
             latch.await(30 * 1000, TimeUnit.MILLISECONDS);

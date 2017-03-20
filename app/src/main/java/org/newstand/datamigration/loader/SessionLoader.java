@@ -6,7 +6,7 @@ import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.thread.SharedExecutor;
+import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
 

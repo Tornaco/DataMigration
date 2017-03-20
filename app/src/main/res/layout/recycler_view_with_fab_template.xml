@@ -4,12 +4,9 @@
     android:id="@+id/progressLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:emptyBackgroundColor="@color/accent"
-    app:emptyContentTextColor="@color/white"
-    app:emptyTitleTextColor="@color/white"
-    app:emptyTitleTextSize="@dimen/text_size_large"
-    app:errorBackgroundColor="@color/accent"
-    app:errorTitleTextColor="@color/white"
+    app:emptyBackgroundColor="@color/white"
+    app:emptyTitleTextSize="@dimen/text_size_medium"
+    app:errorBackgroundColor="@color/white"
     app:loadingBackgroundColor="@color/white">
 
     <android.support.v7.widget.RecyclerView

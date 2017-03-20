@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.event.EventDefinations;
-import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.service.DataSelectionKeeperServiceProxy;
-import org.newstand.datamigration.ui.fragment.CategorySelectionViewerFragment;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.cache.SelectionCache;
+import org.newstand.datamigration.data.event.IntentEvents;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.ui.fragment.CategoryViewerFragment;
 
-public class CategoryViewerActivity extends TransactionSafeActivity implements CategorySelectionViewerFragment.OnCategorySelectListener,
-        CategorySelectionViewerFragment.OnSubmitListener {
+public abstract class CategoryViewerActivity extends TransactionSafeActivity
+        implements CategoryViewerFragment.OnCategorySelectListener,
+        CategoryViewerFragment.OnSubmitListener, CategoryViewerFragment.LoaderSourceProvider {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,25 +19,20 @@ public class CategoryViewerActivity extends TransactionSafeActivity implements C
         showHomeAsUp();
         setTitle(getTitle());
         setContentView(R.layout.activity_with_container_template);
-        placeFragment(R.id.container, new CategorySelectionViewerFragment(), null);
-        DataSelectionKeeperServiceProxy.start(this);
+        replaceV4(R.id.container, new CategoryViewerFragment(), null);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DataSelectionKeeperServiceProxy.stop(this);
-    }
-
-    LoaderSource onRequestSource() {
-        return LoaderSource.builder().session(Session.create()).parent(LoaderSource.Parent.Android).build();
+        SelectionCache.from(this).cleanUp();
     }
 
     @Override
     public void onCategorySelect(DataCategory category) {
         Intent intent = new Intent(this, DataListHostActivity.class);
-        intent.putExtra(EventDefinations.KEY_CATEGORY, category.name());
-        intent.putExtra(EventDefinations.KEY_SOURCE, onRequestSource());
+        intent.putExtra(IntentEvents.KEY_CATEGORY, category.name());
+        intent.putExtra(IntentEvents.KEY_SOURCE, onRequestLoaderSource());
         startActivity(intent);
     }
 

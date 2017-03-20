@@ -1,6 +1,6 @@
 package org.newstand.datamigration.worker.backup;
 
-import org.newstand.datamigration.data.SMSRecord;
+import org.newstand.datamigration.data.model.SMSRecord;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

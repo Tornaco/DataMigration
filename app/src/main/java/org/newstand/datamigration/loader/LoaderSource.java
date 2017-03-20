@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Builder;
 
 /**
@@ -14,6 +15,7 @@ import lombok.experimental.Builder;
  * All right reserved.
  */
 @Builder
+@ToString
 public class LoaderSource implements Parcelable {
     @Getter
     private Session session;

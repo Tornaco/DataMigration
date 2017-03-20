@@ -17,7 +17,6 @@
 package dev.nick.eventbus.internal;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -27,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import dev.nick.eventbus.Event;
-import dev.nick.eventbus.EventBus;
 import dev.nick.eventbus.EventReceiver;
 import dev.nick.eventbus.annotation.CallInMainThread;
 import dev.nick.eventbus.annotation.Events;
@@ -39,9 +37,6 @@ import dev.nick.eventbus.utils.ReflectionUtils;
  * Email: nick.guo.dev@icloud.com
  */
 public class EventsWirer implements ClassWirer {
-
-    private static String TAG = "EventsWirer";
-    private static boolean mDebuggable = EventBus.DEBUG;
 
     private final List<TaggedEventsReceiver> mReceivers;
     private Subscriber mSubscriber;
@@ -87,7 +82,6 @@ public class EventsWirer implements ClassWirer {
             if (m.isAnnotationPresent(Events.class)) {
                 Events methodAnno = m.getAnnotation(Events.class);
                 usingEvents = methodAnno.value();
-                Log.d(TAG, "Using method annotation events for:" + methodName);
             }
 
             if (usingEvents == null) continue;
@@ -97,8 +91,6 @@ public class EventsWirer implements ClassWirer {
             TaggedEventsReceiver receiver = new TaggedEventsReceiver(usingEvents, o, methodName) {
                 @Override
                 public void onReceive(@NonNull Event event) {
-                    if (mDebuggable)
-                        Log.d(TAG, "Invoking for event:" + event);
                     if (eventParam)
                         ReflectionUtils.invokeMethod(m, o, event);
                     else ReflectionUtils.invokeMethod(m, o);
@@ -110,9 +102,6 @@ public class EventsWirer implements ClassWirer {
                 }
             };
 
-            if (mDebuggable)
-                Log.d(TAG, "Creating receiver:" + receiver);
-
             mSubscriber.subscribe(receiver);
             saveReceiver(receiver);
         }
@@ -121,8 +110,6 @@ public class EventsWirer implements ClassWirer {
     public void unWire(Object o) {
         List<EventReceiver> receivers = findReceiversByTag(o);
         for (EventReceiver receiver : receivers) {
-            if (mDebuggable)
-                Log.d(TAG, "unWiring receiver:" + receiver);
             mSubscriber.unSubscribe(receiver);
         }
     }

@@ -3,9 +3,9 @@ package org.newstand.datamigration.ui.fragment;
 import android.support.v4.content.ContextCompat;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.DataRecord;
-import org.newstand.datamigration.data.SMSRecord;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.data.model.SMSRecord;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 

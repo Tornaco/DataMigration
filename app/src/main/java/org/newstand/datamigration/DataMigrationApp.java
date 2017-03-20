@@ -8,6 +8,8 @@ import com.norbsoft.typefacehelper.TypefaceHelper;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
+import org.newstand.datamigration.provider.SettingsProvider;
+
 /**
  * Created by Nick@NewStand.org on 2017/3/7 10:35
  * E-Mail: NewStand@163.com
@@ -23,8 +25,9 @@ public class DataMigrationApp extends Application {
                 .set(Typeface.NORMAL, Typeface.createFromAsset(getAssets(), "fonts/xy.ttf"))
                 .create();
         TypefaceHelper.init(typeface);
+        SettingsProvider.init(this);
         Logger.init("DataMigrationApp")
-                .methodCount(3)
+                .methodCount(0)
                 .hideThreadInfo()
                 .logLevel(LogLevel.FULL);
         Logger.d("DataMigrationApp comes up.");

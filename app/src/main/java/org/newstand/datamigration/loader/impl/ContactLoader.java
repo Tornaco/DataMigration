@@ -9,9 +9,9 @@ import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.loader.LoaderFilter;
-import org.newstand.datamigration.data.ContactRecord;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.DataRecord;
+import org.newstand.datamigration.data.model.ContactRecord;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;

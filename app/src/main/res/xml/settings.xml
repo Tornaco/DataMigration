@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="@bool/def_auto_connect_enabled"
+        android:key="key_auto_connect_enabled"
+        android:title="@string/title_auto_connect" />
+</PreferenceScreen>

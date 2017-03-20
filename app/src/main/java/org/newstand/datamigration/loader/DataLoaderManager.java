@@ -6,10 +6,9 @@ import android.support.annotation.NonNull;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.ContextWireable;
-import org.newstand.datamigration.data.DataCategory;
-import org.newstand.datamigration.data.DataRecord;
-import org.newstand.datamigration.thread.SharedExecutor;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.sync.SharedExecutor;
 
 import java.util.Collection;
 
@@ -30,13 +29,6 @@ public class DataLoaderManager {
 
     public synchronized static DataLoaderManager from(@NonNull Context context) {
         return new DataLoaderManager(context);
-    }
-
-    public void loadAsync(@NonNull DataCategory dataCategory,
-                          @NonNull LoaderListener<DataRecord> listener) {
-        LoaderSource fromResolver = LoaderSource.builder().parent(LoaderSource.Parent.Android)
-                .session(Session.create()).build();
-        loadAsync(fromResolver, dataCategory, listener, null);
     }
 
     public void loadAsync(@NonNull final LoaderSource loaderSource, @NonNull DataCategory dataCategory,
@@ -62,6 +54,31 @@ public class DataLoaderManager {
             }
         };
         SharedExecutor.execute(r);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<DataRecord> load(@NonNull final LoaderSource loaderSource,
+                                       @NonNull final DataCategory dataCategory) {
+        Logger.d("load...");
+        try {
+            return (Collection<DataRecord>) getLoader(dataCategory).load(loaderSource, null);
+        } catch (Throwable throwable) {
+            Logger.e("Err when loading %s", throwable);
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<DataRecord> load(@NonNull final LoaderSource loaderSource,
+                                       @NonNull final DataCategory dataCategory,
+                                       final LoaderFilter<DataRecord> filter) {
+        Logger.d("load...");
+        try {
+            return (Collection<DataRecord>) getLoader(dataCategory).load(loaderSource, filter);
+        } catch (Throwable throwable) {
+            Logger.e("Err when loading %s", throwable);
+        }
+        return null;
     }
 
     @NonNull

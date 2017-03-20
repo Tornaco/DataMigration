@@ -17,4 +17,23 @@ public class ProgressDialogCompat {
         progressDialog.setIndeterminate(true);
         return progressDialog;
     }
+
+    public static ProgressDialog createUnCancelableIndeterminateShow(Context context) {
+        ProgressDialog progressDialog = createUnCancelableIndeterminate(context);
+        progressDialog.show();
+        return progressDialog;
+    }
+
+    public static ProgressDialog createUnCancelableIndeterminateShow(Context context, String message) {
+        ProgressDialog progressDialog = createUnCancelableIndeterminate(context);
+        progressDialog.setMessage(message);
+        progressDialog.show();
+        return progressDialog;
+    }
+
+    public static void dismiss(ProgressDialog progressDialog) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 }

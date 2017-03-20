@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.data.event.EventDefinations;
+import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.ui.fragment.BackupSessionPickerFragment;
 import org.newstand.datamigration.worker.backup.session.Session;
@@ -23,13 +23,13 @@ public class BackupSessionPickerActivity extends TransactionSafeActivity impleme
         showHomeAsUp();
         setTitle(getTitle());
         setContentView(R.layout.activity_with_container_template);
-        placeFragment(R.id.container, new BackupSessionPickerFragment(), null);
+        replaceV4(R.id.container, new BackupSessionPickerFragment(), null);
     }
 
     @Override
     public void onSessionSelect(Session session) {
         Intent intent = new Intent(this, BackupCategoryViewerActivity.class);
-        intent.putExtra(EventDefinations.KEY_SOURCE, LoaderSource.builder()
+        intent.putExtra(IntentEvents.KEY_SOURCE, LoaderSource.builder()
                 .parent(LoaderSource.Parent.Backup).session(session).build());
         startActivity(intent);
     }
