@@ -8,8 +8,8 @@ import android.support.v4.app.Fragment;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.event.IntentEvents;
+import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.ui.fragment.AppListFragment;
 import org.newstand.datamigration.ui.fragment.ContactListFragment;

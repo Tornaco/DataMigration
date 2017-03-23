@@ -54,4 +54,9 @@ public class MusicRecord extends FileBasedRecord implements Parcelable {
         dest.writeLong(duration);
         dest.writeString(artUri);
     }
+
+    @Override
+    public DataCategory category() {
+        return DataCategory.Music;
+    }
 }

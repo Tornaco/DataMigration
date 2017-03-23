@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,11 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.common.base.Preconditions;
 import com.vlonjatg.progressactivity.ProgressRelativeLayout;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.cache.SelectionCache;
+import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.CategoryRecord;
@@ -32,7 +30,6 @@ import org.newstand.datamigration.utils.Collections;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import dev.nick.eventbus.Event;
@@ -49,7 +46,7 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class CategoryViewerFragment extends Fragment {
+public class CategoryViewerFragment extends TransactionSafeFragment {
     @Getter
     RecyclerView recyclerView;
 
@@ -101,36 +98,44 @@ public class CategoryViewerFragment extends Fragment {
 
     private void startLoading() {
         progressRelativeLayout.showLoading();
-        final SelectionCache cache = SelectionCache.from(getContext());
+        final LoadingCacheManager cache = loaderSourceProvider.onRequestLoaderSource().getParent()
+                == LoaderSource.Parent.Android
+                ? LoadingCacheManager.droid() : LoadingCacheManager.bk();
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 DataCategory.consumeAll(new Consumer<DataCategory>() {
                     @Override
                     public void consume(@NonNull DataCategory category) {
-                        try {
-                            Collection<DataRecord> records = cache.fromSource(loaderSourceProvider.onRequestLoaderSource(),
-                                    getContext())
-                                    .get(category);
-                            if (!Collections.isEmpty(records)) {
-                                CategoryRecord dr = new CategoryRecord();
-                                dr.setId(category.name());
-                                dr.setDisplayName(getString(category.nameRes()));
-                                dr.setCategory(category);
-                                dr.setSummary(buildSelectionSummary(records.size(), 0));
-                                mokes.add(dr);
-                            }
-                        } catch (ExecutionException e) {
-                            // FIXME Handle err.
+
+                        if (!isAlive()) return;
+
+                        Collection<DataRecord> records = cache.get(category);
+                        if (isAlive() && !Collections.isEmpty(records)) {
+
+                            int total = records.size();
+                            final int[] sel = {0};
+
+                            Collections.consumeRemaining(records, new Consumer<DataRecord>() {
+                                @Override
+                                public void consume(@NonNull DataRecord dataRecord) {
+                                    if (dataRecord.isChecked())
+                                        sel[0]++;
+                                }
+                            });
+
+                            CategoryRecord dr = new CategoryRecord();
+                            dr.setId(category.name());
+                            dr.setDisplayName(getStringSafety(category.nameRes()));
+                            dr.setCategory(category);
+                            dr.setSummary(buildSelectionSummary(total, sel[0]));
+                            mokes.add(dr);
+
+                            onLoadComplete();// FIXME Another m name?
                         }
                     }
                 });
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        onLoadComplete();
-                    }
-                });
+                onLoadComplete();
             }
         };
         SharedExecutor.execute(r);
@@ -180,8 +185,15 @@ public class CategoryViewerFragment extends Fragment {
     }
 
     private void onLoadComplete() {
-        getAdapter().update(mokes);
-        progressRelativeLayout.showContent();
+        if (isAlive()) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getAdapter().update(mokes);
+                    progressRelativeLayout.showContent();
+                }
+            });
+        }
     }
 
     private void updateSelectionCount(final DataCategory category, List<DataRecord> dataRecords) {
@@ -215,13 +227,13 @@ public class CategoryViewerFragment extends Fragment {
         return getString(R.string.summary_category_viewer, String.valueOf(total), String.valueOf(selectionCnt));
     }
 
+    @SuppressWarnings("unchecked")
     @ReceiverMethod
     @Events(IntentEvents.ON_CATEGORY_OF_DATA_SELECT_COMPLETE)
     @CallInMainThread
     public void updateSelectionCount(Event event) {
-        Bundle data = event.getData();
-        List<DataRecord> dataRecords = data.getParcelableArrayList(IntentEvents.KEY_CATEGORY_DATA_LIST);
-        DataCategory category = DataCategory.valueOf(DataCategory.class, Preconditions.checkNotNull(data.getString(IntentEvents.KEY_CATEGORY)));
+        List<DataRecord> dataRecords = (List<DataRecord>) event.getObj();
+        DataCategory category = DataCategory.fromInt(event.getArg1());
         updateSelectionCount(category, dataRecords);
     }
 

@@ -38,6 +38,10 @@
             android:label="@string/title_backup"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.activity.SenderCategoryViewerActivity"
+            android:label="@string/title_transport_sender"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".ui.activity.BackupSessionPickerActivity"
             android:label="@string/title_restore"
             android:theme="@style/AppTheme" />
@@ -68,6 +72,9 @@
             android:label="@string/title_setup_wfd" />
 
         <activity android:name=".ui.activity.SettingsActivity" />
+
+        <activity android:name=".ui.activity.DataSenderActivity" />
+        <activity android:name=".ui.activity.DataReceiverActivity" />
     </application>
 
 </manifest>

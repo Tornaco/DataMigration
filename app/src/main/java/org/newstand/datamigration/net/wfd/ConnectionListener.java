@@ -10,5 +10,6 @@ import android.net.NetworkInfo;
 
 public interface ConnectionListener {
     void onRequestConnectionInfo();
+
     void onWifiP2PConnectionChanged(NetworkInfo networkInfo);
 }

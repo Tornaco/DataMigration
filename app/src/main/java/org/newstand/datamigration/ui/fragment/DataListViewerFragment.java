@@ -15,7 +15,7 @@ import com.norbsoft.typefacehelper.TypefaceHelper;
 import com.vlonjatg.progressactivity.ProgressRelativeLayout;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.cache.SelectionCache;
+import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
@@ -26,7 +26,6 @@ import org.newstand.datamigration.utils.Collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.ExecutionException;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
@@ -77,23 +76,18 @@ public abstract class DataListViewerFragment extends Fragment {
 
     private void startLoading() {
         progressLayout.showLoading();
+        final LoadingCacheManager cache = onCreateLoaderSource().getParent() == LoaderSource.Parent.Android ? LoadingCacheManager.droid() : LoadingCacheManager.bk();
         // From cache.
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                try {
-                    final Collection<DataRecord> dataRecords = SelectionCache.from(getContext())
-                            .fromSource(onCreateLoaderSource(), getContext())
-                            .get(getDataType());
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            callLoadFinish(dataRecords);
-                        }
-                    });
-                } catch (ExecutionException e) {
-                    // FIXME Handle err.
-                }
+                final Collection<DataRecord> dataRecords = cache.get(getDataType());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        callLoadFinish(dataRecords);
+                    }
+                });
             }
         };
         SharedExecutor.execute(r);
@@ -177,10 +171,7 @@ public abstract class DataListViewerFragment extends Fragment {
         super.onDestroy();
         ArrayList<DataRecord> dataRecords = (ArrayList<DataRecord>) getAdapter().getDataRecords();
         DataCategory category = getDataType();
-        Bundle data = new Bundle();
-        data.putParcelableArrayList(IntentEvents.KEY_CATEGORY_DATA_LIST, dataRecords);
-        data.putString(IntentEvents.KEY_CATEGORY, category.name());
-        Event event = Event.builder().eventType(IntentEvents.ON_CATEGORY_OF_DATA_SELECT_COMPLETE).data(data).build();
+        Event event = Event.builder().arg1(category.ordinal()).obj(dataRecords).eventType(IntentEvents.ON_CATEGORY_OF_DATA_SELECT_COMPLETE).build();
         EventBus.from(getContext()).publish(event);
     }
 

@@ -103,8 +103,8 @@ public class WFDSetupActivity extends TransactionSafeActivity implements Discove
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onSmoothHook() {
+        super.onSmoothHook();
         handler = new Handler();
         wfdManager = WFDManager.builder(this)
                 .connectionInfoListener(this)
@@ -134,6 +134,17 @@ public class WFDSetupActivity extends TransactionSafeActivity implements Discove
                 }).build();
 
         startAndDiscovery();
+    }
+
+    @Override
+    protected boolean needSmoothHook() {
+        return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        wfdManager.stopDiscovery();
     }
 
     protected void onPeersListUpdate(List<Peer> peerList) {
@@ -375,11 +386,5 @@ public class WFDSetupActivity extends TransactionSafeActivity implements Discove
         progressRelativeLayout.showContent();
         wfdManager.tearDown();
         startAndDiscovery();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        wfdManager.discovery();
     }
 }

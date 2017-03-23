@@ -3,16 +3,17 @@ package org.newstand.datamigration.loader.impl;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 
 import com.google.common.io.Files;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.ApkUtil;
 import org.newstand.datamigration.utils.Collections;
@@ -46,6 +47,7 @@ public class AppLoader extends BaseLoader {
             appRecord.setDisplayName(packageInfo.applicationInfo.loadLabel(pm).toString());
             appRecord.setPkgName(packageInfo.packageName);
             appRecord.setPath(packageInfo.applicationInfo.publicSourceDir);
+            appRecord.setIcon(ApkUtil.loadIconByPkgName(getContext(), appRecord.getPkgName()));
 
             boolean enabled = packageInfo.applicationInfo.enabled;
 
@@ -84,13 +86,15 @@ public class AppLoader extends BaseLoader {
                 AppRecord record = new AppRecord();
                 record.setDisplayName(file.getName());
                 record.setPath(file.getAbsolutePath());
-                record.setVersionName(ApkUtil.loadVersionByFilePath(getContext(), file.getPath()));
                 try {
+                    Drawable icon = ApkUtil.loadIconByFilePath(getContext(), record.getPath());
+                    record.setIcon(icon);
+                    record.setVersionName(ApkUtil.loadVersionByFilePath(getContext(), file.getPath()));
                     record.setSize(Files.asByteSource(file).size());
-                } catch (IOException e) {
+                    records.add(record);
+                } catch (Throwable e) {
                     Logger.e("Failed to query size for:%s", record);
                 }
-                records.add(record);
             }
         });
 

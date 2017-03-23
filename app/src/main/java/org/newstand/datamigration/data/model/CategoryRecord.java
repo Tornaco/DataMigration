@@ -46,4 +46,9 @@ public class CategoryRecord extends DataRecord implements Parcelable {
         dest.writeString(category.name());
         dest.writeString(summary);
     }
+
+    @Override
+    public DataCategory category() {
+        return null;
+    }
 }

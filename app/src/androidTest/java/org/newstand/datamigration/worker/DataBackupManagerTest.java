@@ -58,7 +58,7 @@ public class DataBackupManagerTest {
                     @Override
                     public void onComplete(Collection<DataRecord> collection) {
                         latch.countDown();
-                        DataBackupManager.from(appContext).performBackup(collection, DataCategory.Contact, new BackupRestoreListener() {
+                        DataBackupManager.from(appContext).performBackupAsync(collection, DataCategory.Contact, new BackupRestoreListener() {
                             @Override
                             public void onStart() {
                                 Logger.d("onStart");

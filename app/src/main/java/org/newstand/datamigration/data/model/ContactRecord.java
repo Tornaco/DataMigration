@@ -18,16 +18,14 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class ContactRecord extends DataRecord implements Parcelable {
+public class ContactRecord extends FileBasedRecord implements Parcelable {
     private String email;
     private String phoneNum;
-    private String url;
 
     private ContactRecord(Parcel in) {
         super(in);
         email = in.readString();
         phoneNum = in.readString();
-        url = in.readString();
     }
 
     public static final Creator<ContactRecord> CREATOR = new Creator<ContactRecord>() {
@@ -52,6 +50,10 @@ public class ContactRecord extends DataRecord implements Parcelable {
         super.writeToParcel(dest, flags);
         dest.writeString(email);
         dest.writeString(phoneNum);
-        dest.writeString(url);
+    }
+
+    @Override
+    public DataCategory category() {
+        return DataCategory.Contact;
     }
 }

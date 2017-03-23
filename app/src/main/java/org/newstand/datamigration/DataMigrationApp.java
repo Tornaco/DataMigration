@@ -27,7 +27,7 @@ public class DataMigrationApp extends Application {
         TypefaceHelper.init(typeface);
         SettingsProvider.init(this);
         Logger.init("DataMigrationApp")
-                .methodCount(0)
+                .methodCount(3)
                 .hideThreadInfo()
                 .logLevel(LogLevel.FULL);
         Logger.d("DataMigrationApp comes up.");

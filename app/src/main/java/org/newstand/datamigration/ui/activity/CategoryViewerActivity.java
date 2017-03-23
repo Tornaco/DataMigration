@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.cache.SelectionCache;
+import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.ui.fragment.CategoryViewerFragment;
@@ -19,13 +19,18 @@ public abstract class CategoryViewerActivity extends TransactionSafeActivity
         showHomeAsUp();
         setTitle(getTitle());
         setContentView(R.layout.activity_with_container_template);
+    }
+
+    protected void showViewerFragment() {
         replaceV4(R.id.container, new CategoryViewerFragment(), null);
     }
+
+    abstract LoadingCacheManager getCache();
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SelectionCache.from(this).cleanUp();
+        getCache().clear();
     }
 
     @Override

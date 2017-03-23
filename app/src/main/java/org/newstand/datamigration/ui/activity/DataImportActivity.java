@@ -42,6 +42,6 @@ public class DataImportActivity extends DataTransportActivity implements DataImp
 
     @Override
     public LoaderSource onRequestLoaderSource() {
-        return null;
+        return mSource;
     }
 }

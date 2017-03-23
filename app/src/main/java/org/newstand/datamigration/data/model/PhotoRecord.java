@@ -17,4 +17,9 @@ public class PhotoRecord extends FileBasedRecord implements Parcelable {
     private PhotoRecord(Parcel in) {
         super(in);
     }
+
+    @Override
+    public DataCategory category() {
+        return DataCategory.Photo;
+    }
 }

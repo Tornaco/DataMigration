@@ -7,10 +7,10 @@ import android.support.annotation.NonNull;
 import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.VideoRecord;
+import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;

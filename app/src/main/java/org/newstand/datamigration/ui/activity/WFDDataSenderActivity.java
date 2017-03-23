@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.activity;
 
+import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pInfo;
 
 import org.newstand.datamigration.data.model.Peer;
@@ -29,5 +30,10 @@ public class WFDDataSenderActivity extends WFDSetupActivity {
     public void onConnectionInfoAvailable(WifiP2pInfo info) {
         super.onConnectionInfoAvailable(info);
 
+        String host = info.groupOwnerAddress.getHostAddress();
+
+        Intent intent = new Intent(this, DataSenderActivity.class);
+        intent.putExtra("host", host);
+        startActivity(intent);
     }
 }

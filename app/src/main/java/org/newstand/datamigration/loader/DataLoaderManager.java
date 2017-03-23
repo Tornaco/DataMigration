@@ -11,6 +11,7 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.sync.SharedExecutor;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -40,7 +41,6 @@ public class DataLoaderManager {
     public void loadAsync(@NonNull final LoaderSource loaderSource, @NonNull final DataCategory dataCategory,
                           @NonNull final LoaderListener<DataRecord> listener,
                           final LoaderFilter<DataRecord> filter) {
-        Logger.d("loadAsync...");
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -59,26 +59,24 @@ public class DataLoaderManager {
     @SuppressWarnings("unchecked")
     public Collection<DataRecord> load(@NonNull final LoaderSource loaderSource,
                                        @NonNull final DataCategory dataCategory) {
-        Logger.d("load...");
         try {
             return (Collection<DataRecord>) getLoader(dataCategory).load(loaderSource, null);
         } catch (Throwable throwable) {
             Logger.e("Err when loading %s", throwable);
         }
-        return null;
+        return Collections.emptyList();
     }
 
     @SuppressWarnings("unchecked")
     public Collection<DataRecord> load(@NonNull final LoaderSource loaderSource,
                                        @NonNull final DataCategory dataCategory,
                                        final LoaderFilter<DataRecord> filter) {
-        Logger.d("load...");
         try {
             return (Collection<DataRecord>) getLoader(dataCategory).load(loaderSource, filter);
         } catch (Throwable throwable) {
             Logger.e("Err when loading %s", throwable);
         }
-        return null;
+        return Collections.emptyList();
     }
 
     @NonNull

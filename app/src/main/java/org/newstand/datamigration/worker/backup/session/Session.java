@@ -54,6 +54,12 @@ public class Session implements Parcelable {
         return new Session();
     }
 
+    public static Session random() {
+        Session s = new Session();
+        s.name = "Random_" + s.name;
+        return s;
+    }
+
     public static Session from(String name) {
         return new Session(name);
     }

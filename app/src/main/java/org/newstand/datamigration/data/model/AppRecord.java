@@ -1,5 +1,6 @@
 package org.newstand.datamigration.data.model;
 
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -21,6 +22,8 @@ public class AppRecord extends FileBasedRecord implements Parcelable {
 
     private String pkgName;
     private String versionName;
+
+    private transient Drawable icon;
 
     private AppRecord(Parcel in) {
         super(in);
@@ -45,5 +48,10 @@ public class AppRecord extends FileBasedRecord implements Parcelable {
         super.writeToParcel(dest, flags);
         dest.writeString(pkgName);
         dest.writeString(versionName);
+    }
+
+    @Override
+    public DataCategory category() {
+        return DataCategory.App;
     }
 }

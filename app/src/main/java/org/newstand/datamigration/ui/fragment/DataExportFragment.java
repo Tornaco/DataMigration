@@ -5,20 +5,19 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 
-import org.newstand.datamigration.cache.SelectionCache;
+import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
-import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.BackupRestoreListener;
 import org.newstand.datamigration.worker.backup.BackupRestoreListenerMainThreadAdapter;
 import org.newstand.datamigration.worker.backup.DataBackupManager;
 import org.newstand.datamigration.worker.backup.session.Session;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/15 16:29
@@ -28,6 +27,37 @@ import java.util.concurrent.ExecutionException;
 
 public class DataExportFragment extends DataTransportFragment {
 
+    BackupRestoreListener listener = new BackupRestoreListenerMainThreadAdapter() {
+        @Override
+        public void onStartMainThread() {
+            super.onStartMainThread();
+        }
+
+        @Override
+        public void onCompleteMainThread() {
+            super.onCompleteMainThread();
+            onTransportComplete();
+        }
+
+        @Override
+        public void onPieceFailMainThread(DataRecord record, Throwable err) {
+            super.onPieceFailMainThread(record, err);
+            updateProgress(getStatus());
+        }
+
+        @Override
+        public void onPieceSuccessMainThread(DataRecord record) {
+            super.onPieceSuccessMainThread(record);
+            updateProgress(getStatus());
+        }
+
+        @Override
+        public void onPieceStartMainThread(DataRecord record) {
+            super.onPieceStartMainThread(record);
+            consoleSummaryView.setText(record.getDisplayName());
+        }
+    };
+
     @Override
     protected void start() {
         super.start();
@@ -35,57 +65,28 @@ public class DataExportFragment extends DataTransportFragment {
 
         session = Session.create();
 
-        final SelectionCache cache = SelectionCache.from(getContext());
+        final LoadingCacheManager cache = LoadingCacheManager.droid();
 
         final DataBackupManager dataBackupManager = DataBackupManager.from(getContext(), session);
 
-        DataCategory.consumeAll(new Consumer<DataCategory>() {
+        DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
             public void consume(@NonNull DataCategory category) {
-                try {
-                    Collection<DataRecord> dataRecords = cache.fromSource(LoaderSource.builder()
-                                    .parent(LoaderSource.Parent.Android)
-                                    .session(null).build(),
-                            getContext()).get(category);
-                    if (Collections.isEmpty(dataRecords)) return;
+                Collection<DataRecord> dataRecords = cache.get(category);
+                if (Collections.isEmpty(dataRecords)) return;
 
-                    AbortSignal signal = dataBackupManager.performBackup(dataRecords, category,
-                            new BackupRestoreListenerMainThreadAdapter() {
-                                @Override
-                                public void onStartMainThread() {
-                                    super.onStartMainThread();
-                                }
+                final Collection<DataRecord> work = new ArrayList<>();
 
-                                @Override
-                                public void onCompleteMainThread() {
-                                    super.onCompleteMainThread();
-                                    onTransportComplete();
-                                }
-
-                                @Override
-                                public void onPieceFailMainThread(DataRecord record, Throwable err) {
-                                    super.onPieceFailMainThread(record, err);
-                                    updateProgress(getStatus());
-                                }
-
-                                @Override
-                                public void onPieceSuccessMainThread(DataRecord record) {
-                                    super.onPieceSuccessMainThread(record);
-                                    updateProgress(getStatus());
-                                }
-
-                                @Override
-                                public void onPieceStartMainThread(DataRecord record) {
-                                    super.onPieceStartMainThread(record);
-                                    consoleSummaryView.setText(record.getDisplayName());
-                                }
-                            });
-                    synchronized (abortSignals) {
-                        abortSignals.add(signal);
+                Collections.consumeRemaining(dataRecords, new Consumer<DataRecord>() {
+                    @Override
+                    public void consume(@NonNull DataRecord dataRecord) {
+                        if (dataRecord.isChecked()) work.add(dataRecord);
                     }
+                });
 
-                } catch (ExecutionException e) {
-                    // FIXME
+                AbortSignal signal = dataBackupManager.performBackupAsync(work, category, listener);
+                synchronized (abortSignals) {
+                    abortSignals.add(signal);
                 }
             }
         });

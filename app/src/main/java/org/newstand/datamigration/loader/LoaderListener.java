@@ -10,6 +10,8 @@ import java.util.Collection;
 
 public interface LoaderListener<T> {
     void onStart();
+
     void onComplete(Collection<T> collection);
+
     void onErr(Throwable throwable);
 }

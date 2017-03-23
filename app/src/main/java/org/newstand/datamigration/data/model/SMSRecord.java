@@ -19,9 +19,9 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class SMSRecord extends DataRecord implements Serializable, Parcelable {
+public class SMSRecord extends FileBasedRecord implements Serializable, Parcelable {
 
-    public  static final long serialVersionUID =3172693911408082974L;
+    public static final long serialVersionUID = 3172693911408082974L;
 
     private String id;
     private String addr;
@@ -70,5 +70,10 @@ public class SMSRecord extends DataRecord implements Serializable, Parcelable {
         dest.writeString(time);
         dest.writeString(msgBox.name());
         dest.writeString(path);
+    }
+
+    @Override
+    public DataCategory category() {
+        return DataCategory.Sms;
     }
 }

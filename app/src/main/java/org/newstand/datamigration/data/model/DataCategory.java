@@ -102,12 +102,12 @@ public enum DataCategory implements LoaderGetter, ResBinder {
 
         @Override
         public int nameRes() {
-            return R.string.category_video;
+            return R.string.category_sms;
         }
 
         @Override
         public int iconRes() {
-            return R.drawable.ic_movie;
+            return R.drawable.ic_text_sms;
         }
     },
 
@@ -141,5 +141,12 @@ public enum DataCategory implements LoaderGetter, ResBinder {
                 Collections.consumeRemaining(Arrays.asList(values()), consumer);
             }
         });
+    }
+
+    public static DataCategory fromInt(int i) {
+        for (DataCategory c : values()) {
+            if (c.ordinal() == i) return c;
+        }
+        return null;
     }
 }

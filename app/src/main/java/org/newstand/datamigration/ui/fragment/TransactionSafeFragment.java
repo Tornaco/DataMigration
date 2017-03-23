@@ -1,6 +1,7 @@
 package org.newstand.datamigration.ui.fragment;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
@@ -20,5 +21,14 @@ public class TransactionSafeFragment extends Fragment {
     @SuppressWarnings({"unchecked", "ConstantConditions"})
     protected <T extends View> T findView(@IdRes int idRes) {
         return (T) getView().findViewById(idRes);
+    }
+
+    public boolean isAlive() {
+        return !isDetached() && isAdded();
+    }
+
+    public String getStringSafety(@StringRes int idRes) {
+        if (!isAlive()) return null;
+        return getString(idRes);
     }
 }

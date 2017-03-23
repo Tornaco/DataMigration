@@ -9,7 +9,6 @@ import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
-import org.newstand.datamigration.utils.ApkUtil;
 import org.newstand.datamigration.utils.Files;
 
 /**
@@ -37,9 +36,7 @@ public class AppListFragment extends DataListViewerFragment {
                                 == null ? getString(R.string.unknown) : appRecord.getVersionName(),
                         Files.formatSize(appRecord.getSize()));
                 holder.getLineTwoTextView().setText(summary);
-                Drawable icon = ApkUtil.loadIconByPkgName(getContext(), appRecord.getPkgName());
-                if (icon == null)
-                    icon = ApkUtil.loadIconByFilePath(getContext(), appRecord.getPath());
+                Drawable icon = appRecord.getIcon();
                 holder.getCheckableImageView().setImageDrawable(icon);
             }
         };

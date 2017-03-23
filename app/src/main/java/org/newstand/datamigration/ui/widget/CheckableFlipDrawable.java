@@ -44,7 +44,7 @@ public class CheckableFlipDrawable extends FlipDrawable implements
         mFrontDrawable = (FrontDrawable) mFront;
         mCheckmarkDrawable = (CheckmarkDrawable) mBack;
 
-        // We will create checkmark animations that are synchronized with the
+        // We will ok checkmark animations that are synchronized with the
         // flipping animation. The entire delay + duration of the checkmark animation
         // needs to equal the entire duration of the flip animation (where delay is 0).
 

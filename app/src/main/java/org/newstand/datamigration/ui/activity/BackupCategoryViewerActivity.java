@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.google.common.base.Preconditions;
 import com.orhanobut.logger.Logger;
 
-import org.newstand.datamigration.cache.SelectionCache;
+import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 
@@ -29,6 +29,17 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
     }
 
     @Override
+    LoadingCacheManager getCache() {
+        return LoadingCacheManager.bk();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showViewerFragment();
+    }
+
+    @Override
     public void onSubmit() {
         super.onSubmit();
         Intent intent = new Intent(this, DataImportActivity.class);
@@ -41,6 +52,7 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
         mSource = intent.getParcelableExtra(IntentEvents.KEY_SOURCE);
         Preconditions.checkNotNull(mSource);
         Logger.d("Source = " + mSource);
+        LoadingCacheManager.createBK(getApplicationContext(), mSource.getSession());
     }
 
     @Override
@@ -48,9 +60,4 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
         return mSource;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SelectionCache.from(this).cleanUp();
-    }
 }

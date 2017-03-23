@@ -3,6 +3,7 @@ package org.newstand.datamigration.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.worker.backup.session.Session;
 
@@ -19,6 +20,20 @@ public class AndroidCategoryViewerActivity extends CategoryViewerActivity {
         super.onCreate(savedInstanceState);
         showHomeAsUp();
         setTitle(getTitle());
+        if (LoadingCacheManager.droid() == null) {
+            LoadingCacheManager.createDroid(getApplicationContext());
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showViewerFragment();
+    }
+
+    @Override
+    LoadingCacheManager getCache() {
+        return LoadingCacheManager.droid();
     }
 
     @Override

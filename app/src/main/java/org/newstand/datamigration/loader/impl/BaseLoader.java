@@ -10,10 +10,10 @@ import android.support.annotation.Nullable;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.common.PermissionRelyed;
+import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.DataLoader;
 import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.util.ArrayList;

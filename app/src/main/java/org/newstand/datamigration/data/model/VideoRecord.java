@@ -17,4 +17,9 @@ public class VideoRecord extends FileBasedRecord implements Parcelable {
     private VideoRecord(Parcel in) {
         super(in);
     }
+
+    @Override
+    public DataCategory category() {
+        return DataCategory.Video;
+    }
 }

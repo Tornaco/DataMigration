@@ -59,4 +59,8 @@ public class DataRecord implements Parcelable, Checkable {
     public void toggle() {
         setChecked(!isChecked());
     }
+
+    public DataCategory category() {
+        return DataCategory.App;
+    }
 }

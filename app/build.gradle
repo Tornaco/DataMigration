@@ -66,7 +66,6 @@ dependencies {
     compile 'com.norbsoft.typefacehelper:library:0.9.0'
     compile project(':eventbus')
     compile project(':progress-activity')
-    compile 'io.netty:netty-transport:4.1.8.Final'
     compile 'com.google.code.gson:gson:2.7'
     compile project(':tiles')
     compile 'com.github.iwgang:simplifyspan:2.0'

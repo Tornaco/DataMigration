@@ -52,9 +52,14 @@ public class DataBackupManager {
         return new DataBackupManager(context, session);
     }
 
-    public AbortSignal performBackup(final Collection<DataRecord> dataRecords,
-                                     final DataCategory dataCategory,
-                                     final BackupRestoreListener listener) {
+    public void performBackup(final Collection<DataRecord> dataRecords,
+                              final DataCategory dataCategory) {
+        new BackupWorker(new BackupRestoreListenerAdapter(), dataRecords, dataCategory, new AbortSignal()).run();
+    }
+
+    public AbortSignal performBackupAsync(final Collection<DataRecord> dataRecords,
+                                          final DataCategory dataCategory,
+                                          final BackupRestoreListener listener) {
 
         AbortSignal abortSignal = new AbortSignal();
         BackupWorker worker = new BackupWorker(listener, dataRecords, dataCategory, abortSignal);
@@ -63,9 +68,9 @@ public class DataBackupManager {
         return abortSignal;
     }
 
-    public AbortSignal performRestore(final Collection<DataRecord> dataRecords,
-                                      final DataCategory dataCategory,
-                                      final BackupRestoreListener listener) {
+    public AbortSignal performRestoreAsync(final Collection<DataRecord> dataRecords,
+                                           final DataCategory dataCategory,
+                                           final BackupRestoreListener listener) {
         AbortSignal abortSignal = new AbortSignal();
         RestoreWorker worker = new RestoreWorker(listener, dataRecords, dataCategory, abortSignal);
         listener.setStatus(worker.status);
@@ -95,7 +100,7 @@ public class DataBackupManager {
                 SMSBackupSettings smsBackupSettings = new SMSBackupSettings();
                 smsBackupSettings.setSmsRecord((SMSRecord) record);
                 smsBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
-                + File.separator + record.getId());
+                        + File.separator + record.getId());
                 return smsBackupSettings;
         }
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
@@ -115,7 +120,7 @@ public class DataBackupManager {
             case Contact:
                 ContactRestoreSettings contactRestoreSettings = new ContactRestoreSettings();
                 ContactRecord contactRecord = (ContactRecord) record;
-                contactRestoreSettings.setSourcePath(contactRecord.getUrl());
+                contactRestoreSettings.setSourcePath(contactRecord.getPath());
                 return contactRestoreSettings;
             case Sms:
                 SMSRestoreSettings smsRestoreSettings = new SMSRestoreSettings();
@@ -205,7 +210,7 @@ public class DataBackupManager {
         }
     }
 
-    class RestoreWorker implements Runnable {
+    private class RestoreWorker implements Runnable {
 
         BackupRestoreListener listener;
         Collection<DataRecord> dataRecords;

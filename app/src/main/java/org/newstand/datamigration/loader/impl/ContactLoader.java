@@ -8,10 +8,10 @@ import android.support.annotation.NonNull;
 import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
@@ -56,7 +56,7 @@ public class ContactLoader extends BaseLoader {
             public void consume(@NonNull File file) {
                 ContactRecord record = new ContactRecord();
                 record.setDisplayName(file.getName());
-                record.setUrl(file.getAbsolutePath());
+                record.setPath(file.getAbsolutePath());
                 records.add(record);
             }
         });
