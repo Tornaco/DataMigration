@@ -30,6 +30,7 @@ import dev.nick.eventbus.utils.Preconditions;
 public class Event implements Cloneable, Parcelable {
 
     private int eventType;
+
     private Bundle data;
 
     private int arg1;
@@ -37,6 +38,8 @@ public class Event implements Cloneable, Parcelable {
     private int arg3;
     private int arg4;
     private int arg5;
+
+    private Object obj;
 
     public Event(int eventType) {
         this.eventType = eventType;
@@ -64,7 +67,7 @@ public class Event implements Cloneable, Parcelable {
         }
     };
 
-    private Event(int eventType, Bundle data, int arg1, int arg2, int arg3, int arg4, int arg5) {
+    private Event(int eventType, Bundle data, int arg1, int arg2, int arg3, int arg4, int arg5, Object o) {
         this.eventType = eventType;
         this.data = data;
         this.arg1 = arg1;
@@ -72,6 +75,7 @@ public class Event implements Cloneable, Parcelable {
         this.arg3 = arg3;
         this.arg4 = arg4;
         this.arg5 = arg5;
+        this.obj = o;
     }
 
     public static EventBuilder builder() {
@@ -96,6 +100,10 @@ public class Event implements Cloneable, Parcelable {
 
     public int getArg5() {
         return arg5;
+    }
+
+    public Object getObj() {
+        return obj;
     }
 
     public int getEventType() {
@@ -147,11 +155,14 @@ public class Event implements Cloneable, Parcelable {
 
         private int eventType;
         private Bundle data;
+
+        // For none-rmi
         private int arg1;
         private int arg2;
         private int arg3;
         private int arg4;
         private int arg5;
+        private Object obj;
 
         EventBuilder() {
         }
@@ -191,8 +202,13 @@ public class Event implements Cloneable, Parcelable {
             return this;
         }
 
+        public Event.EventBuilder obj(Object o) {
+            this.obj = o;
+            return this;
+        }
+
         public Event build() {
-            return new Event(eventType, data, arg1, arg2, arg3, arg4, arg5);
+            return new Event(eventType, data, arg1, arg2, arg3, arg4, arg5, obj);
         }
     }
 }

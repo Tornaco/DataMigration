@@ -187,14 +187,18 @@ class WFDService extends WFDManager {
     }
 
     @Override
-    public void connect(WifiP2pDevice device, @NonNull final WifiP2pManager.ActionListener listener) {
+    public void connect(boolean owner, WifiP2pDevice device, @NonNull final WifiP2pManager.ActionListener listener) {
         if (getState() != State.RUNNING) return;
 
-        Logger.d("connect device %s", device);
+        Logger.d("connect device %s owner? %s", device, String.valueOf(owner));
 
         cancelConnect();
 
         WifiP2pConfig config = new WifiP2pConfig();
+
+        config.deviceAddress = device.deviceAddress;
+        config.wps.setup = WpsInfo.PBC;
+        config.groupOwnerIntent = owner ? 15 : 0;
 
         config.deviceAddress = device.deviceAddress;
 

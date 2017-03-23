@@ -7,7 +7,6 @@ import org.newstand.datamigration.utils.Closer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -31,8 +30,8 @@ public class SocketServer extends ServerComponent {
 
         Logger.d("Starting server %s", toString());
 
-        ServerSocket serverSocket = new ServerSocket();
-        serverSocket.bind(new InetSocketAddress(getHost(), getPort()));
+        ServerSocket serverSocket = new ServerSocket(getPort());
+        // serverSocket.bind(new InetSocketAddress(getHost(), getPort()));
 
         if (channelHandler != null) channelHandler.onServerChannelCreate();
 

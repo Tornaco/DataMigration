@@ -14,7 +14,7 @@ import org.newstand.datamigration.net.CategorySender;
 import org.newstand.datamigration.net.OverViewSender;
 import org.newstand.datamigration.net.protocol.CategoryHeader;
 import org.newstand.datamigration.net.protocol.OverviewHeader;
-import org.newstand.datamigration.net.server.SocketServer;
+import org.newstand.datamigration.net.server.SocketClient;
 import org.newstand.datamigration.sync.SharedExecutor;
 
 import java.io.IOException;
@@ -29,16 +29,30 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class DataSenderActivity extends TransactionSafeActivity implements SocketServer.ChannelHandler {
+public class DataSenderActivity extends TransactionSafeActivity implements SocketClient.ChannelHandler {
 
-    @Getter
     @Setter
-    private SocketServer socketServer;
+    @Getter
+    SocketClient client;
+
+    void startClient() {
+        String host = getIntent().getStringExtra("host");
+
+        SocketClient client = new SocketClient();
+        client.setHost(host);
+        client.setPort(8899);
+
+        client.setChannelHandler(this);
+
+        SharedExecutor.execute(client);
+
+        setClient(client);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startServer();
+        startClient();
     }
 
     private void send() {
@@ -59,7 +73,7 @@ public class DataSenderActivity extends TransactionSafeActivity implements Socke
         });
 
         try {
-            OverViewSender.with(socketServer.getInputStream(), socketServer.getOutputStream()).send(overviewHeader);
+            OverViewSender.with(client.getInputStream(), client.getOutputStream()).send(overviewHeader);
         } catch (IOException e) {
             onError(e);
         }
@@ -75,7 +89,7 @@ public class DataSenderActivity extends TransactionSafeActivity implements Socke
                 Logger.d("Sending header: " + categoryHeader);
 
                 try {
-                    CategorySender.with(socketServer.getInputStream(), socketServer.getOutputStream()).send(categoryHeader);
+                    CategorySender.with(client.getInputStream(), client.getOutputStream()).send(categoryHeader);
                 } catch (IOException e) {
                     onError(e);
                 }
@@ -84,37 +98,13 @@ public class DataSenderActivity extends TransactionSafeActivity implements Socke
 
     }
 
-    private void startServer() {
-
-        SharedExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-
-                String host = getIntent().getStringExtra("host");
-
-                SocketServer socketServer = new SocketServer();
-                socketServer.setChannelHandler(DataSenderActivity.this);
-                socketServer.setHost(host);
-                socketServer.setPort(8899);
-
-                SharedExecutor.execute(socketServer);
-
-                setSocketServer(socketServer);
-            }
-        });
-    }
-
-    @Override
-    public void onServerChannelCreate() {
-        Logger.d("onServerChannelCreate @%s", socketServer.toString());
-    }
-
-    @Override
-    public void onClientChannelCreated() {
-        send();
-    }
 
     private void onError(Throwable e) {
         e.printStackTrace();
+    }
+
+    @Override
+    public void onServerChannelConnected() {
+        send();
     }
 }

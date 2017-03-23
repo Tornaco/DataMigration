@@ -24,4 +24,9 @@ public class WFDDataReceiverActivity extends WFDSetupActivity {
 
         startActivity(intent);
     }
+
+    @Override
+    protected boolean groupOwner() {
+        return true;
+    }
 }

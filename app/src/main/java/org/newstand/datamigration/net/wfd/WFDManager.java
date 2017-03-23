@@ -18,7 +18,7 @@ public abstract class WFDManager {
 
     public abstract void stopDiscovery();
 
-    public abstract void connect(WifiP2pDevice device, WifiP2pManager.ActionListener listener);
+    public abstract void connect(boolean owner, WifiP2pDevice device, WifiP2pManager.ActionListener listener);
 
     public abstract void requestConnectionInfo();
 

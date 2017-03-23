@@ -243,11 +243,15 @@ public class WFDSetupActivity extends TransactionSafeActivity implements Discove
                 .show();
     }
 
+    protected boolean groupOwner() {
+        return false;
+    }
+
     protected void requestConnect(Peer peer) {
         progressRelativeLayout.showContent();
         ProgressDialogCompat.dismiss(mProgressDialog);
         mProgressDialog = ProgressDialogCompat.createUnCancelableIndeterminateShow(WFDSetupActivity.this, getString(R.string.summary_wfd_conn));
-        wfdManager.connect(peer.getDevice(), new WifiP2pManager.ActionListener() {
+        wfdManager.connect(groupOwner(), peer.getDevice(), new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
                 onConnectSuccess();

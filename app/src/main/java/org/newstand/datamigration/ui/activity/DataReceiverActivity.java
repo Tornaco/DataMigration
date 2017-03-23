@@ -10,7 +10,7 @@ import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.net.CategoryReceiver;
 import org.newstand.datamigration.net.OverviewReceiver;
-import org.newstand.datamigration.net.server.SocketClient;
+import org.newstand.datamigration.net.server.SocketServer;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 
@@ -26,35 +26,52 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class DataReceiverActivity extends TransactionSafeActivity implements SocketClient.ChannelHandler {
+public class DataReceiverActivity extends TransactionSafeActivity implements SocketServer.ChannelHandler {
 
-    @Setter
     @Getter
-    SocketClient client;
+    @Setter
+    private SocketServer socketServer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        startClient();
+        startServer();
     }
 
-    void startClient() {
-        String host = getIntent().getStringExtra("host");
+    private void startServer() {
 
-        SocketClient client = new SocketClient();
-        client.setHost(host);
-        client.setPort(8899);
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
 
-        client.setChannelHandler(this);
-        SharedExecutor.execute(client);
+                String host = getIntent().getStringExtra("host");
 
-        setClient(client);
+                SocketServer socketServer = new SocketServer();
+                socketServer.setChannelHandler(DataReceiverActivity.this);
+                socketServer.setHost(host);
+                socketServer.setPort(8899);
+
+                SharedExecutor.execute(socketServer);
+
+                setSocketServer(socketServer);
+            }
+        });
+    }
+
+
+    void onError(Throwable e) {
+        e.printStackTrace();
     }
 
     @Override
-    public void onServerChannelConnected() {
-        OverviewReceiver overviewReceiver = OverviewReceiver.with(client.getInputStream(), client.getOutputStream());
+    public void onServerChannelCreate() {
+        Logger.d("onServerChannelCreate @%s", socketServer.toString());
+    }
+
+    @Override
+    public void onClientChannelCreated() {
+        OverviewReceiver overviewReceiver = OverviewReceiver.with(socketServer.getInputStream(), socketServer.getOutputStream());
         try {
             overviewReceiver.receive(null);
         } catch (IOException e) {
@@ -66,7 +83,7 @@ public class DataReceiverActivity extends TransactionSafeActivity implements Soc
         Collections.consumeRemaining(dataCategories, new Consumer<DataCategory>() {
             @Override
             public void consume(@NonNull DataCategory category) {
-                CategoryReceiver categoryReceiver = CategoryReceiver.with(client.getInputStream(), client.getOutputStream());
+                CategoryReceiver categoryReceiver = CategoryReceiver.with(socketServer.getInputStream(), socketServer.getOutputStream());
                 try {
                     categoryReceiver.receive(null);
 
@@ -76,9 +93,5 @@ public class DataReceiverActivity extends TransactionSafeActivity implements Soc
                 }
             }
         });
-    }
-
-    void onError(Throwable e) {
-        e.printStackTrace();
     }
 }

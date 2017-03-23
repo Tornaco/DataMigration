@@ -111,7 +111,10 @@ public class OverviewHeader implements Serializable, DeSerializable, ByteWriter 
             public void consume(@NonNull DataRecord dataRecord) {
                 FileBasedRecord fb = (FileBasedRecord) dataRecord;
                 String path = fb.getPath();
-                if (path == null) throw new IllegalStateException("Null path in " + dataRecord);
+                if (path == null) {
+                    path = dataRecord.getId();
+                }
+                // FIXME Hooked path?
                 if (!filesSet.contains(path)) {
                     filesSet.add(path);
 

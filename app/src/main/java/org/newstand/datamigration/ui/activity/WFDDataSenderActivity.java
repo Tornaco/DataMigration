@@ -32,7 +32,7 @@ public class WFDDataSenderActivity extends WFDSetupActivity {
 
         String host = info.groupOwnerAddress.getHostAddress();
 
-        Intent intent = new Intent(this, DataSenderActivity.class);
+        Intent intent = new Intent(this, SenderCategoryViewerActivity.class);
         intent.putExtra("host", host);
         startActivity(intent);
     }
