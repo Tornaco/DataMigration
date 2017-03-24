@@ -27,7 +27,7 @@ import lombok.Getter;
  * All right reserved.
  */
 
-public class BackupSessionPickerFragment extends Fragment {
+public class BackupSessionPickerFragment extends TransitionSafeFragment {
 
     @Getter
     RecyclerView recyclerView;

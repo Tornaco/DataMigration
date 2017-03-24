@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -86,23 +85,13 @@ public class DashboardFragment extends Fragment {
             }
 
             final TextView categorySummary = (TextView) categoryView.findViewById(R.id.category_summary);
-            final Button noRemind = (Button) categoryView.findViewById(R.id.btn_got);
-            category.onSummaryViewAttached(categorySummary);
+
             if (category.getSummary(res) != null) {
                 categorySummary.setText(category.getSummary(res));
-                noRemind.setVisibility(View.VISIBLE);
-                noRemind.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        categorySummary.setVisibility(View.GONE);
-                        noRemind.setVisibility(View.GONE);
-                        category.onNoRemindClick();
-                    }
-                });
+                category.onSummarySet(categorySummary);
 
             } else {
                 categorySummary.setVisibility(View.GONE);
-                noRemind.setVisibility(View.GONE);
             }
 
             ViewGroup categoryContent =

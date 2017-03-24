@@ -12,7 +12,7 @@ import org.newstand.datamigration.R;
  * All right reserved.
  */
 
-public class DataTransportActivity extends TransactionSafeActivity {
+public class DataTransportActivity extends TransitionSafeActivity {
 
 
     @Override

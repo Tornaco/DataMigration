@@ -16,7 +16,7 @@ import org.newstand.datamigration.worker.backup.session.Session;
  * All right reserved.
  */
 
-public class BackupSessionPickerActivity extends TransactionSafeActivity implements BackupSessionPickerFragment.OnSessionSelectListener {
+public class BackupSessionPickerActivity extends TransitionSafeActivity implements BackupSessionPickerFragment.OnSessionSelectListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +31,6 @@ public class BackupSessionPickerActivity extends TransactionSafeActivity impleme
         Intent intent = new Intent(this, BackupCategoryViewerActivity.class);
         intent.putExtra(IntentEvents.KEY_SOURCE, LoaderSource.builder()
                 .parent(LoaderSource.Parent.Backup).session(session).build());
-        startActivity(intent);
+        transitionTo(intent);
     }
 }

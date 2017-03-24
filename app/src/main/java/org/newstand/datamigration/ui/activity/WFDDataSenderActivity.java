@@ -34,6 +34,6 @@ public class WFDDataSenderActivity extends WFDSetupActivity {
 
         Intent intent = new Intent(this, SenderCategoryViewerActivity.class);
         intent.putExtra("host", host);
-        startActivity(intent);
+        transitionTo(intent);
     }
 }

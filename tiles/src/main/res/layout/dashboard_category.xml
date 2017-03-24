@@ -59,17 +59,6 @@
             android:paddingRight="@dimen/dashboard_category_title_margin_start"
             android:paddingTop="@dimen/dashboard_category_title_margin_start"
             android:textAppearance="@style/TextAppearance.Small" />
-
-        <Button
-            android:id="@+id/btn_got"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:textStyle="italic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/category_summary"
-            android:text="@string/got_it" />
     </RelativeLayout>
 
 </LinearLayout>

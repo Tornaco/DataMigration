@@ -104,11 +104,7 @@ public class Category {
         return summary;
     }
 
-    public void onSummaryViewAttached(TextView view) {
-
-    }
-
-    public void onNoRemindClick() {
+    public void onSummarySet(TextView view) {
 
     }
 

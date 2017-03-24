@@ -17,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.norbsoft.typefacehelper.TypefaceHelper;
 import com.orhanobut.logger.Logger;
 import com.vlonjatg.progressactivity.ProgressRelativeLayout;
 
@@ -52,7 +51,7 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class WFDSetupActivity extends TransactionSafeActivity implements DiscoveryListener,
+public class WFDSetupActivity extends TransitionSafeActivity implements DiscoveryListener,
         WifiP2pManager.ConnectionInfoListener,
         ConnectionListener {
 
@@ -204,7 +203,6 @@ public class WFDSetupActivity extends TransactionSafeActivity implements Discove
                 })));
 
         noteSummaryView.setText(simplifySpanBuild.build());
-        TypefaceHelper.typeface(noteSummaryView);
     }
 
     private P2PListViewAdapter onCreateAdapter() {

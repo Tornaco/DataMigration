@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.norbsoft.typefacehelper.TypefaceHelper;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.Peer;
 
@@ -51,7 +49,6 @@ public class P2PListViewAdapter extends RecyclerView.Adapter<P2PListViewHolder> 
     @Override
     public P2PListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.data_item_template_with_checkable, parent, false);
-        TypefaceHelper.typeface(view);
         final P2PListViewHolder holder = new P2PListViewHolder(view);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

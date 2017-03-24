@@ -26,7 +26,7 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class DataReceiverActivity extends TransactionSafeActivity implements SocketServer.ChannelHandler {
+public class DataReceiverActivity extends TransitionSafeActivity implements SocketServer.ChannelHandler {
 
     @Getter
     @Setter

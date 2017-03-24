@@ -25,7 +25,7 @@ import org.newstand.datamigration.ui.fragment.VideoListFragment;
  * All right reserved.
  */
 
-public class DataListHostActivity extends TransactionSafeActivity implements DataListViewerFragment.LoaderSourceProvider {
+public class DataListHostActivity extends TransitionSafeActivity implements DataListViewerFragment.LoaderSourceProvider {
 
     private LoaderSource mLoaderSource;
 

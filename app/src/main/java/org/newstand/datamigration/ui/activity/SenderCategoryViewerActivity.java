@@ -23,6 +23,6 @@ public class SenderCategoryViewerActivity extends AndroidCategoryViewerActivity 
     public void onSubmit() {
         Intent intent = new Intent(this, DataSenderActivity.class);
         intent.putExtra("host", mHost);
-        startActivity(intent);
+        transitionTo(intent);
     }
 }

@@ -4,12 +4,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.RelativeLayout;
 
-import com.norbsoft.typefacehelper.TypefaceHelper;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
 
-import dev.nick.tiles.tile.QuickTile;
 import dev.nick.tiles.tile.SwitchTileView;
 
 /**
@@ -18,10 +15,14 @@ import dev.nick.tiles.tile.SwitchTileView;
  * All right reserved.
  */
 
-public class AutoConnectTile extends QuickTile {
+public class AutoConnectTile extends ThemedTile {
 
     public AutoConnectTile(@NonNull Context context) {
-        super(context);
+        super(context, null);
+    }
+
+    @Override
+    void onInitView(Context context) {
         this.titleRes = R.string.title_auto_connect;
         this.iconRes = R.drawable.ic_wifi_tethering;
 
@@ -39,6 +40,5 @@ public class AutoConnectTile extends QuickTile {
             }
         };
 
-        TypefaceHelper.typeface(this.tileView);
     }
 }

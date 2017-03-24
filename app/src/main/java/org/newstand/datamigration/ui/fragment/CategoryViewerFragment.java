@@ -46,7 +46,7 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class CategoryViewerFragment extends TransactionSafeFragment {
+public class CategoryViewerFragment extends TransitionSafeFragment {
     @Getter
     RecyclerView recyclerView;
 

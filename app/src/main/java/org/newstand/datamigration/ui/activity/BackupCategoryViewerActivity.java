@@ -44,7 +44,7 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
         super.onSubmit();
         Intent intent = new Intent(this, DataImportActivity.class);
         intent.putExtra(IntentEvents.KEY_SOURCE, mSource);
-        startActivity(intent);
+        transitionTo(intent);
     }
 
     private void resolveIntent() {

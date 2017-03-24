@@ -51,11 +51,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
+
     compile 'com.orhanobut:logger:1.15'
     provided 'org.projectlombok:lombok:1.12.6'
     apt "org.projectlombok:lombok:1.12.6"
+
     compile 'com.google.guava:guava:20.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:recyclerview-v7:25.2.0'
@@ -71,4 +74,7 @@ dependencies {
     compile 'com.github.iwgang:simplifyspan:2.0'
     compile project(':statemachine')
     compile project(path: ':wfdhook')
+    compile('com.mikepenz:aboutlibraries:5.9.4@aar') {
+        transitive = true
+    }
 }

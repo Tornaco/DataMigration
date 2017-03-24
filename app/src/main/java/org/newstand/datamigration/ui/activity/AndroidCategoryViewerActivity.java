@@ -39,7 +39,7 @@ public class AndroidCategoryViewerActivity extends CategoryViewerActivity {
     @Override
     public void onSubmit() {
         super.onSubmit();
-        startActivity(new Intent(this, DataExportActivity.class));
+        transitionTo(new Intent(this, DataExportActivity.class));
     }
 
     @Override

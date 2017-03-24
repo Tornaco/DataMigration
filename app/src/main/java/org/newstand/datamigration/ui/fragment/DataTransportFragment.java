@@ -23,7 +23,7 @@ import lombok.Getter;
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-public class DataTransportFragment extends Fragment {
+public class DataTransportFragment extends TransitionSafeFragment {
 
     @Getter
     protected ProgressWheel progressBar;

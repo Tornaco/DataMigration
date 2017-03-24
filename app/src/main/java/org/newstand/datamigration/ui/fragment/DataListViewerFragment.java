@@ -4,14 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.norbsoft.typefacehelper.TypefaceHelper;
 import com.vlonjatg.progressactivity.ProgressRelativeLayout;
 
 import org.newstand.datamigration.R;
@@ -37,7 +35,7 @@ import lombok.Getter;
  * All right reserved.
  */
 
-public abstract class DataListViewerFragment extends Fragment {
+public abstract class DataListViewerFragment extends TransitionSafeFragment {
 
     @Getter
     RecyclerView recyclerView;
@@ -152,7 +150,6 @@ public abstract class DataListViewerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.recycler_view_with_fab_template, container, false);
-        TypefaceHelper.typeface(root);
         progressLayout = (ProgressRelativeLayout) root;
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
         fab = (FloatingActionButton) root.findViewById(R.id.fab);

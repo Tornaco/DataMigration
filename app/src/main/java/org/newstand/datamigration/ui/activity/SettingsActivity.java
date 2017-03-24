@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.ui.tiles.AutoConnectTile;
+import org.newstand.datamigration.ui.tiles.ThemedCategory;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import dev.nick.tiles.tile.DashboardFragment;
  * All right reserved.
  */
 
-public class SettingsActivity extends TransactionSafeActivity {
+public class SettingsActivity extends TransitionSafeActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +37,7 @@ public class SettingsActivity extends TransactionSafeActivity {
         @Override
         protected void onCreateDashCategories(List<Category> categories) {
 
-            Category category = new Category();
+            Category category = new ThemedCategory();
             category.titleRes = R.string.empty_title;
 
             AutoConnectTile autoConnectTile = new AutoConnectTile(getContext());

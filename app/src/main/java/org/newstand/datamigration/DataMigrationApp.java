@@ -1,10 +1,8 @@
 package org.newstand.datamigration;
 
 import android.app.Application;
-import android.graphics.Typeface;
+import android.support.v7.app.AppCompatDelegate;
 
-import com.norbsoft.typefacehelper.TypefaceCollection;
-import com.norbsoft.typefacehelper.TypefaceHelper;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
@@ -17,14 +15,14 @@ import org.newstand.datamigration.provider.SettingsProvider;
  */
 
 public class DataMigrationApp extends Application {
+
+    static {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        // Initialize typeface helper
-        TypefaceCollection typeface = new TypefaceCollection.Builder()
-                .set(Typeface.NORMAL, Typeface.createFromAsset(getAssets(), "fonts/xy.ttf"))
-                .create();
-        TypefaceHelper.init(typeface);
         SettingsProvider.init(this);
         Logger.init("DataMigrationApp")
                 .methodCount(3)

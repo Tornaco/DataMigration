@@ -38,6 +38,8 @@
     <string name="title_backup_restore">Backup &amp; Restore</string>
     <string name="title_backup">Backup</string>
     <string name="title_restore">Restore</string>
+    <string name="title_backup_history">Last backup 2017.01.02</string>
+    <string name="title_send_history">Sent to Z1 at 2018.09.22</string>
 
 
     <string name="summary_category_viewer">Total: <i>%1$s</i> \t\t Selection: <i>%2$s</i></string>

@@ -9,7 +9,7 @@ import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.ui.fragment.CategoryViewerFragment;
 
-public abstract class CategoryViewerActivity extends TransactionSafeActivity
+public abstract class CategoryViewerActivity extends TransitionSafeActivity
         implements CategoryViewerFragment.OnCategorySelectListener,
         CategoryViewerFragment.OnSubmitListener, CategoryViewerFragment.LoaderSourceProvider {
 
@@ -38,7 +38,7 @@ public abstract class CategoryViewerActivity extends TransactionSafeActivity
         Intent intent = new Intent(this, DataListHostActivity.class);
         intent.putExtra(IntentEvents.KEY_CATEGORY, category.name());
         intent.putExtra(IntentEvents.KEY_SOURCE, onRequestLoaderSource());
-        startActivity(intent);
+        transitionTo(intent);
     }
 
     @Override
