@@ -49,6 +49,22 @@ public class CategoryRecord extends DataRecord implements Parcelable {
 
     @Override
     public DataCategory category() {
-        return null;
+        return category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CategoryRecord that = (CategoryRecord) o;
+
+        return category == that.category;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return category.hashCode();
     }
 }

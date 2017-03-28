@@ -124,6 +124,7 @@ public class Event implements Cloneable, Parcelable {
                 ", arg3=" + arg3 +
                 ", arg4=" + arg4 +
                 ", arg5=" + arg5 +
+                ", obj=" + obj +
                 '}';
     }
 

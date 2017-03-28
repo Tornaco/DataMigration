@@ -37,13 +37,13 @@ public class SettingsActivity extends TransitionSafeActivity {
         @Override
         protected void onCreateDashCategories(List<Category> categories) {
 
-            Category category = new ThemedCategory();
-            category.titleRes = R.string.empty_title;
+            Category storage = new ThemedCategory();
+            storage.titleRes = R.string.tile_category_storage;
 
             AutoConnectTile autoConnectTile = new AutoConnectTile(getContext());
-            category.addTile(autoConnectTile);
+            storage.addTile(autoConnectTile);
 
-            categories.add(category);
+            categories.add(storage);
 
             super.onCreateDashCategories(categories);
         }

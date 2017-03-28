@@ -8,7 +8,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
-    <dimen name="thumbnail_size">52dp</dimen>
+    <dimen name="thumbnail_size">48dp</dimen>
     <dimen name="common_item_min_height">60dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
@@ -25,5 +25,7 @@
     <dimen name="list_item_main_text_size">@dimen/text_size_medium</dimen>
     <dimen name="list_item_secondary_text_size">@dimen/text_size_micro</dimen>
 
-    <dimen name="text_drawable_size">20dp</dimen>
+    <dimen name="text_drawable_size">16dp</dimen>
+
+    <dimen name="action_btn_size">32dp</dimen>
 </resources>

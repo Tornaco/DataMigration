@@ -30,16 +30,16 @@ public class VideoListFragment extends DataListViewerFragment {
         return new CommonListAdapter(getContext()) {
             @Override
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
-                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
+                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_video_avatar));
                 super.onBindViewHolder(holder, record);
                 VideoRecord videoRecord = (VideoRecord) record;
                 holder.getLineTwoTextView().setText(Files.formatSize(videoRecord.getSize()));
                 Glide.with(VideoListFragment.this)
                         .load(videoRecord.getPath())
                         .centerCrop()
-                        .animate(android.R.anim.fade_in)
-                        .fallback(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
+                        .animate(R.anim.fade_in)
+                        .fallback(R.mipmap.ic_video_avatar)
+                        .error(R.mipmap.ic_video_avatar)
                         .into(holder.getCheckableImageView());
 
             }

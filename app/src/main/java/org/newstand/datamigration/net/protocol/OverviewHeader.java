@@ -3,6 +3,7 @@ package org.newstand.datamigration.net.protocol;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
 import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Ints;
@@ -100,7 +101,7 @@ public class OverviewHeader implements Serializable, DeSerializable, ByteWriter 
     }
 
     public OverviewHeader add(DataCategory category, Collection<DataRecord> recordCollections) {
-        if (Collections.isEmpty(recordCollections)) return this;
+        if (Collections.nullOrEmpty(recordCollections)) return this;
 
         if (!dataCategories.contains(category)) {
             dataCategories.add(category);
@@ -111,10 +112,9 @@ public class OverviewHeader implements Serializable, DeSerializable, ByteWriter 
             public void consume(@NonNull DataRecord dataRecord) {
                 FileBasedRecord fb = (FileBasedRecord) dataRecord;
                 String path = fb.getPath();
-                if (path == null) {
-                    path = dataRecord.getId();
-                }
-                // FIXME Hooked path?
+
+                Preconditions.checkNotNull(path);
+
                 if (!filesSet.contains(path)) {
                     filesSet.add(path);
 

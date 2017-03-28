@@ -11,11 +11,15 @@ import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.net.CategorySender;
+import org.newstand.datamigration.net.DataRecordSender;
 import org.newstand.datamigration.net.OverViewSender;
+import org.newstand.datamigration.net.PathCreator;
 import org.newstand.datamigration.net.protocol.CategoryHeader;
 import org.newstand.datamigration.net.protocol.OverviewHeader;
 import org.newstand.datamigration.net.server.SocketClient;
 import org.newstand.datamigration.sync.SharedExecutor;
+import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -61,13 +65,18 @@ public class DataSenderActivity extends TransitionSafeActivity implements Socket
 
         final LoadingCacheManager cacheManager = LoadingCacheManager.droid();
 
+        final Session session = Session.tmp();
+
         // OH
         final OverviewHeader overviewHeader = OverviewHeader.empty();
 
         DataCategory.consumeAll(new Consumer<DataCategory>() {
             @Override
             public void consume(@NonNull DataCategory category) {
-                Collection<DataRecord> records = cacheManager.get(category);
+                Collection<DataRecord> records = cacheManager.checked(category);
+
+                PathCreator.createIfNull(getApplicationContext(), session, records);
+
                 overviewHeader.add(category, records);
             }
         });
@@ -81,7 +90,7 @@ public class DataSenderActivity extends TransitionSafeActivity implements Socket
         DataCategory.consumeAll(new Consumer<DataCategory>() {
             @Override
             public void consume(@NonNull DataCategory category) {
-                Collection<DataRecord> records = cacheManager.get(category);
+                Collection<DataRecord> records = cacheManager.checked(category);
 
                 CategoryHeader categoryHeader = CategoryHeader.from(category);
                 categoryHeader.add(records);
@@ -90,12 +99,24 @@ public class DataSenderActivity extends TransitionSafeActivity implements Socket
 
                 try {
                     CategorySender.with(client.getInputStream(), client.getOutputStream()).send(categoryHeader);
+
+                    Collections.consumeRemaining(records, new Consumer<DataRecord>() {
+                        @Override
+                        public void consume(@NonNull DataRecord dataRecord) {
+                            try {
+                                int res = DataRecordSender.with(client.getOutputStream(), client.getInputStream())
+                                        .send(dataRecord);
+                            } catch (IOException e) {
+                                onError(e);
+                            }
+                        }
+                    });
+
                 } catch (IOException e) {
                     onError(e);
                 }
             }
         });
-
     }
 
 

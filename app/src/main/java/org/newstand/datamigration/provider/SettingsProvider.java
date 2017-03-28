@@ -10,6 +10,7 @@ import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.io.File;
+import java.util.Observable;
 
 import lombok.NonNull;
 
@@ -19,7 +20,7 @@ import lombok.NonNull;
  * All right reserved.
  */
 
-public class SettingsProvider {
+public class SettingsProvider extends Observable {
 
     private static final String KEY_AUTO_CONNECT_ENABLED = "key_auto_connect_enabled";
     private static final String KEY_DEVICE_NAME = "key_dev_name";
@@ -30,6 +31,13 @@ public class SettingsProvider {
 
     public SettingsProvider(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                setChanged();
+                notifyObservers(key);
+            }
+        });
     }
 
     public static void init(Context context) {
@@ -58,8 +66,36 @@ public class SettingsProvider {
             + File.separator
             + "Backup";
 
+    private static final String COMMON_RECEIVED_DIR = Environment.getExternalStorageDirectory().getPath()
+            + File.separator
+            + ".DataMigration"
+            + File.separator
+            + "Received";
+
+    private static final String LOG_DIR = Environment.getExternalStorageDirectory().getPath()
+            + File.separator
+            + ".DataMigration"
+            + File.separator
+            + "Logs";
+
     public static String getBackupRootDir() {
         return COMMON_BACKUP_DIR;
+    }
+
+    public static String getBackupSessionDir(Session session) {
+        return COMMON_BACKUP_DIR + File.separator + session.getName();
+    }
+
+    public static String getReceivedRootDir() {
+        return COMMON_RECEIVED_DIR;
+    }
+
+    public static String getRecSessionDir(Session session) {
+        return COMMON_RECEIVED_DIR + File.separator + session.getName();
+    }
+
+    public static String getLogDir() {
+        return LOG_DIR;
     }
 
     public static String getBackupDirByCategory(DataCategory category, Session session) {

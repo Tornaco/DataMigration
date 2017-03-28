@@ -83,7 +83,7 @@
                     android:paddingEnd="@dimen/activity_vertical_margin"
                     android:paddingStart="@dimen/activity_vertical_margin"
                     android:paddingTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/large_text"
+                    android:text="@string/backup_intro"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/text" />
 
@@ -201,7 +201,7 @@
                     android:paddingEnd="@dimen/activity_vertical_margin"
                     android:paddingStart="@dimen/activity_vertical_margin"
                     android:paddingTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/large_text"
+                    android:text="@string/transport_intro"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/text" />
 

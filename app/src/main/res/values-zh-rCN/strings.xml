@@ -40,6 +40,12 @@
     <string name="title_backup_restore">备份与恢复</string>
     <string name="title_backup">备份</string>
     <string name="title_restore">恢复</string>
+    <string name="title_backup_history">最近备份 %1$s</string>
+    <string name="title_backup_history_noop">无备份记录</string>
+
+    <string name="tile_category_storage">存储</string>
+    <string name="tile_category_about">关于</string>
+    <string name="tile_title_auto_connect">自动连接</string>
 
 
     <string name="summary_category_viewer">总共: <i>%1$s</i> \t\t 已选: <i>%2$s</i></string>

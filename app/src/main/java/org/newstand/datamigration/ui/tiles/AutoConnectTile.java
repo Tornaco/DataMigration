@@ -23,7 +23,7 @@ public class AutoConnectTile extends ThemedTile {
 
     @Override
     void onInitView(Context context) {
-        this.titleRes = R.string.title_auto_connect;
+        this.titleRes = R.string.tile_title_auto_connect;
         this.iconRes = R.drawable.ic_wifi_tethering;
 
         this.tileView = new SwitchTileView(context) {

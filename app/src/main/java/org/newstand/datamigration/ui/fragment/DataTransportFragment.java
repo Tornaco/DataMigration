@@ -2,7 +2,6 @@ package org.newstand.datamigration.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,15 @@ import android.widget.TextView;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.AbortSignal;
+import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.ui.widget.ProgressWheel;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import dev.nick.eventbus.Event;
+import dev.nick.eventbus.EventBus;
 import lombok.Getter;
 
 /**
@@ -53,5 +55,11 @@ public class DataTransportFragment extends TransitionSafeFragment {
 
     protected void start() {
 
+    }
+
+    protected void sendCompleteEvent() {
+        EventBus.from(getContext()).publish(Event.builder()
+                .eventType(IntentEvents.EVENT_TRANSPORT_COMPLETE)
+                .obj(session).build());
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 
+import org.newstand.datamigration.R;
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
@@ -89,7 +90,7 @@ public class DataImportFragment extends DataTransportFragment {
             @Override
             public void consume(@NonNull DataCategory category) {
                 Collection<DataRecord> dataRecords = cache.get(category);
-                if (Collections.isEmpty(dataRecords)) return;
+                if (Collections.nullOrEmpty(dataRecords)) return;
 
                 final Collection<DataRecord> work = new ArrayList<>();
 
@@ -109,8 +110,8 @@ public class DataImportFragment extends DataTransportFragment {
     }
 
     private void onPrepare() {
-        consoleTitleView.setText("Transporting");
-        consoleDoneButton.setText("Cancel");
+        consoleTitleView.setText(R.string.title_restore_importing);
+        consoleDoneButton.setText(android.R.string.cancel);
         consoleDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

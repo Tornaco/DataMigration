@@ -2,10 +2,11 @@ package org.newstand.datamigration.loader;
 
 import android.support.annotation.NonNull;
 
-import com.google.common.io.Files;
+import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.repo.BKSessionRepoServiceOneTime;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
@@ -13,6 +14,7 @@ import org.newstand.datamigration.worker.backup.session.Session;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/9 15:46
@@ -23,23 +25,29 @@ import java.util.Collection;
 public abstract class SessionLoader {
 
     public static void loadAsync(final LoaderListener<Session> loaderListener) {
-        final Collection<Session> sessionCollection = new ArrayList<>();
+        final Collection<Session> res = new ArrayList<>();
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 loaderListener.onStart();
                 try {
-                    File rootDir = new File(SettingsProvider.getBackupRootDir());
-                    Collections.consumeRemaining(Files.fileTreeTraverser().children(rootDir),
-                            new Consumer<File>() {
-                                @Override
-                                public void consume(@NonNull File file) {
-                                    Session session = Session.from(file.getName());
-                                    sessionCollection.add(session);
-                                }
-                            });
-                    loaderListener.onComplete(sessionCollection);
+                    List<Session> all = BKSessionRepoServiceOneTime.get().findAll();
+                    Collections.consumeRemaining(all, new Consumer<Session>() {
+                        @Override
+                        public void consume(@NonNull Session session) {
+                            if (!validate(session)) {
+                                Logger.w("Bad session %s", session);
+                                return;
+                            }
+                            if (!session.isTmp()) {
+                                res.add(Session.from(session));
+                            } else {
+                                Logger.w("Ignored tmp session %s", session);
+                            }
+                        }
+                    });
+                    loaderListener.onComplete(res);
                 } catch (Throwable throwable) {
                     loaderListener.onErr(throwable);
                 }
@@ -47,5 +55,10 @@ public abstract class SessionLoader {
         };
 
         SharedExecutor.execute(r);
+    }
+
+    private static boolean validate(Session session) {
+        File file = new File(SettingsProvider.getBackupSessionDir(session));
+        return file.exists();
     }
 }

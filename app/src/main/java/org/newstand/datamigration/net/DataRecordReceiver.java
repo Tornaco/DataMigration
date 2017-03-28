@@ -1,6 +1,5 @@
 package org.newstand.datamigration.net;
 
-import com.google.common.io.FileWriteMode;
 import com.google.common.io.Files;
 import com.google.common.primitives.Ints;
 import com.orhanobut.logger.Logger;
@@ -51,13 +50,15 @@ public class DataRecordReceiver implements Receiver<ReceiveSettings> {
         String fileName = fileHeader.getFileName();
         long size = fileHeader.getSize();
 
-        String destPath = settings.getDestPath() + File.separator + fileName;
+        String destPath = settings.getDestDir() + File.separator + fileName;
 
         int sizeInt = Ints.checkedCast(size);// FIXME
 
         BlackHole.eat(new File(destPath).delete());
 
-        OutputStream outputStream = Files.asByteSink(new File(destPath), FileWriteMode.APPEND).openStream();
+        Files.createParentDirs(new File(destPath));
+
+        OutputStream outputStream = Files.asByteSink(new File(destPath)).openStream();
 
         int total = 0;
         byte[] buffer = createBuffer();

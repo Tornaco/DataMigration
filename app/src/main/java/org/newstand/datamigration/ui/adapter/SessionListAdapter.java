@@ -1,12 +1,14 @@
 package org.newstand.datamigration.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.utils.DateUtils;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.util.ArrayList;
@@ -69,7 +71,9 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListViewHold
     }
 
     protected void onBindViewHolder(SessionListViewHolder holder, final Session r) {
+        holder.getImageView().setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.ic_files));
         holder.getLineOneTextView().setText(r.getName());
+        holder.getLineTwoTextView().setText(getContext().getString(R.string.title_backup_at, DateUtils.formatLong(r.getDate())));
     }
 
     @Override

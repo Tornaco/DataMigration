@@ -29,7 +29,7 @@ public class AppListFragment extends DataListViewerFragment {
         return new CommonListAdapter(getContext()) {
             @Override
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
-                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
+                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_app_avatar));
                 super.onBindViewHolder(holder, record);
                 AppRecord appRecord = (AppRecord) record;
                 String summary = getString(R.string.summary_app_template, appRecord.getVersionName()

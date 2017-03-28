@@ -3,9 +3,17 @@ package org.newstand.datamigration.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.orhanobut.logger.Logger;
+
 import org.newstand.datamigration.cache.LoadingCacheManager;
+import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.worker.backup.session.Session;
+
+import dev.nick.eventbus.Event;
+import dev.nick.eventbus.EventBus;
+import dev.nick.eventbus.annotation.Events;
+import dev.nick.eventbus.annotation.ReceiverMethod;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/9 16:59
@@ -23,11 +31,7 @@ public class AndroidCategoryViewerActivity extends CategoryViewerActivity {
         if (LoadingCacheManager.droid() == null) {
             LoadingCacheManager.createDroid(getApplicationContext());
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+        EventBus.from(this).subscribe(this);
         showViewerFragment();
     }
 
@@ -40,6 +44,18 @@ public class AndroidCategoryViewerActivity extends CategoryViewerActivity {
     public void onSubmit() {
         super.onSubmit();
         transitionTo(new Intent(this, DataExportActivity.class));
+    }
+
+    @ReceiverMethod
+    @Events(IntentEvents.EVENT_TRANSPORT_COMPLETE)
+    public void onTransportComplete(Event event) {
+        Logger.d("onTransportComplete %s", event);
+        Session session = (Session) event.getObj();
+        if (onRequestLoaderSource().getSession().equals(session)) {
+            Logger.d("Matched session %s", session);
+            finish();
+            EventBus.from(this).unSubscribe(this);
+        }
     }
 
     @Override

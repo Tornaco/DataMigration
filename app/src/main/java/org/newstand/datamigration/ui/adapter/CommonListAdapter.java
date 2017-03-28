@@ -42,6 +42,15 @@ public class CommonListAdapter extends RecyclerView.Adapter<CommonListViewHolder
         notifyDataSetChanged();
     }
 
+    public boolean hasSelection() {
+        synchronized (dataRecords) {
+            for (DataRecord dataRecord : dataRecords) {
+                if (dataRecord.isChecked()) return true;
+            }
+        }
+        return false;
+    }
+
     public void update(Collection<DataRecord> src) {
         synchronized (dataRecords) {
             dataRecords.clear();

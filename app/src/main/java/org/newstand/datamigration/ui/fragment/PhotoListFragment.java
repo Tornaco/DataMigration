@@ -30,16 +30,16 @@ public class PhotoListFragment extends DataListViewerFragment {
         return new CommonListAdapter(getContext()) {
             @Override
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
-                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
+                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_photo_avatar));
                 super.onBindViewHolder(holder, record);
                 PhotoRecord photoRecord = (PhotoRecord) record;
                 holder.getLineTwoTextView().setText(Files.formatSize(photoRecord.getSize()));
                 Glide.with(PhotoListFragment.this)
                         .load(photoRecord.getPath())
                         .centerCrop()
-                        .animate(android.R.anim.fade_in)
-                        .fallback(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
+                        .animate(R.anim.fade_in)
+                        .fallback(R.mipmap.ic_photo_avatar)
+                        .error(R.mipmap.ic_photo_avatar)
                         .into(holder.getCheckableImageView());
 
             }

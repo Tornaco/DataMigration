@@ -38,7 +38,7 @@ public abstract class Collections {
         }
     }
 
-    public static boolean isEmpty(Collection<?> collection) {
+    public static boolean nullOrEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
     }
 }

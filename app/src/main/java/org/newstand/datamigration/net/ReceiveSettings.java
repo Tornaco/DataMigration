@@ -11,5 +11,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReceiveSettings {
-    private String destPath;
+    private String destDir;
 }

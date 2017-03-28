@@ -9,13 +9,17 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.orhanobut.logger.Logger;
 
+import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.DataLoaderManager;
 import org.newstand.datamigration.loader.LoaderSource;
+import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -53,11 +57,29 @@ public abstract class LoadingCacheManager {
     @NonNull
     Collection<DataRecord> get(DataCategory key);
 
+    public
+    @NonNull
+    Collection<DataRecord> checked(DataCategory key) {
+        Collection<DataRecord> all = get(key);
+
+        if (Collections.nullOrEmpty(all)) return all;
+
+        final List<DataRecord> checked = new ArrayList<>(all.size());
+
+        Collections.consumeRemaining(all, new Consumer<DataRecord>() {
+            @Override
+            public void consume(@NonNull DataRecord dataRecord) {
+                if (dataRecord.isChecked()) checked.add(dataRecord);
+            }
+        });
+        return checked;
+    }
+
     public abstract
     @NonNull
     Collection<DataRecord> getRefreshed(DataCategory key);
 
-    public abstract void refresh();
+    public abstract void refresh(DataCategory key);
 
     public abstract void clear();
 
@@ -104,8 +126,8 @@ public abstract class LoadingCacheManager {
         }
 
         @Override
-        public void refresh() {
-
+        public void refresh(DataCategory key) {
+            cache.refresh(key);
         }
 
         @Override
@@ -163,8 +185,8 @@ public abstract class LoadingCacheManager {
         }
 
         @Override
-        public void refresh() {
-
+        public void refresh(DataCategory key) {
+            cache.refresh(key);
         }
 
         @Override

@@ -55,6 +55,9 @@ public class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestore
         oos.flush();
         os.close();
         oos.close();
+
+        // Update file path
+        backupSettings.getSmsRecord().setPath(backupSettings.getDestPath());
     }
 
     @Override

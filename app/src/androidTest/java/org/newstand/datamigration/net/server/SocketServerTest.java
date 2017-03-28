@@ -98,7 +98,7 @@ public class SocketServerTest {
         DataRecordReceiver recordReceiver = DataRecordReceiver.with(socketClient.getInputStream(), socketClient.getOutputStream());
         ReceiveSettings settings = new ReceiveSettings();
         String tmpPath = Environment.getExternalStorageDirectory().getPath();
-        settings.setDestPath(tmpPath);
+        settings.setDestDir(tmpPath);
 
         try {
             int ret = recordReceiver.receive(settings);

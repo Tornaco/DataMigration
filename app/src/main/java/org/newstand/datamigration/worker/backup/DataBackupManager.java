@@ -3,6 +3,7 @@ package org.newstand.datamigration.worker.backup;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.google.common.io.Files;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.AbortException;
@@ -20,6 +21,7 @@ import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
@@ -47,9 +49,22 @@ public class DataBackupManager {
         return new DataBackupManager(context, Session.create());
     }
 
-
     public static DataBackupManager from(Context context, Session session) {
         return new DataBackupManager(context, session);
+    }
+
+    public void renameSessionChecked(Session session, String name) {
+        if (!name.equals(session.getName())) {
+            String dir = SettingsProvider.getBackupRootDir();
+            File from = new File(dir + File.separator + session.getName());
+            File to = new File(dir + File.separator + name);
+            try {
+                Files.move(from, to);
+                session.rename(name);
+            } catch (IOException e) {
+                Logger.e("Fail to rename session %s", e.getLocalizedMessage());
+            }
+        }
     }
 
     public void performBackup(final Collection<DataRecord> dataRecords,
@@ -279,6 +294,7 @@ public class DataBackupManager {
 
         private void init(int size) {
             total = left = size;
+            Logger.d("init status %s", toString());
         }
 
         private void onPieceSuccess() {

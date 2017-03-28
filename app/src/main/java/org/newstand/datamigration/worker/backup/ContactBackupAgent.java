@@ -17,9 +17,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
 import com.orhanobut.logger.Logger;
 
+import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.utils.Closer;
+import org.newstand.datamigration.utils.Collections;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -43,7 +45,7 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
     private Context context;
 
     @Override
-    public void backup(ContactBackupSettings backupSettings) throws Exception {
+    public void backup(final ContactBackupSettings backupSettings) throws Exception {
         Logger.d("backup with settings:%s", backupSettings);
         Writer writer = null;
         try {
@@ -63,6 +65,13 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
                 Logger.w(entry);
                 writer.write(entry);
             }
+
+            Collections.consumeRemaining(records, new Consumer<ContactRecord>() {
+                @Override
+                public void consume(@NonNull ContactRecord contactRecord) {
+                    contactRecord.setPath(backupSettings.getDestPath());
+                }
+            });
         } finally {
             Closer.closeQuietly(writer);
         }

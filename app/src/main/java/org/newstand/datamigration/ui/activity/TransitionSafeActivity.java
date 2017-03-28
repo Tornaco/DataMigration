@@ -67,6 +67,7 @@ public class TransitionSafeActivity extends AppCompatActivity {
             startActivity(i, transitionActivityOptions.toBundle());
         } else {
             startActivity(i);
+            overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
         }
     }
 
@@ -188,5 +189,16 @@ public class TransitionSafeActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mIsDestroyed = true;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (!isMainActivity())
+            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+    }
+
+    protected boolean isMainActivity() {
+        return false;
     }
 }

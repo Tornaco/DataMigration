@@ -55,12 +55,12 @@
 
         <activity
             android:name=".ui.activity.DataImportActivity"
-            android:label="@string/title_restore"
+            android:label="@string/title_restore_import"
             android:theme="@style/AppTheme" />
 
         <activity
             android:name=".ui.activity.DataExportActivity"
-            android:label="@string/title_backup"
+            android:label="@string/title_backup_export"
             android:theme="@style/AppTheme" />
 
         <activity
@@ -71,7 +71,9 @@
             android:name=".ui.activity.WFDDataReceiverActivity"
             android:label="@string/title_setup_wfd" />
 
-        <activity android:name=".ui.activity.SettingsActivity" />
+        <activity
+            android:name=".ui.activity.SettingsActivity"
+            android:label="@string/action_settings" />
 
         <activity android:name=".ui.activity.DataSenderActivity" />
         <activity android:name=".ui.activity.DataReceiverActivity" />

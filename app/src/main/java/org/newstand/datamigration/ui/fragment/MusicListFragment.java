@@ -29,15 +29,15 @@ public class MusicListFragment extends DataListViewerFragment {
         return new CommonListAdapter(getContext()) {
             @Override
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
-                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
+                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_music_avatar));
                 super.onBindViewHolder(holder, record);
                 MusicRecord musicRecord = (MusicRecord) record;
                 holder.getLineTwoTextView().setText(musicRecord.getArtist());
                 Glide.with(MusicListFragment.this)
                         .load(musicRecord.getArtUri())
                         .centerCrop()
-                        .fallback(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
+                        .fallback(R.mipmap.ic_music_avatar)
+                        .error(R.mipmap.ic_music_avatar)
                         .into(holder.getCheckableImageView());
 
             }

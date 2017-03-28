@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import io.realm.annotations.Ignore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class AppRecord extends FileBasedRecord implements Parcelable {
     private String pkgName;
     private String versionName;
 
+    @Ignore
     private transient Drawable icon;
 
     private AppRecord(Parcel in) {
@@ -31,6 +33,7 @@ public class AppRecord extends FileBasedRecord implements Parcelable {
         versionName = in.readString();
     }
 
+    @Ignore
     public static final Creator<AppRecord> CREATOR = new Creator<AppRecord>() {
         @Override
         public AppRecord createFromParcel(Parcel in) {

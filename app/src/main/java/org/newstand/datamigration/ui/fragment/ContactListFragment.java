@@ -27,11 +27,19 @@ public class ContactListFragment extends DataListViewerFragment {
         return new CommonListAdapter(getContext()) {
             @Override
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
-                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher));
+                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_contacts_avatar));
                 super.onBindViewHolder(holder, record);
                 ContactRecord contactRecord = (ContactRecord) record;
-                holder.getLineTwoTextView().setText(String.valueOf(contactRecord.getPhoneNum()));
+                holder.getLineTwoTextView().setText(buildSummary(contactRecord));
             }
         };
+    }
+
+    private String buildSummary(ContactRecord contactRecord) {
+        String phoneNum = contactRecord.getPhoneNum() == null ?
+                getString(R.string.phone_num_unknown) : String.valueOf(contactRecord.getPhoneNum());
+        String email = contactRecord.getEmail();
+        if (email == null) return phoneNum;
+        else return phoneNum + "\n" + email;
     }
 }

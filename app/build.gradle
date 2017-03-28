@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
@@ -74,7 +75,4 @@ dependencies {
     compile 'com.github.iwgang:simplifyspan:2.0'
     compile project(':statemachine')
     compile project(path: ':wfdhook')
-    compile('com.mikepenz:aboutlibraries:5.9.4@aar') {
-        transitive = true
-    }
 }

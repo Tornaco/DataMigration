@@ -9,6 +9,12 @@ import com.orhanobut.logger.Logger;
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
+import org.newstand.datamigration.worker.backup.session.Session;
+
+import dev.nick.eventbus.Event;
+import dev.nick.eventbus.EventBus;
+import dev.nick.eventbus.annotation.Events;
+import dev.nick.eventbus.annotation.ReceiverMethod;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/9 16:58
@@ -26,17 +32,12 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
         showHomeAsUp();
         setTitle(getTitle());
         resolveIntent();
+        showViewerFragment();
     }
 
     @Override
     LoadingCacheManager getCache() {
         return LoadingCacheManager.bk();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        showViewerFragment();
     }
 
     @Override
@@ -52,8 +53,23 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
         mSource = intent.getParcelableExtra(IntentEvents.KEY_SOURCE);
         Preconditions.checkNotNull(mSource);
         Logger.d("Source = " + mSource);
+        setTitle(mSource.getSession().getName());
         LoadingCacheManager.createBK(getApplicationContext(), mSource.getSession());
+        EventBus.from(this).subscribe(this);
     }
+
+    @ReceiverMethod
+    @Events(IntentEvents.EVENT_TRANSPORT_COMPLETE)
+    public void onTransportComplete(Event event) {
+        Logger.d("onTransportComplete %s", event);
+        Session session = (Session) event.getObj();
+        if (onRequestLoaderSource().getSession().equals(session)) {
+            Logger.d("Matched session %s", session);
+            finish();
+            EventBus.from(this).unSubscribe(this);
+        }
+    }
+
 
     @Override
     public LoaderSource onRequestLoaderSource() {

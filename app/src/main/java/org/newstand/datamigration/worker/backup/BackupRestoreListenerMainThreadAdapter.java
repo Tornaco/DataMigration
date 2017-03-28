@@ -73,7 +73,7 @@ public class BackupRestoreListenerMainThreadAdapter extends BackupRestoreListene
     }
 
     public void onStartMainThread() {
-        Logger.d("onStartMainThread:" + getStatus().getTotal());
+        Logger.d("onStartMainThread:" + getStatus());
     }
 
     public void onPieceStartMainThread(DataRecord record) {

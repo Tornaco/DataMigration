@@ -4,13 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.vlonjatg.progressactivity.ProgressRelativeLayout;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.cache.LoadingCacheManager;
@@ -20,7 +22,6 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
-import org.newstand.datamigration.utils.Collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +54,7 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
     private ListStateListener listStateListener;
 
     @Getter
-    private ProgressRelativeLayout progressLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onAttach(Context context) {
@@ -70,10 +71,12 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
                 fab.show();
             }
         };
+
+        setHasOptionsMenu(true);
     }
 
     private void startLoading() {
-        progressLayout.showLoading();
+        swipeRefreshLayout.setRefreshing(true);
         final LoadingCacheManager cache = onCreateLoaderSource().getParent() == LoaderSource.Parent.Android ? LoadingCacheManager.droid() : LoadingCacheManager.bk();
         // From cache.
         Runnable r = new Runnable() {
@@ -91,12 +94,29 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
         SharedExecutor.execute(r);
     }
 
+    private void reLoading() {
+        final LoadingCacheManager cache = onCreateLoaderSource().getParent() == LoaderSource.Parent.Android
+                ? LoadingCacheManager.droid()
+                : LoadingCacheManager.bk();
+        // From cache.
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                cache.refresh(getDataType());
+                final Collection<DataRecord> dataRecords = cache.get(getDataType());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        callLoadFinish(dataRecords);
+                    }
+                });
+            }
+        };
+        SharedExecutor.execute(r);
+    }
+
     private void callLoadFinish(Collection<DataRecord> dataRecords) {
-        boolean isEmpty = Collections.isEmpty(dataRecords);
-        if (isEmpty)
-            progressLayout.showEmpty(R.drawable.ic_mood_bad_white, null, getString(R.string.empty_summary));
-        else
-            progressLayout.showContent();
+        swipeRefreshLayout.setRefreshing(false);
         onLoadFinish(dataRecords);
     }
 
@@ -140,6 +160,13 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
                 onFabClick();
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reLoading();
+            }
+        });
     }
 
     protected void onFabClick() {
@@ -150,10 +177,30 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.recycler_view_with_fab_template, container, false);
-        progressLayout = (ProgressRelativeLayout) root;
         recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
+        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getIntArray(R.array.polluted_waves));
         fab = (FloatingActionButton) root.findViewById(R.id.fab);
         return root;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.data_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_clear_selection:
+                getAdapter().selectAll(false);
+                return true;
+            case R.id.action_select_all:
+                getAdapter().selectAll(true);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
