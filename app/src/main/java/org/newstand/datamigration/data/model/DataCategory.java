@@ -135,10 +135,15 @@ public enum DataCategory implements LoaderGetter, ResBinder {
     }
 
     public static void consumeAllInWorkerThread(@NonNull final Consumer<DataCategory> consumer) {
+        consumeAllInWorkerThread(consumer, null);
+    }
+
+    public static void consumeAllInWorkerThread(@NonNull final Consumer<DataCategory> consumer, final Runnable onCompleteRunnable) {
         SharedExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 Collections.consumeRemaining(Arrays.asList(values()), consumer);
+                if (onCompleteRunnable != null) onCompleteRunnable.run();
             }
         });
     }

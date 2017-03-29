@@ -15,28 +15,28 @@ import dev.nick.tiles.tile.SwitchTileView;
  * All right reserved.
  */
 
-public class AutoConnectTile extends ThemedTile {
+public class TransitionAnimationTile extends ThemedTile {
 
-    public AutoConnectTile(@NonNull Context context) {
+    public TransitionAnimationTile(@NonNull Context context) {
         super(context, null);
     }
 
     @Override
     void onInitView(Context context) {
-        this.titleRes = R.string.tile_title_auto_connect;
-        this.iconRes = R.drawable.ic_wifi_tethering;
+        this.titleRes = R.string.tile_transition_animation;
+        this.iconRes = R.drawable.ic_theme;
 
         this.tileView = new SwitchTileView(context) {
             @Override
             protected void onBindActionView(RelativeLayout container) {
                 super.onBindActionView(container);
-                setChecked(SettingsProvider.autoConnectEnabled());
+                setChecked(SettingsProvider.transitionAnimationEnabled());
             }
 
             @Override
             protected void onCheckChanged(boolean checked) {
                 super.onCheckChanged(checked);
-                SettingsProvider.setAutoConnectEnabled(checked);
+                SettingsProvider.setTransitionAnimationEnabled(checked);
             }
         };
 

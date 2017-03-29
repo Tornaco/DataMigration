@@ -54,7 +54,7 @@ public abstract class ServerComponent implements Component, Runnable {
             start();
             return true;
         } catch (IOException e) {
-            Logger.d("Failed to start %s", Log.getStackTraceString(e));
+            Logger.d("Failed to prepareForTransporting %s", Log.getStackTraceString(e));
             return false;
         }
     }

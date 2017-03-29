@@ -72,7 +72,7 @@ public class DataBackupManagerTest {
                             @Override
                             public void onPieceSuccess(DataRecord record) {
                                 Logger.d("onPieceSuccess:" + record);
-                                Logger.w(getStatus().toString());
+                                Logger.w(getStats().toString());
                             }
 
                             @Override
@@ -105,7 +105,7 @@ public class DataBackupManagerTest {
                                         .loadAsync(loaderSource, DataCategory.Contact, new LoaderListener<DataRecord>() {
                                             @Override
                                             public void onStart() {
-                                                Logger.d("Load from backup.start");
+                                                Logger.d("Load from backup.prepareForTransporting");
                                             }
 
                                             @Override

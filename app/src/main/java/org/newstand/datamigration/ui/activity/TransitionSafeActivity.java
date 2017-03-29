@@ -15,9 +15,16 @@ import android.transition.TransitionInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.newstand.datamigration.R;
+import com.orhanobut.logger.Logger;
 
-public class TransitionSafeActivity extends AppCompatActivity {
+import org.newstand.datamigration.R;
+import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.service.UserActionServiceProxy;
+
+import java.util.Observable;
+import java.util.Observer;
+
+public class TransitionSafeActivity extends AppCompatActivity implements Observer {
 
     private static final boolean TRANSITION_ANIMATION = false;
 
@@ -25,11 +32,16 @@ public class TransitionSafeActivity extends AppCompatActivity {
 
     protected Fragment mShowingFragment;
 
-    private boolean mIsDestroyed;
+    private boolean mIsDestroyed, mTransitionAnimationEnabled;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        readSettings();
+
+        SettingsProvider.observe(this);
+
         if (needSmoothHook()) {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -40,6 +52,16 @@ public class TransitionSafeActivity extends AppCompatActivity {
             }, UI_TRANSACTION_TIME_MILLS);
         }
         setupEnterWindowAnimations();
+    }
+
+    private void readSettings() {
+        mTransitionAnimationEnabled = SettingsProvider.transitionAnimationEnabled();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        UserActionServiceProxy.publishNewAction("USER IN", getTitle().toString());
     }
 
     protected void showHomeAsUp() {
@@ -56,11 +78,11 @@ public class TransitionSafeActivity extends AppCompatActivity {
 
     @SuppressWarnings("unchecked")
     protected void transitionTo(Intent i) {
-        transitionTo(i, false);
+        transitionTo(i, mTransitionAnimationEnabled);
     }
 
     @SuppressWarnings("unchecked")
-    protected void transitionTo(Intent i, boolean animate) {
+    private void transitionTo(Intent i, boolean animate) {
         if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             final Pair<View, String>[] pairs = TransitionHelper.createSafeTransitionParticipants(this, true);
             ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pairs);
@@ -136,7 +158,9 @@ public class TransitionSafeActivity extends AppCompatActivity {
                     .replace(containerId, f).commit();
         } else {
             getSupportFragmentManager().beginTransaction()
-                    .replace(containerId, f).commit();
+                    .replace(containerId, f)
+                    .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                    .commit();
         }
         mShowingFragment = f;
         return true;
@@ -181,7 +205,7 @@ public class TransitionSafeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home) finish();
+        if (id == android.R.id.home) finishWithAfterTransition();
         return super.onOptionsItemSelected(item);
     }
 
@@ -189,6 +213,15 @@ public class TransitionSafeActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mIsDestroyed = true;
+        UserActionServiceProxy.publishNewAction("USER LEAVE", getTitle().toString());
+    }
+
+    protected void finishWithAfterTransition() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            finishAfterTransition();
+        } else {
+            finish();
+        }
     }
 
     @Override
@@ -200,5 +233,11 @@ public class TransitionSafeActivity extends AppCompatActivity {
 
     protected boolean isMainActivity() {
         return false;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Logger.d("Settings changed");
+        readSettings();
     }
 }

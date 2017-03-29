@@ -28,7 +28,7 @@ class TransitionHelper {
      * Create the transition participants required during a activity transition while
      * avoiding glitches with the system UI.
      *
-     * @param activity         The activity used as start for the transition.
+     * @param activity         The activity used as prepareForTransporting for the transition.
      * @param includeStatusBar If false, the status bar will not be added as the transition
      *                         participant.
      * @return All transition participants.

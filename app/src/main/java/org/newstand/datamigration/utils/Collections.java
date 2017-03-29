@@ -14,6 +14,7 @@ import java.util.Collection;
  */
 
 public abstract class Collections {
+
     public static <C> void consumeRemaining(Collection<C> collection, Consumer<C> consumer) {
         Preconditions.checkNotNull(collection);
         Preconditions.checkNotNull(consumer);

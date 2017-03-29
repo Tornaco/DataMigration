@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.ui.tiles.AutoConnectTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
+import org.newstand.datamigration.ui.tiles.TransitionAnimationTile;
 
 import java.util.List;
 
@@ -37,13 +37,13 @@ public class SettingsActivity extends TransitionSafeActivity {
         @Override
         protected void onCreateDashCategories(List<Category> categories) {
 
-            Category storage = new ThemedCategory();
-            storage.titleRes = R.string.tile_category_storage;
+            Category view = new ThemedCategory();
+            view.titleRes = R.string.tile_category_view;
 
-            AutoConnectTile autoConnectTile = new AutoConnectTile(getContext());
-            storage.addTile(autoConnectTile);
+            TransitionAnimationTile animationTile = new TransitionAnimationTile(getContext());
+            view.addTile(animationTile);
 
-            categories.add(storage);
+            categories.add(view);
 
             super.onCreateDashCategories(categories);
         }

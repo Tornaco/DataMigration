@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.vlonjatg.progressactivity.ProgressRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/progressLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:emptyBackgroundColor="@color/white"
-    app:emptyTitleTextSize="@dimen/text_size_medium"
-    app:errorBackgroundColor="@color/white"
-    app:loadingBackgroundColor="@color/white">
+    android:layout_marginBottom="@dimen/activity_horizontal_margin_small"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin_small"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
+    android:layout_marginRight="@dimen/activity_horizontal_margin_small"
+    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
+    android:layout_marginTop="@dimen/activity_horizontal_margin_small"
+    android:fitsSystemWindows="true">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
@@ -18,9 +20,9 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"
             android:fadeScrollbars="true"
             android:scrollbarStyle="outsideInset"
+            android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -37,4 +39,4 @@
         android:focusable="true"
         app:srcCompat="@drawable/ic_ok" />
 
-</com.vlonjatg.progressactivity.ProgressRelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -216,7 +216,7 @@ public class QTIBackupSMS {
         return numOfEntries;
     }
 
-    /* writes SMSBackup object to file. Note that we write number of objects at start.*/
+    /* writes SMSBackup object to file. Note that we write number of objects at prepareForTransporting.*/
     public void writeSMSList(int numOfEntriesInbox, int numOfEntriesSent, int numOfEntriesDraft) {
         try {
             mFileOutputStream = mContext.openFileOutput(vfile, Context.MODE_PRIVATE);

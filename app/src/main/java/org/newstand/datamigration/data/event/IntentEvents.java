@@ -10,9 +10,8 @@ public interface IntentEvents {
 
     String KEY_CATEGORY = "category";
     String KEY_SOURCE = "session";
-    String KEY_CATEGORY_DATA_LIST = "category_data_list";
 
     int EVENT_TRANSPORT_COMPLETE = 0x99;
-
-    int ON_CATEGORY_OF_DATA_SELECT_COMPLETE = 0x100;
+    int EVENT_ON_CATEGORY_OF_DATA_SELECT_COMPLETE = 0x100;
+    int EVENT_ON_USER_ACTION = 0x101;
 }

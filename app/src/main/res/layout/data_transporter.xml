@@ -38,7 +38,8 @@
                 app:pwRimColor="@color/divider"
                 app:pwRimWidth="1dp"
                 app:pwSpinSpeed="3dp"
-                app:pwTextColor="@color/primary"
+                app:pwText="@string/app_name"
+                app:pwTextColor="@color/accent"
                 app:pwTextSize="48sp"
                 app:pwTypeface="fonts/agency.ttf" />
 
@@ -48,6 +49,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/console_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -76,9 +78,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:singleLine="true"
-                android:text="AAAABBBCCC"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/primary_text"
                 android:textStyle="normal" />
 
@@ -92,8 +92,9 @@
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:singleLine="true"
-                android:text="AAAABBBCCC"
+                android:lineSpacingMultiplier="1.2"
+                android:padding="@dimen/text_padding_medium"
+                android:text="@string/large_text"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/secondary_text" />
 
@@ -107,11 +108,7 @@
                 android:layout_below="@android:id/text1"
                 android:text="Done" />
 
-
         </RelativeLayout>
-
-
     </android.support.v7.widget.CardView>
-
 
 </RelativeLayout>

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/DataMigration.iml" filepath="$PROJECT_DIR$/DataMigration.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/eventbus/eventbus.iml" filepath="$PROJECT_DIR$/eventbus/eventbus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mediahook/mediahook.iml" filepath="$PROJECT_DIR$/mediahook/mediahook.iml" />
       <module fileurl="file://$PROJECT_DIR$/progress-activity/progress-activity.iml" filepath="$PROJECT_DIR$/progress-activity/progress-activity.iml" />
       <module fileurl="file://$PROJECT_DIR$/statemachine/statemachine.iml" filepath="$PROJECT_DIR$/statemachine/statemachine.iml" />
       <module fileurl="file://$PROJECT_DIR$/tiles/tiles.iml" filepath="$PROJECT_DIR$/tiles/tiles.iml" />

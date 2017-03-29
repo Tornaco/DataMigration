@@ -50,12 +50,8 @@ public class AndroidCategoryViewerActivity extends CategoryViewerActivity {
     @Events(IntentEvents.EVENT_TRANSPORT_COMPLETE)
     public void onTransportComplete(Event event) {
         Logger.d("onTransportComplete %s", event);
-        Session session = (Session) event.getObj();
-        if (onRequestLoaderSource().getSession().equals(session)) {
-            Logger.d("Matched session %s", session);
-            finish();
-            EventBus.from(this).unSubscribe(this);
-        }
+        finishWithAfterTransition();
+        EventBus.from(this).unSubscribe(this);
     }
 
     @Override

@@ -73,22 +73,18 @@ public class BackupRestoreListenerMainThreadAdapter extends BackupRestoreListene
     }
 
     public void onStartMainThread() {
-        Logger.d("onStartMainThread:" + getStatus());
     }
 
     public void onPieceStartMainThread(DataRecord record) {
-        Logger.d("onPieceStartMainThread:%s", record.getDisplayName());
     }
 
     public void onPieceSuccessMainThread(DataRecord record) {
-        Logger.d("onPieceSuccessMainThread:%s", record.getDisplayName());
     }
 
     public void onPieceFailMainThread(DataRecord record, Throwable err) {
-        Logger.d("onPieceFailMainThread:%s, %s", record.getDisplayName(), Log.getStackTraceString(err));
+        Logger.e("onPieceFailMainThread:%s, %s", record.getDisplayName(), Log.getStackTraceString(err));
     }
 
     public void onCompleteMainThread() {
-        Logger.d("onCompleteMainThread");
     }
 }

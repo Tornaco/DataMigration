@@ -16,16 +16,16 @@ import io.realm.Realm;
  * All right reserved.
  */
 
-public class BKSessionRepoServiceOneTime extends OneTimeRealmRepoService<Session> {
+public class BKSessionRepoService extends OneTimeRealmRepoService<Session> {
 
-    private static BKSessionRepoServiceOneTime sMe;
+    private static BKSessionRepoService sMe;
 
-    private BKSessionRepoServiceOneTime() {
+    private BKSessionRepoService() {
         super();
     }
 
-    public static synchronized BKSessionRepoServiceOneTime get() {
-        if (sMe == null) sMe = new BKSessionRepoServiceOneTime();
+    public static synchronized BKSessionRepoService get() {
+        if (sMe == null) sMe = new BKSessionRepoService();
         return sMe;
     }
 

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,7 +50,7 @@ import lombok.Setter;
 public class CategoryViewerFragment extends TransitionSafeFragment {
 
     @Getter
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     @Getter
     private CommonListAdapter adapter;
@@ -152,6 +153,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         adapter = onCreateAdapter();
         recyclerView.setAdapter(adapter);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -275,12 +277,12 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
 
     private String buildSelectionSummary(int total, int selectionCnt) {
         if (isDetached()) return null;
-        return getString(R.string.summary_category_viewer, String.valueOf(total), String.valueOf(selectionCnt));
+        return getString(R.string.summary_category_viewer, String.valueOf(selectionCnt), String.valueOf(total));
     }
 
     @SuppressWarnings("unchecked")
     @ReceiverMethod
-    @Events(IntentEvents.ON_CATEGORY_OF_DATA_SELECT_COMPLETE)
+    @Events(IntentEvents.EVENT_ON_CATEGORY_OF_DATA_SELECT_COMPLETE)
     public void updateSelectionCount(Event event) {
         List<DataRecord> dataRecords = (List<DataRecord>) event.getObj();
         DataCategory category = DataCategory.fromInt(event.getArg1());

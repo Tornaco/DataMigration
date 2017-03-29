@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="def_auto_connect_enabled">true</bool>
+    <bool name="def_transition_animation_enabled">true</bool>
 
 
     <integer name="anim_duration_very_long">1500</integer>

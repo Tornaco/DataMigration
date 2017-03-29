@@ -2,6 +2,7 @@ package org.newstand.datamigration.repo;
 
 import android.support.annotation.NonNull;
 
+import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.utils.Closer;
 import org.newstand.datamigration.utils.Collections;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/28 12:15
@@ -78,8 +80,11 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     @Override
     public T findLast() {
         Realm r = getRealm();
-        T t = r.where(clz()).findAll().createSnapshot().last();
-        T res = map(t);
+        T res = null;
+        RealmResults<T> ts = r.where(clz()).findAll();
+        if (!Collections.nullOrEmpty(ts)) {
+            res = map(ts.last());
+        }
         Closer.closeQuietly(r);
         return res;
     }
@@ -90,8 +95,15 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     public List<T> findAll() {
         Realm r = getRealm();
         List<T> ts = getRealm().where(clz()).findAll();
-        List<T> res = new ArrayList<>(ts.size());
-        if (!Collections.nullOrEmpty(ts)) res.addAll(ts);
+        final List<T> res = new ArrayList<>(ts.size());
+        if (!Collections.nullOrEmpty(ts)) {
+            Collections.consumeRemaining(ts, new Consumer<T>() {
+                @Override
+                public void consume(@NonNull T t) {
+                    res.add(map(t));
+                }
+            });
+        }
         Closer.closeQuietly(r);
         return res;
     }

@@ -10,7 +10,7 @@ import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.ui.fragment.DataImportFragment;
+import org.newstand.datamigration.ui.fragment.DataImportManageFragment;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/15 16:37
@@ -18,7 +18,7 @@ import org.newstand.datamigration.ui.fragment.DataImportFragment;
  * All right reserved.
  */
 
-public class DataImportActivity extends DataTransportActivity implements DataImportFragment.LoaderSourceProvider {
+public class DataImportActivity extends DataTransportActivity implements DataImportManageFragment.LoaderSourceProvider {
 
     private LoaderSource mSource;
 
@@ -37,7 +37,7 @@ public class DataImportActivity extends DataTransportActivity implements DataImp
 
     @Override
     protected Fragment getTransportFragment() {
-        return new DataImportFragment();
+        return new DataImportManageFragment();
     }
 
     @Override

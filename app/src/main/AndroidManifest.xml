@@ -75,8 +75,14 @@
             android:name=".ui.activity.SettingsActivity"
             android:label="@string/action_settings" />
 
+        <activity
+            android:name=".ui.activity.UserActionViewerActivity"
+            android:label="@string/action_user_actions" />
+
         <activity android:name=".ui.activity.DataSenderActivity" />
         <activity android:name=".ui.activity.DataReceiverActivity" />
+
+        <service android:name=".service.UserActionService" />
     </application>
 
 </manifest>

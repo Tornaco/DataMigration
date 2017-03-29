@@ -6,7 +6,7 @@ import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.repo.BKSessionRepoServiceOneTime;
+import org.newstand.datamigration.repo.BKSessionRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
@@ -32,7 +32,7 @@ public abstract class SessionLoader {
             public void run() {
                 loaderListener.onStart();
                 try {
-                    List<Session> all = BKSessionRepoServiceOneTime.get().findAll();
+                    List<Session> all = BKSessionRepoService.get().findAll();
                     Collections.consumeRemaining(all, new Consumer<Session>() {
                         @Override
                         public void consume(@NonNull Session session) {

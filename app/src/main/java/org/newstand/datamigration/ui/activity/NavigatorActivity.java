@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import org.newstand.datamigration.DataMigrationApp;
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.repo.BKSessionRepoServiceOneTime;
+import org.newstand.datamigration.repo.BKSessionRepoService;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 public class NavigatorActivity extends TransitionSafeActivity {
@@ -45,7 +45,7 @@ public class NavigatorActivity extends TransitionSafeActivity {
 
     private void queryShowHistory() {
         TextView tv1 = findView(findView(R.id.card_1), android.R.id.text2);
-        Session last = BKSessionRepoServiceOneTime.get().findLast();
+        Session last = BKSessionRepoService.get().findLast();
         String intro;
         if (last == null) {
             intro = getString(R.string.title_backup_history_noop);
@@ -64,10 +64,10 @@ public class NavigatorActivity extends TransitionSafeActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_backup:
-                        transitionTo(new Intent(NavigatorActivity.this, AndroidCategoryViewerActivity.class), false);
+                        transitionTo(new Intent(NavigatorActivity.this, AndroidCategoryViewerActivity.class));
                         break;
                     case R.id.action_restore:
-                        transitionTo(new Intent(NavigatorActivity.this, BackupSessionPickerActivity.class), false);
+                        transitionTo(new Intent(NavigatorActivity.this, BackupSessionPickerActivity.class));
                         break;
                 }
                 return true;
@@ -85,10 +85,10 @@ public class NavigatorActivity extends TransitionSafeActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_send:
-                        transitionTo(new Intent(NavigatorActivity.this, WFDDataSenderActivity.class), false);
+                        transitionTo(new Intent(NavigatorActivity.this, WFDDataSenderActivity.class));
                         break;
                     case R.id.action_receive:
-                        transitionTo(new Intent(NavigatorActivity.this, WFDDataReceiverActivity.class), false);
+                        transitionTo(new Intent(NavigatorActivity.this, WFDDataReceiverActivity.class));
                         break;
                 }
                 return true;
@@ -109,7 +109,11 @@ public class NavigatorActivity extends TransitionSafeActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            transitionTo(new Intent(this, SettingsActivity.class), false);
+            transitionTo(new Intent(this, SettingsActivity.class));
+        }
+
+        if (id == R.id.action_user_actions) {
+            transitionTo(new Intent(this, UserActionViewerActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

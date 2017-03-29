@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,7 @@ import com.orhanobut.logger.Logger;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
 import org.newstand.datamigration.loader.SessionLoader;
-import org.newstand.datamigration.repo.BKSessionRepoServiceOneTime;
+import org.newstand.datamigration.repo.BKSessionRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.SessionListAdapter;
 import org.newstand.datamigration.ui.adapter.SessionListViewHolder;
@@ -73,6 +74,7 @@ public class BackupSessionPickerFragment extends TransitionSafeFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         adapter = onCreateAdapter();
         recyclerView.setAdapter(adapter);
 
@@ -153,7 +155,7 @@ public class BackupSessionPickerFragment extends TransitionSafeFragment {
             SharedExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    boolean res = BKSessionRepoServiceOneTime.get().delete(session);
+                    boolean res = BKSessionRepoService.get().delete(session);
                     showRemoveResult(session, res);
                 }
             });

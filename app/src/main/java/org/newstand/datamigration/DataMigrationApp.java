@@ -8,6 +8,7 @@ import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.service.UserActionServiceProxy;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -49,8 +50,10 @@ public class DataMigrationApp extends Application {
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
+        UserActionServiceProxy.startService(this);
         Logger.init(getClass().getSimpleName())
-                .methodCount(3)
+                .hideThreadInfo()
+                .methodCount(1)
                 .logLevel(LogLevel.FULL);
         Logger.d("DataMigrationApp comes up.");
     }

@@ -60,6 +60,14 @@ public class MusicLoader extends BaseLoader {
                 MusicRecord record = new MusicRecord();
                 record.setDisplayName(file.getName());
                 record.setPath(file.getAbsolutePath());
+
+//                try {
+//                    TrackUtils.extractArt(record.getPath(), SettingsProvider.getLogDir()
+//                            + File.separator + record.getDisplayName() + ".jpg");
+//                } catch (Throwable e) {
+//                    Logger.e(e.getLocalizedMessage());
+//                }
+
                 records.add(record);
             }
         });

@@ -3,18 +3,17 @@ package org.newstand.datamigration.ui.fragment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.TextView;
-
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.common.StartSignal;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
-import org.newstand.datamigration.repo.BKSessionRepoServiceOneTime;
+import org.newstand.datamigration.repo.BKSessionRepoService;
+import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.BackupRestoreListener;
@@ -23,8 +22,8 @@ import org.newstand.datamigration.worker.backup.DataBackupManager;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.CountDownLatch;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
 import cn.iwgang.simplifyspan.other.OnClickableSpanListener;
@@ -37,9 +36,11 @@ import cn.iwgang.simplifyspan.unit.SpecialTextUnit;
  * All right reserved.
  */
 
-public class DataExportFragment extends DataTransportFragment {
+public class DataExportManageFragment extends DataTransportManageFragment {
 
-    BackupRestoreListener listener = new BackupRestoreListenerMainThreadAdapter() {
+    private CountDownLatch mTaskLatch;
+
+    private BackupRestoreListener mExportListener = new BackupRestoreListenerMainThreadAdapter() {
         @Override
         public void onStartMainThread() {
             super.onStartMainThread();
@@ -48,125 +49,117 @@ public class DataExportFragment extends DataTransportFragment {
         @Override
         public void onCompleteMainThread() {
             super.onCompleteMainThread();
-            onTransportComplete();
+            mTaskLatch.countDown();
         }
 
         @Override
         public void onPieceFailMainThread(DataRecord record, Throwable err) {
             super.onPieceFailMainThread(record, err);
-            updateProgress(getStatus());
+            onProgressUpdate();
         }
 
         @Override
         public void onPieceSuccessMainThread(DataRecord record) {
             super.onPieceSuccessMainThread(record);
-            updateProgress(getStatus());
+            onProgressUpdate();
         }
 
         @Override
         public void onPieceStartMainThread(DataRecord record) {
             super.onPieceStartMainThread(record);
-            consoleSummaryView.setText(record.getDisplayName());
+            showCurrentPieceInUI(record);
         }
     };
 
     @Override
-    protected void start() {
-        super.start();
-        onPrepare();
-
-        session = Session.create();
+    protected void readyToGo() {
+        super.readyToGo();
 
         final LoadingCacheManager cache = LoadingCacheManager.droid();
 
-        final DataBackupManager dataBackupManager = DataBackupManager.from(getContext(), session);
+        final DataBackupManager dataBackupManager = DataBackupManager.from(getContext(), getSession());
+
+        mTaskLatch = Sleeper.waitingFor(DataCategory.values().length, new Runnable() {
+            @Override
+            public void run() {
+                enterState(STATE_TRANSPORT_END);
+            }
+        });
 
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
             public void consume(@NonNull DataCategory category) {
-                Collection<DataRecord> dataRecords = cache.get(category);
-                if (Collections.nullOrEmpty(dataRecords)) return;
+                Collection<DataRecord> dataRecords = cache.checked(category);
+                if (Collections.nullOrEmpty(dataRecords)) {
+                    mTaskLatch.countDown();// Release one!!!
+                    return;
+                }
 
-                final Collection<DataRecord> work = new ArrayList<>();
+                StartSignal startSignal = new StartSignal();
+                AbortSignal abortSignal = dataBackupManager.performBackupAsync(dataRecords, category, mExportListener, startSignal);
 
-                Collections.consumeRemaining(dataRecords, new Consumer<DataRecord>() {
+                getStats().merge(mExportListener.getStats());
+
+                getAbortSignals().add(abortSignal);
+                getStartSignals().add(startSignal);
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                Collections.consumeRemaining(getStartSignals(), new Consumer<StartSignal>() {
                     @Override
-                    public void consume(@NonNull DataRecord dataRecord) {
-                        if (dataRecord.isChecked()) work.add(dataRecord);
+                    public void consume(@NonNull StartSignal startSignal) {
+                        startSignal.start();
                     }
                 });
-
-                if (Collections.nullOrEmpty(work)) return;
-                AbortSignal signal = dataBackupManager.performBackupAsync(work, category, listener);
-                synchronized (abortSignals) {
-                    abortSignals.add(signal);
-                }
             }
         });
     }
 
-    private void onPrepare() {
-        consoleTitleView.setText(R.string.title_backup_exporting);
-        consoleDoneButton.setText(android.R.string.cancel);
-        consoleDoneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                synchronized (abortSignals) {
-                    Collections.consumeRemaining(abortSignals, new Consumer<AbortSignal>() {
-                        @Override
-                        public void consume(@NonNull AbortSignal abortSignal) {
-                            abortSignal.abort();
-                        }
-                    });
-                }
-            }
-        });
+    @Override
+    protected Session onCreateSession() {
+        return Session.create();
     }
 
-    private void updateProgress(BackupRestoreListener.Status status) {
-        float total = (float) status.getTotal();
-        float ok = (float) status.getTotal() - (float) status.getLeft();
-        float progress = (ok / total);
-        progressBar.setText((int) (progress * 100) + "");
-        Logger.d("progress:%s @%s", progress, status);
-        progressBar.setProgress((int) (progress * 360));
+    @Override
+    int getStartTitle() {
+        return R.string.title_backup_exporting;
     }
 
-    private void onTransportComplete() {
-
-        sendCompleteEvent();
-
-        Logger.d("All complete, set to 100");
-        progressBar.setText("100");
-        progressBar.setProgress(360);
-        consoleDoneButton.setText(R.string.action_done);
-        consoleDoneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Save session
-                BKSessionRepoServiceOneTime.get().insert(session);
-                getActivity().finish();
-            }
-        });
-        consoleTitleView.setText(R.string.action_remark);
-
-        updateCompleteSummary();
+    @Override
+    int getCompleteTitle() {
+        return R.string.title_backup_export_complete;
     }
 
-    protected void updateCompleteSummary() {
-        SimplifySpanBuild simplifySpanBuild = new SimplifySpanBuild();
-        simplifySpanBuild.append(new SpecialTextUnit(session.getName())
+    @Override
+    void onDoneButtonClick() {
+        // Save session
+        BKSessionRepoService.get().insert(getSession());
+        getActivity().finish();
+    }
+
+    private void showCurrentPieceInUI(DataRecord record) {
+        getConsoleSummaryView().setText(record.getDisplayName());
+    }
+
+    @Override
+    SimplifySpanBuild onCreateCompleteSummary() {
+        SimplifySpanBuild summary = buildTransportReport(getStats());
+        summary.append("\n\n");
+        summary.append(getStringSafety(R.string.action_remark));
+        summary.append(new SpecialTextUnit(getSession().getName())
                 .setTextColor(ContextCompat.getColor(getContext(), R.color.accent))
                 .showUnderline()
                 .useTextBold()
-                .setClickableUnit(new SpecialClickableUnit(consoleSummaryView, new OnClickableSpanListener() {
+                .showUnderline()
+                .setClickableUnit(new SpecialClickableUnit(getConsoleSummaryView(), new OnClickableSpanListener() {
                     @Override
                     public void onClick(TextView tv, String clickText) {
-                        showNameSettingsDialog(session.getName());
+                        showNameSettingsDialog(getSession().getName());
                     }
                 })));
-
-        consoleSummaryView.setText(simplifySpanBuild.build());
+        summary.append(getStringSafety(R.string.action_remark_tips));
+        return summary;
     }
 
     protected boolean validateInput(CharSequence in) {
@@ -182,7 +175,7 @@ public class DataExportFragment extends DataTransportFragment {
                 .setPositiveButton(getString(android.R.string.ok), new InputDialogCompat.ButtonActionListener() {
                     @Override
                     public void onClick(CharSequence inputText) {
-                        DataBackupManager.from(getContext()).renameSessionChecked(session, inputText.toString());
+                        DataBackupManager.from(getContext()).renameSessionChecked(getSession(), inputText.toString());
                         updateCompleteSummary();
                     }
                 })

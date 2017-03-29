@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -136,6 +137,7 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         adapter = onCreateAdapter();
         recyclerView.setAdapter(adapter);
 
@@ -215,7 +217,7 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
         super.onDestroy();
         ArrayList<DataRecord> dataRecords = (ArrayList<DataRecord>) getAdapter().getDataRecords();
         DataCategory category = getDataType();
-        Event event = Event.builder().arg1(category.ordinal()).obj(dataRecords).eventType(IntentEvents.ON_CATEGORY_OF_DATA_SELECT_COMPLETE).build();
+        Event event = Event.builder().arg1(category.ordinal()).obj(dataRecords).eventType(IntentEvents.EVENT_ON_CATEGORY_OF_DATA_SELECT_COMPLETE).build();
         EventBus.from(getContext()).publish(event);
     }
 

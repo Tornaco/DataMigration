@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#F5F5F5</color>
+    <color name="primary_dark">#E0E0E0</color>
+    <color name="primary_light">#BBDEFB</color>
+    <color name="accent">#00796B</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="third_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+
+    <color name="window_background">#ECECEC</color>
+    <color name="card">#FAFAFA</color>
+    <color name="title">#212121</color>
+    <color name="text">#727272</color>
+    <color name="special_button">#212121</color>
+    <color name="dividerDark">#AAA</color>
+    <color name="dividerLight">#DADADA</color>
+</resources>

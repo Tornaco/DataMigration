@@ -2,15 +2,19 @@ package org.newstand.datamigration.provider;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.annotation.BoolRes;
 
+import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.io.File;
 import java.util.Observable;
+import java.util.Observer;
 
 import lombok.NonNull;
 
@@ -24,10 +28,12 @@ public class SettingsProvider extends Observable {
 
     private static final String KEY_AUTO_CONNECT_ENABLED = "key_auto_connect_enabled";
     private static final String KEY_DEVICE_NAME = "key_dev_name";
+    private static final String KEY_TRANSITION_ANIMATION = "key_transition_animation";
 
     private static SettingsProvider sMe;
 
     private SharedPreferences mSharedPreferences;
+    private Resources mRes;
 
     public SettingsProvider(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -38,6 +44,7 @@ public class SettingsProvider extends Observable {
                 notifyObservers(key);
             }
         });
+        mRes = context.getResources();
     }
 
     public static void init(Context context) {
@@ -46,6 +53,10 @@ public class SettingsProvider extends Observable {
 
     public boolean readBoolean(String key, boolean defValue) {
         return mSharedPreferences.getBoolean(key, defValue);
+    }
+
+    public boolean readBoolean(String key, @BoolRes int defValue) {
+        return mSharedPreferences.getBoolean(key, mRes.getBoolean(defValue));
     }
 
     public void writeBoolean(String key, boolean value) {
@@ -147,11 +158,27 @@ public class SettingsProvider extends Observable {
         sMe.writeBoolean(KEY_AUTO_CONNECT_ENABLED, value);
     }
 
+    public static boolean transitionAnimationEnabled() {
+        return sMe.readBoolean(KEY_TRANSITION_ANIMATION, R.bool.def_transition_animation_enabled);
+    }
+
+    public static void setTransitionAnimationEnabled(boolean value) {
+        sMe.writeBoolean(KEY_TRANSITION_ANIMATION, value);
+    }
+
     public static long getDiscoveryTimeout() {
         return 60 * 1000;
     }
 
     public static long getRequestConnectioninfoTimeout() {
         return 12 * 1000;
+    }
+
+    public static void observe(Observer observer) {
+        sMe.addObserver(observer);
+    }
+
+    public static void unObserve(Observer observer) {
+        sMe.deleteObserver(observer);
     }
 }

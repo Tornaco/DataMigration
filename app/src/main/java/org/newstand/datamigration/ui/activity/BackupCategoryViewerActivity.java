@@ -65,7 +65,7 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
         Session session = (Session) event.getObj();
         if (onRequestLoaderSource().getSession().equals(session)) {
             Logger.d("Matched session %s", session);
-            finish();
+            finishWithAfterTransition();
             EventBus.from(this).unSubscribe(this);
         }
     }

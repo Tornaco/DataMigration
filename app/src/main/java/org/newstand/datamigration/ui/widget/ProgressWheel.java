@@ -106,7 +106,7 @@ public class ProgressWheel extends View {
 
         // We can’t use getWidth() or getHight() here. During the measuring
         // pass the view has not gotten its final size yet (this happens first
-        // at the start of the layout pass) so we have to use getMeasuredWidth()
+        // at the prepareForTransporting of the layout pass) so we have to use getMeasuredWidth()
         // and getMeasuredHeight().
         int size = 0;
         int width = getMeasuredWidth();

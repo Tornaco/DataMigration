@@ -12,6 +12,7 @@
     <dimen name="common_item_min_height">60dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="text_padding_medium">3dp</dimen>
 
     <!-- Text sizes -->
     <dimen name="text_size_extra_micro">12sp</dimen>

@@ -48,7 +48,6 @@
     <string name="tile_title_auto_connect">自动连接</string>
 
 
-    <string name="summary_category_viewer">总共: <i>%1$s</i> \t\t 已选: <i>%2$s</i></string>
     <string name="summary_category_viewer_need_click">点击选择条目</string>
     <string name="summary_app_template">版本号: <i>%1$s</i> \t\t 文件大小: <i>%2$s</i></string>
     <string name="unknown">未知</string>

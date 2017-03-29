@@ -1,6 +1,7 @@
 package org.newstand.datamigration.worker.backup;
 
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.worker.Stats;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public abstract class BackupRestoreListener {
 
     @Setter(AccessLevel.PACKAGE)
     @Getter
-    private Status status;
+    private Stats stats;
 
     public abstract void onStart();
 
@@ -28,13 +29,4 @@ public abstract class BackupRestoreListener {
 
     public abstract void onComplete();
 
-    public interface Status {
-        int getTotal();
-
-        int getLeft();
-
-        int getSuccess();
-
-        int getFail();
-    }
 }

@@ -10,6 +10,7 @@ import org.newstand.datamigration.common.AbortException;
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
+import org.newstand.datamigration.common.StartSignal;
 import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
@@ -18,6 +19,7 @@ import org.newstand.datamigration.data.model.SMSRecord;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.Stats;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.io.File;
@@ -76,20 +78,53 @@ public class DataBackupManager {
                                           final DataCategory dataCategory,
                                           final BackupRestoreListener listener) {
 
+        return performBackupAsync(dataRecords, dataCategory, listener, null);
+    }
+
+    public AbortSignal performBackupAsync(final Collection<DataRecord> dataRecords,
+                                          final DataCategory dataCategory,
+                                          final BackupRestoreListener listener,
+                                          final StartSignal startSignal) {
+
         AbortSignal abortSignal = new AbortSignal();
-        BackupWorker worker = new BackupWorker(listener, dataRecords, dataCategory, abortSignal);
-        listener.setStatus(worker.status);
-        SharedExecutor.execute(worker);
+        final BackupWorker worker = new BackupWorker(listener, dataRecords, dataCategory, abortSignal);
+        listener.setStats(worker.status);
+        if (startSignal == null) {
+            SharedExecutor.execute(worker);
+        } else {
+            startSignal.addObserver(new Observer() {
+                @Override
+                public void update(Observable o, Object arg) {
+                    SharedExecutor.execute(worker);
+                }
+            });
+        }
         return abortSignal;
     }
 
     public AbortSignal performRestoreAsync(final Collection<DataRecord> dataRecords,
                                            final DataCategory dataCategory,
                                            final BackupRestoreListener listener) {
+        return performRestoreAsync(dataRecords, dataCategory, listener, null);
+    }
+
+    public AbortSignal performRestoreAsync(final Collection<DataRecord> dataRecords,
+                                           final DataCategory dataCategory,
+                                           final BackupRestoreListener listener,
+                                           final StartSignal startSignal) {
         AbortSignal abortSignal = new AbortSignal();
-        RestoreWorker worker = new RestoreWorker(listener, dataRecords, dataCategory, abortSignal);
-        listener.setStatus(worker.status);
-        SharedExecutor.execute(worker);
+        final RestoreWorker worker = new RestoreWorker(listener, dataRecords, dataCategory, abortSignal);
+        listener.setStats(worker.status);
+        if (startSignal == null) {
+            SharedExecutor.execute(worker);
+        } else {
+            startSignal.addObserver(new Observer() {
+                @Override
+                public void update(Observable o, Object arg) {
+                    SharedExecutor.execute(worker);
+                }
+            });
+        }
         return abortSignal;
     }
 
@@ -170,7 +205,7 @@ public class DataBackupManager {
         Collection<DataRecord> dataRecords;
         DataCategory dataCategory;
 
-        SimpleStatus status;
+        SimpleStats status;
 
         boolean canceled;
 
@@ -181,7 +216,7 @@ public class DataBackupManager {
             this.listener = listener;
             this.dataRecords = dataRecords;
             this.dataCategory = dataCategory;
-            this.status = new SimpleStatus();
+            this.status = new SimpleStats();
             this.status.init(dataRecords.size());
             abortSignal.addObserver(new Observer() {
                 @Override
@@ -206,7 +241,7 @@ public class DataBackupManager {
                 public void consume(@NonNull DataRecord record) {
                     if (canceled) {
                         listener.onPieceFail(record, new AbortException());
-                        status.onPieceFail();
+                        status.onFail();
                         return;
                     }
                     listener.onPieceStart(record);
@@ -214,10 +249,10 @@ public class DataBackupManager {
                     try {
                         backupAgent.backup(settings);
                         listener.onPieceSuccess(record);
-                        status.onPieceSuccess();
+                        status.onSuccess();
                     } catch (Exception e) {
                         listener.onPieceFail(record, e);
-                        status.onPieceFail();
+                        status.onFail();
                     }
                 }
             });
@@ -231,7 +266,7 @@ public class DataBackupManager {
         Collection<DataRecord> dataRecords;
         DataCategory dataCategory;
 
-        SimpleStatus status;
+        SimpleStats status;
 
         boolean canceled;
 
@@ -242,7 +277,7 @@ public class DataBackupManager {
             this.listener = listener;
             this.dataRecords = dataRecords;
             this.dataCategory = dataCategory;
-            this.status = new SimpleStatus();
+            this.status = new SimpleStats();
             this.status.init(dataRecords.size());
             signal.addObserver(new Observer() {
                 @Override
@@ -267,7 +302,7 @@ public class DataBackupManager {
                 public void consume(@NonNull DataRecord record) {
                     if (canceled) {
                         listener.onPieceFail(record, new AbortException());
-                        status.onPieceFail();
+                        status.onFail();
                         return;
                     }
                     listener.onPieceStart(record);
@@ -275,10 +310,10 @@ public class DataBackupManager {
                     try {
                         backupAgent.restore(settings);
                         listener.onPieceSuccess(record);
-                        status.onPieceSuccess();
+                        status.onSuccess();
                     } catch (Exception e) {
                         listener.onPieceFail(record, e);
-                        status.onPieceFail();
+                        status.onFail();
                     }
                 }
             });
@@ -287,7 +322,8 @@ public class DataBackupManager {
     }
 
     @ToString
-    private class SimpleStatus implements BackupRestoreListener.Status {
+    private class SimpleStats implements Stats {
+
         @Setter(AccessLevel.PACKAGE)
         @Getter
         private int total, left, success, fail;
@@ -297,18 +333,31 @@ public class DataBackupManager {
             Logger.d("init status %s", toString());
         }
 
-        private void onPieceSuccess() {
+        private void onPiece() {
+            left--;
+        }
+
+        @Override
+        public void onSuccess() {
             success++;
             onPiece();
         }
 
-        private void onPieceFail() {
+        @Override
+        public void onFail() {
             fail++;
             onPiece();
         }
 
-        private void onPiece() {
-            left--;
+        @Override
+        public Stats merge(Stats with) {
+
+            total += with.getTotal();
+            left += with.getLeft();
+            success += with.getSuccess();
+            fail += with.getFail();
+
+            return this;
         }
     }
 }
