@@ -1,4 +1,4 @@
-package org.newstand.lib;
+package org.newstand.lib.util;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/31 17:08
@@ -8,7 +8,9 @@ package org.newstand.lib;
 
 public interface Printer {
 
-    Printer t(String tag, int methodCount);
+    void set(Settings settings);
+
+    void setLogAdapter(LogAdapter adapter);
 
     void d(String message, Object... args);
 
@@ -25,10 +27,4 @@ public interface Printer {
     void v(String message, Object... args);
 
     void wtf(String message, Object... args);
-
-    void json(String json);
-
-    void xml(String xml);
-
-    void log(int priority, String tag, String message, Throwable throwable);
 }

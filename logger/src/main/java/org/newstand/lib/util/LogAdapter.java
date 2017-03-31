@@ -1,4 +1,4 @@
-package org.newstand.lib;
+package org.newstand.lib.util;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/31 17:06

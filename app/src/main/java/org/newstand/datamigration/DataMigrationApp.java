@@ -4,12 +4,12 @@ import android.app.Application;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.google.common.io.Closer;
-import com.orhanobut.logger.LogLevel;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.utils.OnDeviceLogAdapter;
+import org.newstand.lib.util.Logger;
+import org.newstand.lib.util.Settings;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -52,11 +52,8 @@ public class DataMigrationApp extends Application {
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
         UserActionServiceProxy.startService(this);
-        Logger.init(getClass().getSimpleName())
-                .hideThreadInfo()
-                .methodCount(1)
-                .logAdapter(new OnDeviceLogAdapter())
-                .logLevel(LogLevel.FULL);
-        Logger.d("DataMigrationApp comes up.");
+
+        Logger.config(Settings.builder().tag(getClass().getSimpleName()).logLvel(0).logAdapter(new OnDeviceLogAdapter()).build());
+        Logger.d("DataMigrationApp start up~");
     }
 }

@@ -1,4 +1,4 @@
-package org.newstand.lib;
+package org.newstand.lib.util;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/31 17:06
@@ -9,6 +9,11 @@ package org.newstand.lib;
 public class Logger {
 
     private static Printer printer;
+
+    public static void config(Settings settings) {
+        printer = new LogPrinter();
+        printer.set(settings);
+    }
 
     public static void d(String message, Object... args) {
         printer.d(message, args);
