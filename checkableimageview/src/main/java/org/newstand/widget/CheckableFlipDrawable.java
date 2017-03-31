@@ -1,4 +1,4 @@
-package org.newstand.datamigration.ui.widget;
+package org.newstand.widget;
 
 import android.animation.ValueAnimator;
 import android.content.res.ColorStateList;
@@ -14,8 +14,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-
-import org.newstand.datamigration.R;
 
 public class CheckableFlipDrawable extends FlipDrawable implements
         ValueAnimator.AnimatorUpdateListener {
@@ -126,7 +124,7 @@ public class CheckableFlipDrawable extends FlipDrawable implements
         }
     }
 
-    private static class FrontDrawable extends Drawable implements Drawable.Callback {
+    private static class FrontDrawable extends Drawable implements Callback {
         private Drawable mDrawable;
 
         public FrontDrawable(Drawable d) {
@@ -248,7 +246,7 @@ public class CheckableFlipDrawable extends FlipDrawable implements
 
         public CheckmarkDrawable(final Resources res, int backgroundColor) {
             if (sCheckMark == null) {
-                sCheckMark = BitmapFactory.decodeResource(res, R.drawable.ic_check_wht_24dp);
+                sCheckMark = BitmapFactory.decodeResource(res, R.drawable.ic_check_white_24dp);
             }
             mPaint = new Paint();
             mPaint.setAntiAlias(true);

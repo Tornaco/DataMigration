@@ -15,13 +15,13 @@
         <item name="cardBackgroundColor">@color/card</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="android:listDivider">@color/dividerLight</item>
-        <item name="android:dividerHeight">1px</item>
+        <item name="android:listDivider">@color/transparent</item>
+        <item name="android:dividerHeight">0px</item>
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:windowContentTransitions">true</item>
     </style>

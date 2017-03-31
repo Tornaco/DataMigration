@@ -61,7 +61,6 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
     @Override
     protected void onStart() {
         super.onStart();
-        UserActionServiceProxy.publishNewAction("USER IN", getTitle().toString());
     }
 
     protected void showHomeAsUp() {
@@ -213,7 +212,6 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
     protected void onDestroy() {
         super.onDestroy();
         mIsDestroyed = true;
-        UserActionServiceProxy.publishNewAction("USER LEAVE", getTitle().toString());
     }
 
     protected void finishWithAfterTransition() {

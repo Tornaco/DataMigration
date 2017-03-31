@@ -9,6 +9,9 @@
     <string name="action_settings">Settings</string>
     <string name="action_user_actions">最近活动</string>
     <string name="action_remove">删除</string>
+    <string name="action_rename">修改名称</string>
+    <string name="action_renamed_to">已经修改名称为 %1$s</string>
+    <string name="action_rename_fail">无法修改名称</string>
     <string name="action_select_all">全部选择</string>
     <string name="action_clear_selection">清除选择</string>
     <string name="title_removed">已经删除：%1$s</string>
@@ -25,6 +28,7 @@
     <string name="category_sms">Sms</string>
     <string name="category_photo">Photo</string>
     <string name="category_app">App</string>
+    <string name="category_custom">自定义文件</string>
 
     <string name="summary_sms_template_rec">来自&#160;%1$s \t%2$s</string>
     <string name="summary_sms_template_send">发给&#160;%1$s \t%2$s</string>
@@ -65,9 +69,11 @@
     <string name="action_remark">此次备份的备注：</string>
     <string name="action_remark_tips">，点击可修改</string>
     <string name="title_backup_at">备份于 %1$s</string>
+    <string name="title_backup_invalid">无效备份</string>
     <string name="title_backup_history">Backup to %1$s</string>
     <string name="title_backup_history_noop">No backup history</string>
     <string name="title_send_history">Sent to Z1 at 2018.09.22</string>
+    <string name="title_only_root_dir">目前只支持根目录文件</string>
 
 
     <string name="summary_category_viewer">%1$s/%2$s</string>

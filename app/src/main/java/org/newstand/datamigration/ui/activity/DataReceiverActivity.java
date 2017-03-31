@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.orhanobut.logger.Logger;
 
+import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.net.CategoryReceiver;
 import org.newstand.datamigration.net.DataRecordReceiver;
@@ -42,28 +43,41 @@ public class DataReceiverActivity extends TransitionSafeActivity implements Sock
     }
 
     private void startServer() {
-
         SharedExecutor.execute(new Runnable() {
             @Override
             public void run() {
-
-                String host = getIntent().getStringExtra("host");
-
-                SocketServer socketServer = new SocketServer();
-                socketServer.setChannelHandler(DataReceiverActivity.this);
-                socketServer.setHost(host);
-                socketServer.setPort(8899);
-
-                SharedExecutor.execute(socketServer);
-
-                setSocketServer(socketServer);
+                int[] ports = SettingsProvider.getTransportServerPorts();
+                for (int port : ports) {
+                    if (startServerWith(port)) {
+                        return;
+                    }
+                }
             }
         });
+    }
+
+    private boolean startServerWith(int port) {
+
+        String host = getIntent().getStringExtra(IntentEvents.KEY_HOST);
+
+        SocketServer socketServer = new SocketServer();
+        socketServer.setChannelHandler(DataReceiverActivity.this);
+        socketServer.setHost(host);
+        socketServer.setPort(port);
+
+        setSocketServer(socketServer);
+
+        return socketServer.start();
     }
 
 
     void onError(Throwable e) {
         e.printStackTrace();
+    }
+
+    @Override
+    public void onServerCreateFail(int errCode) {
+
     }
 
     @Override

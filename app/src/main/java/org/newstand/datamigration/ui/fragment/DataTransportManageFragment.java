@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
@@ -41,8 +42,9 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
 
     protected abstract Session onCreateSession();
 
+    @UiThread
     @Override
-    void handleState(int state) {
+    void handleState(int state, Object obj) {
         switch (state) {
             case STATE_TRANSPORT_START:
                 onTransportStart();

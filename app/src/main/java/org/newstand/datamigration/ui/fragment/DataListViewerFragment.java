@@ -76,34 +76,16 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
         setHasOptionsMenu(true);
     }
 
-    private void startLoading() {
+    protected void startLoading() {
         swipeRefreshLayout.setRefreshing(true);
-        final LoadingCacheManager cache = onCreateLoaderSource().getParent() == LoaderSource.Parent.Android ? LoadingCacheManager.droid() : LoadingCacheManager.bk();
-        // From cache.
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                final Collection<DataRecord> dataRecords = cache.get(getDataType());
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        callLoadFinish(dataRecords);
-                    }
-                });
-            }
-        };
-        SharedExecutor.execute(r);
-    }
-
-    private void reLoading() {
-        final LoadingCacheManager cache = onCreateLoaderSource().getParent() == LoaderSource.Parent.Android
+        final LoadingCacheManager cache = onCreateLoaderSource().getParent()
+                == LoaderSource.Parent.Android
                 ? LoadingCacheManager.droid()
                 : LoadingCacheManager.bk();
         // From cache.
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                cache.refresh(getDataType());
                 final Collection<DataRecord> dataRecords = cache.get(getDataType());
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -116,7 +98,7 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
         SharedExecutor.execute(r);
     }
 
-    private void callLoadFinish(Collection<DataRecord> dataRecords) {
+    protected void callLoadFinish(Collection<DataRecord> dataRecords) {
         swipeRefreshLayout.setRefreshing(false);
         onLoadFinish(dataRecords);
     }
@@ -166,7 +148,7 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                reLoading();
+                startLoading();
             }
         });
     }

@@ -11,7 +11,12 @@ import android.widget.TextView;
 import org.newstand.datamigration.DataMigrationApp;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.repo.BKSessionRepoService;
+import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.worker.backup.session.Session;
+
+import java.util.Date;
+
+import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
 public class NavigatorActivity extends TransitionSafeActivity {
 
@@ -44,15 +49,27 @@ public class NavigatorActivity extends TransitionSafeActivity {
     }
 
     private void queryShowHistory() {
-        TextView tv1 = findView(findView(R.id.card_1), android.R.id.text2);
-        Session last = BKSessionRepoService.get().findLast();
-        String intro;
-        if (last == null) {
-            intro = getString(R.string.title_backup_history_noop);
-        } else {
-            intro = getString(R.string.title_backup_history, last.getName());
-        }
-        tv1.setText(intro);
+        final TextView tv1 = findView(findView(R.id.card_1), android.R.id.text2);
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Session last = BKSessionRepoService.get().findLast();
+                final String intro;
+                if (last == null) {
+                    intro = getString(R.string.title_backup_history_noop);
+                } else {
+                    intro = getString(R.string.title_backup_history,
+                            FuzzyDateTimeFormatter.getTimeAgo(getApplicationContext(),
+                                    new Date(last.getDate())));
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv1.setText(intro);
+                    }
+                });
+            }
+        });
 
     }
 

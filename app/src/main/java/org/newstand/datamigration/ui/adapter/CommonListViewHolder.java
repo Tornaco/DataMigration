@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.ui.widget.CheckableImageView;
+import org.newstand.widget.CheckableImageView;
 
 import lombok.Getter;
 

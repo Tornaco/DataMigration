@@ -37,7 +37,7 @@ public abstract class SessionLoader {
                         @Override
                         public void consume(@NonNull Session session) {
                             if (!validate(session)) {
-                                Logger.w("Bad session %s", session);
+                                Logger.w("Ignored bad session %s", session);
                                 return;
                             }
                             if (!session.isTmp()) {

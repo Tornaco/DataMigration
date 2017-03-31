@@ -1,10 +1,12 @@
 package org.newstand.datamigration.net.server;
 
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
+import com.google.common.base.Optional;
 import com.orhanobut.logger.Logger;
 
-import org.newstand.datamigration.sync.Sleeper;
+import org.newstand.datamigration.common.Consumer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +26,9 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @ToString(of = {"host", "port"})
-public abstract class ServerComponent implements Component, Runnable {
+public abstract class ServerComponent implements Component {
+
+    static final int MAX_RETRY_TIMES = 3;
 
     @Setter(AccessLevel.PROTECTED)
     private OutputStream outputStream;
@@ -41,21 +45,22 @@ public abstract class ServerComponent implements Component, Runnable {
         return getClass().getSimpleName();
     }
 
-    @Override
-    public void run() {
-        for (int i = 0; i < 10; i++) {
-            if (tryOnce()) return;
-            Sleeper.sleepQuietly(3 * 1000);
-        }
-    }
-
-    private boolean tryOnce() {
-        try {
-            start();
-            return true;
-        } catch (IOException e) {
-            Logger.d("Failed to prepareForTransporting %s", Log.getStackTraceString(e));
-            return false;
-        }
+    @VisibleForTesting
+    public Runnable asRunnable(final Consumer<Exception> exceptionConsumer) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    start();
+                } catch (IOException ignored) {
+                    Optional.of(exceptionConsumer).or(new Consumer<Exception>() {
+                        @Override
+                        public void consume(@NonNull Exception e) {
+                            Logger.e(e.getLocalizedMessage());
+                        }
+                    }).consume(ignored);
+                }
+            }
+        };
     }
 }

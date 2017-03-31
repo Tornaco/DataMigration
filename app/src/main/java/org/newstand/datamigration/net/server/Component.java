@@ -9,9 +9,9 @@ import java.io.IOException;
  */
 
 public interface Component {
-    void start() throws IOException;
+    boolean start() throws IOException;
 
-    void stop();
+    boolean stop();
 
     String name();
 }

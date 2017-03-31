@@ -55,7 +55,7 @@ public class DataBackupManager {
         return new DataBackupManager(context, session);
     }
 
-    public void renameSessionChecked(Session session, String name) {
+    public boolean renameSessionChecked(Session session, String name) {
         if (!name.equals(session.getName())) {
             String dir = SettingsProvider.getBackupRootDir();
             File from = new File(dir + File.separator + session.getName());
@@ -63,10 +63,12 @@ public class DataBackupManager {
             try {
                 Files.move(from, to);
                 session.rename(name);
+                return true;
             } catch (IOException e) {
                 Logger.e("Fail to rename session %s", e.getLocalizedMessage());
             }
         }
+        return false;
     }
 
     public void performBackup(final Collection<DataRecord> dataRecords,
@@ -134,6 +136,7 @@ public class DataBackupManager {
             case Photo:
             case Video:
             case App:
+            case CustomFile:
                 FileBackupSettings fileBackupSettings = new FileBackupSettings();
                 FileBasedRecord fileBasedRecord = (FileBasedRecord) record;
                 fileBackupSettings.setSourcePath(fileBasedRecord.getPath());
@@ -161,6 +164,7 @@ public class DataBackupManager {
             case Music:
             case Photo:
             case Video:
+            case CustomFile:
                 FileRestoreSettings fileRestoreSettings = new FileRestoreSettings();
                 FileBasedRecord fileBasedRecord = (FileBasedRecord) record;
                 fileRestoreSettings.setSourcePath(((FileBasedRecord) record).getPath());
@@ -189,6 +193,8 @@ public class DataBackupManager {
                 return new PhotoBackupAgent();
             case Video:
                 return new VideoBackupAgent();
+            case CustomFile:
+                return new FileBackupAgent();
             case Contact:
                 return new ContactBackupAgent();
             case App:

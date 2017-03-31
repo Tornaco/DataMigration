@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><!-- item_feed.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/card"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/common_item_min_height"
+    android:elevation="1dp"
+    android:layout_margin="@dimen/list_item_margin"
+    android:paddingEnd="?android:attr/scrollbarSize"
+    android:paddingStart="@dimen/activity_horizontal_margin">
+
+    <org.newstand.widget.CheckableImageView
+        android:id="@+id/checkable_img_view"
+        android:layout_width="@dimen/thumbnail_size"
+        android:layout_height="@dimen/thumbnail_size"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dip"
+        android:layout_marginStart="0dip" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="0dip"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="0dip"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@android:id/title"
+            style="@style/ListItemMainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:maxLines="30"
+            android:text="@string/app_intro" />
+
+        <ImageView
+            android:id="@+id/action_more"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_more_grey"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</LinearLayout>

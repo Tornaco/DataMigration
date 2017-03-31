@@ -8,6 +8,8 @@ import org.newstand.datamigration.utils.DateUtils;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/9 14:23
@@ -15,6 +17,8 @@ import lombok.Getter;
  * All right reserved.
  */
 @Getter
+@Setter
+@ToString
 public class Session extends RealmObject implements Parcelable {
 
     private String name;

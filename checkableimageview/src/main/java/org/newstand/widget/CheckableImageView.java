@@ -1,4 +1,4 @@
-package org.newstand.datamigration.ui.widget;
+package org.newstand.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -8,8 +8,6 @@ import android.util.AttributeSet;
 import android.widget.Checkable;
 import android.widget.ImageView;
 
-import org.newstand.datamigration.R;
-
 public class CheckableImageView extends ImageView implements Checkable {
     private boolean mChecked = false;
     private int mCheckMarkBackgroundColor;
@@ -17,28 +15,29 @@ public class CheckableImageView extends ImageView implements Checkable {
 
     public CheckableImageView(Context context) {
         super(context);
-        init(context);
+        init(context, null);
     }
 
     public CheckableImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init(context, attrs);
     }
 
     public CheckableImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public CheckableImageView(Context context, AttributeSet attrs,
                               int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context);
+
+        init(context, attrs);
     }
 
-    private void init(Context context) {
-        setCheckMarkBackgroundColor(context.getResources().getColor(R.color.accent));
+    private void init(Context context, AttributeSet attrs) {
+        setCheckMarkBackgroundColor(context.getResources().getColor(R.color.def_checked_mark_background_color));
     }
 
     public void setCheckMarkBackgroundColor(int color) {

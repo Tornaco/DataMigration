@@ -1,6 +1,8 @@
 package org.newstand.datamigration.ui.adapter;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +67,7 @@ public class CommonListAdapter extends RecyclerView.Adapter<CommonListViewHolder
 
     @Override
     public CommonListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.data_item_template_with_checkable, parent, false);
+        View view = LayoutInflater.from(getContext()).inflate(getTemplateLayoutRes(), parent, false);
         final CommonListViewHolder holder = new CommonListViewHolder(view);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +76,12 @@ public class CommonListAdapter extends RecyclerView.Adapter<CommonListViewHolder
             }
         });
         return holder;
+    }
+
+    protected
+    @LayoutRes
+    int getTemplateLayoutRes() {
+        return R.layout.data_item_template_with_checkable;
     }
 
     protected void onItemClick(CommonListViewHolder holder) {

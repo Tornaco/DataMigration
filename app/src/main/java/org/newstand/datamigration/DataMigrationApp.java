@@ -9,6 +9,7 @@ import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.service.UserActionServiceProxy;
+import org.newstand.datamigration.utils.OnDeviceLogAdapter;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -54,6 +55,7 @@ public class DataMigrationApp extends Application {
         Logger.init(getClass().getSimpleName())
                 .hideThreadInfo()
                 .methodCount(1)
+                .logAdapter(new OnDeviceLogAdapter())
                 .logLevel(LogLevel.FULL);
         Logger.d("DataMigrationApp comes up.");
     }

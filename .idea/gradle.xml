@@ -10,7 +10,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/checkableimageview" />
             <option value="$PROJECT_DIR$/eventbus" />
+            <option value="$PROJECT_DIR$/filepicker" />
+            <option value="$PROJECT_DIR$/logger" />
             <option value="$PROJECT_DIR$/mediahook" />
             <option value="$PROJECT_DIR$/progress-activity" />
             <option value="$PROJECT_DIR$/statemachine" />

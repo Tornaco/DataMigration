@@ -2,6 +2,7 @@ package org.newstand.datamigration.ui.fragment;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.UiThread;
 
 import lombok.Getter;
 
@@ -22,11 +23,15 @@ public abstract class StateBasedFragment extends TransitionSafeFragment {
     private int state = STATE_UNINITIALIZED;
 
     public void enterState(final int state) {
+        enterState(state, null);
+    }
+
+    public void enterState(final int state, final Object obj) {
         this.state = state;
         post(new Runnable() {
             @Override
             public void run() {
-                handleState(state);
+                handleState(state, obj);
             }
         });
     }
@@ -35,5 +40,6 @@ public abstract class StateBasedFragment extends TransitionSafeFragment {
         handler.post(r);
     }
 
-    abstract void handleState(int state);
+    @UiThread
+    abstract void handleState(int state, Object obj);
 }

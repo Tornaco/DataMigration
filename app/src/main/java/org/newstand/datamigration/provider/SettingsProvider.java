@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.BoolRes;
+import android.support.annotation.StringRes;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
@@ -15,6 +16,7 @@ import org.newstand.datamigration.worker.backup.session.Session;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.StringTokenizer;
 
 import lombok.NonNull;
 
@@ -29,6 +31,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_AUTO_CONNECT_ENABLED = "key_auto_connect_enabled";
     private static final String KEY_DEVICE_NAME = "key_dev_name";
     private static final String KEY_TRANSITION_ANIMATION = "key_transition_animation";
+    private static final String KEY_SERVER_PORTS = "key_server_ports";
 
     private static SettingsProvider sMe;
 
@@ -65,6 +68,10 @@ public class SettingsProvider extends Observable {
 
     public String readString(String key, String defValue) {
         return mSharedPreferences.getString(key, defValue);
+    }
+
+    public String readString(String key, @StringRes int defValue) {
+        return mSharedPreferences.getString(key, mRes.getString(defValue));
     }
 
     public void writeString(String key, String value) {
@@ -131,10 +138,28 @@ public class SettingsProvider extends Observable {
                 return Environment.getExternalStorageDirectory().getPath()
                         + File.separator
                         + Environment.DIRECTORY_MOVIES;
+            case CustomFile:
+                return Environment.getExternalStorageDirectory().getPath()
+                        + File.separator
+                        + category.name()
+                        + File.separator
+                        + session.getName();
 
             default:
                 throw new IllegalArgumentException("Unknown for:" + category.name());
         }
+    }
+
+    public static int[] getTransportServerPorts() {
+        String str = sMe.readString(KEY_SERVER_PORTS, R.string.def_transport_server_ports);
+        StringTokenizer stringTokenizer = new StringTokenizer(str, ",");
+        int N = stringTokenizer.countTokens();
+        int[] ports = new int[N];
+        for (int i = 0; i < N; i++) {
+            int p = Integer.parseInt(stringTokenizer.nextToken());
+            ports[i] = p;
+        }
+        return ports;
     }
 
     public static String getWFDDeviceNamePrefix() {

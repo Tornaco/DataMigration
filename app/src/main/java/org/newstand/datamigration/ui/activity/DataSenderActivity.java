@@ -8,6 +8,7 @@ import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.net.CategorySender;
@@ -17,6 +18,7 @@ import org.newstand.datamigration.net.PathCreator;
 import org.newstand.datamigration.net.protocol.CategoryHeader;
 import org.newstand.datamigration.net.protocol.OverviewHeader;
 import org.newstand.datamigration.net.server.SocketClient;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
@@ -39,18 +41,32 @@ public class DataSenderActivity extends TransitionSafeActivity implements Socket
     @Getter
     SocketClient client;
 
-    void startClient() {
-        String host = getIntent().getStringExtra("host");
+    private void startClient() {
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                int[] ports = SettingsProvider.getTransportServerPorts();
+                for (int port : ports) {
+                    if (startClientWith(port)) {
+                        return;
+                    }
+                }
+            }
+        });
+    }
 
-        SocketClient client = new SocketClient();
+    boolean startClientWith(int port) {
+        String host = getIntent().getStringExtra(IntentEvents.KEY_HOST);
+
+        final SocketClient client = new SocketClient();
         client.setHost(host);
-        client.setPort(8899);
+        client.setPort(port);
 
         client.setChannelHandler(this);
 
-        SharedExecutor.execute(client);
-
         setClient(client);
+
+        return client.start();
     }
 
     @Override
@@ -127,5 +143,10 @@ public class DataSenderActivity extends TransitionSafeActivity implements Socket
     @Override
     public void onServerChannelConnected() {
         send();
+    }
+
+    @Override
+    public void onServerChannelConnectedFailure(int errCode) {
+
     }
 }

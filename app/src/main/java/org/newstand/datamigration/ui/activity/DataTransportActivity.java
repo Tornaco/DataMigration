@@ -36,9 +36,4 @@ public class DataTransportActivity extends TransitionSafeActivity {
     protected boolean needSmoothHook() {
         return true;
     }
-
-    @Override
-    public void finish() {
-        finishWithAfterTransition();
-    }
 }

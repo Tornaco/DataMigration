@@ -12,6 +12,7 @@ import org.newstand.datamigration.worker.backup.session.Session;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
+import dev.nick.eventbus.annotation.CallInMainThread;
 import dev.nick.eventbus.annotation.Events;
 import dev.nick.eventbus.annotation.ReceiverMethod;
 
@@ -48,6 +49,7 @@ public class AndroidCategoryViewerActivity extends CategoryViewerActivity {
 
     @ReceiverMethod
     @Events(IntentEvents.EVENT_TRANSPORT_COMPLETE)
+    @CallInMainThread
     public void onTransportComplete(Event event) {
         Logger.d("onTransportComplete %s", event);
         finishWithAfterTransition();

@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/list_item_margin"
+    android:background="@color/card"
+    android:elevation="1dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:minHeight="@dimen/common_item_min_height"
-    android:background="@color/card"
     android:paddingEnd="?android:attr/scrollbarSize"
     android:paddingStart="@dimen/activity_horizontal_margin">
 
-    <org.newstand.datamigration.ui.widget.CheckableImageView
+    <org.newstand.widget.CheckableImageView
         android:id="@+id/checkable_img_view"
         android:layout_width="@dimen/thumbnail_size"
         android:layout_height="@dimen/thumbnail_size"

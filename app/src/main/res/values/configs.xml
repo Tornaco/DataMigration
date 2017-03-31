@@ -8,4 +8,6 @@
     <integer name="anim_duration_long">500</integer>
     <integer name="anim_duration_medium">300</integer>
     <integer name="anim_duration_short">200</integer>
+
+    <string name="def_transport_server_ports">8888,8899,9988,9999,6666</string>
 </resources>

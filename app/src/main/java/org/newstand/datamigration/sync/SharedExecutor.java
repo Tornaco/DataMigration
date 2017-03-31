@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 
 public abstract class SharedExecutor {
 
-    private static ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
 
     public static void execute(Runnable runnable) {
         executorService.execute(runnable);

@@ -1,8 +1,7 @@
 package org.newstand.datamigration.net.server;
 
+import com.google.common.io.Closer;
 import com.orhanobut.logger.Logger;
-
-import org.newstand.datamigration.utils.Closer;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -19,29 +18,49 @@ import lombok.Setter;
 public class SocketClient extends ServerComponent {
 
     @Getter
+    private Closer closer = Closer.create();
+
+    @Getter
     @Setter
     private ChannelHandler channelHandler;
 
     @Override
-    public void start() throws IOException {
+    public boolean start() {
 
         Logger.d("Starting client %s", toString());
 
-        Socket socket = new Socket(getHost(), getPort());
+        try {
+            Socket socket = closer.register(new Socket(getHost(), getPort()));
 
-        setOutputStream(socket.getOutputStream());
-        setInputStream(socket.getInputStream());
+            setOutputStream(closer.register(socket.getOutputStream()));
+            setInputStream(closer.register(socket.getInputStream()));
 
+        } catch (IOException e) {
+            channelHandler.onServerChannelConnectedFailure(ChannelHandler.FAIL_UNKNOWN);
+            return false;
+        }
         if (channelHandler != null) channelHandler.onServerChannelConnected();
+
+        return true;
     }
 
     @Override
-    public void stop() {
-        Closer.closeQuietly(getOutputStream());
-        Closer.closeQuietly(getInputStream());
+    public boolean stop() {
+        try {
+            closer.close();
+        } catch (IOException e) {
+            Logger.e("Close fail %s", e.getLocalizedMessage());
+            return false;
+        }
+        return true;
     }
 
     public interface ChannelHandler {
+
+        int FAIL_UNKNOWN = 0x4;
+
         void onServerChannelConnected();
+
+        void onServerChannelConnectedFailure(int errCode);
     }
 }

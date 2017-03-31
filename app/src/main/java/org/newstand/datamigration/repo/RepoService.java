@@ -23,4 +23,6 @@ public interface RepoService<T> {
     T findLast();
 
     List<T> findAll();
+
+    int size();
 }

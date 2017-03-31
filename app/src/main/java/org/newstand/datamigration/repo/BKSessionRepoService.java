@@ -2,6 +2,8 @@ package org.newstand.datamigration.repo;
 
 import android.support.annotation.NonNull;
 
+import com.orhanobut.logger.Logger;
+
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Files;
 import org.newstand.datamigration.worker.backup.session.Session;
@@ -35,9 +37,25 @@ public class BKSessionRepoService extends OneTimeRealmRepoService<Session> {
     }
 
     @Override
+    public boolean update(@NonNull final Session session) {
+        Logger.d("update %s", session);
+        final boolean[] res = {false};
+        final Realm r = getRealm();
+        r.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Session old = findSame(r, session);
+                if (old == null) return;
+                old.setName(session.getName());
+                res[0] = true;
+            }
+        });
+        return res[0];
+    }
+
+    @Override
     Session findSame(Realm r, Session session) {
-        return r.where(Session.class).equalTo("name", session.getName())
-                .equalTo("date", session.getDate()).findFirst();
+        return r.where(Session.class).equalTo("date", session.getDate()).findFirst();
     }
 
     @Override

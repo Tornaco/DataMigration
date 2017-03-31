@@ -13,6 +13,7 @@ import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.ui.fragment.AppListFragment;
 import org.newstand.datamigration.ui.fragment.ContactListFragment;
+import org.newstand.datamigration.ui.fragment.CustomFileListFragment;
 import org.newstand.datamigration.ui.fragment.DataListViewerFragment;
 import org.newstand.datamigration.ui.fragment.MusicListFragment;
 import org.newstand.datamigration.ui.fragment.PhotoListFragment;
@@ -79,6 +80,8 @@ public class DataListHostActivity extends TransitionSafeActivity implements Data
                 return new AppListFragment();
             case Sms:
                 return new SmsListFragment();
+            case CustomFile:
+                return new CustomFileListFragment();
             default:
                 return null;
         }

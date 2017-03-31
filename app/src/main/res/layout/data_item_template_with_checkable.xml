@@ -26,7 +26,7 @@
     android:paddingRight="?android:attr/scrollbarSize"
     android:paddingStart="@dimen/activity_horizontal_margin">
 
-    <org.newstand.datamigration.ui.widget.CheckableImageView
+    <org.newstand.widget.CheckableImageView
         android:id="@+id/checkable_img_view"
         android:layout_width="@dimen/thumbnail_size"
         android:layout_height="@dimen/thumbnail_size"

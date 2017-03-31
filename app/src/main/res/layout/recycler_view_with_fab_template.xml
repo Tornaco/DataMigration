@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/activity_horizontal_margin_small"
-    android:layout_marginEnd="@dimen/activity_horizontal_margin_small"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin_small"
-    android:layout_marginRight="@dimen/activity_horizontal_margin_small"
-    android:layout_marginStart="@dimen/activity_horizontal_margin_small"
-    android:layout_marginTop="@dimen/activity_horizontal_margin_small"
     android:fitsSystemWindows="true">
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -21,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fadeScrollbars="true"
-            android:scrollbarStyle="outsideInset"
+            android:scrollbarStyle="insideInset"
             android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </android.support.v4.widget.SwipeRefreshLayout>

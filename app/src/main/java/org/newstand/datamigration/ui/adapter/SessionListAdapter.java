@@ -8,14 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.utils.DateUtils;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;
+import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:14
@@ -71,9 +72,9 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListViewHold
     }
 
     protected void onBindViewHolder(SessionListViewHolder holder, final Session r) {
-        holder.getImageView().setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.ic_files));
+        holder.getImageView().setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.ic_bk_session));
         holder.getLineOneTextView().setText(r.getName());
-        holder.getLineTwoTextView().setText(getContext().getString(R.string.title_backup_at, DateUtils.formatLong(r.getDate())));
+        holder.getLineTwoTextView().setText(getContext().getString(R.string.title_backup_at, FuzzyDateTimeFormatter.getTimeAgo(getContext(), new Date(r.getDate()))));
     }
 
     @Override

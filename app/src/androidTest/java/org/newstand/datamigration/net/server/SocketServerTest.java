@@ -1,6 +1,7 @@
 package org.newstand.datamigration.net.server;
 
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -9,6 +10,7 @@ import com.orhanobut.logger.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.DataLoaderManager;
@@ -16,6 +18,7 @@ import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.net.DataRecordReceiver;
 import org.newstand.datamigration.net.DataRecordSender;
 import org.newstand.datamigration.net.ReceiveSettings;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.sync.Sleeper;
 
@@ -29,7 +32,64 @@ import java.io.OutputStream;
  * All right reserved.
  */
 @RunWith(AndroidJUnit4.class)
-public class SocketServerTest {
+public class SocketServerTest implements Consumer<Exception> {
+
+    @Test
+    public void testPortsInUse() {
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                int[] ports = SettingsProvider.getTransportServerPorts();
+                for (int port : ports) {
+                    if (startServerWith(port)) {
+                        Logger.d("Started @" + port);
+                        return;
+                    }
+                }
+                Assert.fail();
+            }
+        });
+    }
+
+    private boolean startServerWith(int port) {
+
+        String host = "localhost";
+
+        final SocketServer socketServer = new SocketServer();
+        socketServer.setChannelHandler(new SocketServer.ChannelHandler() {
+            @Override
+            public void onServerCreateFail(int errCode) {
+
+            }
+
+            @Override
+            public void onServerChannelCreate() {
+                Sleeper.sleepQuietly(2 * 1000);
+                socketServer.stop();
+            }
+
+            @Override
+            public void onClientChannelCreated() {
+
+            }
+        });
+        socketServer.setHost(host);
+        socketServer.setPort(port);
+
+        return socketServer.start();
+    }
+
+
+    @Test
+    public void setChannelHandler() throws Exception {
+        final SocketServer socketServer = new SocketServer();
+        socketServer.setHost("127.0.0.1");
+        socketServer.setPort(SettingsProvider.getTransportServerPorts()[0]);
+        SharedExecutor.execute(socketServer.asRunnable(this));
+        SharedExecutor.execute(socketServer.asRunnable(this));
+
+        Sleeper.sleepQuietly(20 * 1000);
+    }
 
     @Test
     public void testServer() throws IOException {
@@ -39,7 +99,7 @@ public class SocketServerTest {
         socketServer.setPort(9988);
 
 
-        SharedExecutor.execute(socketServer);
+        SharedExecutor.execute(socketServer.asRunnable(this));
 
         final SocketClient socketClient = new SocketClient();
         socketClient.setHost("127.0.0.1");
@@ -56,8 +116,18 @@ public class SocketServerTest {
 
         socketServer.setChannelHandler(new SocketServer.ChannelHandler() {
             @Override
+            public void onServerCreateFail(int errCode) {
+
+            }
+
+            @Override
             public void onServerChannelCreate() {
-                SharedExecutor.execute(socketClient);
+                SharedExecutor.execute(socketClient.asRunnable(new Consumer<Exception>() {
+                    @Override
+                    public void consume(@NonNull Exception e) {
+                        Assert.fail(e.getLocalizedMessage());
+                    }
+                }));
             }
 
             @Override
@@ -115,4 +185,8 @@ public class SocketServerTest {
                 .iterator().next();
     }
 
+    @Override
+    public void consume(@NonNull Exception e) {
+        Assert.fail(e.getLocalizedMessage());
+    }
 }
