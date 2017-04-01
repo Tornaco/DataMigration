@@ -188,7 +188,7 @@ public final class RootToolsInternalMethods {
                 RootTools.log("cp command is available!");
 
                 if (preserveFileAttributes) {
-                    command = new Command(0, false, "cp -fp " + source + " " + destination);
+                    command = new Command(0, false, "cp -rfp " + source + " " + destination);
                     Shell.startRootShell().add(command);
                     commandWait(Shell.startRootShell(), command);
 
@@ -196,7 +196,7 @@ public final class RootToolsInternalMethods {
                     result = command.getExitCode() == 0;
 
                 } else {
-                    command = new Command(0, false, "cp -f " + source + " " + destination);
+                    command = new Command(0, false, "cp -rf " + source + " " + destination);
                     Shell.startRootShell().add(command);
                     commandWait(Shell.startRootShell(), command);
 
@@ -209,12 +209,12 @@ public final class RootToolsInternalMethods {
                     RootTools.log("busybox cp command is available!");
 
                     if (preserveFileAttributes) {
-                        command = new Command(0, false, "busybox cp -fp " + source + " " + destination);
+                        command = new Command(0, false, "busybox cp -rfp " + source + " " + destination);
                         Shell.startRootShell().add(command);
                         commandWait(Shell.startRootShell(), command);
 
                     } else {
-                        command = new Command(0, false, "busybox cp -f " + source + " " + destination);
+                        command = new Command(0, false, "busybox cp -rf " + source + " " + destination);
                         Shell.startRootShell().add(command);
                         commandWait(Shell.startRootShell(), command);
 

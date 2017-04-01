@@ -9,7 +9,9 @@ import com.stericson.rootshell.execution.Shell;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.logger.Logger;
+import org.newstand.logger.Settings;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -25,13 +27,26 @@ public class RootToolsTest {
     @Before
     public void requireRoot() throws TimeoutException, RootDeniedException, IOException {
         Shell shell = RootTools.getShell(true);
-
-        Logger.d(shell.isClosed);
+        Logger.d("Shell closed %s", shell.isClosed);
     }
 
     @Test
     public void testShellCommand() {
         boolean root = RootTools.isRootAvailable();
         Logger.d("Root available %s", root);
+    }
+
+    @Test
+    public void testQQ() {
+        String qqDataDirPath = "data/data/com.tencent.mobileqq/";
+
+        Logger.w("Exist %s", RootTools.exists(qqDataDirPath, true));
+        Logger.w("Exist %s", RootTools.exists(qqDataDirPath + "shared_prefs/1163397166_far.xml", false));
+
+        Logger.d("Copy %s", RootTools.copyFile(qqDataDirPath + "shared_prefs/1163397166_far.xml", SettingsProvider.getTestDir() + "/qq.xml", false, false));
+
+        // Copy back!
+        RootTools.copyFile(SettingsProvider.getTestDir() + "/com.tencent.mobileqq", qqDataDirPath, false, false);
+
     }
 }
