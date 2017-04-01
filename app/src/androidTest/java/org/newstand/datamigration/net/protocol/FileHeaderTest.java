@@ -3,8 +3,6 @@ package org.newstand.datamigration.net.protocol;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.orhanobut.logger.Logger;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +12,7 @@ import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.loader.DataLoaderManager;
 import org.newstand.datamigration.loader.LoaderListener;
 import org.newstand.datamigration.loader.LoaderSource;
+import org.newstand.logger.Logger;
 
 import java.io.IOException;
 import java.util.Collection;

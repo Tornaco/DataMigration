@@ -5,8 +5,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import com.orhanobut.logger.Logger;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +19,7 @@ import org.newstand.datamigration.worker.backup.ContactBackupAgent;
 import org.newstand.datamigration.worker.backup.ContactRestoreSettings;
 import org.newstand.datamigration.worker.backup.DataBackupManager;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import java.util.Collection;
 import java.util.concurrent.CountDownLatch;

@@ -17,4 +17,7 @@ public interface UserActionHandler {
 
     @NonNull
     List<UserAction> getAll();
+
+    @NonNull
+    List<UserAction> getByFingerPrint(long fingerPrint);
 }

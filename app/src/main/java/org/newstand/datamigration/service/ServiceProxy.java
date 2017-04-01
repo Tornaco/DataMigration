@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
 
-import com.orhanobut.logger.Logger;
+import org.newstand.logger.Logger;
 
 /**
  * ServiceProxy is a superclass for proxy objects which make a single call to a service. It handles

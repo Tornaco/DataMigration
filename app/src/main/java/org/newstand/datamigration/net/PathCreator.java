@@ -3,14 +3,13 @@ package org.newstand.datamigration.net;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.DataBackupManager;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;

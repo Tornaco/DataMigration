@@ -57,6 +57,10 @@ public class UserActionServiceProxy extends ServiceProxy implements UserActionHa
         return new UserActionServiceProxy(context).getAll();
     }
 
+    public static List<UserAction> getByFingerPrint(@NonNull Context context, long finger) {
+        return new UserActionServiceProxy(context).getByFingerPrint(finger);
+    }
+
     @Override
     public void onConnected(IBinder binder) {
         handler = (UserActionHandler) binder;
@@ -77,6 +81,20 @@ public class UserActionServiceProxy extends ServiceProxy implements UserActionHa
                 res.addAll(handler.getAll());
             }
         }, "getAll");
+        waitForCompletion();
+        return res;
+    }
+
+    @NonNull
+    @Override
+    public List<UserAction> getByFingerPrint(final long fingerPrint) {
+        final List<UserAction> res = new ArrayList<>();
+        setTask(new ProxyTask() {
+            @Override
+            public void run() throws RemoteException {
+                res.addAll(handler.getByFingerPrint(fingerPrint));
+            }
+        }, "getByFingerPrint:" + fingerPrint);
         waitForCompletion();
         return res;
     }

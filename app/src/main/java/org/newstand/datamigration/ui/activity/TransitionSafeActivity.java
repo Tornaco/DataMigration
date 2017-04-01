@@ -10,16 +10,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.service.UserActionServiceProxy;
+import org.newstand.logger.Logger;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -64,7 +63,8 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
     }
 
     protected void showHomeAsUp() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     protected void onSmoothHook() {

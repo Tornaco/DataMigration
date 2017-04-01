@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import com.google.common.base.Optional;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.Consumer;
+import org.newstand.logger.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;

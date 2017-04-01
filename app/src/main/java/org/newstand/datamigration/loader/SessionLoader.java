@@ -2,14 +2,13 @@ package org.newstand.datamigration.loader;
 
 import android.support.annotation.NonNull;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.BKSessionRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.util.ArrayList;

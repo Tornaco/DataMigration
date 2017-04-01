@@ -17,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
 import com.vlonjatg.progressactivity.ProgressRelativeLayout;
 
 import org.newstand.datamigration.R;
@@ -33,6 +32,7 @@ import org.newstand.datamigration.ui.widget.AlertDialogCompat;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.ui.widget.ProgressDialogCompat;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;

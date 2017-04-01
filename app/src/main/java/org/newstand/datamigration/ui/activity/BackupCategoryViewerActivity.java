@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.common.base.Preconditions;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;

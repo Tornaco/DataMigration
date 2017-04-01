@@ -15,8 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
 import org.newstand.datamigration.loader.SessionLoader;
@@ -27,6 +25,7 @@ import org.newstand.datamigration.ui.adapter.SessionListViewHolder;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.worker.backup.DataBackupManager;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.util.Collection;

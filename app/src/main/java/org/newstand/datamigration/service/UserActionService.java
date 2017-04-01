@@ -8,11 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.repo.UserActionRepoService;
+import org.newstand.logger.Logger;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -83,6 +82,12 @@ public class UserActionService extends Service {
         @Override
         public List<UserAction> getAll() {
             return UserActionRepoService.get().findAll();
+        }
+
+        @NonNull
+        @Override
+        public List<UserAction> getByFingerPrint(long finger) {
+            return UserActionRepoService.get().findByFingerPrint(finger);
         }
     }
 }

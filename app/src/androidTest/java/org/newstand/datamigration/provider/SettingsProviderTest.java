@@ -2,11 +2,10 @@ package org.newstand.datamigration.provider;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.orhanobut.logger.Logger;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.newstand.logger.Logger;
 
 import java.util.Arrays;
 

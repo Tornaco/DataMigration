@@ -6,11 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.google.common.base.Preconditions;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.ui.fragment.DataImportManageFragment;
+import org.newstand.logger.Logger;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/15 16:37

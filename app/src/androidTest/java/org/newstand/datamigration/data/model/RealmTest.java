@@ -3,12 +3,11 @@ package org.newstand.datamigration.data.model;
 import android.support.annotation.NonNull;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.orhanobut.logger.Logger;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.logger.Logger;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;

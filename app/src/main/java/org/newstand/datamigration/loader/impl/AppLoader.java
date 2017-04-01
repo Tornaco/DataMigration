@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 
 import com.google.common.io.Files;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.AppRecord;
@@ -18,6 +17,7 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.ApkUtil;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;

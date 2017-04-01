@@ -14,11 +14,11 @@ import android.os.Looper;
 import android.os.PowerManager;
 
 import com.google.common.base.Preconditions;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.broadcast.WifiDirectBroadcastReceiver;
 import org.newstand.datamigration.utils.WakeLockWrapper;
 import org.newstand.lib.wfdhook.WFDManagerHook;
+import org.newstand.logger.Logger;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;

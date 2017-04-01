@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/logger/logger.iml" filepath="$PROJECT_DIR$/logger/logger.iml" />
       <module fileurl="file://$PROJECT_DIR$/mediahook/mediahook.iml" filepath="$PROJECT_DIR$/mediahook/mediahook.iml" />
       <module fileurl="file://$PROJECT_DIR$/progress-activity/progress-activity.iml" filepath="$PROJECT_DIR$/progress-activity/progress-activity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/roottools/roottools.iml" filepath="$PROJECT_DIR$/roottools/roottools.iml" />
       <module fileurl="file://$PROJECT_DIR$/statemachine/statemachine.iml" filepath="$PROJECT_DIR$/statemachine/statemachine.iml" />
       <module fileurl="file://$PROJECT_DIR$/tiles/tiles.iml" filepath="$PROJECT_DIR$/tiles/tiles.iml" />
       <module fileurl="file://$PROJECT_DIR$/vcard-android/vcard-android.iml" filepath="$PROJECT_DIR$/vcard-android/vcard-android.iml" />

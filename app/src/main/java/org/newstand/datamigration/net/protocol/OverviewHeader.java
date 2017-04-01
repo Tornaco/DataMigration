@@ -8,13 +8,13 @@ import com.google.common.io.Files;
 import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;

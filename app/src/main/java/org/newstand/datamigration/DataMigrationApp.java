@@ -8,8 +8,8 @@ import com.google.common.io.Closer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.utils.OnDeviceLogAdapter;
-import org.newstand.lib.util.Logger;
-import org.newstand.lib.util.Settings;
+import org.newstand.logger.Logger;
+import org.newstand.logger.Settings;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class DataMigrationApp extends Application {
         Realm.setDefaultConfiguration(config);
         UserActionServiceProxy.startService(this);
 
-        Logger.config(Settings.builder().tag(getClass().getSimpleName()).logLvel(0).logAdapter(new OnDeviceLogAdapter()).build());
+        Logger.config(Settings.builder().tag(getClass().getSimpleName()).logLevel(0).logAdapter(new OnDeviceLogAdapter()).build());
         Logger.d("DataMigrationApp start up~");
     }
 }

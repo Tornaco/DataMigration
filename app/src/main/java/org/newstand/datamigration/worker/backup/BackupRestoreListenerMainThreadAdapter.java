@@ -3,9 +3,8 @@ package org.newstand.datamigration.worker.backup;
 import android.os.Handler;
 import android.util.Log;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.logger.Logger;
 
 
 /**

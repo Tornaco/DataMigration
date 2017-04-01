@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.common.io.Files;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.AbortException;
 import org.newstand.datamigration.common.AbortSignal;
@@ -21,6 +20,7 @@ import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.Stats;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;

@@ -3,12 +3,11 @@ package org.newstand.datamigration.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;

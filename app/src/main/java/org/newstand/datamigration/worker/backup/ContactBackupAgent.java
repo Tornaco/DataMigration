@@ -15,13 +15,13 @@ import com.android.vcard.VCardParser_V40;
 import com.android.vcard.VCardSourceDetector;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.utils.Closer;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.FileWriter;

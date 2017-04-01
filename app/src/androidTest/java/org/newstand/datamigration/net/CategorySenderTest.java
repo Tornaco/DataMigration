@@ -3,8 +3,6 @@ package org.newstand.datamigration.net;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.orhanobut.logger.Logger;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,9 +11,10 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.DataLoaderManager;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.net.protocol.CategoryHeader;
-import org.newstand.datamigration.net.server.SocketClient;
-import org.newstand.datamigration.net.server.SocketServer;
-import org.newstand.datamigration.net.server.SocketServerTest;
+import org.newstand.datamigration.net.server.TransportClient;
+import org.newstand.datamigration.net.server.TransportServer;
+import org.newstand.datamigration.net.server.TransportServerTest;
+import org.newstand.logger.Logger;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -26,7 +25,7 @@ import java.util.Collection;
  * All right reserved.
  */
 @RunWith(AndroidJUnit4.class)
-public class CategorySenderTest extends SocketServerTest {
+public class CategorySenderTest extends TransportServerTest {
 
     @Test
     public void testCategorySender() throws IOException {
@@ -34,8 +33,8 @@ public class CategorySenderTest extends SocketServerTest {
     }
 
     @Override
-    protected void read(SocketClient socketClient) {
-        CategoryReceiver receiver = CategoryReceiver.with(socketClient.getInputStream(), socketClient.getOutputStream());
+    protected void read(TransportClient transportClient) {
+        CategoryReceiver receiver = CategoryReceiver.with(transportClient.getInputStream(), transportClient.getOutputStream());
         try {
             receiver.receive(null);
 
@@ -47,8 +46,8 @@ public class CategorySenderTest extends SocketServerTest {
     }
 
     @Override
-    protected void write(SocketServer socketServer) {
-        CategorySender sender = CategorySender.with(socketServer.getInputStream(), socketServer.getOutputStream());
+    protected void write(TransportServer transportServer) {
+        CategorySender sender = CategorySender.with(transportServer.getInputStream(), transportServer.getOutputStream());
         Collection<DataRecord> apps = DataLoaderManager.from(InstrumentationRegistry.getTargetContext())
                 .load(LoaderSource.builder().parent(LoaderSource.Parent.Android).build(), DataCategory.App);
         try {

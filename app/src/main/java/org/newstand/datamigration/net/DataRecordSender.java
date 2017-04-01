@@ -1,11 +1,11 @@
 package org.newstand.datamigration.net;
 
 import com.google.common.base.Preconditions;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.net.protocol.FileHeader;
+import org.newstand.logger.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;

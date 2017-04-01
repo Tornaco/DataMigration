@@ -1,6 +1,13 @@
 package org.newstand.datamigration.repo;
 
+import android.support.annotation.NonNull;
+
+import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.UserAction;
+import org.newstand.datamigration.utils.Collections;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 
@@ -31,6 +38,21 @@ public class UserActionRepoService extends OneTimeRealmRepoService<UserAction> {
     @Override
     UserAction findSame(Realm r, UserAction action) {
         return r.where(UserAction.class).equalTo("fingerPrint", action.getFingerPrint()).findFirst();
+    }
+
+    public List<UserAction> findByFingerPrint(long fingerPrint) {
+        Realm r = getRealm();
+        r.beginTransaction();
+        List<UserAction> all = r.where(UserAction.class).equalTo("fingerPrint", fingerPrint).findAll();
+        final List<UserAction> res = new ArrayList<>();
+        Collections.consumeRemaining(all, new Consumer<UserAction>() {
+            @Override
+            public void consume(@NonNull UserAction action) {
+                res.add(UserAction.from(action));
+            }
+        });
+        r.commitTransaction();
+        return res;
     }
 
     @Override

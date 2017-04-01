@@ -1,8 +1,7 @@
 package org.newstand.datamigration.worker.backup;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.logger.Logger;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/23 14:32

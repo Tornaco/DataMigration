@@ -3,7 +3,13 @@ package org.newstand.datamigration.utils;
 import android.util.Log;
 
 import org.newstand.datamigration.service.UserActionServiceProxy;
-import org.newstand.lib.util.LogAdapter;
+import org.newstand.logger.FastPrintWriter;
+import org.newstand.logger.LogAdapter;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/24 15:18
@@ -11,41 +17,95 @@ import org.newstand.lib.util.LogAdapter;
  * All right reserved.
  */
 
-public class OnDeviceLogAdapter implements LogAdapter {
+public class OnDeviceLogAdapter implements LogAdapter, Closeable {
 
-    @Override
-    public void d(String tag, String message) {
-        Log.d(tag, message);
-        UserActionServiceProxy.publishNewAction("D", tag + message);
+    private FastPrintWriter fw;
+
+    private ExecutorService exe = Executors.newSingleThreadExecutor();
+
+    public OnDeviceLogAdapter(int bufferSize) {
+        StringWriter sw = new StringWriter() {
+            @Override
+            public void flush() {
+                UserActionServiceProxy.publishNewAction("ActionBuffer@" + DateUtils.formatLong(System.currentTimeMillis()), toString());
+                super.flush();
+            }
+        };
+        fw = new FastPrintWriter(sw, false, bufferSize);
+    }
+
+    public OnDeviceLogAdapter() {
+        this(8192);
     }
 
     @Override
-    public void e(String tag, String message) {
-        Log.e(tag, message);
-        UserActionServiceProxy.publishNewAction("E", tag + message);
+    public void d(final String tag, final String message) {
+        exe.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(tag, message);
+                fw.println("DEBUG\t" + DateUtils.formatLong(System.currentTimeMillis()) + tag + ":\t" + message);
+            }
+        });
     }
 
     @Override
-    public void w(String tag, String message) {
-        Log.w(tag, message);
-        UserActionServiceProxy.publishNewAction("W", tag + message);
+    public void e(final String tag, final String message) {
+        exe.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.e(tag, message);
+                fw.println("ERROR\t" + DateUtils.formatLong(System.currentTimeMillis()) + tag + ":\t" + message);
+            }
+        });
     }
 
     @Override
-    public void i(String tag, String message) {
-        Log.i(tag, message);
-        UserActionServiceProxy.publishNewAction("I", tag + message);
+    public void w(final String tag, final String message) {
+        exe.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.w(tag, message);
+                fw.println("WARN\t" + DateUtils.formatLong(System.currentTimeMillis()) + tag + ":\t" + message);
+            }
+        });
     }
 
     @Override
-    public void v(String tag, String message) {
-        Log.v(tag, message);
-        UserActionServiceProxy.publishNewAction("V", tag + message);
+    public void i(final String tag, final String message) {
+        exe.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(tag, message);
+                fw.println("INFO\t" + DateUtils.formatLong(System.currentTimeMillis()) + tag + ":\t" + message);
+            }
+        });
     }
 
     @Override
-    public void wtf(String tag, String message) {
-        Log.wtf(tag, message);
-        UserActionServiceProxy.publishNewAction("WTF", tag + message);
+    public void v(final String tag, final String message) {
+        exe.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.v(tag, message);
+                fw.println("VERBOSE\t" + DateUtils.formatLong(System.currentTimeMillis()) + tag + ":\t" + message);
+            }
+        });
+    }
+
+    @Override
+    public void wtf(final String tag, final String message) {
+        exe.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.wtf(tag, message);
+                fw.println("WTF\t" + DateUtils.formatLong(System.currentTimeMillis()) + tag + ":\t" + message);
+            }
+        });
+    }
+
+    @Override
+    public void close() throws IOException {
+        fw.close();
     }
 }

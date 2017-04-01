@@ -4,10 +4,9 @@ import android.content.Context;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Looper;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.lib.State;
 import org.newstand.lib.StateMachine;
+import org.newstand.logger.Logger;
 
 import lombok.Getter;
 

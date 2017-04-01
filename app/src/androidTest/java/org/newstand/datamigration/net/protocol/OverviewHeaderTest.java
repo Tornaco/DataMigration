@@ -4,13 +4,12 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.orhanobut.logger.Logger;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.logger.Logger;
 
 import java.util.Arrays;
 

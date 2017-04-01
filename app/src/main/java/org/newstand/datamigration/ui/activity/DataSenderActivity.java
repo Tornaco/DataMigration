@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;
@@ -17,11 +15,13 @@ import org.newstand.datamigration.net.OverViewSender;
 import org.newstand.datamigration.net.PathCreator;
 import org.newstand.datamigration.net.protocol.CategoryHeader;
 import org.newstand.datamigration.net.protocol.OverviewHeader;
-import org.newstand.datamigration.net.server.SocketClient;
+import org.newstand.datamigration.net.server.ErrorCode;
+import org.newstand.datamigration.net.server.TransportClient;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -35,11 +35,11 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class DataSenderActivity extends TransitionSafeActivity implements SocketClient.ChannelHandler {
+public class DataSenderActivity extends TransitionSafeActivity implements TransportClient.ChannelHandler {
 
     @Setter
     @Getter
-    SocketClient client;
+    TransportClient client;
 
     private void startClient() {
         SharedExecutor.execute(new Runnable() {
@@ -58,7 +58,7 @@ public class DataSenderActivity extends TransitionSafeActivity implements Socket
     boolean startClientWith(int port) {
         String host = getIntent().getStringExtra(IntentEvents.KEY_HOST);
 
-        final SocketClient client = new SocketClient();
+        final TransportClient client = new TransportClient();
         client.setHost(host);
         client.setPort(port);
 
@@ -146,7 +146,7 @@ public class DataSenderActivity extends TransitionSafeActivity implements Socket
     }
 
     @Override
-    public void onServerChannelConnectedFailure(int errCode) {
+    public void onServerChannelConnectedFailure(ErrorCode errCode) {
 
     }
 }

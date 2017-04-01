@@ -1,18 +1,21 @@
 package org.newstand.datamigration.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.UserActionListAdapter;
+import org.newstand.logger.Logger;
 
 import java.util.List;
 
@@ -35,8 +38,18 @@ public class UserActionViewerActivity extends TransitionSafeActivity {
     @Getter
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    @Getter
+    private long fingerPrint = -1L;
+
+    private
+    @StyleRes
+    int theme = R.style.AppTheme;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        resolveIntent();
+        setTheme(theme);
+
         super.onCreate(savedInstanceState);
 
         showHomeAsUp();
@@ -46,10 +59,18 @@ public class UserActionViewerActivity extends TransitionSafeActivity {
         setupView();
     }
 
+    private void resolveIntent() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            fingerPrint = intent.getLongExtra(IntentEvents.KEY_USERACTION_FINGER_PRINT, fingerPrint);
+            theme = R.style.UserActionViewerTheme;
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        load();
+        loadByFinger();
     }
 
     private void setupView() {
@@ -61,7 +82,8 @@ public class UserActionViewerActivity extends TransitionSafeActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        // No divider in Dialog theme?
+        // recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = onCreateAdapter();
         recyclerView.setAdapter(adapter);
 
@@ -69,7 +91,7 @@ public class UserActionViewerActivity extends TransitionSafeActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                load();
+                loadByFinger();
             }
         });
     }
@@ -78,12 +100,18 @@ public class UserActionViewerActivity extends TransitionSafeActivity {
         return new UserActionListAdapter(this);
     }
 
-    private void load() {
+    private void loadByFinger() {
+
+        Logger.d("Loading us by finger %d", getFingerPrint());
+
         getSwipeRefreshLayout().setRefreshing(true);
         SharedExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                final List<UserAction> all = UserActionServiceProxy.getAll(getApplicationContext());
+                final List<UserAction> all =
+                        getFingerPrint() > 0 ?
+                                UserActionServiceProxy.getByFingerPrint(getApplicationContext(), getFingerPrint())
+                                : UserActionServiceProxy.getAll(getApplicationContext());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

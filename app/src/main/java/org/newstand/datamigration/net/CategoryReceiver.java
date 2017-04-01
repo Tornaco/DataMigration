@@ -1,9 +1,8 @@
 package org.newstand.datamigration.net;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.net.protocol.ACK;
 import org.newstand.datamigration.net.protocol.CategoryHeader;
+import org.newstand.logger.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -2,11 +2,11 @@ package org.newstand.datamigration.net;
 
 import com.google.common.io.Files;
 import com.google.common.primitives.Ints;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.net.protocol.ACK;
 import org.newstand.datamigration.net.protocol.FileHeader;
 import org.newstand.datamigration.utils.BlackHole;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;

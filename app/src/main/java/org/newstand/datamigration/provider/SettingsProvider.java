@@ -96,6 +96,12 @@ public class SettingsProvider extends Observable {
             + File.separator
             + "Logs";
 
+    private static final String TEST_DIR = Environment.getExternalStorageDirectory().getPath()
+            + File.separator
+            + ".DataMigration"
+            + File.separator
+            + "Test";
+
     public static String getBackupRootDir() {
         return COMMON_BACKUP_DIR;
     }
@@ -114,6 +120,10 @@ public class SettingsProvider extends Observable {
 
     public static String getLogDir() {
         return LOG_DIR;
+    }
+
+    public static String getTestDir() {
+        return TEST_DIR;
     }
 
     public static String getBackupDirByCategory(DataCategory category, Session session) {

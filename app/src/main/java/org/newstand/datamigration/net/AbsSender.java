@@ -4,10 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.common.io.Files;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.net.protocol.ACK;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;

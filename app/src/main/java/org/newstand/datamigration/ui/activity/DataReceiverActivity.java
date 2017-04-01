@@ -3,8 +3,6 @@ package org.newstand.datamigration.ui.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.net.CategoryReceiver;
@@ -12,10 +10,12 @@ import org.newstand.datamigration.net.DataRecordReceiver;
 import org.newstand.datamigration.net.OverviewReceiver;
 import org.newstand.datamigration.net.ReceiveSettings;
 import org.newstand.datamigration.net.protocol.CategoryHeader;
-import org.newstand.datamigration.net.server.SocketServer;
+import org.newstand.datamigration.net.server.ErrorCode;
+import org.newstand.datamigration.net.server.TransportServer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import java.io.IOException;
 import java.util.Set;
@@ -29,11 +29,11 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class DataReceiverActivity extends TransitionSafeActivity implements SocketServer.ChannelHandler {
+public class DataReceiverActivity extends TransitionSafeActivity implements TransportServer.ChannelHandler {
 
     @Getter
     @Setter
-    private SocketServer socketServer;
+    private TransportServer transportServer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,14 +60,14 @@ public class DataReceiverActivity extends TransitionSafeActivity implements Sock
 
         String host = getIntent().getStringExtra(IntentEvents.KEY_HOST);
 
-        SocketServer socketServer = new SocketServer();
-        socketServer.setChannelHandler(DataReceiverActivity.this);
-        socketServer.setHost(host);
-        socketServer.setPort(port);
+        TransportServer transportServer = new TransportServer();
+        transportServer.setChannelHandler(DataReceiverActivity.this);
+        transportServer.setHost(host);
+        transportServer.setPort(port);
 
-        setSocketServer(socketServer);
+        setTransportServer(transportServer);
 
-        return socketServer.start();
+        return transportServer.start();
     }
 
 
@@ -76,18 +76,18 @@ public class DataReceiverActivity extends TransitionSafeActivity implements Sock
     }
 
     @Override
-    public void onServerCreateFail(int errCode) {
+    public void onServerCreateFail(ErrorCode errCode) {
 
     }
 
     @Override
     public void onServerChannelCreate() {
-        Logger.d("onServerChannelCreate @%s", socketServer.toString());
+        Logger.d("onServerChannelCreate @%s", transportServer.toString());
     }
 
     @Override
     public void onClientChannelCreated() {
-        OverviewReceiver overviewReceiver = OverviewReceiver.with(socketServer.getInputStream(), socketServer.getOutputStream());
+        OverviewReceiver overviewReceiver = OverviewReceiver.with(transportServer.getInputStream(), transportServer.getOutputStream());
         try {
             overviewReceiver.receive(null);
         } catch (IOException e) {
@@ -101,7 +101,7 @@ public class DataReceiverActivity extends TransitionSafeActivity implements Sock
         int N = dataCategories.size();
 
         for (int i = 0; i < N; i++) {
-            CategoryReceiver categoryReceiver = CategoryReceiver.with(socketServer.getInputStream(), socketServer.getOutputStream());
+            CategoryReceiver categoryReceiver = CategoryReceiver.with(transportServer.getInputStream(), transportServer.getOutputStream());
             try {
                 categoryReceiver.receive(null);
                 Logger.d("Received header: " + categoryReceiver.getHeader());
@@ -117,7 +117,7 @@ public class DataReceiverActivity extends TransitionSafeActivity implements Sock
                 settings.setDestDir(SettingsProvider.getBackupDirByCategory(category, session));
 
                 for (int c = 0; c < C; c++) {
-                    int res = DataRecordReceiver.with(socketServer.getInputStream(), socketServer.getOutputStream())
+                    int res = DataRecordReceiver.with(transportServer.getInputStream(), transportServer.getOutputStream())
                             .receive(settings);
                     Logger.d("Receive res %d", res);
                 }

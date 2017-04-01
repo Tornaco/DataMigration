@@ -7,11 +7,11 @@ import android.provider.Telephony;
 import android.support.annotation.NonNull;
 
 import com.google.common.io.Files;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.data.model.SMSRecord;
 import org.newstand.datamigration.utils.Closer;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;

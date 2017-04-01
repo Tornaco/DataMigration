@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
@@ -19,6 +17,7 @@ import org.newstand.datamigration.ui.fragment.MusicListFragment;
 import org.newstand.datamigration.ui.fragment.PhotoListFragment;
 import org.newstand.datamigration.ui.fragment.SmsListFragment;
 import org.newstand.datamigration.ui.fragment.VideoListFragment;
+import org.newstand.logger.Logger;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/8 9:32

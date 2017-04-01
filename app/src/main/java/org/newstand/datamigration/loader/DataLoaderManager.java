@@ -3,12 +3,11 @@ package org.newstand.datamigration.loader;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.orhanobut.logger.Logger;
-
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.sync.SharedExecutor;
+import org.newstand.logger.Logger;
 
 import java.util.Collection;
 import java.util.Collections;

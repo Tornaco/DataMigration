@@ -11,10 +11,10 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import com.google.common.base.Preconditions;
-import com.orhanobut.logger.Logger;
 
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.utils.WifiExtManager;
+import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
