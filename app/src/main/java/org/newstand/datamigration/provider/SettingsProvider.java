@@ -11,6 +11,7 @@ import android.support.annotation.StringRes;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.strategy.WorkMode;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.io.File;
@@ -32,6 +33,15 @@ public class SettingsProvider extends Observable {
     private static final String KEY_DEVICE_NAME = "key_dev_name";
     private static final String KEY_TRANSITION_ANIMATION = "key_transition_animation";
     private static final String KEY_SERVER_PORTS = "key_server_ports";
+    private static final String KEY_WORK_MODE = "key_work_mode";
+
+    private static final String APP_DATA_DIR = "data/data";
+
+    private static final String BACKUP_DATA_DIR_NAME = "data";
+    private static final String BACKUP_APK_DIR_NAME = "apk";
+
+
+    private static final String LICENSE_ROOT_DIR = "license";
 
     private static SettingsProvider sMe;
 
@@ -136,6 +146,8 @@ public class SettingsProvider extends Observable {
 
     public static String getRestoreDirByCategory(DataCategory category, Session session) {
         switch (category) {
+            case App:
+                return APP_DATA_DIR + "";//FIXME
             case Music:
                 return Environment.getExternalStorageDirectory().getPath()
                         + File.separator
@@ -201,6 +213,14 @@ public class SettingsProvider extends Observable {
         sMe.writeBoolean(KEY_TRANSITION_ANIMATION, value);
     }
 
+    public static WorkMode workMode() {
+        return WorkMode.valueOf(sMe.readString(KEY_WORK_MODE, WorkMode.NORMAL.name()));
+    }
+
+    public static void setWorkMode(WorkMode mode) {
+        sMe.writeString(KEY_WORK_MODE, mode.name());
+    }
+
     public static long getDiscoveryTimeout() {
         return 60 * 1000;
     }
@@ -215,5 +235,21 @@ public class SettingsProvider extends Observable {
 
     public static void unObserve(Observer observer) {
         sMe.deleteObserver(observer);
+    }
+
+    public static String appDataDir() {
+        return APP_DATA_DIR;
+    }
+
+    public static String backupAppDataDirName() {
+        return BACKUP_DATA_DIR_NAME;
+    }
+
+    public static String backupAppApkDirName() {
+        return BACKUP_APK_DIR_NAME;
+    }
+
+    public static String licenseRootDir() {
+        return LICENSE_ROOT_DIR;
     }
 }

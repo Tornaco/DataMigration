@@ -1,0 +1,8 @@
+{
+"title":"RxBinding",
+"author":"JakeWharton",
+"description":"RxJava binding APIs for Android's UI widgets.",
+"fullLicense":"LICENSE",
+"url":"https://github.com/JakeWharton/RxBinding",
+"version":"2.0.0"
+}

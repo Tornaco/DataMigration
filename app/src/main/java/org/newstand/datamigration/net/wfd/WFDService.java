@@ -258,7 +258,7 @@ class WFDService extends WFDManager {
     public void tearDown() {
         setState(State.TEARING_DOWN);
         EventBus.from(context).unSubscribe(this);
-        mReceiver.unRegister(context);
+        if (mReceiver != null) mReceiver.unRegister(context);
         cancelConnect();
         removeGroup();
         stopDiscoverPeers();

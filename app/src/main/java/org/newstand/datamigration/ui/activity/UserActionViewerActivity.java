@@ -3,7 +3,6 @@ package org.newstand.datamigration.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,14 +40,9 @@ public class UserActionViewerActivity extends TransitionSafeActivity {
     @Getter
     private long fingerPrint = -1L;
 
-    private
-    @StyleRes
-    int theme = R.style.AppTheme;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         resolveIntent();
-        setTheme(theme);
 
         super.onCreate(savedInstanceState);
 
@@ -63,7 +57,6 @@ public class UserActionViewerActivity extends TransitionSafeActivity {
         Intent intent = getIntent();
         if (intent != null) {
             fingerPrint = intent.getLongExtra(IntentEvents.KEY_USERACTION_FINGER_PRINT, fingerPrint);
-            theme = R.style.UserActionViewerTheme;
         }
     }
 

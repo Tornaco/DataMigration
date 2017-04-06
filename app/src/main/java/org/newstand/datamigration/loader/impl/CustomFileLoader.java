@@ -61,8 +61,6 @@ public class CustomFileLoader extends BaseLoader {
 
     private Collection<DataRecord> loadFrom(String root, final LoaderFilter<DataRecord> filter) {
 
-        Logger.d("Loading from %s", root);
-
         final List<DataRecord> out = new ArrayList<>();
 
         Iterable<File> iterable = com.google.common.io.Files.fileTreeTraverser().children(new File(root));

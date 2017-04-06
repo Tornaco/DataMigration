@@ -1,6 +1,10 @@
 package org.newstand.datamigration.utils;
 
+import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 
 import org.newstand.datamigration.common.Consumer;
 
@@ -13,6 +17,7 @@ import java.io.File;
  */
 
 public abstract class Files {
+
     public static String formatSize(long fileSize) {
         String wellFormatSize = "";
         if (fileSize >= 0 && fileSize < 1024) {
@@ -37,5 +42,18 @@ public abstract class Files {
             }
         });
         return res[0];
+    }
+
+    public static Uri getUriForFile(Context context, File file) {
+        if (context == null || file == null) {
+            throw new NullPointerException();
+        }
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            uri = FileProvider.getUriForFile(context.getApplicationContext(), "org.newstand.datamigration.provider", file);
+        } else {
+            uri = Uri.fromFile(file);
+        }
+        return uri;
     }
 }

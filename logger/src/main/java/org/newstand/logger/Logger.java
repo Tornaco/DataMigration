@@ -1,5 +1,9 @@
 package org.newstand.logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.UnknownHostException;
+
 /**
  * Created by Nick@NewStand.org on 2017/3/31 17:06
  * E-Mail: NewStand@163.com
@@ -45,5 +49,21 @@ public class Logger {
 
     public static void wtf(String message, Object... args) {
         printer.wtf(message, args);
+    }
+
+    public static String getStackTraceString(Throwable throwable) {
+        if (throwable == null) return "";
+        Throwable t = throwable;
+        while (t != null) {
+            if (t instanceof UnknownHostException) {
+                return "";
+            }
+            t = t.getCause();
+        }
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new FastPrintWriter(stringWriter, false, 256);
+        throwable.printStackTrace(printWriter);
+        printWriter.close();
+        return stringWriter.toString();
     }
 }

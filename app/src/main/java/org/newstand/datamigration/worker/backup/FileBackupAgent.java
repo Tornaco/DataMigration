@@ -12,25 +12,26 @@ import java.io.File;
  * All right reserved.
  */
 
-public class FileBackupAgent implements BackupAgent<FileBackupSettings, FileRestoreSettings> {
+class FileBackupAgent implements BackupAgent<FileBackupSettings, FileRestoreSettings> {
 
     @Override
-    public void backup(FileBackupSettings backupSettings) throws Exception {
+    public Res backup(FileBackupSettings backupSettings) throws Exception {
         String from = backupSettings.getSourcePath();
         String to = backupSettings.getDestPath();
-        copy(from, to);
+        return copy(from, to);
     }
 
     @Override
-    public void restore(FileRestoreSettings restoreSettings) throws Exception {
+    public Res restore(FileRestoreSettings restoreSettings) throws Exception {
         String from = restoreSettings.getSourcePath();
         String to = restoreSettings.getDestPath();
-        copy(from, to);
+        return copy(from, to);
     }
 
-    private void copy(String from, String to) throws Exception {
+    private Res copy(String from, String to) throws Exception {
         BlackHole.eat(new File(to).delete());
         Files.createParentDirs(new File(to));
         Files.copy(new File(from), new File(to));
+        return Res.OK;
     }
 }

@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.strategy.WorkMode;
+import org.newstand.datamigration.ui.tiles.LicenceTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.tiles.TransitionAnimationTile;
+import org.newstand.datamigration.ui.tiles.WorkModeTile;
 
 import java.util.List;
 
@@ -42,6 +45,12 @@ public class SettingsActivity extends TransitionSafeActivity {
 
             TransitionAnimationTile animationTile = new TransitionAnimationTile(getContext());
             view.addTile(animationTile);
+
+            WorkModeTile workModeTile = new WorkModeTile(getContext());
+            view.addTile(workModeTile);
+
+            LicenceTile licenceTile = new LicenceTile(getContext());
+            view.addTile(licenceTile);
 
             categories.add(view);
 

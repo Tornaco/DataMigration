@@ -1,0 +1,8 @@
+{
+"title":"RxPermissions",
+"author":"tbruyelle",
+"description":"Android runtime permissions powered by RxJava",
+"fullLicense":"LICENSE",
+"url":"https://github.com/tbruyelle/RxPermissions",
+"version":"0.9.3"
+}

@@ -40,4 +40,9 @@ public abstract class ApkUtil {
         return info.versionName;
     }
 
+    public static String loadPkgNameByFilePath(@NonNull Context context, String filePath) {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo info = pm.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES);
+        return info.packageName;
+    }
 }

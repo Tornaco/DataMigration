@@ -1,0 +1,8 @@
+{
+"title":"lombok",
+"author":"rzwitserloot",
+"description":"Very spicy additions to the Java programming language. ",
+"fullLicense":"LICENSE",
+"url":"https://github.com/rzwitserloot/lombok",
+"version":"2.8.0"
+}

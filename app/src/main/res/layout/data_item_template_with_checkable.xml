@@ -68,7 +68,6 @@
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin_small"
             android:ellipsize="end"
-            android:maxLines="30"
             android:text="@string/large_text" />
 
         <ImageView

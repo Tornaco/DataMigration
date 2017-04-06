@@ -1,18 +1,25 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.cache.LoadingCacheManager;
@@ -99,7 +106,41 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupView();
-        startLoading();
+        startLoadingChecked();
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void startLoadingChecked() {
+        RxPermissions rxPermissions = new RxPermissions(getActivity());
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.WRITE_CONTACTS,
+                Manifest.permission.READ_SMS)
+                .subscribe(new io.reactivex.functions.Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean granted) throws Exception {
+                        if (granted) {
+                            startLoading();
+                        } else {
+                            onPermissionNotGrant();
+                        }
+                    }
+                });
+    }
+
+    private void onPermissionNotGrant() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                .setTitle("No permission")
+                .setMessage("WTF????")
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().finish();
+                    }
+                }).create();
+        alertDialog.show();
     }
 
     private void startLoading() {
@@ -165,7 +206,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                startLoading();
+                startLoadingChecked();
             }
         });
         showFab(false);

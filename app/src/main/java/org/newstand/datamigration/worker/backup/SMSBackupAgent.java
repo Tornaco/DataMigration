@@ -45,7 +45,7 @@ public class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestore
     }
 
     @Override
-    public void backup(SMSBackupSettings backupSettings) throws Exception {
+    public Res backup(SMSBackupSettings backupSettings) throws Exception {
         Logger.d("backup with settings:%s", backupSettings);
         String destPath = backupSettings.getDestPath();
         Files.createParentDirs(new File(destPath));
@@ -58,10 +58,12 @@ public class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestore
 
         // Update file path
         backupSettings.getSmsRecord().setPath(backupSettings.getDestPath());
+
+        return Res.OK;
     }
 
     @Override
-    public void restore(SMSRestoreSettings restoreSettings) throws Exception {
+    public Res restore(SMSRestoreSettings restoreSettings) throws Exception {
         Logger.d("restore with settings:%s", restoreSettings);
         String srcPath = restoreSettings.getSourcePath();
         File file = new File(srcPath);
@@ -83,6 +85,8 @@ public class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestore
         } catch (IOException e) {
             Logger.e("Err when read sms:%s", e);
         }
+
+        return Res.OK;
     }
 
     /* Write all messages contained in smsbk back to content provider */

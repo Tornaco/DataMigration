@@ -10,6 +10,7 @@ import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.common.StartSignal;
+import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
@@ -130,19 +131,28 @@ public class DataBackupManager {
         return abortSignal;
     }
 
-    public BackupSettings getBackupSettingsByCategory(DataCategory dataCategory, DataRecord record) {
+    private BackupSettings getBackupSettingsByCategory(DataCategory dataCategory, DataRecord record) {
         switch (dataCategory) {
             case Music:
             case Photo:
             case Video:
-            case App:
             case CustomFile:
-                FileBackupSettings fileBackupSettings = new FileBackupSettings();
-                FileBasedRecord fileBasedRecord = (FileBasedRecord) record;
-                fileBackupSettings.setSourcePath(fileBasedRecord.getPath());
-                fileBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
-                        + File.separator + record.getDisplayName());
-                return fileBackupSettings;
+                return getFileBackupSettings(dataCategory, record);
+            case App:
+                AppBackupSettings appBackupSettings = new AppBackupSettings();
+                appBackupSettings.setAppRecord((AppRecord) record);
+                appBackupSettings.setDestApkPath(
+                        SettingsProvider.getBackupDirByCategory(dataCategory, session)
+                                + File.separator + record.getDisplayName()
+                                + File.separator + SettingsProvider.backupAppApkDirName()
+                                + File.separator + record.getDisplayName() + AppRecord.APK_FILE_PREFIX);// DMBK2/APP/Phone/apk/XX.apk
+                appBackupSettings.setDestDataPath(
+                        SettingsProvider.getBackupDirByCategory(dataCategory, session)
+                                + File.separator + record.getDisplayName()
+                                + File.separator + SettingsProvider.backupAppDataDirName());// DMBK2/APP/Phone/data
+                appBackupSettings.setSourceApkPath(((FileBasedRecord) record).getPath());
+                appBackupSettings.setSourceDataPath(SettingsProvider.appDataDir() + File.separator + ((AppRecord) record).getPkgName());
+                return appBackupSettings;
             case Contact:
                 ContactBackupSettings contactBackupSettings = new ContactBackupSettings();
                 contactBackupSettings.setDataRecord(new ContactRecord[]{(ContactRecord) record});
@@ -159,18 +169,36 @@ public class DataBackupManager {
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
     }
 
-    public RestoreSettings getRestoreSettingsByCategory(DataCategory dataCategory, DataRecord record) {
+    private FileBackupSettings getFileBackupSettings(DataCategory category, DataRecord record) {
+        FileBackupSettings fileBackupSettings = new FileBackupSettings();
+        FileBasedRecord fileBasedRecord = (FileBasedRecord) record;
+        fileBackupSettings.setSourcePath(fileBasedRecord.getPath());
+        fileBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(category, session)
+                + File.separator + record.getDisplayName());
+        return fileBackupSettings;
+    }
+
+    private RestoreSettings getRestoreSettingsByCategory(DataCategory dataCategory, DataRecord record) {
         switch (dataCategory) {
             case Music:
             case Photo:
             case Video:
             case CustomFile:
                 FileRestoreSettings fileRestoreSettings = new FileRestoreSettings();
-                FileBasedRecord fileBasedRecord = (FileBasedRecord) record;
                 fileRestoreSettings.setSourcePath(((FileBasedRecord) record).getPath());
                 fileRestoreSettings.setDestPath(SettingsProvider.getRestoreDirByCategory(dataCategory, session)
-                        + File.separator + fileBasedRecord.getDisplayName());
+                        + File.separator + record.getDisplayName());
                 return fileRestoreSettings;
+            case App:
+                AppRestoreSettings appRestoreSettings = new AppRestoreSettings();
+                appRestoreSettings.setSourceApkPath(((FileBasedRecord) record).getPath());
+                appRestoreSettings.setSourceDataPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
+                        + File.separator + record.getDisplayName()
+                        + File.separator + SettingsProvider.backupAppDataDirName()
+                        + File.separator + "*");// DMBK2/APP/Phone/data/*
+                appRestoreSettings.setDestDataPath(SettingsProvider.appDataDir() + File.separator + ((AppRecord) record).getPkgName());
+                appRestoreSettings.setAppRecord((AppRecord) record);
+                return appRestoreSettings;
             case Contact:
                 ContactRestoreSettings contactRestoreSettings = new ContactRestoreSettings();
                 ContactRecord contactRecord = (ContactRecord) record;
@@ -185,7 +213,7 @@ public class DataBackupManager {
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
     }
 
-    public BackupAgent getAgentByCategory(DataCategory category) {
+    private BackupAgent getAgentByCategory(DataCategory category) {
         switch (category) {
             case Music:
                 return new MusicBackupAgent();
@@ -205,7 +233,7 @@ public class DataBackupManager {
         throw new IllegalArgumentException("Unknown for:" + category.name());
     }
 
-    class BackupWorker implements Runnable {
+    private class BackupWorker implements Runnable {
 
         BackupRestoreListener listener;
         Collection<DataRecord> dataRecords;
@@ -253,9 +281,14 @@ public class DataBackupManager {
                     listener.onPieceStart(record);
                     BackupSettings settings = getBackupSettingsByCategory(dataCategory, record);
                     try {
-                        backupAgent.backup(settings);
-                        listener.onPieceSuccess(record);
-                        status.onSuccess();
+                        BackupAgent.Res res = backupAgent.backup(settings);
+                        if (BackupAgent.Res.isOk(res)) {
+                            listener.onPieceSuccess(record);
+                            status.onSuccess();
+                        } else {
+                            listener.onPieceFail(record, res);
+                            status.onFail();
+                        }
                     } catch (Exception e) {
                         listener.onPieceFail(record, e);
                         status.onFail();
@@ -285,6 +318,7 @@ public class DataBackupManager {
             this.dataCategory = dataCategory;
             this.status = new SimpleStats();
             this.status.init(dataRecords.size());
+
             signal.addObserver(new Observer() {
                 @Override
                 public void update(Observable o, Object arg) {
@@ -314,9 +348,14 @@ public class DataBackupManager {
                     listener.onPieceStart(record);
                     RestoreSettings settings = getRestoreSettingsByCategory(dataCategory, record);
                     try {
-                        backupAgent.restore(settings);
-                        listener.onPieceSuccess(record);
-                        status.onSuccess();
+                        BackupAgent.Res res = backupAgent.restore(settings);
+                        if (BackupAgent.Res.isOk(res)) {
+                            listener.onPieceSuccess(record);
+                            status.onSuccess();
+                        } else {
+                            listener.onPieceFail(record, res);
+                            status.onFail();
+                        }
                     } catch (Exception e) {
                         listener.onPieceFail(record, e);
                         status.onFail();

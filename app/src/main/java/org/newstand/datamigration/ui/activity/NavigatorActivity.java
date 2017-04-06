@@ -1,12 +1,19 @@
 package org.newstand.datamigration.ui.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.newstand.datamigration.DataMigrationApp;
 import org.newstand.datamigration.R;
@@ -16,6 +23,7 @@ import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.util.Date;
 
+import io.reactivex.functions.Consumer;
 import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
 public class NavigatorActivity extends TransitionSafeActivity {
@@ -42,12 +50,39 @@ public class NavigatorActivity extends TransitionSafeActivity {
         });
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onStart() {
         super.onStart();
-        queryShowHistory();
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean granted) throws Exception {
+                        if (granted) {
+                            queryShowHistory();
+                        } else {
+                            onPermissionNotGrant();
+                        }
+                    }
+                });
     }
 
+    private void onPermissionNotGrant() {
+        AlertDialog alertDialog = new AlertDialog.Builder(NavigatorActivity.this)
+                .setTitle("No permission")
+                .setMessage("WTF????")
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishWithAfterTransition();
+                    }
+                }).create();
+        alertDialog.show();
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void queryShowHistory() {
         final TextView tv1 = findView(findView(R.id.card_1), android.R.id.text2);
         SharedExecutor.execute(new Runnable() {
@@ -113,6 +148,11 @@ public class NavigatorActivity extends TransitionSafeActivity {
         });
         popup.inflate(R.menu.navigator_card_2);
         popup.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

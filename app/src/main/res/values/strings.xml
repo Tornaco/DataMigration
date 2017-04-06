@@ -88,6 +88,7 @@
     <string name="tile_category_about">About</string>
     <string name="tile_title_auto_connect">Auto connect</string>
     <string name="tile_transition_animation">过场动画</string>
+    <string name="tile_work_mode_root">Root工作模式</string>
 
     <string name="title_transport_sender_receiver">On the air</string>
     <string name="title_transport_sender">Sender</string>
@@ -109,4 +110,6 @@
     </string>
 
     <string name="phone_num_unknown">未知号码</string>
+
+    <string name="title_license">开放源代码许可</string>
 </resources>

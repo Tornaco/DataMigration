@@ -21,6 +21,8 @@ import lombok.ToString;
 @Getter
 public class AppRecord extends FileBasedRecord implements Parcelable {
 
+    public static final String APK_FILE_PREFIX = ".apk";
+
     private String pkgName;
     private String versionName;
 

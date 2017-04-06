@@ -1,6 +1,8 @@
 package org.newstand.datamigration.ui.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -12,11 +14,13 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.vlonjatg.progressactivity.ProgressRelativeLayout;
 
 import org.newstand.datamigration.R;
@@ -101,9 +105,47 @@ public class WFDSetupActivity extends TransitionSafeActivity implements Discover
         setupView();
     }
 
+    private void requestPermission() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.WAKE_LOCK,
+                Manifest.permission.CHANGE_NETWORK_STATE,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE,
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+                .subscribe(new io.reactivex.functions.Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean granted) throws Exception {
+                        if (granted) {
+                            startAndDiscovery();
+                        } else {
+                            onPermissionNotGrant();
+                        }
+                    }
+                });
+    }
+
+    private void onPermissionNotGrant() {
+        AlertDialog alertDialog = new AlertDialog.Builder(WFDSetupActivity.this)
+                .setTitle("No permission")
+                .setMessage("WTF????")
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishWithAfterTransition();
+                    }
+                }).create();
+        alertDialog.show();
+    }
+
     @Override
     protected void onSmoothHook() {
         super.onSmoothHook();
+
         handler = new Handler();
         wfdManager = WFDManager.builder(this)
                 .connectionInfoListener(this)
@@ -132,7 +174,7 @@ public class WFDSetupActivity extends TransitionSafeActivity implements Discover
                     }
                 }).build();
 
-        startAndDiscovery();
+        requestPermission();
     }
 
     @Override

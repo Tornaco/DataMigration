@@ -1,0 +1,8 @@
+{
+"title":"RXJava",
+"author":"ReactiveX",
+"description":"RxJava – Reactive Extensions for the JVM – a library for composing asynchronous and event-based programs using observable sequences for the Java VM.",
+"fullLicense":"LICENSE",
+"url":"https://github.com/ReactiveX/RxJava",
+"version":"2.0.1"
+}

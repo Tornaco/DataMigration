@@ -84,16 +84,18 @@ public class AppLoader extends BaseLoader {
             @Override
             public void consume(@NonNull File file) {
                 AppRecord record = new AppRecord();
-                record.setDisplayName(file.getName());
-                record.setPath(file.getAbsolutePath());
+                record.setDisplayName(Files.getNameWithoutExtension(file.getPath()));
+                record.setPath(file.getPath() + File.separator + SettingsProvider.backupAppApkDirName()
+                        + File.separator + record.getDisplayName() + AppRecord.APK_FILE_PREFIX);
                 try {
                     Drawable icon = ApkUtil.loadIconByFilePath(getContext(), record.getPath());
                     record.setIcon(icon);
-                    record.setVersionName(ApkUtil.loadVersionByFilePath(getContext(), file.getPath()));
-                    record.setSize(Files.asByteSource(file).size());
+                    record.setVersionName(ApkUtil.loadVersionByFilePath(getContext(), record.getPath()));
+                    record.setPkgName(ApkUtil.loadPkgNameByFilePath(getContext(), record.getPath()));
+                    record.setSize(Files.asByteSource(new File(record.getPath())).size());
                     records.add(record);
                 } catch (Throwable e) {
-                    Logger.e("Failed to query size for:%s", record);
+                    Logger.e("Failed to query size for:%s %s", record, Logger.getStackTraceString(e));
                 }
             }
         });

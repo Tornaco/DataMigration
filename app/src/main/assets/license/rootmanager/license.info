@@ -1,0 +1,8 @@
+{
+"title":"RootManager",
+"author":"Chrisplus",
+"description":"A lib enable android developers to do things as a root user",
+"fullLicense":"LICENSE",
+"url":"https://github.com/Chrisplus/RootManager",
+"version":"2.0.5"
+}

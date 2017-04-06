@@ -7,7 +7,31 @@ package org.newstand.datamigration.worker.backup;
  */
 
 public interface BackupAgent<B extends BackupSettings, R extends RestoreSettings> {
-    void backup(B backupSettings) throws Exception;
+    Res backup(B backupSettings) throws Exception;
 
-    void restore(R restoreSettings) throws Exception;
+    Res restore(R restoreSettings) throws Exception;
+
+    class Res extends Exception {
+
+        public static final Res OK = null;
+
+        public Res() {
+        }
+
+        public Res(String message) {
+            super(message);
+        }
+
+        public Res(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        public Res(Throwable cause) {
+            super(cause);
+        }
+
+        public static boolean isOk(Res r) {
+            return Res.OK == r;
+        }
+    }
 }

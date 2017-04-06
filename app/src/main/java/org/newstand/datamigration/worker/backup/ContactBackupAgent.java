@@ -45,7 +45,7 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
     private Context context;
 
     @Override
-    public void backup(final ContactBackupSettings backupSettings) throws Exception {
+    public Res backup(final ContactBackupSettings backupSettings) throws Exception {
         Logger.d("backup with settings:%s", backupSettings);
         Writer writer = null;
         try {
@@ -54,7 +54,7 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
             VCardComposer cardComposer = new VCardComposer(context, VCARD_TYPE_V40_GENERIC);
             ContactRecord[] records = backupSettings.getDataRecord();
             if (!cardComposer.init(buildSelections(records), buildArgs(records))) {
-                throw new IllegalStateException("Unable to init:" + cardComposer.getErrorReason());
+                return new InitFailException("Unable to init:" + cardComposer.getErrorReason());
             }
             int count = cardComposer.getCount();
             Logger.e("Found:" + count);
@@ -75,6 +75,7 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
         } finally {
             Closer.closeQuietly(writer);
         }
+        return Res.OK;
     }
 
     private String buildSelections(ContactRecord[] records) {
@@ -97,7 +98,7 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
     }
 
     @Override
-    public void restore(ContactRestoreSettings restoreSettings) throws Exception {
+    public Res restore(ContactRestoreSettings restoreSettings) throws Exception {
 
         String sourcePath = restoreSettings.getSourcePath();
         InputStream inputStream = Files.asByteSource(new File(sourcePath)).openStream();
@@ -110,6 +111,8 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
         vCardEntryConstructor.addEntryHandler(this);
         vCardParser.addInterpreter(vCardEntryConstructor);
         vCardParser.parse(inputStream);
+
+        return Res.OK;
     }
 
     @Override

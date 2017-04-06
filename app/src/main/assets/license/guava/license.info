@@ -1,0 +1,8 @@
+{
+"title":"guava",
+"author":"google",
+"description":"Google Core Libraries for Java",
+"fullLicense":"LICENSE",
+"url":"https://github.com/google/guava",
+"version":"21.0"
+}

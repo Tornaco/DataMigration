@@ -1,0 +1,8 @@
+{
+ "title":"glide",
+ "author":"bumptech",
+ "description":"An image loading and caching library for Android focused on smooth scrolling",
+ "fullLicense":"LICENSE",
+ "url":"https://github.com/bumptech/glide",
+ "version":"3.7.0"
+ }
