@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">迁移</string>
     <string name="app_intro">数据备份以及迁移助手</string>
-    <string name="backup_intro">支持联系人，短消息，通话记录，照片，音乐，视频等数据备份与应用软件（不包括应用数据）备份到本地。\n备份需要您授予包括读取联系人，电话，短信，文件读写等权限。\n当您完成一次备份后，您可以随时使用还原功能进行数据还原。</string>
+    <string name="backup_intro">支持联系人，短消息，通话记录，照片，音乐，视频，闹钟等数据备份与应用软件（应用数据的备份需要获取ROOT权限）备份到本地。\n备份需要您授予包括读取联系人，电话，短信，文件读写等权限。\n当您完成一次备份后，您可以随时使用还原功能进行数据还原。</string>
     <string name="transport_intro">换新手机不再发愁旧手机里的数据，空中传输，可以将旧手机中上述可备份数据数据快速复制到新手机里。基于WIFI直连技术实现，不耗费蜂窝数据流量。\n另外需要您授予位置信息权限才能使用WIFI相关的技术进行数据传输。\n在使用的时候您只需要选择<b>发送</b>或者<b>接收</b>开始，按照引导操作即可。</string>
 
     <string name="title_activity_navigator">@string/app_name</string>
 
     <string name="action_settings">设置</string>
-    <string name="action_user_actions">最近活动</string>
+    <string name="action_user_actions">日志</string>
+    <string name="action_scheduler">定时任务</string>
     <string name="action_remove">删除</string>
     <string name="action_rename">修改名称</string>
     <string name="action_renamed_to">已经修改名称为 %1$s</string>
@@ -29,6 +30,7 @@
     <string name="category_sms">短信息</string>
     <string name="category_photo">照片</string>
     <string name="category_app">应用</string>
+    <string name="category_alarm">闹钟</string>
     <string name="category_custom">自定义文件</string>
 
     <string name="summary_sms_template_rec">来自&#160;%1$s \t%2$s</string>
@@ -97,7 +99,11 @@
     <string name="tile_category_strategy">策略</string>
     <string name="tile_title_auto_connect">自动连接</string>
     <string name="tile_transition_animation">过场动画</string>
+    <string name="summary_transition_animation">开启更活泼的动画，仅作实验~</string>
     <string name="tile_work_mode_root">Root工作模式</string>
+    <string name="summary_work_mode_root">此模式下你可以获取更多功能</string>
+    <string name="tile_dev_mode">开发者模式</string>
+    <string name="summary_dev_mode">你可以查看程序日志</string>
 
     <string name="title_transport_sender_receiver">空中传输</string>
     <string name="title_transport_sender">发送</string>

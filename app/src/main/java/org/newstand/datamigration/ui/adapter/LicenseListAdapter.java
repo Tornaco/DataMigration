@@ -1,6 +1,7 @@
 package org.newstand.datamigration.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,8 +71,9 @@ public class LicenseListAdapter extends RecyclerView.Adapter<CommonListViewHolde
     }
 
     protected void onBindViewHolder(CommonListViewHolder holder, final License license) {
+        holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.github));
         holder.getLineOneTextView().setText(license.getTitle() + "@" + license.getAuthor());
-        holder.getLineTwoTextView().setText(license.getDescription());
+        holder.getLineTwoTextView().setText(license.getDescription() + "\n\n" + license.getUrl());
     }
 
     @Override

@@ -23,7 +23,8 @@ import io.realm.RealmResults;
 public abstract class OneTimeRealmRepoService<T extends RealmObject> implements RepoService<T> {
 
     Realm getRealm() {
-        return Realm.getInstance(new RealmConfiguration.Builder().build());
+        return Realm.getInstance(new RealmConfiguration.Builder()
+                .build());
     }
 
     protected abstract Class<T> clz();

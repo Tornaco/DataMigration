@@ -10,36 +10,35 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import dev.nick.tiles.tile.SwitchTileView;
 
 /**
- * Created by Nick@NewStand.org on 2017/3/15 11:59
+ * Created by Nick@NewStand.org on 2017/4/1 17:04
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
 
-public class TransitionAnimationTile extends ThemedTile {
+public class DevTile extends ThemedTile {
 
-    public TransitionAnimationTile(@NonNull Context context) {
+    public DevTile(@NonNull Context context) {
         super(context, null);
     }
 
     @Override
     void onInitView(Context context) {
-        this.titleRes = R.string.tile_transition_animation;
-        this.summaryRes = R.string.summary_transition_animation;
-        this.iconRes = R.drawable.ic_theme;
+        this.titleRes = R.string.tile_dev_mode;
+        this.summaryRes = R.string.summary_dev_mode;
+        this.iconRes = R.drawable.ic_dev;
 
         this.tileView = new SwitchTileView(context) {
             @Override
             protected void onBindActionView(RelativeLayout container) {
                 super.onBindActionView(container);
-                setChecked(SettingsProvider.transitionAnimationEnabled());
+                setChecked(SettingsProvider.isDebugEnabled());
             }
 
             @Override
             protected void onCheckChanged(boolean checked) {
                 super.onCheckChanged(checked);
-                SettingsProvider.setTransitionAnimationEnabled(checked);
+                SettingsProvider.setDebugEnabled(checked);
             }
         };
-
     }
 }

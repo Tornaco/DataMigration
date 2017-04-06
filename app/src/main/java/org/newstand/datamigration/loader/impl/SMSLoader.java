@@ -92,8 +92,8 @@ public class SMSLoader extends BaseLoader {
     }
 
     @Override
-    public Collection<DataRecord> loadFromBackup(Session session, final LoaderFilter<DataRecord> filter) {
-        Logger.d("loadFromBackup %s", session);
+    public Collection<DataRecord> loadFromSession(Session session, final LoaderFilter<DataRecord> filter) {
+        Logger.d("loadFromSession %s", session);
         final List<DataRecord> res = new ArrayList<>();
         String dir = SettingsProvider.getBackupDirByCategory(DataCategory.Sms, session);
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));

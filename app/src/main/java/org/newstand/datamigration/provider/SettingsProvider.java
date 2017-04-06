@@ -34,6 +34,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_TRANSITION_ANIMATION = "key_transition_animation";
     private static final String KEY_SERVER_PORTS = "key_server_ports";
     private static final String KEY_WORK_MODE = "key_work_mode";
+    private static final String KEY_DEBUG_ENABLED = "key_debug_mode";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -251,5 +252,13 @@ public class SettingsProvider extends Observable {
 
     public static String licenseRootDir() {
         return LICENSE_ROOT_DIR;
+    }
+
+    public static void setDebugEnabled(boolean enabled) {
+        sMe.writeBoolean(KEY_DEBUG_ENABLED, enabled);
+    }
+
+    public static boolean isDebugEnabled() {
+        return sMe.readBoolean(KEY_DEBUG_ENABLED, R.bool.def_debug_enabled);
     }
 }

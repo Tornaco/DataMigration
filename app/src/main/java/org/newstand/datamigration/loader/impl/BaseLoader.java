@@ -37,13 +37,13 @@ public abstract class BaseLoader implements DataLoader<DataRecord>, PermissionRe
 
     public abstract Collection<DataRecord> loadFromAndroid(LoaderFilter<DataRecord> filter);
 
-    public abstract Collection<DataRecord> loadFromBackup(Session session, LoaderFilter<DataRecord> filter);
+    public abstract Collection<DataRecord> loadFromSession(Session session, LoaderFilter<DataRecord> filter);
 
     @Override
     public final Collection<DataRecord> load(LoaderSource source, LoaderFilter<DataRecord> filter) {
         switch (source.getParent()) {
             case Backup:
-                return loadFromBackup(source.getSession(), filter);
+                return loadFromSession(source.getSession(), filter);
             case Android:
                 return loadFromAndroid(filter);
         }

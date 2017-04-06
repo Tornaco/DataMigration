@@ -18,23 +18,23 @@ import io.realm.RealmConfiguration;
  * All right reserved.
  */
 
-public class BKSessionRepoService extends OneTimeRealmRepoService<Session> {
+public class ReceivedSessionRepoService extends OneTimeRealmRepoService<Session> {
 
-    private static BKSessionRepoService sMe;
+    private static ReceivedSessionRepoService sMe;
 
-    private BKSessionRepoService() {
+    private ReceivedSessionRepoService() {
         super();
     }
 
-    public static synchronized BKSessionRepoService get() {
-        if (sMe == null) sMe = new BKSessionRepoService();
+    public static synchronized ReceivedSessionRepoService get() {
+        if (sMe == null) sMe = new ReceivedSessionRepoService();
         return sMe;
     }
 
     @Override
     Realm getRealm() {
         return Realm.getInstance(new RealmConfiguration.Builder()
-                .name("backup_sessions")
+                .name("received_sessions")
                 .build());
     }
 

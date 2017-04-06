@@ -42,7 +42,7 @@ public class VideoLoader extends BaseLoader {
     }
 
     @Override
-    public Collection<DataRecord> loadFromBackup(Session session, LoaderFilter<DataRecord> filter) {
+    public Collection<DataRecord> loadFromSession(Session session, LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = new ArrayList<>();
         String dir = SettingsProvider.getBackupDirByCategory(DataCategory.Video, session);
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));

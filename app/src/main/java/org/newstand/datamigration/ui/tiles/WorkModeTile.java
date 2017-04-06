@@ -28,6 +28,7 @@ public class WorkModeTile extends ThemedTile {
     @Override
     void onInitView(Context context) {
         this.titleRes = R.string.tile_work_mode_root;
+        this.summaryRes = R.string.summary_work_mode_root;
         this.iconRes = R.drawable.ic_work_mode;
 
         this.tileView = new SwitchTileView(context) {
