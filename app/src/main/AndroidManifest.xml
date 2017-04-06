@@ -43,7 +43,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupSessionPickerActivity"
-            android:label="@string/title_restore"
+            android:label="@string/title_restore_picker"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupCategoryViewerActivity"

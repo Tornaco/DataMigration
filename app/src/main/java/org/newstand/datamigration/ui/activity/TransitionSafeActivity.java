@@ -76,7 +76,7 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
     }
 
     @SuppressWarnings("unchecked")
-    protected void transitionTo(Intent i) {
+    public void transitionTo(Intent i) {
         transitionTo(i, mTransitionAnimationEnabled);
     }
 

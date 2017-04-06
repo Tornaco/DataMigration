@@ -119,7 +119,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="@string/title_backup_history" />
+                        android:text="@string/title_backup_history_noop" />
                 </RelativeLayout>
 
 
@@ -238,7 +238,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="@string/title_send_history" />
+                        android:text="@string/title_send_history_noop" />
                 </RelativeLayout>
 
             </RelativeLayout>

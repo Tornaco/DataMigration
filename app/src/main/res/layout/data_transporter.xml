@@ -38,7 +38,6 @@
                 app:pwRimColor="@color/divider"
                 app:pwRimWidth="1dp"
                 app:pwSpinSpeed="3dp"
-                app:pwText="@string/app_name"
                 app:pwTextColor="@color/accent"
                 app:pwTextSize="48sp"
                 app:pwTypeface="fonts/agency.ttf" />

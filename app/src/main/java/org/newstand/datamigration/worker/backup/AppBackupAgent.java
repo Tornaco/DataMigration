@@ -12,6 +12,7 @@ import com.stericson.rootools.RootTools;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.strategy.WorkMode;
+import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.utils.MiscUtils;
 import org.newstand.datamigration.utils.RootTools2;
 import org.newstand.logger.Logger;
@@ -112,6 +113,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         }
 
         installReceiver.waitUtilInstalled();
+        Sleeper.sleepQuietly(1000); // Sleep for 1s to let user dismiss the install page...Maybe there is a better way?
         installReceiver.unRegister(getContext());
 
         if (workMode == WorkMode.ROOT) {

@@ -48,7 +48,7 @@ public class WorkModeTile extends ThemedTile {
                     SharedExecutor.execute(new Runnable() {
                         @Override
                         public void run() {
-                            RootManager.getInstance().obtainPermission();
+                            boolean res = RootManager.getInstance().obtainPermission();
                         }
                     });
                 }

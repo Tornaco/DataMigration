@@ -1,13 +1,26 @@
 <resources>
     <string name="app_name">迁移</string>
     <string name="app_intro">数据备份以及迁移助手</string>
+    <string name="backup_intro">支持联系人，短消息，通话记录，照片，音乐，视频等数据备份与应用软件（不包括应用数据）备份到本地。\n备份需要您授予包括读取联系人，电话，短信，文件读写等权限。\n当您完成一次备份后，您可以随时使用还原功能进行数据还原。</string>
+    <string name="transport_intro">换新手机不再发愁旧手机里的数据，空中传输，可以将旧手机中上述可备份数据数据快速复制到新手机里。基于WIFI直连技术实现，不耗费蜂窝数据流量。\n另外需要您授予位置信息权限才能使用WIFI相关的技术进行数据传输。\n在使用的时候您只需要选择<b>发送</b>或者<b>接收</b>开始，按照引导操作即可。</string>
 
     <string name="title_activity_navigator">@string/app_name</string>
 
     <string name="action_settings">设置</string>
+    <string name="action_user_actions">最近活动</string>
+    <string name="action_remove">删除</string>
+    <string name="action_rename">修改名称</string>
+    <string name="action_renamed_to">已经修改名称为 %1$s</string>
+    <string name="action_rename_fail">无法修改名称</string>
+    <string name="action_select_all">全部选择</string>
+    <string name="action_clear_selection">清除选择</string>
+    <string name="title_removed">已经删除：%1$s</string>
+    <string name="title_remove_failed">无法删除：%1$s</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_category_viewer">CategoryViewerActivity</string>
+    <string name="title_activity_test">Test</string>
 
     <string name="category_music">音乐</string>
     <string name="category_video">视频</string>
@@ -15,6 +28,16 @@
     <string name="category_sms">短信息</string>
     <string name="category_photo">照片</string>
     <string name="category_app">应用</string>
+    <string name="category_custom">自定义文件</string>
+
+    <string name="summary_sms_template_rec">来自&#160;%1$s \t%2$s</string>
+    <string name="summary_sms_template_send">发给&#160;%1$s \t%2$s</string>
+    <string name="summary_sms_template_draft">草稿&#160;%1$s \t%2$s</string>
+
+    <string name="title_transport_report">报告：</string>
+    <string name="title_transport_report_total">总共：%1$s个</string>
+    <string name="title_transport_report_success">成功：%1$s个</string>
+    <string name="title_transport_report_fail">失败：%1$s个</string>
 
     <string name="title_setup_wfd">寻找连接</string>
     <string name="title_setup_wfd_note">注意：</string>
@@ -25,6 +48,7 @@
     <string name="summary_setup_wfd_note_restart">*\t\t如果经过了很长时间仍然没有结果，你可以&#160;</string>
     <string name="title_wfd_conn_fail">连接失败</string>
     <string name="summary_wfd_conn_fail">当前无法与该设备建立连接，请稍候再试</string>
+
     <string name="summary_wfd_conn">正在连接</string>
     <string name="summary_wfd_requesting_conn_info">尝试获取连接信息</string>
     <string name="summary_wfd_requesting_conn_res">等待反馈</string>
@@ -39,28 +63,51 @@
     <string name="title_category">类别</string>
     <string name="title_backup_restore">备份与恢复</string>
     <string name="title_backup">备份</string>
+    <string name="title_backup_export">导出数据</string>
+    <string name="title_backup_exporting">正在导出数据</string>
+    <string name="title_backup_export_complete">导出数据完成</string>
     <string name="title_restore">恢复</string>
+    <string name="title_restore_import">导入数据</string>
+    <string name="title_restore_importing">正在导入数据</string>
+    <string name="title_restore_import_complete">导入数据完成</string>
+    <string name="action_done">完成</string>
+    <string name="action_remark">此次备份的备注：</string>
+    <string name="action_remark_tips">，点击可修改</string>
+    <string name="title_backup_at">备份于 %1$s</string>
+    <string name="title_backup_invalid">无效备份</string>
     <string name="title_backup_history">最近备份 %1$s</string>
     <string name="title_backup_history_noop">无备份记录</string>
-
-    <string name="tile_category_storage">存储</string>
-    <string name="tile_category_about">关于</string>
-    <string name="tile_title_auto_connect">自动连接</string>
+    <string name="title_send_history">无备份记录</string>
+    <string name="title_only_root_dir">目前只支持根目录文件</string>
 
 
+    <string name="summary_category_viewer">%1$s/%2$s</string>
     <string name="summary_category_viewer_need_click">点击选择条目</string>
     <string name="summary_app_template">版本号: <i>%1$s</i> \t\t 文件大小: <i>%2$s</i></string>
     <string name="unknown">未知</string>
     <string name="empty_title">天哪</string>
     <string name="empty_summary">这里没有内容</string>
 
+    <string name="tile_category_storage">存储</string>
+    <string name="tile_category_view">视觉</string>
+    <string name="tile_category_about">关于</string>
+    <string name="tile_category_strategy">策略</string>
+    <string name="tile_title_auto_connect">自动连接</string>
+    <string name="tile_transition_animation">过场动画</string>
+    <string name="tile_work_mode_root">Root工作模式</string>
 
     <string name="title_transport_sender_receiver">空中传输</string>
     <string name="title_transport_sender">发送</string>
     <string name="title_transport_receiver">接收</string>
 
-
     <string name="title_start">开始</string>
-    <string name="large_text">Android++ 是一个免费的Visual Studio扩展，同时关联了MSBuild脚本，使Visual Studio支持Android App开发。其初衷是为了基于C/C++上的NDK，另外还也包括可定制的部署、资源管理，集成了Java代码编译器"
+    <string name="large_text">
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
     </string>
+
+    <string name="phone_num_unknown">未知号码</string>
+
+    <string name="title_license">开放源代码许可</string>
 </resources>

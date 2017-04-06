@@ -14,7 +14,8 @@
         android:layout_marginLeft="@dimen/dashboard_tile_image_margin_start"
         android:layout_marginRight="@dimen/dashboard_tile_image_margin_end"
         android:layout_marginStart="@dimen/dashboard_tile_image_margin_start"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:tint="@color/accent" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,14 +48,13 @@
             android:ellipsize="end"
             android:maxLines="10"
             android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.TileSubTitle"
-            />
+            android:textAppearance="@style/TextAppearance.TileSubTitle" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        style="@style/ActionArea"
         android:id="@+id/action_area"
+        style="@style/ActionArea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

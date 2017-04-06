@@ -3,6 +3,7 @@ package org.newstand.datamigration.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -170,30 +171,45 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
     private void onRequestRemove(int position) {
         final Session session = getAdapter().getSessionList().remove(position);
         getAdapter().notifyItemRemoved(position);
-
-        Logger.d("Removing session %s", session);
-
-        if (session != null) {
-            SharedExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    boolean res = BKSessionRepoService.get().delete(session);
-                    showRemoveResult(session, res);
-                }
-            });
-        }
+        showRemoveResult(session, true);
     }
 
-    private void showRemoveResult(Session session, boolean removed) {
+    private void showRemoveResult(final Session session, boolean removed) {
         Snackbar.make(getRootView(), removed ?
                 getString(R.string.title_removed, session.getName())
                 : getString(R.string.title_remove_failed, session.getName()), Snackbar.LENGTH_LONG)
-                .setAction(android.R.string.ok, new View.OnClickListener() {
+                .setAction(R.string.title_remove_z, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Empty.
                     }
-                }).show();
+                })
+                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                        super.onDismissed(transientBottomBar, event);
+                        switch (event) {
+                            case DISMISS_EVENT_CONSECUTIVE:
+                            case DISMISS_EVENT_TIMEOUT:
+                            case DISMISS_EVENT_SWIPE:
+
+                                SharedExecutor.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Logger.d("Removing session %s", session);
+                                        boolean res = BKSessionRepoService.get().delete(session);
+                                    }
+                                });
+
+                                break;
+
+                            default:
+                                requestLoading();
+                                break;
+                        }
+                    }
+                })
+                .show();
     }
 
     protected void showRenameDialog(final Session session) {
