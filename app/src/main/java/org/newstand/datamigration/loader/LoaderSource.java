@@ -57,6 +57,7 @@ public class LoaderSource implements Parcelable {
 
     public enum Parent {
         Android,
-        Backup
+        Backup,
+        Received
     }
 }

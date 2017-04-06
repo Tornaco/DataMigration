@@ -24,6 +24,58 @@ import java.util.List;
 public abstract class SessionLoader {
 
     public static void loadAsync(final LoaderListener<Session> loaderListener) {
+        loadAsync(LoaderSource.builder().parent(LoaderSource.Parent.Backup).build(), loaderListener);
+    }
+
+    public static void loadAsync(LoaderSource source, final LoaderListener<Session> loaderListener) {
+        switch (source.getParent()) {
+            case Backup:
+                loadFromBackupAsync(loaderListener);
+                break;
+            case Received:
+                loadFromReceivedAsync(loaderListener);
+                break;
+            default:
+                throw new IllegalArgumentException("Bad source:" + source);
+        }
+    }
+
+    private static void loadFromBackupAsync(final LoaderListener<Session> loaderListener) {
+
+        final Collection<Session> res = new ArrayList<>();
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                loaderListener.onStart();
+                try {
+                    List<Session> all = BKSessionRepoService.get().findAll();
+                    Collections.consumeRemaining(all, new Consumer<Session>() {
+                        @Override
+                        public void consume(@NonNull Session session) {
+                            if (!validate(session)) {
+                                Logger.w("Ignored bad session %s", session);
+                                return;
+                            }
+                            if (!session.isTmp()) {
+                                res.add(Session.from(session));
+                            } else {
+                                Logger.w("Ignored tmp session %s", session);
+                            }
+                        }
+                    });
+                    loaderListener.onComplete(res);
+                } catch (Throwable throwable) {
+                    loaderListener.onErr(throwable);
+                }
+            }
+        };
+
+        SharedExecutor.execute(r);
+    }
+
+    private static void loadFromReceivedAsync(final LoaderListener<Session> loaderListener) {
+
         final Collection<Session> res = new ArrayList<>();
 
         Runnable r = new Runnable() {

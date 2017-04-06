@@ -12,4 +12,10 @@
         android:orderInCategory="100"
         android:title="@string/title_transport_receiver"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_received_viewer"
+        android:orderInCategory="100"
+        android:title="@string/title_transport_received_viewer"
+        app:showAsAction="never" />
 </menu>

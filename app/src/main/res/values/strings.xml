@@ -102,6 +102,7 @@
     <string name="title_transport_sender_receiver">空中传输</string>
     <string name="title_transport_sender">发送</string>
     <string name="title_transport_receiver">接收</string>
+    <string name="title_transport_received_viewer">我接收到的文件</string>
 
     <string name="title_start">开始</string>
     <string name="large_text">

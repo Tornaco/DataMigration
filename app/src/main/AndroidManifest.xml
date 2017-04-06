@@ -46,6 +46,10 @@
             android:label="@string/title_restore_picker"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.activity.ReceivedSessionPickerActivity"
+            android:label="@string/title_transport_received_viewer"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".ui.activity.BackupCategoryViewerActivity"
             android:label="@string/title_restore"
             android:theme="@style/AppTheme" />

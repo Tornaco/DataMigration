@@ -142,6 +142,9 @@ public class NavigatorActivity extends TransitionSafeActivity {
                     case R.id.action_receive:
                         transitionTo(new Intent(NavigatorActivity.this, WFDDataReceiverActivity.class));
                         break;
+                    case R.id.action_received_viewer:
+                        transitionTo(new Intent(NavigatorActivity.this, ReceivedSessionPickerActivity.class));
+                        break;
                 }
                 return true;
             }
