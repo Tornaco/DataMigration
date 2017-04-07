@@ -27,7 +27,6 @@ public class OnDeviceLogAdapter implements LogAdapter, Closeable {
         StringWriter sw = new StringWriter() {
             @Override
             public void flush() {
-                UserActionServiceProxy.publishNewAction("ActionBuffer@" + DateUtils.formatLong(System.currentTimeMillis()), toString());
                 super.flush();
             }
         };

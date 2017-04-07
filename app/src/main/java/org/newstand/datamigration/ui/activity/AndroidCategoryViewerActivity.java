@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -58,5 +59,10 @@ public class AndroidCategoryViewerActivity extends CategoryViewerActivity {
     @Override
     public LoaderSource onRequestLoaderSource() {
         return LoaderSource.builder().session(Session.create()).parent(LoaderSource.Parent.Android).build();
+    }
+
+    @Override
+    protected Class<? extends Activity> getListHostActivityClz() {
+        return AndroidDataListHostActivity.class;
     }
 }

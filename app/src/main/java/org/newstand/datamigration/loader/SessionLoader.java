@@ -13,7 +13,6 @@ import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -43,7 +42,7 @@ public abstract class SessionLoader {
 
     private static void loadFromBackupAsync(final LoaderListener<Session> loaderListener) {
 
-        final Collection<Session> res = new ArrayList<>();
+        final List<Session> res = new ArrayList<>();
 
         Runnable r = new Runnable() {
             @Override
@@ -65,6 +64,7 @@ public abstract class SessionLoader {
                             }
                         }
                     });
+                    java.util.Collections.reverse(res);
                     loaderListener.onComplete(res);
                 } catch (Throwable throwable) {
                     loaderListener.onErr(throwable);
@@ -77,9 +77,9 @@ public abstract class SessionLoader {
 
     private static void loadFromReceivedAsync(final LoaderListener<Session> loaderListener) {
 
-        final Collection<Session> res = new ArrayList<>();
+        final List<Session> res = new ArrayList<>();
 
-        Runnable r = new Runnable() {
+        final Runnable r = new Runnable() {
             @Override
             public void run() {
                 loaderListener.onStart();
@@ -99,6 +99,7 @@ public abstract class SessionLoader {
                             }
                         }
                     });
+                    java.util.Collections.reverse(res);
                     loaderListener.onComplete(res);
                 } catch (Throwable throwable) {
                     loaderListener.onErr(throwable);

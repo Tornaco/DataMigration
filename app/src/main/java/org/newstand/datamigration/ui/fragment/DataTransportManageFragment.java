@@ -12,6 +12,7 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;
+import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.widget.ViewAnimateUtils;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.Stats;

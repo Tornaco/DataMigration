@@ -161,11 +161,7 @@ public class NavigatorActivity extends TransitionSafeActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-        if (!SettingsProvider.isDebugEnabled()) {
-            menu.removeItem(R.id.action_user_actions);
-        }
-
+        menu.findItem(R.id.action_user_actions).setVisible(SettingsProvider.isDebugEnabled());
         return super.onPrepareOptionsMenu(menu);
     }
 

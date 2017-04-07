@@ -66,27 +66,8 @@ public class DataListHostActivity extends TransitionSafeActivity implements Data
         showList();
     }
 
-    private Fragment getFragmentByCategory(DataCategory category) {
-        switch (category) {
-            case Contact:
-                return new ContactListFragment();
-            case Music:
-                return new MusicListFragment();
-            case Photo:
-                return new PhotoListFragment();
-            case Video:
-                return new VideoListFragment();
-            case App:
-                return new AppListFragment();
-            case Sms:
-                return new SmsListFragment();
-            case CustomFile:
-                return new CustomFileListFragment();
-            case Alarm:
-                return new AlarmListFragment();
-            default:
-                return null;
-        }
+    protected Fragment getFragmentByCategory(DataCategory category) {
+        throw new UnsupportedOperationException("Not support without impl...");
     }
 
     @Override

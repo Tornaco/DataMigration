@@ -85,8 +85,14 @@ public class AppLoader extends BaseLoader {
             public void consume(@NonNull File file) {
                 AppRecord record = new AppRecord();
                 record.setDisplayName(Files.getNameWithoutExtension(file.getPath()));
-                record.setPath(file.getPath() + File.separator + SettingsProvider.backupAppApkDirName()
+                record.setPath(file.getPath() + File.separator + SettingsProvider.getBackupAppApkDirName()
                         + File.separator + record.getDisplayName() + AppRecord.APK_FILE_PREFIX);
+                boolean apkExist = new File(record.getPath()).exists();
+                if (!apkExist) {
+                    Logger.e("APK Not found in %s", record.getPath());
+                }
+                boolean dataExist = new File(file.getPath() + File.separator + SettingsProvider.getBackupAppDataDirName()).exists();
+                record.setHasData(dataExist);
                 try {
                     Drawable icon = ApkUtil.loadIconByFilePath(getContext(), record.getPath());
                     record.setIcon(icon);

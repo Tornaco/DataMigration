@@ -26,6 +26,8 @@ public class AppRecord extends FileBasedRecord implements Parcelable {
     private String pkgName;
     private String versionName;
 
+    private boolean hasData;
+
     @Ignore
     private transient Drawable icon;
 
@@ -33,6 +35,7 @@ public class AppRecord extends FileBasedRecord implements Parcelable {
         super(in);
         pkgName = in.readString();
         versionName = in.readString();
+        hasData = in.readInt() == 1;
     }
 
     @Ignore
@@ -53,6 +56,7 @@ public class AppRecord extends FileBasedRecord implements Parcelable {
         super.writeToParcel(dest, flags);
         dest.writeString(pkgName);
         dest.writeString(versionName);
+        dest.writeInt(hasData ? 1 : 0);
     }
 
     @Override

@@ -6,6 +6,10 @@
 
     <string name="title_activity_navigator">@string/app_name</string>
 
+    <string name="yes">√</string>
+    <string name="no">×</string>
+
+
     <string name="action_settings">设置</string>
     <string name="action_user_actions">日志</string>
     <string name="action_scheduler">定时任务</string>
@@ -88,7 +92,8 @@
 
     <string name="summary_category_viewer">%1$s/%2$s</string>
     <string name="summary_category_viewer_need_click">点击选择条目</string>
-    <string name="summary_app_template">版本号: <i>%1$s</i> \t\t 文件大小: <i>%2$s</i></string>
+    <string name="summary_app_template">版本号: <i>%1$s</i>\n文件大小: <i>%2$s</i></string>
+    <string name="summary_app_template2">版本号: <i>%1$s</i>\n文件大小: <i>%2$s</i>\n包含数据包: <i>%3$s</i></string>
     <string name="unknown">未知</string>
     <string name="empty_title">天哪</string>
     <string name="empty_summary">这里没有内容</string>

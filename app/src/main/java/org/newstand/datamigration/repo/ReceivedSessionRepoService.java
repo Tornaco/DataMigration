@@ -34,6 +34,7 @@ public class ReceivedSessionRepoService extends OneTimeRealmRepoService<Session>
     @Override
     Realm getRealm() {
         return Realm.getInstance(new RealmConfiguration.Builder()
+                .directory(new File(SettingsProvider.getReceivedRootDir()))
                 .name("received_sessions")
                 .build());
     }

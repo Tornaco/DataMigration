@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -78,4 +79,8 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
         return mSource;
     }
 
+    @Override
+    protected Class<? extends Activity> getListHostActivityClz() {
+        return BackupDataListHostActivity.class;
+    }
 }

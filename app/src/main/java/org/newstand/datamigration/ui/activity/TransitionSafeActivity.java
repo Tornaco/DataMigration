@@ -54,7 +54,7 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
     }
 
     private void readSettings() {
-        mTransitionAnimationEnabled = SettingsProvider.transitionAnimationEnabled();
+        mTransitionAnimationEnabled = SettingsProvider.isTransitionAnimationEnabled();
     }
 
     @Override

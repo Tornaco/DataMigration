@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -35,10 +36,14 @@ public abstract class CategoryViewerActivity extends TransitionSafeActivity
 
     @Override
     public void onCategorySelect(DataCategory category) {
-        Intent intent = new Intent(this, DataListHostActivity.class);
+        Intent intent = new Intent(this, getListHostActivityClz());
         intent.putExtra(IntentEvents.KEY_CATEGORY, category.name());
         intent.putExtra(IntentEvents.KEY_SOURCE, onRequestLoaderSource());
         transitionTo(intent);
+    }
+
+    protected Class<? extends Activity> getListHostActivityClz() {
+        return DataListHostActivity.class;
     }
 
     @Override

@@ -35,12 +35,13 @@ public class SettingsProvider extends Observable {
     private static final String KEY_SERVER_PORTS = "key_server_ports";
     private static final String KEY_WORK_MODE = "key_work_mode";
     private static final String KEY_DEBUG_ENABLED = "key_debug_mode";
+    private static final String KEY_DEF_SMS_APP = "key_def_sms_app";
 
     private static final String APP_DATA_DIR = "data/data";
 
     private static final String BACKUP_DATA_DIR_NAME = "data";
     private static final String BACKUP_APK_DIR_NAME = "apk";
-
+    private static final String BACKUP_SESSION_INFO_FILE_NAME = "session.info";
 
     private static final String LICENSE_ROOT_DIR = "license";
 
@@ -117,12 +118,27 @@ public class SettingsProvider extends Observable {
         return COMMON_BACKUP_DIR;
     }
 
+    public static String getReceivedRootDir() {
+        return COMMON_RECEIVED_DIR;
+    }
+
+    public static String getBackupSessionAssetFile() {
+        return COMMON_BACKUP_DIR
+                + File.separator
+                + "backup_sessions_assets.realm";
+    }
+
     public static String getBackupSessionDir(Session session) {
         return COMMON_BACKUP_DIR + File.separator + session.getName();
     }
 
-    public static String getReceivedRootDir() {
-        return COMMON_RECEIVED_DIR;
+    // .DM/Backup/XXXX-XX/session.info
+    public static String getBackupSessionInfoPath(Session session) {
+        return getBackupSessionDir(session) + File.separator + BACKUP_SESSION_INFO_FILE_NAME;
+    }
+
+    public static String getBackupSessionInfoFileName() {
+        return BACKUP_SESSION_INFO_FILE_NAME;
     }
 
     public static String getRecSessionDir(Session session) {
@@ -145,10 +161,16 @@ public class SettingsProvider extends Observable {
                 + category.name();
     }
 
+    public static String getReceivedDirByCategory(DataCategory category, Session session) {
+        return COMMON_RECEIVED_DIR
+                + File.separator
+                + session.getName()
+                + File.separator
+                + category.name();
+    }
+
     public static String getRestoreDirByCategory(DataCategory category, Session session) {
         switch (category) {
-            case App:
-                return APP_DATA_DIR + "";//FIXME
             case Music:
                 return Environment.getExternalStorageDirectory().getPath()
                         + File.separator
@@ -198,7 +220,7 @@ public class SettingsProvider extends Observable {
         sMe.writeString(KEY_DEVICE_NAME, name);
     }
 
-    public static boolean autoConnectEnabled() {
+    public static boolean isAutoConnectEnabled() {
         return sMe.readBoolean(KEY_AUTO_CONNECT_ENABLED, false);
     }
 
@@ -206,7 +228,7 @@ public class SettingsProvider extends Observable {
         sMe.writeBoolean(KEY_AUTO_CONNECT_ENABLED, value);
     }
 
-    public static boolean transitionAnimationEnabled() {
+    public static boolean isTransitionAnimationEnabled() {
         return sMe.readBoolean(KEY_TRANSITION_ANIMATION, R.bool.def_transition_animation_enabled);
     }
 
@@ -214,7 +236,7 @@ public class SettingsProvider extends Observable {
         sMe.writeBoolean(KEY_TRANSITION_ANIMATION, value);
     }
 
-    public static WorkMode workMode() {
+    public static WorkMode getWorkMode() {
         return WorkMode.valueOf(sMe.readString(KEY_WORK_MODE, WorkMode.NORMAL.name()));
     }
 
@@ -238,19 +260,19 @@ public class SettingsProvider extends Observable {
         sMe.deleteObserver(observer);
     }
 
-    public static String appDataDir() {
+    public static String getAppDataDir() {
         return APP_DATA_DIR;
     }
 
-    public static String backupAppDataDirName() {
+    public static String getBackupAppDataDirName() {
         return BACKUP_DATA_DIR_NAME;
     }
 
-    public static String backupAppApkDirName() {
+    public static String getBackupAppApkDirName() {
         return BACKUP_APK_DIR_NAME;
     }
 
-    public static String licenseRootDir() {
+    public static String getLicenseRootDir() {
         return LICENSE_ROOT_DIR;
     }
 
@@ -260,5 +282,13 @@ public class SettingsProvider extends Observable {
 
     public static boolean isDebugEnabled() {
         return sMe.readBoolean(KEY_DEBUG_ENABLED, R.bool.def_debug_enabled);
+    }
+
+    public static String getDefSmsApp() {
+        return sMe.readString(KEY_DEF_SMS_APP, "com.android.mms");
+    }
+
+    public static void setDefSmsApp(String pkgName) {
+        sMe.writeString(KEY_DEF_SMS_APP, pkgName);
     }
 }

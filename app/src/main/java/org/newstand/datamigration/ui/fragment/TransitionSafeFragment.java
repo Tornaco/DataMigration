@@ -33,4 +33,9 @@ public class TransitionSafeFragment extends Fragment {
         if (!isAlive()) return null;
         return getString(idRes);
     }
+
+    public final String getStringSafety(@StringRes int resId, Object... formatArgs) {
+        if (!isAlive()) return null;
+        return getString(resId, formatArgs);
+    }
 }

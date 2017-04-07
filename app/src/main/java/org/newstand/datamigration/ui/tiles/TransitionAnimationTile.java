@@ -31,7 +31,7 @@ public class TransitionAnimationTile extends ThemedTile {
             @Override
             protected void onBindActionView(RelativeLayout container) {
                 super.onBindActionView(container);
-                setChecked(SettingsProvider.transitionAnimationEnabled());
+                setChecked(SettingsProvider.isTransitionAnimationEnabled());
             }
 
             @Override

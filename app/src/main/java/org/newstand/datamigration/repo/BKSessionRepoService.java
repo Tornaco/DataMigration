@@ -34,6 +34,7 @@ public class BKSessionRepoService extends OneTimeRealmRepoService<Session> {
     @Override
     Realm getRealm() {
         return Realm.getInstance(new RealmConfiguration.Builder()
+                .directory(new File(SettingsProvider.getBackupRootDir()))
                 .name("backup_sessions")
                 .build());
     }

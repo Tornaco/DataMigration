@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.ContextWireable;
+import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.model.SMSRecord;
 import org.newstand.datamigration.utils.Closer;
 import org.newstand.logger.Logger;
@@ -32,8 +33,7 @@ import static org.newstand.datamigration.data.SmsContentProviderCompat.SENT_CONT
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-
-public class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestoreSettings>, ContextWireable {
+class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestoreSettings>, ContextWireable {
 
     @Getter
     @Setter
@@ -64,6 +64,7 @@ public class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestore
 
     @Override
     public Res restore(SMSRestoreSettings restoreSettings) throws Exception {
+
         Logger.d("restore with settings:%s", restoreSettings);
         String srcPath = restoreSettings.getSourcePath();
         File file = new File(srcPath);
@@ -98,30 +99,30 @@ public class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestore
         switch (smsRecord.getMsgBox()) {
             case INBOX:
                 values.put(Telephony.Sms.Inbox._ID, smsRecord.getId());
-                values.put(Telephony.Sms.Inbox.ADDRESS, smsRecord.getAddr());
-                values.put(Telephony.Sms.Inbox.BODY, smsRecord.getMsg());
-                values.put(Telephony.Sms.Inbox.DATE_SENT, smsRecord.getTime());
-                values.put(Telephony.Sms.Inbox.READ, smsRecord.getReadState());
+                values.put(SmsContentProviderCompat.ADDRESS, smsRecord.getAddr());
+                values.put(SmsContentProviderCompat.BODY, smsRecord.getMsg());
+                values.put(SmsContentProviderCompat.DATE_SENT, smsRecord.getTime());
+                values.put(SmsContentProviderCompat.READ, smsRecord.getReadState());
 
                 cr.insert(INBOX_CONTENT_URI, values);
                 break;
 
             case SENT:
                 values.put(Telephony.Sms.Sent._ID, smsRecord.getId());
-                values.put(Telephony.Sms.Sent.ADDRESS, smsRecord.getAddr());
-                values.put(Telephony.Sms.Sent.BODY, smsRecord.getMsg());
-                values.put(Telephony.Sms.Sent.DATE_SENT, smsRecord.getTime());
-                values.put(Telephony.Sms.Sent.READ, smsRecord.getReadState());
+                values.put(SmsContentProviderCompat.ADDRESS, smsRecord.getAddr());
+                values.put(SmsContentProviderCompat.BODY, smsRecord.getMsg());
+                values.put(SmsContentProviderCompat.DATE_SENT, smsRecord.getTime());
+                values.put(SmsContentProviderCompat.READ, smsRecord.getReadState());
 
                 cr.insert(SENT_CONTENT_URI, values);
                 break;
 
             case DRAFT:
                 values.put(Telephony.Sms.Draft._ID, smsRecord.getId());
-                values.put(Telephony.Sms.Draft.ADDRESS, smsRecord.getAddr());
-                values.put(Telephony.Sms.Draft.BODY, smsRecord.getMsg());
-                values.put(Telephony.Sms.Draft.DATE_SENT, smsRecord.getTime());
-                values.put(Telephony.Sms.Draft.READ, smsRecord.getReadState());
+                values.put(SmsContentProviderCompat.ADDRESS, smsRecord.getAddr());
+                values.put(SmsContentProviderCompat.BODY, smsRecord.getMsg());
+                values.put(SmsContentProviderCompat.DATE_SENT, smsRecord.getTime());
+                values.put(SmsContentProviderCompat.READ, smsRecord.getReadState());
 
                 cr.insert(DRAFT_CONTENT_URI, values);
         }

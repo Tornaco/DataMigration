@@ -21,7 +21,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static org.newstand.datamigration.provider.SettingsProvider.licenseRootDir;
+import static org.newstand.datamigration.provider.SettingsProvider.getLicenseRootDir;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/6 15:17
@@ -45,7 +45,7 @@ public abstract class LicenseLoader {
                 final AssetManager assetManager = context.getAssets();
                 try {
 
-                    final String root = licenseRootDir();
+                    final String root = getLicenseRootDir();
                     String[] subDirs = assetManager.list(root);
 
                     Collections.consumeRemaining(subDirs, new Consumer<String>() {

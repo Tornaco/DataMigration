@@ -96,7 +96,7 @@ public class DataReceiverActivity extends TransitionSafeActivity implements Tran
 
         Set<DataCategory> dataCategories = overviewReceiver.getHeader().getDataCategories();
 
-        Session session = Session.from("Rec_Test");
+        Session session = Session.create();
 
         int N = dataCategories.size();
 
@@ -114,14 +114,13 @@ public class DataReceiverActivity extends TransitionSafeActivity implements Tran
 
                 ReceiveSettings settings = new ReceiveSettings();
 
-                settings.setDestDir(SettingsProvider.getBackupDirByCategory(category, session));
+                settings.setDestDir(SettingsProvider.getReceivedDirByCategory(category, session));
 
                 for (int c = 0; c < C; c++) {
                     int res = DataRecordReceiver.with(transportServer.getInputStream(), transportServer.getOutputStream())
                             .receive(settings);
                     Logger.d("Receive res %d", res);
                 }
-
             } catch (IOException e) {
                 onError(e);
             }

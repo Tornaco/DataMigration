@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_select_all"
+        android:orderInCategory="100"
+        android:title="@string/action_select_all"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_clear_selection"
+        android:orderInCategory="100"
+        android:title="@string/action_clear_selection"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_work_mode"
+        android:orderInCategory="100"
+        android:checkable="true"
+        android:title="@string/tile_work_mode_root"
+        app:showAsAction="never" />
+</menu>

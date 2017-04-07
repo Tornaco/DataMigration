@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.common.io.Files;
+import com.google.gson.Gson;
 
 import org.newstand.datamigration.common.AbortException;
 import org.newstand.datamigration.common.AbortSignal;
@@ -25,6 +26,7 @@ import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
@@ -144,14 +146,14 @@ public class DataBackupManager {
                 appBackupSettings.setDestApkPath(
                         SettingsProvider.getBackupDirByCategory(dataCategory, session)
                                 + File.separator + record.getDisplayName()
-                                + File.separator + SettingsProvider.backupAppApkDirName()
+                                + File.separator + SettingsProvider.getBackupAppApkDirName()
                                 + File.separator + record.getDisplayName() + AppRecord.APK_FILE_PREFIX);// DMBK2/APP/Phone/apk/XX.apk
                 appBackupSettings.setDestDataPath(
                         SettingsProvider.getBackupDirByCategory(dataCategory, session)
                                 + File.separator + record.getDisplayName()
-                                + File.separator + SettingsProvider.backupAppDataDirName());// DMBK2/APP/Phone/data
+                                + File.separator + SettingsProvider.getBackupAppDataDirName());// DMBK2/APP/Phone/data
                 appBackupSettings.setSourceApkPath(((FileBasedRecord) record).getPath());
-                appBackupSettings.setSourceDataPath(SettingsProvider.appDataDir() + File.separator + ((AppRecord) record).getPkgName());
+                appBackupSettings.setSourceDataPath(SettingsProvider.getAppDataDir() + File.separator + ((AppRecord) record).getPkgName());
                 return appBackupSettings;
             case Contact:
                 ContactBackupSettings contactBackupSettings = new ContactBackupSettings();
@@ -194,9 +196,9 @@ public class DataBackupManager {
                 appRestoreSettings.setSourceApkPath(((FileBasedRecord) record).getPath());
                 appRestoreSettings.setSourceDataPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
                         + File.separator + record.getDisplayName()
-                        + File.separator + SettingsProvider.backupAppDataDirName()
+                        + File.separator + SettingsProvider.getBackupAppDataDirName()
                         + File.separator + "*");// DMBK2/APP/Phone/data/*
-                appRestoreSettings.setDestDataPath(SettingsProvider.appDataDir() + File.separator + ((AppRecord) record).getPkgName());
+                appRestoreSettings.setDestDataPath(SettingsProvider.getAppDataDir() + File.separator + ((AppRecord) record).getPkgName());
                 appRestoreSettings.setAppRecord((AppRecord) record);
                 return appRestoreSettings;
             case Contact:
@@ -295,6 +297,18 @@ public class DataBackupManager {
                     }
                 }
             });
+
+            // Write the session info.
+            String infoFilePath = SettingsProvider.getBackupSessionInfoPath(session);
+            Gson gson = new Gson();
+            String jsonStr = gson.toJson(session);
+            try {
+                Files.asCharSink(new File(infoFilePath), Charset.defaultCharset()).write(jsonStr);
+                Logger.v("Session info has been written to %s", infoFilePath);
+            } catch (IOException e) {
+                Logger.e("Fail to write session info, WTF??? %s", Logger.getStackTraceString(e));
+            }
+
             listener.onComplete();
         }
     }

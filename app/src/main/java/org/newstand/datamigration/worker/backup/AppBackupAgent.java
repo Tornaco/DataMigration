@@ -58,7 +58,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         }
 
         // Check work mode and root.
-        WorkMode workMode = SettingsProvider.workMode();
+        WorkMode workMode = SettingsProvider.getWorkMode();
         if (workMode == WorkMode.ROOT) {
             boolean hasRoot = RootManager.getInstance().obtainPermission();
             if (!hasRoot) {
@@ -91,7 +91,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         PackageInstallReceiver installReceiver = new PackageInstallReceiver(restoreSettings.getAppRecord().getPkgName());
         installReceiver.register(getContext());
 
-        WorkMode workMode = SettingsProvider.workMode();
+        WorkMode workMode = SettingsProvider.getWorkMode();
 
         // Install apk
         if (workMode == WorkMode.ROOT) {

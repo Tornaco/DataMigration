@@ -35,15 +35,15 @@ public class WorkModeTile extends ThemedTile {
             @Override
             protected void onBindActionView(RelativeLayout container) {
                 super.onBindActionView(container);
-                setChecked(SettingsProvider.workMode() == WorkMode.ROOT);
+                setChecked(SettingsProvider.getWorkMode() == WorkMode.ROOT);
             }
 
             @Override
             protected void onCheckChanged(boolean checked) {
                 super.onCheckChanged(checked);
-                WorkMode mode = SettingsProvider.workMode();
+                WorkMode mode = SettingsProvider.getWorkMode();
                 SettingsProvider.setWorkMode(mode == WorkMode.ROOT ? WorkMode.NORMAL : WorkMode.ROOT);
-                mode = SettingsProvider.workMode();
+                mode = SettingsProvider.getWorkMode();
 
                 if (mode == WorkMode.ROOT) {
                     SharedExecutor.execute(new Runnable() {

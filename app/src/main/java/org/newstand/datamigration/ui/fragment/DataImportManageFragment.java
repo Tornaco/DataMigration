@@ -8,6 +8,7 @@ import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.StartSignal;
+import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
@@ -17,6 +18,7 @@ import org.newstand.datamigration.worker.backup.BackupRestoreListener;
 import org.newstand.datamigration.worker.backup.BackupRestoreListenerMainThreadAdapter;
 import org.newstand.datamigration.worker.backup.DataBackupManager;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import java.util.Collection;
 import java.util.concurrent.CountDownLatch;
@@ -111,6 +113,7 @@ public class DataImportManageFragment extends DataTransportManageFragment {
                 }
 
                 StartSignal startSignal = new StartSignal();
+                startSignal.setTag(category);
                 AbortSignal abortSignal = dataBackupManager.performRestoreAsync(dataRecords, category, mExportListener, startSignal);
 
                 getStats().merge(mExportListener.getStats());
@@ -124,6 +127,20 @@ public class DataImportManageFragment extends DataTransportManageFragment {
                 Collections.consumeRemaining(getStartSignals(), new Consumer<StartSignal>() {
                     @Override
                     public void consume(@NonNull StartSignal startSignal) {
+
+                        DataCategory category = (DataCategory) startSignal.getTag();
+
+                        Logger.d("Tag of startSignal %s", startSignal.getTag());
+
+                        if (category == DataCategory.Sms) {
+                            // Set us as Def Sms app
+                            SmsContentProviderCompat.setAsDefaultSmsApp(getActivity());
+                            boolean isDefSmsApp = SmsContentProviderCompat.waitUtilBecomeDefSmsApp(getContext(), 10);// FIXME
+                            if (!isDefSmsApp) {
+                                Logger.e("Timeout waiting for DEF SMS APP setup, let it go~");
+                            }
+                        }
+
                         startSignal.start();
                     }
                 });
@@ -149,5 +166,12 @@ public class DataImportManageFragment extends DataTransportManageFragment {
     @Override
     SimplifySpanBuild onCreateCompleteSummary() {
         return buildTransportReport(getStats());
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SmsContentProviderCompat.restoreDefSmsApp(getContext());
     }
 }
