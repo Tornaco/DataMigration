@@ -1,14 +1,9 @@
 package org.newstand.datamigration.net.server;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
-import com.google.common.base.Optional;
-
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.logger.Logger;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -50,16 +45,7 @@ public abstract class ServerComponent implements Component {
         return new Runnable() {
             @Override
             public void run() {
-                try {
-                    start();
-                } catch (IOException ignored) {
-                    Optional.of(exceptionConsumer).or(new Consumer<Exception>() {
-                        @Override
-                        public void consume(@NonNull Exception e) {
-                            Logger.e(e.getLocalizedMessage());
-                        }
-                    }).consume(ignored);
-                }
+                start();
             }
         };
     }

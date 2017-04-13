@@ -82,7 +82,7 @@ public class AppLoader extends BaseLoader {
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override
-            public void consume(@NonNull File file) {
+            public void accept(@NonNull File file) {
                 AppRecord record = new AppRecord();
                 record.setDisplayName(Files.getNameWithoutExtension(file.getPath()));
                 record.setPath(file.getPath() + File.separator + SettingsProvider.getBackupAppApkDirName()

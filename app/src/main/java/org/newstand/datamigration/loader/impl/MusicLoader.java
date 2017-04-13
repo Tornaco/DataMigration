@@ -40,7 +40,7 @@ public class MusicLoader extends BaseLoader {
         consumeCursor(createCursor(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER), new Consumer<Cursor>() {
             @Override
-            public void consume(@NonNull Cursor cursor) {
+            public void accept(@NonNull Cursor cursor) {
                 DataRecord record = recordFromCursor(cursor);
                 if (record != null && (filter == null || !filter.ignored(record)))
                     records.add(record);
@@ -56,7 +56,7 @@ public class MusicLoader extends BaseLoader {
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override
-            public void consume(@NonNull File file) {
+            public void accept(@NonNull File file) {
                 MusicRecord record = new MusicRecord();
                 record.setDisplayName(file.getName());
                 record.setPath(file.getAbsolutePath());

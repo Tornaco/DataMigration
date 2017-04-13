@@ -73,6 +73,11 @@ public class TransportServerTest implements Consumer<Exception> {
             }
 
             @Override
+            public void onServerChannelStop() {
+
+            }
+
+            @Override
             public void onClientChannelCreated() {
                 Logger.d("onClientChannelCreated");
             }
@@ -118,6 +123,11 @@ public class TransportServerTest implements Consumer<Exception> {
             }
 
             @Override
+            public void onClientStop() {
+
+            }
+
+            @Override
             public void onServerChannelConnectedFailure(ErrorCode errCode) {
 
             }
@@ -133,10 +143,15 @@ public class TransportServerTest implements Consumer<Exception> {
             public void onServerChannelCreate() {
                 SharedExecutor.execute(transportClient.asRunnable(new Consumer<Exception>() {
                     @Override
-                    public void consume(@NonNull Exception e) {
+                    public void accept(@NonNull Exception e) {
                         Assert.fail(e.getLocalizedMessage());
                     }
                 }));
+            }
+
+            @Override
+            public void onServerChannelStop() {
+
             }
 
             @Override
@@ -195,7 +210,7 @@ public class TransportServerTest implements Consumer<Exception> {
     }
 
     @Override
-    public void consume(@NonNull Exception e) {
+    public void accept(@NonNull Exception e) {
         Assert.fail(e.getLocalizedMessage());
     }
 }

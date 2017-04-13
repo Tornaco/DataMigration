@@ -50,7 +50,7 @@ public abstract class LicenseLoader {
 
                     Collections.consumeRemaining(subDirs, new Consumer<String>() {
                         @Override
-                        public void consume(@NonNull String s) {
+                        public void accept(@NonNull String s) {
 
                             String currentDirPath = root + File.separator + s;
                             String infoPath = currentDirPath + File.separator + "license.info";

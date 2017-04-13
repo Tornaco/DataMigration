@@ -52,7 +52,7 @@ public abstract class SessionLoader {
                     List<Session> all = BKSessionRepoService.get().findAll();
                     Collections.consumeRemaining(all, new Consumer<Session>() {
                         @Override
-                        public void consume(@NonNull Session session) {
+                        public void accept(@NonNull Session session) {
                             if (!validate(session)) {
                                 Logger.w("Ignored bad session %s", session);
                                 return;
@@ -87,7 +87,7 @@ public abstract class SessionLoader {
                     List<Session> all = ReceivedSessionRepoService.get().findAll();
                     Collections.consumeRemaining(all, new Consumer<Session>() {
                         @Override
-                        public void consume(@NonNull Session session) {
+                        public void accept(@NonNull Session session) {
                             if (!validate(session)) {
                                 Logger.w("Ignored bad session %s", session);
                                 return;

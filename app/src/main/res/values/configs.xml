@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="def_auto_connect_enabled">true</bool>
-    <bool name="def_transition_animation_enabled">true</bool>
-    <bool name="def_debug_enabled">true</bool>
+    <bool name="def_transition_animation_enabled">false</bool>
+    <bool name="def_debug_enabled">false</bool>
 
 
     <integer name="anim_duration_very_long">1500</integer>
@@ -10,5 +10,5 @@
     <integer name="anim_duration_medium">300</integer>
     <integer name="anim_duration_short">200</integer>
 
-    <string name="def_transport_server_ports">8888,8899,9988,9999,6666</string>
+    <string name="def_transport_server_ports">8888,8899,9988,9999,6666,8866,6688,7788,8877,9876,6789</string>
 </resources>

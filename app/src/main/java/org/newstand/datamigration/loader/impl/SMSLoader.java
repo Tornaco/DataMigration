@@ -46,10 +46,10 @@ public class SMSLoader extends BaseLoader {
 
         Collections.consumeRemaining(MsgBox.values(), new Consumer<MsgBox>() {
             @Override
-            public void consume(@NonNull final MsgBox msgBox) {
+            public void accept(@NonNull final MsgBox msgBox) {
                 consumeCursor(getSmsCursor(msgBox), new Consumer<Cursor>() {
                     @Override
-                    public void consume(@NonNull Cursor cursor) {
+                    public void accept(@NonNull Cursor cursor) {
                         SMSRecord record = getSMS(cursor);
                         record.setMsgBox(msgBox);
                         res.add(record);
@@ -99,7 +99,7 @@ public class SMSLoader extends BaseLoader {
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override
-            public void consume(@NonNull File file) {
+            public void accept(@NonNull File file) {
                 Logger.d("Parsing file: %s", file.getPath());
                 try {
                     InputStream in = Files.asByteSource(file).openStream();

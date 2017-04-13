@@ -2,16 +2,19 @@ package org.newstand.datamigration.ui.activity;
 
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.common.ActionListener2Adapter;
 import org.newstand.datamigration.common.ActionListener2Delegate;
+import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.net.protocol.DataSenderProxy;
 import org.newstand.datamigration.net.server.ErrorCode;
 import org.newstand.datamigration.net.server.TransportClient;
+import org.newstand.datamigration.net.server.TransportClientProxy;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.sync.SharedExecutor;
+import org.newstand.logger.Logger;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,31 +32,14 @@ public class DataSenderActivity extends TransitionSafeActivity implements Transp
     TransportClient client;
 
     private void startClient() {
-        SharedExecutor.execute(new Runnable() {
+        int[] ports = SettingsProvider.getTransportServerPorts();
+        String host = getIntent().getStringExtra(IntentEvents.KEY_HOST);
+        TransportClientProxy.startWithPenitentialPortsAsync(host, ports, this, new Consumer<TransportClient>() {
             @Override
-            public void run() {
-                int[] ports = SettingsProvider.getTransportServerPorts();
-                for (int port : ports) {
-                    if (startClientWith(port)) {
-                        return;
-                    }
-                }
+            public void accept(@NonNull TransportClient transportClient) {
+                setClient(transportClient);
             }
         });
-    }
-
-    boolean startClientWith(int port) {
-        String host = getIntent().getStringExtra(IntentEvents.KEY_HOST);
-
-        final TransportClient client = new TransportClient();
-        client.setHost(host);
-        client.setPort(port);
-
-        client.setChannelHandler(this);
-
-        setClient(client);
-
-        return client.start();
     }
 
     @Override
@@ -80,6 +66,11 @@ public class DataSenderActivity extends TransitionSafeActivity implements Transp
     @Override
     public void onServerChannelConnected() {
         send();
+    }
+
+    @Override
+    public void onClientStop() {
+        Logger.d("onClientStop");
     }
 
     @Override

@@ -74,7 +74,7 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
             public void onClick(View v) {
                 Collections.consumeRemaining(getAbortSignals(), new Consumer<AbortSignal>() {
                     @Override
-                    public void consume(@NonNull AbortSignal abortSignal) {
+                    public void accept(@NonNull AbortSignal abortSignal) {
                         abortSignal.abort();
                     }
                 });

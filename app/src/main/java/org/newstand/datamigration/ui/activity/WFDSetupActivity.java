@@ -159,7 +159,7 @@ public class WFDSetupActivity extends TransitionSafeActivity implements Discover
                         final List<Peer> peerList = new ArrayList<>();
                         Collections.consumeRemaining(devices, new Consumer<WifiP2pDevice>() {
                             @Override
-                            public void consume(@NonNull WifiP2pDevice wifiP2pDevice) {
+                            public void accept(@NonNull WifiP2pDevice wifiP2pDevice) {
                                 if (isDMDevice(wifiP2pDevice)) {
                                     Peer peer = new Peer();
                                     peer.setDevice(wifiP2pDevice);

@@ -53,7 +53,7 @@ public class SchedulerServiceV21 extends JobService {
 
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
-            public void consume(@NonNull DataCategory category) {
+            public void accept(@NonNull DataCategory category) {
 
                 DataBackupManager.from(getApplicationContext(), session).performBackupAsync(
                         DataLoaderManager.from(getApplicationContext()).load(LoaderSource.builder().parent(LoaderSource.Parent.Android).build()

@@ -29,7 +29,7 @@ public class LoadingCacheManagerTest {
 
         Collections.consumeRemaining(cache.get(DataCategory.App), new Consumer<DataRecord>() {
             @Override
-            public void consume(@NonNull DataRecord dataRecord) {
+            public void accept(@NonNull DataRecord dataRecord) {
                 Logger.d(dataRecord);
             }
         });

@@ -49,6 +49,7 @@ public class TransportClient extends ServerComponent {
     public boolean stop() {
         try {
             closer.close();
+            channelHandler.onClientStop();
         } catch (IOException e) {
             Logger.e("Close fail %s", e.getLocalizedMessage());
             return false;
@@ -60,6 +61,26 @@ public class TransportClient extends ServerComponent {
 
         void onServerChannelConnected();
 
+        void onClientStop();
+
         void onServerChannelConnectedFailure(ErrorCode errCode);
+    }
+
+    public static class ChannelHandlerAdapter implements ChannelHandler {
+
+        @Override
+        public void onServerChannelConnected() {
+
+        }
+
+        @Override
+        public void onClientStop() {
+
+        }
+
+        @Override
+        public void onServerChannelConnectedFailure(ErrorCode errCode) {
+
+        }
     }
 }

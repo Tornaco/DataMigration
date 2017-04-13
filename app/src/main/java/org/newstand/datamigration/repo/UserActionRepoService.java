@@ -47,7 +47,7 @@ public class UserActionRepoService extends OneTimeRealmRepoService<UserAction> {
         final List<UserAction> res = new ArrayList<>();
         Collections.consumeRemaining(all, new Consumer<UserAction>() {
             @Override
-            public void consume(@NonNull UserAction action) {
+            public void accept(@NonNull UserAction action) {
                 res.add(UserAction.from(action));
             }
         });

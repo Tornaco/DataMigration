@@ -66,7 +66,7 @@ public class RootTest {
         Collections.consumeRemaining(com.google.common.io.Files.fileTreeTraverser().postOrderTraversal(new File(dir)),
                 new Consumer<File>() {
                     @Override
-                    public void consume(@NonNull File file) {
+                    public void accept(@NonNull File file) {
                         Logger.d("File:" + file);
                     }
                 });
@@ -93,7 +93,7 @@ public class RootTest {
 
         Collections.consumeRemaining(com.google.common.io.Files.fileTreeTraverser().children(new File(to).getParentFile()), new Consumer<File>() {
             @Override
-            public void consume(@NonNull File file) {
+            public void accept(@NonNull File file) {
                 Logger.d("Child:%s", file.getName());
             }
         });

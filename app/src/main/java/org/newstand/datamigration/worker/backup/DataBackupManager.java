@@ -274,7 +274,7 @@ public class DataBackupManager {
             listener.onStart();
             Collections.consumeRemaining(dataRecords, new Consumer<DataRecord>() {
                 @Override
-                public void consume(@NonNull DataRecord record) {
+                public void accept(@NonNull DataRecord record) {
                     if (canceled) {
                         listener.onPieceFail(record, new AbortException());
                         status.onFail();
@@ -353,7 +353,7 @@ public class DataBackupManager {
             listener.onStart();
             Collections.consumeRemaining(dataRecords, new Consumer<DataRecord>() {
                 @Override
-                public void consume(@NonNull DataRecord record) {
+                public void accept(@NonNull DataRecord record) {
                     if (canceled) {
                         listener.onPieceFail(record, new AbortException());
                         status.onFail();

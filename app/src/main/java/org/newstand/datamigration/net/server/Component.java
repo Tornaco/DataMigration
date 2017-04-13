@@ -1,6 +1,6 @@
 package org.newstand.datamigration.net.server;
 
-import java.io.IOException;
+import org.newstand.datamigration.common.Startable;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/22 13:57
@@ -8,10 +8,7 @@ import java.io.IOException;
  * All right reserved.
  */
 
-public interface Component {
-    boolean start() throws IOException;
-
-    boolean stop();
+public interface Component extends Startable {
 
     String name();
 }

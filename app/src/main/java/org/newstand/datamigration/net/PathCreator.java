@@ -24,20 +24,20 @@ import java.util.List;
 public class PathCreator {
 
     public static void createIfNull(Context context, Session session, Collection<DataRecord> dataRecords) {
-        if (Collections.nullOrEmpty(dataRecords)) return;
+        if (Collections.isNullOrEmpty(dataRecords)) return;
 
         final List<DataRecord> workingList = new ArrayList<>();
 
         Collections.consumeRemaining(dataRecords, new Consumer<DataRecord>() {
             @Override
-            public void consume(@NonNull DataRecord dataRecord) {
+            public void accept(@NonNull DataRecord dataRecord) {
                 FileBasedRecord fileBasedRecord = (FileBasedRecord) dataRecord;
                 String path = fileBasedRecord.getPath();
                 if (path == null) workingList.add(dataRecord);
             }
         });
 
-        if (Collections.nullOrEmpty(workingList)) return;
+        if (Collections.isNullOrEmpty(workingList)) return;
 
         Logger.d("Creating path with session %s", session);
 

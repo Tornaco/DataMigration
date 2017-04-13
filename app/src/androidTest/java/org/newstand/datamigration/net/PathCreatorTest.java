@@ -33,7 +33,7 @@ public class PathCreatorTest {
 
         DataCategory.consumeAll(new Consumer<DataCategory>() {
             @Override
-            public void consume(@NonNull DataCategory category) {
+            public void accept(@NonNull DataCategory category) {
                 Collection<DataRecord> dataRecordCollection = DataLoaderManager.from(context)
                         .load(LoaderSource.builder().parent(LoaderSource.Parent.Android).build(), category);
 
@@ -43,7 +43,7 @@ public class PathCreatorTest {
 
                 Collections.consumeRemaining(dataRecordCollection, new Consumer<DataRecord>() {
                     @Override
-                    public void consume(@NonNull DataRecord dataRecord) {
+                    public void accept(@NonNull DataRecord dataRecord) {
                         FileBasedRecord fileBasedRecord = (FileBasedRecord) dataRecord;
 
                         Assert.assertTrue(fileBasedRecord.getPath() != null);

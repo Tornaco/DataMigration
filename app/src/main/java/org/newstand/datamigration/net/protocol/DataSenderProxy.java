@@ -30,11 +30,13 @@ import java.util.Collection;
 public class DataSenderProxy {
 
     @WorkerThread
-    public static void send(final Context context, final TransportClient client, final ActionListener2<Void, Throwable> listener) {
+    public static void send(final Context context, final TransportClient client,
+                            final ActionListener2<Void, Throwable> listener) {
         sendInternal(context, client, listener);
     }
 
-    private static void sendInternal(final Context context, final TransportClient client, final ActionListener2<Void, Throwable> listener) {
+    private static void sendInternal(final Context context, final TransportClient client,
+                                     final ActionListener2<Void, Throwable> listener) {
 
         listener.onStart();
 
@@ -42,12 +44,12 @@ public class DataSenderProxy {
 
         final Session session = Session.tmp();
 
-        // OH
+        // Send overview header
         final OverviewHeader overviewHeader = OverviewHeader.empty();
 
         DataCategory.consumeAll(new Consumer<DataCategory>() {
             @Override
-            public void consume(@NonNull DataCategory category) {
+            public void accept(@NonNull DataCategory category) {
                 Collection<DataRecord> records = cacheManager.checked(category);
 
                 PathCreator.createIfNull(context, session, records);
@@ -64,8 +66,11 @@ public class DataSenderProxy {
 
         DataCategory.consumeAll(new Consumer<DataCategory>() {
             @Override
-            public void consume(@NonNull DataCategory category) {
+            public void accept(@NonNull DataCategory category) {
                 Collection<DataRecord> records = cacheManager.checked(category);
+
+                // Do not send anything if empty.
+                if (Collections.isNullOrEmpty(records)) return;
 
                 CategoryHeader categoryHeader = CategoryHeader.from(category);
                 categoryHeader.add(records);
@@ -77,7 +82,7 @@ public class DataSenderProxy {
 
                     Collections.consumeRemaining(records, new Consumer<DataRecord>() {
                         @Override
-                        public void consume(@NonNull DataRecord dataRecord) {
+                        public void accept(@NonNull DataRecord dataRecord) {
                             try {
                                 int res = DataRecordSender.with(client.getOutputStream(), client.getInputStream())
                                         .send(dataRecord);

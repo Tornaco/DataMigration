@@ -75,11 +75,11 @@ public class CategoryHeader implements Serializable, DeSerializable, ByteWriter 
     }
 
     public CategoryHeader add(Collection<DataRecord> recordCollections) {
-        if (Collections.nullOrEmpty(recordCollections)) return this;
+        if (Collections.isNullOrEmpty(recordCollections)) return this;
 
         Collections.consumeRemaining(recordCollections, new Consumer<DataRecord>() {
             @Override
-            public void consume(@NonNull DataRecord dataRecord) {
+            public void accept(@NonNull DataRecord dataRecord) {
                 FileBasedRecord fb = (FileBasedRecord) dataRecord;
                 String path = fb.getPath();
 

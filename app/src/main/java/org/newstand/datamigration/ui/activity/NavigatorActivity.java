@@ -58,7 +58,12 @@ public class NavigatorActivity extends TransitionSafeActivity {
             }
         });
 
-        IntroDialog.attach(NavigatorActivity.this);
+        IntroDialog.attach(NavigatorActivity.this, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

@@ -20,7 +20,6 @@ import lombok.Setter;
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-
 public class TransportServer extends ServerComponent {
 
     @Getter
@@ -96,6 +95,7 @@ public class TransportServer extends ServerComponent {
     public boolean stop() {
         try {
             closer.close();
+            channelHandler.onServerChannelStop();
         } catch (IOException e) {
             Logger.e("Close fail %s", e.getLocalizedMessage());
             return false;
@@ -109,6 +109,31 @@ public class TransportServer extends ServerComponent {
 
         void onServerChannelCreate();
 
+        void onServerChannelStop();
+
         void onClientChannelCreated();
+    }
+
+    public static class ChannelHandlerAdapter implements ChannelHandler {
+
+        @Override
+        public void onServerCreateFail(ErrorCode errCode) {
+
+        }
+
+        @Override
+        public void onServerChannelCreate() {
+
+        }
+
+        @Override
+        public void onServerChannelStop() {
+
+        }
+
+        @Override
+        public void onClientChannelCreated() {
+
+        }
     }
 }

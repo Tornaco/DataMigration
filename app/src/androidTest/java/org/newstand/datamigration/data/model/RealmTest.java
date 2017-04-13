@@ -47,7 +47,7 @@ public class RealmTest {
 
         Collections.consumeRemaining(guests, new Consumer<Dummy>() {
             @Override
-            public void consume(@NonNull Dummy d) {
+            public void accept(@NonNull Dummy d) {
                 Logger.d(d);
             }
         });
@@ -82,7 +82,7 @@ public class RealmTest {
 
         Collections.consumeRemaining(guests, new Consumer<Dummy2>() {
             @Override
-            public void consume(@NonNull Dummy2 d) {
+            public void accept(@NonNull Dummy2 d) {
                 Logger.d(d);
             }
         });

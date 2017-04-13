@@ -101,7 +101,7 @@ public class OverviewHeader implements Serializable, DeSerializable, ByteWriter 
     }
 
     public OverviewHeader add(DataCategory category, Collection<DataRecord> recordCollections) {
-        if (Collections.nullOrEmpty(recordCollections)) return this;
+        if (Collections.isNullOrEmpty(recordCollections)) return this;
 
         if (!dataCategories.contains(category)) {
             dataCategories.add(category);
@@ -109,7 +109,7 @@ public class OverviewHeader implements Serializable, DeSerializable, ByteWriter 
 
         Collections.consumeRemaining(recordCollections, new Consumer<DataRecord>() {
             @Override
-            public void consume(@NonNull DataRecord dataRecord) {
+            public void accept(@NonNull DataRecord dataRecord) {
                 FileBasedRecord fb = (FileBasedRecord) dataRecord;
                 String path = fb.getPath();
 
@@ -168,7 +168,7 @@ public class OverviewHeader implements Serializable, DeSerializable, ByteWriter 
 
         Collections.consumeRemaining(dataCategories, new Consumer<DataCategory>() {
             @Override
-            public void consume(@NonNull DataCategory category) {
+            public void accept(@NonNull DataCategory category) {
                 int ord = category.ordinal();
                 categories[0] = Bytes.concat(categories[0], Ints.toByteArray(ord));
             }

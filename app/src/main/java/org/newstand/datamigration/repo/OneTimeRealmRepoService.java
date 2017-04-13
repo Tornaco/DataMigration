@@ -83,7 +83,7 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
         Realm r = getRealm();
         T res = null;
         RealmResults<T> ts = r.where(clz()).findAll();
-        if (!Collections.nullOrEmpty(ts)) {
+        if (!Collections.isNullOrEmpty(ts)) {
             res = map(ts.last());
         }
         Closer.closeQuietly(r);
@@ -97,10 +97,10 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
         Realm r = getRealm();
         List<T> ts = getRealm().where(clz()).findAll();
         final List<T> res = new ArrayList<>();
-        if (!Collections.nullOrEmpty(ts)) {
+        if (!Collections.isNullOrEmpty(ts)) {
             Collections.consumeRemaining(ts, new Consumer<T>() {
                 @Override
-                public void consume(@NonNull T t) {
+                public void accept(@NonNull T t) {
                     res.add(map(t));
                 }
             });

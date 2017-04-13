@@ -1,10 +1,9 @@
 package org.newstand.datamigration.ui.widget;
 
+import android.content.DialogInterface;
 import android.support.test.InstrumentationRegistry;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/7 16:32
@@ -14,7 +13,12 @@ import static org.junit.Assert.*;
 public class IntroDialogTest {
     @Test
     public void attach() throws Exception {
-        IntroDialog.attach(null, InstrumentationRegistry.getTargetContext());
+        IntroDialog.attach(InstrumentationRegistry.getTargetContext(), new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // Canceled.
+            }
+        });
     }
 
 }

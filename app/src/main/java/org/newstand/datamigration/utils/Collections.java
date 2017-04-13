@@ -19,7 +19,7 @@ public abstract class Collections {
         Preconditions.checkNotNull(collection);
         Preconditions.checkNotNull(consumer);
         for (C c : collection) {
-            consumer.consume(c);
+            consumer.accept(c);
         }
     }
 
@@ -27,7 +27,7 @@ public abstract class Collections {
         Preconditions.checkNotNull(dataArr);
         Preconditions.checkNotNull(consumer);
         for (C c : dataArr) {
-            consumer.consume(c);
+            consumer.accept(c);
         }
     }
 
@@ -35,11 +35,11 @@ public abstract class Collections {
         Preconditions.checkNotNull(collection);
         Preconditions.checkNotNull(consumer);
         for (C c : collection) {
-            consumer.consume(c);
+            consumer.accept(c);
         }
     }
 
-    public static boolean nullOrEmpty(Collection<?> collection) {
+    public static boolean isNullOrEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
     }
 }

@@ -39,7 +39,7 @@ public class PhotoLoader extends BaseLoader {
         consumeCursor(createCursor(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, selectionArgs, sortOrder),
                 new Consumer<Cursor>() {
                     @Override
-                    public void consume(@NonNull Cursor cursor) {
+                    public void accept(@NonNull Cursor cursor) {
                         DataRecord record = recordFromCursor(cursor);
                         if (record != null && (filter == null || !filter.ignored(record)))
                             records.add(record);
@@ -55,7 +55,7 @@ public class PhotoLoader extends BaseLoader {
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override
-            public void consume(@NonNull File file) {
+            public void accept(@NonNull File file) {
                 PhotoRecord record = new PhotoRecord();
                 record.setDisplayName(file.getName());
                 record.setPath(file.getAbsolutePath());

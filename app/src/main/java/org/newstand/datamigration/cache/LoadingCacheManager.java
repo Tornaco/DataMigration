@@ -62,13 +62,13 @@ public abstract class LoadingCacheManager {
     Collection<DataRecord> checked(DataCategory key) {
         Collection<DataRecord> all = get(key);
 
-        if (Collections.nullOrEmpty(all)) return all;
+        if (Collections.isNullOrEmpty(all)) return all;
 
         final List<DataRecord> checked = new ArrayList<>(all.size());
 
         Collections.consumeRemaining(all, new Consumer<DataRecord>() {
             @Override
-            public void consume(@NonNull DataRecord dataRecord) {
+            public void accept(@NonNull DataRecord dataRecord) {
                 if (dataRecord.isChecked()) checked.add(dataRecord);
             }
         });

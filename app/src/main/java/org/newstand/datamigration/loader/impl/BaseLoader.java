@@ -66,7 +66,7 @@ public abstract class BaseLoader implements DataLoader<DataRecord>, PermissionRe
         if (cursor != null && cursor.getCount() > 0) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor
                     .moveToNext()) {
-                cursorConsumer.consume(cursor);
+                cursorConsumer.accept(cursor);
             }
         }
         if (cursor != null) {

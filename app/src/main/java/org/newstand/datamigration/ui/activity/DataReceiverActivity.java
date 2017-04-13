@@ -1,8 +1,10 @@
 package org.newstand.datamigration.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.net.CategoryReceiver;
@@ -12,8 +14,8 @@ import org.newstand.datamigration.net.ReceiveSettings;
 import org.newstand.datamigration.net.protocol.CategoryHeader;
 import org.newstand.datamigration.net.server.ErrorCode;
 import org.newstand.datamigration.net.server.TransportServer;
+import org.newstand.datamigration.net.server.TransportServerProxy;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.worker.backup.session.Session;
 import org.newstand.logger.Logger;
 
@@ -43,33 +45,15 @@ public class DataReceiverActivity extends TransitionSafeActivity implements Tran
     }
 
     private void startServer() {
-        SharedExecutor.execute(new Runnable() {
+        String host = getIntent().getStringExtra(IntentEvents.KEY_HOST);
+        int[] ports = SettingsProvider.getTransportServerPorts();
+        TransportServerProxy.startWithPenitentialPortsAsync(host, ports, this, new Consumer<TransportServer>() {
             @Override
-            public void run() {
-                int[] ports = SettingsProvider.getTransportServerPorts();
-                for (int port : ports) {
-                    if (startServerWith(port)) {
-                        return;
-                    }
-                }
+            public void accept(@NonNull TransportServer transportServer) {
+                setTransportServer(transportServer);
             }
         });
     }
-
-    private boolean startServerWith(int port) {
-
-        String host = getIntent().getStringExtra(IntentEvents.KEY_HOST);
-
-        TransportServer transportServer = new TransportServer();
-        transportServer.setChannelHandler(DataReceiverActivity.this);
-        transportServer.setHost(host);
-        transportServer.setPort(port);
-
-        setTransportServer(transportServer);
-
-        return transportServer.start();
-    }
-
 
     void onError(Throwable e) {
         e.printStackTrace();
@@ -83,6 +67,11 @@ public class DataReceiverActivity extends TransitionSafeActivity implements Tran
     @Override
     public void onServerChannelCreate() {
         Logger.d("onServerChannelCreate @%s", transportServer.toString());
+    }
+
+    @Override
+    public void onServerChannelStop() {
+        Logger.d("onClientStop @%s", transportServer.toString());
     }
 
     @Override

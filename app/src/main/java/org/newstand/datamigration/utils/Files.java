@@ -37,7 +37,7 @@ public abstract class Files {
         Collections.consumeRemaining(com.google.common.io.Files.fileTreeTraverser()
                 .postOrderTraversal(dir), new Consumer<File>() {
             @Override
-            public void consume(@NonNull File file) {
+            public void accept(@NonNull File file) {
                 if (!file.delete()) res[0] = false;
             }
         });

@@ -105,9 +105,9 @@ public class DataImportManageFragment extends DataTransportManageFragment {
 
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
-            public void consume(@NonNull DataCategory category) {
+            public void accept(@NonNull DataCategory category) {
                 Collection<DataRecord> dataRecords = cache.checked(category);
-                if (Collections.nullOrEmpty(dataRecords)) {
+                if (Collections.isNullOrEmpty(dataRecords)) {
                     mTaskLatch.countDown();// Release one!!!
                     return;
                 }
@@ -126,7 +126,7 @@ public class DataImportManageFragment extends DataTransportManageFragment {
             public void run() {
                 Collections.consumeRemaining(getStartSignals(), new Consumer<StartSignal>() {
                     @Override
-                    public void consume(@NonNull StartSignal startSignal) {
+                    public void accept(@NonNull StartSignal startSignal) {
 
                         DataCategory category = (DataCategory) startSignal.getTag();
 

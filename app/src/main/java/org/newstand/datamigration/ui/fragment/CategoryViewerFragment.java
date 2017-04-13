@@ -150,7 +150,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
                 ? LoadingCacheManager.droid() : LoadingCacheManager.bk();
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
-            public void consume(@NonNull final DataCategory category) {
+            public void accept(@NonNull final DataCategory category) {
                 SharedExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -163,14 +163,14 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
                         if (loadingLatch != null && loadingLatch.getCount() > 0)
                             loadingLatch.countDown();
 
-                        if (isAlive() && !Collections.nullOrEmpty(records)) {
+                        if (isAlive() && !Collections.isNullOrEmpty(records)) {
 
                             int total = records.size();
                             final int[] sel = {0};
 
                             Collections.consumeRemaining(records, new Consumer<DataRecord>() {
                                 @Override
-                                public void consume(@NonNull DataRecord dataRecord) {
+                                public void accept(@NonNull DataRecord dataRecord) {
                                     if (dataRecord.isChecked())
                                         sel[0]++;
                                 }
@@ -283,7 +283,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
         final AtomicInteger selected = new AtomicInteger(0);
         Collections.consumeRemaining(dataRecords, new Consumer<DataRecord>() {
             @Override
-            public void consume(@NonNull DataRecord record) {
+            public void accept(@NonNull DataRecord record) {
                 if (record.isChecked()) {
                     selected.incrementAndGet();
                 }
@@ -293,7 +293,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
         List<DataRecord> records = getAdapter().getDataRecords();
         Collections.consumeRemaining(records, new Consumer<DataRecord>() {
             @Override
-            public void consume(@NonNull DataRecord record) {
+            public void accept(@NonNull DataRecord record) {
                 CategoryRecord categoryRecord = (CategoryRecord) record;
                 if (categoryRecord.getCategory() == category) {
                     categoryRecord.setSummary(buildSelectionSummary(total, selected.get()));

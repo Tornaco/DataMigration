@@ -52,7 +52,7 @@ public class LicenseLoaderTest {
 
                 Collections.consumeRemaining(collection, new Consumer<License>() {
                     @Override
-                    public void consume(@NonNull License license) {
+                    public void accept(@NonNull License license) {
                         Logger.w("Got---%s", license);
                     }
                 });

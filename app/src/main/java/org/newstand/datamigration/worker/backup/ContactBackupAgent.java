@@ -68,7 +68,7 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
 
             Collections.consumeRemaining(records, new Consumer<ContactRecord>() {
                 @Override
-                public void consume(@NonNull ContactRecord contactRecord) {
+                public void accept(@NonNull ContactRecord contactRecord) {
                     contactRecord.setPath(backupSettings.getDestPath());
                 }
             });

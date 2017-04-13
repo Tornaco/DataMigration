@@ -67,7 +67,7 @@ public class CustomFileLoader extends BaseLoader {
 
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override
-            public void consume(@NonNull File file) {
+            public void accept(@NonNull File file) {
                 CustomFileRecord record = new CustomFileRecord();
                 record.setPath(file.getPath());
                 record.setDisplayName(file.getName());
