@@ -48,7 +48,6 @@
             android:layout_alignLeft="@android:id/title"
             android:layout_alignStart="@android:id/title"
             android:layout_below="@android:id/title"
-            android:autoLink="web"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin_small"
             android:ellipsize="end"

@@ -18,7 +18,7 @@ public class AlarmListFragment extends DataListViewerFragment {
 
     @Override
     DataCategory getDataType() {
-        return DataCategory.Alarm;
+        return null;
     }
 
     @Override

@@ -20,6 +20,7 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.BKSessionRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
+import org.newstand.datamigration.ui.widget.IntroDialog;
 import org.newstand.datamigration.worker.backup.session.Session;
 
 import java.util.Date;
@@ -49,6 +50,15 @@ public class NavigatorActivity extends TransitionSafeActivity {
                 showCard2Pop(findView(v, android.R.id.text2));
             }
         });
+
+        findView(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                transitionTo(new Intent(NavigatorActivity.this, HelpActivity.class));
+            }
+        });
+
+        IntroDialog.attach(NavigatorActivity.this);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -162,6 +172,7 @@ public class NavigatorActivity extends TransitionSafeActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.action_user_actions).setVisible(SettingsProvider.isDebugEnabled());
+        menu.findItem(R.id.action_scheduler).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.ui.tiles.DevTile;
 import org.newstand.datamigration.ui.tiles.DonateTile;
 import org.newstand.datamigration.ui.tiles.LicenceTile;
@@ -63,7 +64,9 @@ public class SettingsActivity extends TransitionSafeActivity {
             DonateTile donateTile = new DonateTile(getContext());
             about.addTile(donateTile);
 
-            categories.add(view);
+            if (SettingsProvider.isDebugEnabled()) {
+                categories.add(view);
+            }
             categories.add(strategy);
             categories.add(about);
 

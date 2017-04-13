@@ -1,0 +1,8 @@
+{
+ "title":"DataMigration",
+ "author":"Tornaco",
+ "description":"Advanced android tool to backup/restore or send/receive your data.",
+ "fullLicense":"LICENSE",
+ "url":"https://github.com/Tornaco/DataMigration",
+ "version":"ALPHA-1"
+ }

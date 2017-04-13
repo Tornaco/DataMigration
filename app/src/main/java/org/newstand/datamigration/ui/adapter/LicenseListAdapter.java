@@ -3,6 +3,7 @@ package org.newstand.datamigration.ui.adapter;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class LicenseListAdapter extends RecyclerView.Adapter<CommonListViewHolde
     protected void onBindViewHolder(CommonListViewHolder holder, final License license) {
         holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.github));
         holder.getLineOneTextView().setText(license.getTitle() + "@" + license.getAuthor());
+        holder.getLineTwoTextView().setAutoLinkMask(Linkify.WEB_URLS);
         holder.getLineTwoTextView().setText(license.getDescription() + "\n\n" + license.getUrl());
     }
 

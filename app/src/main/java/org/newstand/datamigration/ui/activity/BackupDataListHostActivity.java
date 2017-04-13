@@ -37,8 +37,6 @@ public class BackupDataListHostActivity extends DataListHostActivity {
                 return new SmsListFragment();
             case CustomFile:
                 return new CustomFileListFragment();
-            case Alarm:
-                return new AlarmListFragment();
             default:
                 throw new UnsupportedOperationException("UnSupported category " + category);
         }

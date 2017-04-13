@@ -11,6 +11,7 @@ import android.support.annotation.StringRes;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.strategy.Interval;
 import org.newstand.datamigration.strategy.WorkMode;
 import org.newstand.datamigration.worker.backup.session.Session;
 
@@ -36,6 +37,8 @@ public class SettingsProvider extends Observable {
     private static final String KEY_WORK_MODE = "key_work_mode";
     private static final String KEY_DEBUG_ENABLED = "key_debug_mode";
     private static final String KEY_DEF_SMS_APP = "key_def_sms_app";
+    private static final String KEY_BACKUP_INTERVAL = "key_backup_interval";
+    private static final String KEY_USER_NOTICED = "key_user_noticed";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -290,5 +293,21 @@ public class SettingsProvider extends Observable {
 
     public static void setDefSmsApp(String pkgName) {
         sMe.writeString(KEY_DEF_SMS_APP, pkgName);
+    }
+
+    public static Interval getBackupInterval() {
+        return Interval.valueOf(sMe.readString(KEY_BACKUP_INTERVAL, Interval.Minutes.name()));
+    }
+
+    public static void setBackupInterval(Interval interval) {
+        sMe.writeString(KEY_BACKUP_INTERVAL, interval.name());
+    }
+
+    public static boolean isUserNoticed() {
+        return sMe.readBoolean(KEY_USER_NOTICED, false);
+    }
+
+    public static void setUserNoticed(boolean noticed) {
+        sMe.writeBoolean(KEY_USER_NOTICED, noticed);
     }
 }

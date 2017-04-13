@@ -131,23 +131,23 @@ public enum DataCategory implements LoaderGetter, ResBinder {
         }
     },
 
-    Alarm {
-        @NonNull
-        @Override
-        public DataLoader getLoader() {
-            return new AlarmLoader();
-        }
-
-        @Override
-        public int nameRes() {
-            return R.string.category_alarm;
-        }
-
-        @Override
-        public int iconRes() {
-            return R.drawable.ic_alarm;
-        }
-    },
+//    Alarm {
+//        @NonNull
+//        @Override
+//        public DataLoader getLoader() {
+//            return new AlarmLoader();
+//        }
+//
+//        @Override
+//        public int nameRes() {
+//            return R.string.category_alarm;
+//        }
+//
+//        @Override
+//        public int iconRes() {
+//            return R.drawable.ic_alarm;
+//        }
+//    },
 
     CustomFile {
         @NonNull
