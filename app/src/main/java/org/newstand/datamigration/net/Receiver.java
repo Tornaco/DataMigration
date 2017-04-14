@@ -8,6 +8,6 @@ import java.io.IOException;
  * All right reserved.
  */
 
-public interface Receiver<T> extends IO {
+public interface Receiver<T> extends IORES {
     int receive(T t) throws IOException;
 }

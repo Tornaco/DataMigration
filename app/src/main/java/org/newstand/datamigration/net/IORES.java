@@ -6,7 +6,7 @@ package org.newstand.datamigration.net;
  * All right reserved.
  */
 
-public interface IO {
+public interface IORES {
     int OK = 0;
     int ERR_READ_ACK = 0x1;
     int ERR_BAD_ACK = 0x2;

@@ -42,7 +42,8 @@ public class DataSenderProxy {
 
         final LoadingCacheManager cacheManager = LoadingCacheManager.droid();
 
-        final Session session = Session.tmp();
+        // Create a session, later we saved it to receiver.
+        final Session session = Session.create();
 
         // Send overview header
         final OverviewHeader overviewHeader = OverviewHeader.empty();
@@ -59,6 +60,7 @@ public class DataSenderProxy {
         });
 
         try {
+            Logger.d("Sending overviewHeader: %s", overviewHeader);
             OverViewSender.with(client.getInputStream(), client.getOutputStream()).send(overviewHeader);
         } catch (IOException e) {
             listener.onError(e);
@@ -72,10 +74,11 @@ public class DataSenderProxy {
                 // Do not send anything if empty.
                 if (Collections.isNullOrEmpty(records)) return;
 
+                // Send category header
                 CategoryHeader categoryHeader = CategoryHeader.from(category);
                 categoryHeader.add(records);
 
-                Logger.d("Sending header: " + categoryHeader);
+                Logger.d("Sending categoryHeader: %s", categoryHeader);
 
                 try {
                     CategorySender.with(client.getInputStream(), client.getOutputStream()).send(categoryHeader);
@@ -97,6 +100,8 @@ public class DataSenderProxy {
                 }
             }
         });
+
+        listener.onComplete(null);
     }
 
 }

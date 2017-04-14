@@ -8,7 +8,7 @@ import java.io.IOException;
  * All right reserved.
  */
 
-public interface Sender<T> extends IO {
+public interface Sender<T> extends IORES {
 
     int send(T t) throws IOException;
 }
