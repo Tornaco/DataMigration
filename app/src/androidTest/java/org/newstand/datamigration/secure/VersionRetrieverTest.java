@@ -5,6 +5,8 @@ import android.support.test.InstrumentationRegistry;
 
 import org.junit.Test;
 import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.strategy.Interval;
+import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.logger.Logger;
 
 /**
@@ -15,12 +17,15 @@ import org.newstand.logger.Logger;
 public class VersionRetrieverTest {
     @Test
     public void getLatestVersionStringFromServerAsync() throws Exception {
-        VersionRetriever.getLatestVersionStringFromServerAsync(InstrumentationRegistry.getTargetContext(), new Consumer<String>() {
+
+        VersionRetriever.hasLaterVersionAsync(InstrumentationRegistry.getTargetContext(), new Consumer<VersionCheckResult>() {
             @Override
-            public void accept(@NonNull String s) {
-                Logger.d("Version %s", s);
+            public void accept(@NonNull VersionCheckResult versionCheckResult) {
+                Logger.d("hasLaterVersionAsync %s", versionCheckResult);
             }
         });
+
+        Sleeper.sleepQuietly(Interval.Minutes.getIntervalMills());
     }
 
 }

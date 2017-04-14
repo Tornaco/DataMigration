@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
@@ -19,9 +20,13 @@ import org.newstand.datamigration.DataMigrationApp;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.BKSessionRepoService;
+import org.newstand.datamigration.secure.VersionCheckResult;
+import org.newstand.datamigration.secure.VersionInfo;
+import org.newstand.datamigration.secure.VersionRetriever;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.widget.IntroDialog;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
 
 import java.util.Date;
 
@@ -82,6 +87,22 @@ public class NavigatorActivity extends TransitionSafeActivity {
                         }
                     }
                 });
+        checkForUpdate();
+    }
+
+    private void checkForUpdate() {
+        VersionRetriever.hasLaterVersionAsync(this, new org.newstand.datamigration.common.Consumer<VersionCheckResult>() {
+            @Override
+            public void accept(@NonNull VersionCheckResult versionCheckResult) {
+                if (versionCheckResult.isHasLater()) {
+                    showUpdateSnake(versionCheckResult.getVersionInfo());
+                }
+            }
+        });
+    }
+
+    private void showUpdateSnake(VersionInfo info) {
+        Logger.i("showUpdateSnake %s", info);
     }
 
     private void onPermissionNotGrant() {
