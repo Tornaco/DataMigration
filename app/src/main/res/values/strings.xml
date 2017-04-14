@@ -126,7 +126,7 @@
     </string>
 
     <string name="title_err">错误信息</string>
-    <string name="title_new_update_available">新更新%1$s可用</string>
+    <string name="title_new_update_available">发现更新的版本：%1$s</string>
     <string name="action_look_up">查看</string>
 
     <string name="phone_num_unknown">未知号码</string>
