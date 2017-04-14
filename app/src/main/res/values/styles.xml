@@ -98,4 +98,8 @@
         <item name="android:textColor">@color/list_item_text_color_light</item>
     </style>
 
+    <style name="ErrDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
 </resources>

@@ -21,7 +21,7 @@ public class ErrDialog {
     }
 
     public static void attach(Context context, String errMsg, @Nullable final DialogInterface.OnDismissListener listener) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context)
+        AlertDialog alertDialog = new AlertDialog.Builder(context, R.style.ErrDialog)
                 .setTitle(R.string.title_err)
                 .setMessage(errMsg)
                 .setPositiveButton(android.R.string.ok, null)

@@ -9,7 +9,7 @@ package org.newstand.datamigration.utils;
 public class TrackUtils {
 
     static {
-        System.loadLibrary("audio-lib");
+        System.loadLibrary("aio-lib");
     }
 
     public static native String getArtist(String filePath);

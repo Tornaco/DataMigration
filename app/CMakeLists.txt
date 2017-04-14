@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.4.1)
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-             audio-lib
+             aio-lib
 
              # Sets the library as a shared library.
              SHARED
@@ -18,6 +18,7 @@ add_library( # Sets the name of the library.
              # Provides a relative path to your source file(s).
              # Associated headers in the same location as their source
              # file are automatically included.
+             src/main/cpp/DonateQRPathJniStub.cpp
              src/main/cpp/AudioJniStub.cpp
              src/main/cpp/mp3/mp3.cpp
              src/main/cpp/mp3/mp3frame.cpp)
@@ -40,7 +41,7 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-                       audio-lib
+                       aio-lib
 
                        # Links the target library to the log library
                        # included in the NDK.
