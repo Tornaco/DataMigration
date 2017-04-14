@@ -34,7 +34,11 @@ public class VersionRetriever {
                     @Override
                     public void onCompleted(Exception e, AsyncHttpResponse source, String result) {
                         if (result != null) {
-                            listener.onComplete(VersionInfo.fromJson(result));
+                            try {
+                                listener.onComplete(VersionInfo.fromJson(result));
+                            } catch (Exception e1) {
+                                listener.onError(e);
+                            }
                         } else {
                             listener.onError(e);
                         }
@@ -50,7 +54,7 @@ public class VersionRetriever {
             public void onComplete(VersionInfo versionInfo) {
                 super.onComplete(versionInfo);
                 VersionCheckResult result = new VersionCheckResult();
-                result.setHasLater(currentVersion.equals(versionInfo.getVersionName()));
+                result.setHasLater(!currentVersion.equals(versionInfo.getVersionName()));
                 result.setVersionInfo(versionInfo);
                 versionConsumer.accept(result);
             }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
@@ -91,18 +92,33 @@ public class NavigatorActivity extends TransitionSafeActivity {
     }
 
     private void checkForUpdate() {
-        VersionRetriever.hasLaterVersionAsync(this, new org.newstand.datamigration.common.Consumer<VersionCheckResult>() {
-            @Override
-            public void accept(@NonNull VersionCheckResult versionCheckResult) {
-                if (versionCheckResult.isHasLater()) {
-                    showUpdateSnake(versionCheckResult.getVersionInfo());
-                }
-            }
-        });
+        VersionRetriever.hasLaterVersionAsync(this,
+                new org.newstand.datamigration.common.Consumer<VersionCheckResult>() {
+                    @Override
+                    public void accept(@NonNull VersionCheckResult versionCheckResult) {
+                        Logger.d("checkForUpdate res %s", versionCheckResult);
+                        if (versionCheckResult.isHasLater()) {
+                            showUpdateSnake(versionCheckResult.getVersionInfo());
+                        }
+                    }
+                });
     }
 
     private void showUpdateSnake(VersionInfo info) {
-        Logger.i("showUpdateSnake %s", info);
+        if (isDestroyedCompat()) return;
+        Snackbar.make(findView(R.id.fab),
+                getString(R.string.title_new_update_available, info.getVersionName()),
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.action_look_up, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onRequestLookup();
+                    }
+                }).show();
+    }
+
+    private void onRequestLookup() {
+
     }
 
     private void onPermissionNotGrant() {
