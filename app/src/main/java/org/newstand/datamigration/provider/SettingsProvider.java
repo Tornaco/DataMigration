@@ -117,6 +117,18 @@ public class SettingsProvider extends Observable {
             + File.separator
             + "Test";
 
+    private static final String COMMON_DATA_DIR = Environment.getExternalStorageDirectory().getPath()
+            + File.separator
+            + ".DataMigration"
+            + File.separator
+            + "Data";
+
+    private static final String HELP_MD_FILE_PATH = COMMON_DATA_DIR
+            + File.separator
+            + "Help.md";
+
+    private static final String DEF_HELP_FILE_ASSETS_PATH = "help/Def_Help.md";
+
     public static String getBackupRootDir() {
         return COMMON_BACKUP_DIR;
     }
@@ -309,5 +321,13 @@ public class SettingsProvider extends Observable {
 
     public static void setUserNoticed(boolean noticed) {
         sMe.writeBoolean(KEY_USER_NOTICED, noticed);
+    }
+
+    public static String getHelpMdFilePath() {
+        return HELP_MD_FILE_PATH;
+    }
+
+    public static String getDefHelpFileAssetsPath() {
+        return DEF_HELP_FILE_ASSETS_PATH;
     }
 }

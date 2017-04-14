@@ -16,4 +16,8 @@ public abstract class SharedExecutor {
     public static void execute(Runnable runnable) {
         executorService.execute(runnable);
     }
+
+    public static ExecutorService getService() {
+        return executorService;
+    }
 }

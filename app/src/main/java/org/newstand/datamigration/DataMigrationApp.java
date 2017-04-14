@@ -1,6 +1,8 @@
 package org.newstand.datamigration;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.google.common.io.Closer;
@@ -42,6 +44,12 @@ public class DataMigrationApp extends Application {
         } catch (IOException e) {
             Logger.e("Fail to close %s", e.getLocalizedMessage());
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     @Override

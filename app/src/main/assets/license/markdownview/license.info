@@ -1,0 +1,8 @@
+{
+ "title":"MarkdownView",
+ "author":"tiagohm",
+ "description":"Android library to display markdown text.",
+ "fullLicense":"LICENSE",
+ "url":"https://github.com/tiagohm/MarkdownView",
+ "version":"0.13.2"
+ }

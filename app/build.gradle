@@ -7,8 +7,10 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "org.newstand.datamigration"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
+        // Enabling multidex support.
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -85,4 +87,10 @@ dependencies {
 
     provided project(':interface-adapter-annotation')
     apt project(':interface-adapter-generator')
+
+    compile 'com.koushikdutta.async:androidasync:2.+'
+
+    compile 'com.github.tiagohm.MarkdownView:library:0.13.2'
+
+    compile 'com.android.support:multidex:1.0.1'
 }

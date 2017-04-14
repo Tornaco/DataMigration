@@ -1,0 +1,8 @@
+{
+ "title":"AndroidAsync",
+ "author":"koush",
+ "description":"Asynchronous socket, http (client+server), websocket, and socket.io library for android. Based on nio, not threads.",
+ "fullLicense":"LICENSE",
+ "url":"https://github.com/koush/AndroidAsync",
+ "version":"2.+"
+ }

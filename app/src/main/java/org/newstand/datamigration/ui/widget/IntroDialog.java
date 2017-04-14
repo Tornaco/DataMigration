@@ -16,7 +16,7 @@ import org.newstand.datamigration.provider.SettingsProvider;
 public class IntroDialog {
 
     public static void attach(Context context, final DialogInterface.OnCancelListener listener) {
-        if (!SettingsProvider.isDebugEnabled() && SettingsProvider.isUserNoticed()) return;
+        if (SettingsProvider.isUserNoticed()) return;
         AlertDialog alertDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.title_user_notice)
                 .setMessage(R.string.message_user_notice)
