@@ -1,18 +1,31 @@
-A First Level Header
-====================
-A Second Level Header
----------------------
+# Heading
 
-Now is the time for all good men to come to
-the aid of their country. This is just a
-regular paragraph.
+## Sub-heading
 
-The quick brown fox jumped over the lazy
-dog's back.
-### Header 3
+### Another deeper heading
+ 
+Paragraphs are separated
+by a blank line.
 
-> This is a blockquote.
-> 
-> This is the second paragraph in the blockquote.
->
-> ## This is an H2 in a blockquote
+Two spaces at the end of a line leave a  
+line break.
+
+Text attributes _italic_, *italic*, __bold__, **bold**, `monospace`.
+
+Horizontal rule:
+
+---
+
+Bullet list:
+
+  * apples
+  * oranges
+  * pears
+
+Numbered list:
+
+  1. apples
+  2. oranges
+  3. pears
+
+A [link](http://example.com).
