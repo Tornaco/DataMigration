@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -33,6 +32,7 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.ui.adapter.P2PListViewAdapter;
 import org.newstand.datamigration.ui.adapter.P2PListViewHolder;
 import org.newstand.datamigration.ui.widget.AlertDialogCompat;
+import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.ui.widget.ProgressDialogCompat;
 import org.newstand.datamigration.utils.Collections;
@@ -129,17 +129,12 @@ public class WFDSetupActivity extends TransitionSafeActivity implements Discover
     }
 
     private void onPermissionNotGrant() {
-        AlertDialog alertDialog = new AlertDialog.Builder(WFDSetupActivity.this)
-                .setTitle("No permission")
-                .setMessage("WTF????")
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finishWithAfterTransition();
-                    }
-                }).create();
-        alertDialog.show();
+        ErrDialog.attach(WFDSetupActivity.this, new IllegalStateException("Permission denied!!!"), new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                finishWithAfterTransition();
+            }
+        });
     }
 
     @Override

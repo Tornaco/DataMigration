@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +31,7 @@ import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
+import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.utils.Collections;
 
 import java.util.ArrayList;
@@ -130,17 +130,12 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
     }
 
     private void onPermissionNotGrant() {
-        AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                .setTitle("No permission")
-                .setMessage("WTF????")
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getActivity().finish();
-                    }
-                }).create();
-        alertDialog.show();
+        ErrDialog.attach(getActivity(), new IllegalStateException("Permission denied!!!"), new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                getActivity().finish();
+            }
+        });
     }
 
     private void startLoading() {

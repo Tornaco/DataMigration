@@ -41,6 +41,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_BACKUP_INTERVAL = "key_backup_interval";
     private static final String KEY_USER_NOTICED = "key_user_noticed";
     private static final String KEY_DONATE_QR_PATH = "key_donate_qr_path";
+    private static final String KEY_LAST_UPDATE_CHECK_TIME = "key_last_update_check_time";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -346,5 +347,17 @@ public class SettingsProvider extends Observable {
         String path = sMe.readString(KEY_DONATE_QR_PATH, null);
         if (new File(path).exists()) return path;
         return null;
+    }
+
+    public static long getLastUpdateCheckTime() {
+        return Long.parseLong(sMe.readString(KEY_LAST_UPDATE_CHECK_TIME, "0"));
+    }
+
+    public static void setLastUpdateCheckTime(long time) {
+        sMe.writeString(KEY_LAST_UPDATE_CHECK_TIME, String.valueOf(time));
+    }
+
+    public static boolean shouldCheckForUpdateNow() {
+        return System.currentTimeMillis() - getLastUpdateCheckTime() > Interval.Hour.getIntervalMills();
     }
 }

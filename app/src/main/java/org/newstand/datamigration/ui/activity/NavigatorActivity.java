@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,10 +24,10 @@ import org.newstand.datamigration.secure.VersionCheckResult;
 import org.newstand.datamigration.secure.VersionInfo;
 import org.newstand.datamigration.secure.VersionRetriever;
 import org.newstand.datamigration.sync.SharedExecutor;
+import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.IntroDialog;
 import org.newstand.datamigration.ui.widget.VersionInfoDialog;
 import org.newstand.datamigration.worker.backup.session.Session;
-import org.newstand.logger.Logger;
 
 import java.util.Date;
 
@@ -71,6 +70,10 @@ public class NavigatorActivity extends TransitionSafeActivity {
                 finish();
             }
         });
+
+        if (SettingsProvider.shouldCheckForUpdateNow()) {
+            checkForUpdate();
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -89,7 +92,6 @@ public class NavigatorActivity extends TransitionSafeActivity {
                         }
                     }
                 });
-        checkForUpdate();
     }
 
     private void checkForUpdate() {
@@ -97,9 +99,9 @@ public class NavigatorActivity extends TransitionSafeActivity {
                 new org.newstand.datamigration.common.Consumer<VersionCheckResult>() {
                     @Override
                     public void accept(@NonNull VersionCheckResult versionCheckResult) {
-                        Logger.d("checkForUpdate res %s", versionCheckResult);
                         if (versionCheckResult.isHasLater()) {
                             showUpdateSnake(versionCheckResult.getVersionInfo());
+                            SettingsProvider.setLastUpdateCheckTime(System.currentTimeMillis());
                         }
                     }
                 });
@@ -123,17 +125,12 @@ public class NavigatorActivity extends TransitionSafeActivity {
     }
 
     private void onPermissionNotGrant() {
-        AlertDialog alertDialog = new AlertDialog.Builder(NavigatorActivity.this)
-                .setTitle("No permission")
-                .setMessage("WTF????")
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finishWithAfterTransition();
-                    }
-                }).create();
-        alertDialog.show();
+        ErrDialog.attach(NavigatorActivity.this, new IllegalStateException("Permission denied!!!"), new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                finishWithAfterTransition();
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

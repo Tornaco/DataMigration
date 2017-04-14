@@ -263,7 +263,7 @@ class WFDService extends WFDManager {
         removeGroup();
         stopDiscoverPeers();
         setState(State.TEARDOWN);
-        if (mWakeLock.isHeld()) mWakeLock.release();
+        if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();// FIX NPE
     }
 
     @SuppressWarnings("TryWithIdenticalCatches")
