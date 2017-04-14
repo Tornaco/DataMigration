@@ -26,6 +26,7 @@ import org.newstand.datamigration.secure.VersionInfo;
 import org.newstand.datamigration.secure.VersionRetriever;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.widget.IntroDialog;
+import org.newstand.datamigration.ui.widget.VersionInfoDialog;
 import org.newstand.datamigration.worker.backup.session.Session;
 import org.newstand.logger.Logger;
 
@@ -104,21 +105,21 @@ public class NavigatorActivity extends TransitionSafeActivity {
                 });
     }
 
-    private void showUpdateSnake(VersionInfo info) {
+    private void showUpdateSnake(final VersionInfo info) {
         if (isDestroyedCompat()) return;
         Snackbar.make(findView(R.id.fab),
                 getString(R.string.title_new_update_available, info.getVersionName()),
-                Snackbar.LENGTH_INDEFINITE)
+                Snackbar.LENGTH_LONG)
                 .setAction(R.string.action_look_up, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onRequestLookup();
+                        onRequestLookup(info);
                     }
                 }).show();
     }
 
-    private void onRequestLookup() {
-
+    private void onRequestLookup(VersionInfo info) {
+        VersionInfoDialog.attach(NavigatorActivity.this, info);
     }
 
     private void onPermissionNotGrant() {
