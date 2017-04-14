@@ -6,7 +6,7 @@ jstring
 Java_org_newstand_datamigration_secure_DonateQRPathRetriever_getPathForDonateQRImage(
         JNIEnv *env,
         jobject /* this */) {
-    std::string path = "https://raw.githubusercontent.com/Tornaco/DataMigration/master/HELP.md";
+    std::string path = "https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/QR";
     jstring res = env->NewStringUTF(path.c_str());
     return res;
 }

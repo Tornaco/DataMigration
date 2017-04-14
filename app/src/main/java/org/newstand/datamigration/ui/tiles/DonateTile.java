@@ -2,12 +2,15 @@ package org.newstand.datamigration.ui.tiles;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.provider.SettingsProvider;
 
 import dev.nick.tiles.tile.QuickTileView;
 
@@ -39,7 +42,10 @@ public class DonateTile extends ThemedTile {
 
     private void showXCode() {
         ImageView imageView = new ImageView(getContext());
-        imageView.setBackgroundResource(R.drawable.qr);
+        String donateFilePath = SettingsProvider.getDonateQrPathChecked();
+        Bitmap bitmap = donateFilePath != null ? BitmapFactory.decodeFile(donateFilePath)
+                : BitmapFactory.decodeResource(getContext().getResources(), R.drawable.qr);
+        imageView.setImageBitmap(bitmap);
         new AlertDialog.Builder(getContext())
                 .setView(imageView)
                 .setTitle(R.string.title_donate)

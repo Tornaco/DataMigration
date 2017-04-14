@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.BoolRes;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import org.newstand.datamigration.R;
@@ -39,6 +40,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_DEF_SMS_APP = "key_def_sms_app";
     private static final String KEY_BACKUP_INTERVAL = "key_backup_interval";
     private static final String KEY_USER_NOTICED = "key_user_noticed";
+    private static final String KEY_DONATE_QR_PATH = "key_donate_qr_path";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -333,5 +335,16 @@ public class SettingsProvider extends Observable {
 
     public static String getCommonDataDir() {
         return COMMON_DATA_DIR;
+    }
+
+    public static void setDonateQrPath(String donateQrPath) {
+        sMe.writeString(KEY_DONATE_QR_PATH, donateQrPath);
+    }
+
+    @Nullable
+    public static String getDonateQrPathChecked() {
+        String path = sMe.readString(KEY_DONATE_QR_PATH, null);
+        if (new File(path).exists()) return path;
+        return null;
     }
 }
