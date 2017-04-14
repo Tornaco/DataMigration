@@ -33,12 +33,11 @@ public class DataMigrationApp extends Application {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }
 
-    public static void registerClosable(Closeable closeable) {
-        sCloser.register(closeable);
+    public static <C extends Closeable> C registerClosable(C closeable) {
+        return sCloser.register(closeable);
     }
 
     public void cleanup() {
-        Logger.d("Cleaning up");
         try {
             sCloser.close();
         } catch (IOException e) {
@@ -55,13 +54,11 @@ public class DataMigrationApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Logger.config(Settings.builder().tag(getClass().getSimpleName()).logLevel(0).logAdapter(new OnDeviceLogAdapter()).build());
         SettingsProvider.init(this);
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
         UserActionServiceProxy.startService(this);
-
-        Logger.config(Settings.builder().tag(getClass().getSimpleName()).logLevel(0).logAdapter(new OnDeviceLogAdapter()).build());
-        Logger.d("DataMigrationApp start up~");
     }
 }

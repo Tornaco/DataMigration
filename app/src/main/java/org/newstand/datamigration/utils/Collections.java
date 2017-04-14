@@ -13,6 +13,7 @@ import java.util.Collection;
  * All right reserved.
  */
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public abstract class Collections {
 
     public static <C> void consumeRemaining(Collection<C> collection, Consumer<C> consumer) {

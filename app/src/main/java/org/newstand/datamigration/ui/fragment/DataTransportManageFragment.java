@@ -7,18 +7,27 @@ import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.TextView;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;
+import org.newstand.datamigration.data.event.UserAction;
+import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.widget.ViewAnimateUtils;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.Stats;
 import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.logger.Logger;
+
+import java.util.List;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
+import cn.iwgang.simplifyspan.other.OnClickableSpanListener;
+import cn.iwgang.simplifyspan.unit.SpecialClickableUnit;
 import cn.iwgang.simplifyspan.unit.SpecialTextUnit;
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
@@ -131,13 +140,32 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
         report.append(getString(R.string.title_transport_report_total, String.valueOf(stats.getTotal())));
         report.append("\n");
         report.append(new SpecialTextUnit(getString(R.string.title_transport_report_success,
-                String.valueOf(stats.getSuccess())), ContextCompat.getColor(getContext(), R.color.green_dark)));
+                String.valueOf(stats.getSuccess())), ContextCompat.getColor(getContext(), R.color.green_dark))
+                .setClickableUnit(new SpecialClickableUnit(getConsoleSummaryView(), new OnClickableSpanListener() {
+                    @Override
+                    public void onClick(TextView tv, String clickText) {
+                        onSuccessTextInSummaryClick();
+                    }
+                })));
         report.append("\n");
         report.append(new SpecialTextUnit(getString(R.string.title_transport_report_fail,
-                String.valueOf(stats.getFail())), ContextCompat.getColor(getContext(), R.color.red_dark)));
+                String.valueOf(stats.getFail())), ContextCompat.getColor(getContext(), R.color.red_dark))
+                .setClickableUnit(new SpecialClickableUnit(getConsoleSummaryView(), new OnClickableSpanListener() {
+                    @Override
+                    public void onClick(TextView tv, String clickText) {
+                        onFailTextInSummaryClick();
+                    }
+                })));
         return report;
     }
 
+    protected void onFailTextInSummaryClick() {
+        Logger.i("onFailTextInSummaryClick");
+    }
+
+    protected void onSuccessTextInSummaryClick() {
+        Logger.i("onSuccessTextInSummaryClick");
+    }
 
     protected void broadcastCompleteEvent() {
         EventBus.from(getContext()).publish(Event.builder()
@@ -145,4 +173,43 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
                 .obj(getSession()).build());
     }
 
+    protected void publishFailEvent(DataRecord handling, Throwable throwable) {
+        Session session = getSession();
+        Logger.i("publishFailEvent with session %s for %s", session, handling);
+        UserActionServiceProxy.publishNewAction(
+                UserAction.builder()
+                        .eventTitle("Fail@" + handling.getDisplayName())
+                        .date(session.getDate())
+                        .fingerPrint(session.getDate())
+                        .eventDescription(Logger.getStackTraceString(throwable))
+                        .build());
+    }
+
+    protected void publishFailEventAsync(final Throwable throwable) {
+        publishFailEventAsync(null, throwable);
+    }
+
+    protected void publishFailEventAsync(final DataRecord handling, final Throwable throwable) {
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                publishFailEvent(handling, throwable);
+            }
+        });
+    }
+
+    protected List<UserAction> queryFailEvent() {
+        Session session = getSession();
+        Logger.i("queryFailEvent with session %s", session);
+        return UserActionServiceProxy.getByFingerPrint(getContext(), session.getDate());
+    }
+
+    protected void queryFailEventAsync(final Consumer<List<UserAction>> consumer) {
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                consumer.accept(queryFailEvent());
+            }
+        });
+    }
 }

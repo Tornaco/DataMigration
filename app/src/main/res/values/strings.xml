@@ -125,6 +125,8 @@
         "technologically advanced and open to imagination and magic.\n"
     </string>
 
+    <string name="title_err">错误信息</string>
+
     <string name="phone_num_unknown">未知号码</string>
 
     <string name="title_license">开放源代码许可</string>

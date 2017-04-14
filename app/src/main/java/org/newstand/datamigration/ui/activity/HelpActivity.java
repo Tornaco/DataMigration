@@ -60,7 +60,7 @@ public class HelpActivity extends TransitionSafeActivity {
                 new AsyncHttpClient.FileCallback() {
                     @Override
                     public void onCompleted(Exception e, AsyncHttpResponse source, File result) {
-                        Logger.d("onCompleted %s, %s", e, result.getPath());
+                        Logger.d("onCompleted %s, %s", e, result);
                         if (e == null) runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

@@ -31,5 +31,5 @@
     <dimen name="action_btn_size">32dp</dimen>
 
     <dimen name="list_item_elevation">1dp</dimen>
-    <dimen name="list_item_margin">5dp</dimen>
+    <dimen name="list_item_margin">2dp</dimen>
 </resources>

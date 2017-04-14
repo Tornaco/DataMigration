@@ -330,4 +330,8 @@ public class SettingsProvider extends Observable {
     public static String getDefHelpFileAssetsPath() {
         return DEF_HELP_FILE_ASSETS_PATH;
     }
+
+    public static String getCommonDataDir() {
+        return COMMON_DATA_DIR;
+    }
 }

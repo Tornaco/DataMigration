@@ -9,10 +9,12 @@ import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.StartSignal;
 import org.newstand.datamigration.data.SmsContentProviderCompat;
+import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.sync.Sleeper;
+import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.backup.BackupRestoreListener;
 import org.newstand.datamigration.worker.backup.BackupRestoreListenerMainThreadAdapter;
@@ -21,6 +23,7 @@ import org.newstand.datamigration.worker.backup.session.Session;
 import org.newstand.logger.Logger;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
@@ -52,6 +55,7 @@ public class DataImportManageFragment extends DataTransportManageFragment {
         public void onPieceFailMainThread(DataRecord record, Throwable err) {
             super.onPieceFailMainThread(record, err);
             onProgressUpdate();
+            publishFailEventAsync(record, err);
         }
 
         @Override
@@ -168,6 +172,32 @@ public class DataImportManageFragment extends DataTransportManageFragment {
         return buildTransportReport(getStats());
     }
 
+    @Override
+    protected void onFailTextInSummaryClick() {
+        super.onFailTextInSummaryClick();
+        queryFailEventAsync(new Consumer<List<UserAction>>() {
+            @Override
+            public void accept(@NonNull final List<UserAction> userActions) {
+                if (userActions.size() == 0) {
+                    Logger.w("No user actions got~");
+                    return;
+                }
+                final StringBuilder message = new StringBuilder();
+                Collections.consumeRemaining(userActions, new Consumer<UserAction>() {
+                    @Override
+                    public void accept(@NonNull UserAction userAction) {
+                        message.append(userAction.getEventDescription());
+                    }
+                });
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ErrDialog.attach(getActivity(), message.toString(), null);
+                    }
+                });
+            }
+        });
+    }
 
     @Override
     public void onDestroy() {

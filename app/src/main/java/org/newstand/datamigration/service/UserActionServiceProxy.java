@@ -48,6 +48,7 @@ public class UserActionServiceProxy extends ServiceProxy implements UserActionHa
                 .build());
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void publishNewAction(@NonNull UserAction action) {
         Preconditions.checkNotNull(action, "Null action!");
         EventBus.from(null).publish(Event.builder().eventType(IntentEvents.EVENT_ON_USER_ACTION).obj(action).build());

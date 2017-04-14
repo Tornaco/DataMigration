@@ -11,7 +11,6 @@ import android.support.annotation.WorkerThread;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.repo.UserActionRepoService;
-import org.newstand.logger.Logger;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -43,7 +42,6 @@ public class UserActionService extends Service {
         super.onCreate();
         mStub = new ImplStub();
         EventBus.from(this).subscribe(this);
-        Logger.d("UAS started!");
     }
 
     @Override
