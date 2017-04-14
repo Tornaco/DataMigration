@@ -9,7 +9,6 @@ import org.newstand.lib.iface.Adapter;
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-@Adapter
 public interface Consumer<T> {
     void accept(@NonNull T t);
 }

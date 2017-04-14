@@ -5,8 +5,11 @@ import com.google.common.collect.ImmutableList;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.TypeVariableName;
 
+import org.newstand.lib.common.Collections;
 import org.newstand.lib.common.Logger;
 import org.newstand.lib.common.MoreElements;
 import org.newstand.lib.common.SettingsProvider;
@@ -26,7 +29,9 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -87,8 +92,10 @@ public class AdapterCompiler extends AbstractProcessor {
         if (type.getKind() != ElementKind.INTERFACE) {
             mErrorReporter.abortWithError("@" + Adapter.class.getName() + " only applies to interfaces", type);
         }
-        if (ancestorIs(type, Adapter.class)) {
-            mErrorReporter.abortWithError("One @Adapter class shall not extend another", type);
+
+        NestingKind nestingKind = type.getNestingKind();
+        if (nestingKind != NestingKind.TOP_LEVEL) {
+            mErrorReporter.abortWithError("@" + Adapter.class.getName() + " only applies to top level interfaces", type);
         }
 
         checkModifiersIfNested(type);
@@ -141,10 +148,18 @@ public class AdapterCompiler extends AbstractProcessor {
                 .addMethods(createMethodSpecs(type))
                 .addSuperinterface(ClassName.get(pkg, ifaceToImpl));
 
+        // Add type params.
+        List l = type.getTypeParameters();
+        Collections.consumeRemaining(l, o -> {
+            TypeParameterElement typeParameterElement = (TypeParameterElement) o;
+            subClass.addTypeVariable(TypeVariableName.get(typeParameterElement.toString()));
+        });
+
         if (isFinal) subClass.addModifiers(FINAL);
 
         JavaFile javaFile = JavaFile.builder(pkg, subClass.build())
                 .addFileComment(SettingsProvider.FILE_COMMENT)
+                .skipJavaLangImports(true)
                 .build();
         return javaFile.toString();
     }
@@ -153,12 +168,39 @@ public class AdapterCompiler extends AbstractProcessor {
         List<MethodSpec> methodSpecs = new ArrayList<>();
         List<? extends Element> ex = ElementFilter.methodsIn(typeElement.getEnclosedElements());
         DeclaredType classType = (DeclaredType) typeElement.asType();
+        Logger.debug("classType = %s", classType);
+
         for (Element e : ex) {
+            Logger.debug("e = %s", e.getClass());
             ExecutableElement executableElement = MoreElements.asExecutable(e);
-            methodSpecs.add(MethodSpec.overriding(executableElement, classType, mTypeUtils)
-                    .build());
+            MethodSpec methodSpec = MethodSpec.overriding(executableElement, classType, mTypeUtils)
+                    .build();
+            TypeName returnType = methodSpec.returnType;
+            String returnStatement = returnStatement(returnType);
+            if (returnStatement != null)
+                methodSpec = methodSpec.toBuilder().addStatement(returnStatement).build();
+            methodSpecs.add(methodSpec);
         }
         return methodSpecs;
+    }
+
+    private String returnStatement(TypeName returnType) {
+        Logger.debug("returnType %s", returnType);
+        switch (returnType.toString()) {
+            case "void":
+                return null;
+            case "boolean":
+                return "return false";
+            case "char":
+                return "return null";
+            case "int":
+            case "long":
+            case "float":
+            case "double":
+            case "short":
+                return "return 0";
+        }
+        return "return null";
     }
 
     private void checkModifiersIfNested(TypeElement type) {
