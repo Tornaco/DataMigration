@@ -3,7 +3,7 @@ package org.newstand.datamigration.loader;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
 
 import lombok.Getter;
 import lombok.ToString;

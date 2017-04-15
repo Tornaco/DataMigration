@@ -23,8 +23,8 @@ import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.SessionListAdapter;
 import org.newstand.datamigration.ui.adapter.SessionListViewHolder;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
-import org.newstand.datamigration.worker.backup.DataBackupManager;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
 
 import java.io.File;

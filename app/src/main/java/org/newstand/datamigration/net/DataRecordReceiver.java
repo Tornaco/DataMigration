@@ -48,6 +48,10 @@ public class DataRecordReceiver implements Receiver<ReceiveSettings> {
         ACK.okTo(os);
 
         String fileName = fileHeader.getFileName();
+
+        // Notify the name of this file.
+        settings.getNameConsumer().accept(fileName);
+
         long size = fileHeader.getSize();
 
         String destPath = settings.getDestDir() + File.separator + fileName;

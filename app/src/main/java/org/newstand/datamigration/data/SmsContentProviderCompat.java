@@ -87,6 +87,11 @@ public class SmsContentProviderCompat {
             return;
         }
 
+        if (me.equals(defaultSmsApp)) {
+            Logger.w("Current def SMS app is me??? WTF???");
+            return;
+        }
+
         Logger.d("defaultSmsApp is %s", defaultSmsApp);
 
         String previousPkg = SettingsProvider.getDefSmsApp();

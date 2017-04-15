@@ -18,6 +18,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.newstand.datamigration.DataMigrationApp;
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.BKSessionRepoService;
 import org.newstand.datamigration.secure.VersionCheckResult;
@@ -27,7 +28,7 @@ import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.IntroDialog;
 import org.newstand.datamigration.ui.widget.VersionInfoDialog;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
 
 import java.util.Date;
 
@@ -74,6 +75,9 @@ public class NavigatorActivity extends TransitionSafeActivity {
         if (SettingsProvider.shouldCheckForUpdateNow()) {
             checkForUpdate();
         }
+
+        // Check if user set us to def sms App~
+        SmsContentProviderCompat.restoreDefSmsApp(this);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

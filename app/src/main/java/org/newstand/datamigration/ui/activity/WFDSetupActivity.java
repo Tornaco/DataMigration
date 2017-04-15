@@ -321,6 +321,7 @@ public class WFDSetupActivity extends TransitionSafeActivity implements Discover
 
     @Override
     public void onConnectionInfoAvailable(WifiP2pInfo info) {
+        if (info == null || info.groupOwnerAddress == null) return;
         Logger.d("onConnectionInfoAvailable: %s", info);
         progressRelativeLayout.showContent();
         ProgressDialogCompat.dismiss(mProgressDialog);

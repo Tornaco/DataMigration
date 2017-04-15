@@ -7,7 +7,7 @@ import android.os.Bundle;
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.logger.Logger;
 
 import dev.nick.eventbus.Event;

@@ -19,8 +19,8 @@ import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.widget.ViewAnimateUtils;
 import org.newstand.datamigration.utils.Collections;
-import org.newstand.datamigration.worker.Stats;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.Stats;
 import org.newstand.logger.Logger;
 
 import java.util.List;

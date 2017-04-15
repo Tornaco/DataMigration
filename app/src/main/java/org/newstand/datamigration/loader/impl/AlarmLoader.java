@@ -2,7 +2,7 @@ package org.newstand.datamigration.loader.impl;
 
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderFilter;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -14,9 +14,9 @@ import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.loader.DataLoaderManager;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.worker.backup.BackupRestoreListenerAdapter;
-import org.newstand.datamigration.worker.backup.DataBackupManager;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
+import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,7 +57,7 @@ public class SchedulerServiceV21 extends JobService {
 
                 DataBackupManager.from(getApplicationContext(), session).performBackupAsync(
                         DataLoaderManager.from(getApplicationContext()).load(LoaderSource.builder().parent(LoaderSource.Parent.Android).build()
-                                , category), category, new BackupRestoreListenerAdapter() {
+                                , category), category, new TransportListenerAdapter() {
                             @Override
                             public void onComplete() {
                                 super.onComplete();

@@ -16,10 +16,10 @@ import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.utils.Collections;
-import org.newstand.datamigration.worker.backup.BackupRestoreListener;
-import org.newstand.datamigration.worker.backup.BackupRestoreListenerMainThreadAdapter;
-import org.newstand.datamigration.worker.backup.DataBackupManager;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.TransportListener;
+import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
+import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
 
 import java.util.Collection;
@@ -39,7 +39,7 @@ public class DataImportManageFragment extends DataTransportManageFragment {
 
     private CountDownLatch mTaskLatch;
 
-    private BackupRestoreListener mExportListener = new BackupRestoreListenerMainThreadAdapter() {
+    private TransportListener mExportListener = new TransportListenerMainThreadAdapter() {
         @Override
         public void onStartMainThread() {
             super.onStartMainThread();

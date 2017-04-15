@@ -14,6 +14,8 @@ public class WFDDataSenderActivity extends WFDSetupActivity {
     public void onConnectionInfoAvailable(WifiP2pInfo info) {
         super.onConnectionInfoAvailable(info);
 
+        if (info.groupOwnerAddress == null) return;
+
         String host = info.groupOwnerAddress.getHostAddress();
 
         Intent intent = new Intent(this, SenderCategoryViewerActivity.class);

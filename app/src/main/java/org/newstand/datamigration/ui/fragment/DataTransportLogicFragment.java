@@ -4,8 +4,8 @@ import android.content.Context;
 
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.StartSignal;
-import org.newstand.datamigration.worker.Stats;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.Stats;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -54,7 +54,7 @@ public abstract class DataTransportLogicFragment extends DataTransportUIFragment
         enterState(STATE_DETACHED);
     }
 
-    class MultipleStats implements Stats {
+    private class MultipleStats implements Stats {
 
         Set<Stats> childs;
 

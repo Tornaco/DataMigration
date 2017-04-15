@@ -8,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.newstand.datamigration.cache.LoadingCacheManager;
-import org.newstand.datamigration.common.ActionListener2;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
@@ -21,6 +20,7 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.strategy.Interval;
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
 import org.newstand.logger.Logger;
 
 import java.util.Random;
@@ -117,39 +117,71 @@ public class DataSenderProxyTest {
     }
 
     private void mokeSend() {
-        DataSenderProxy.send(InstrumentationRegistry.getTargetContext(), mClient, new ActionListener2<Void, Throwable>() {
+        Sleeper.sleepQuietly(Interval.Seconds.getIntervalMills());
+        DataSenderProxy.send(InstrumentationRegistry.getTargetContext(), mClient, new TransportListenerAdapter() {
             @Override
-            public void onStart() {
-
+            public void onPieceSuccess(DataRecord record) {
+                super.onPieceSuccess(record);
+                Logger.d("send onPieceSuccess %s %s", record, getStats());
             }
 
             @Override
-            public void onError(Throwable throwable) {
-
+            public void onPieceFail(DataRecord record, Throwable err) {
+                super.onPieceFail(record, err);
+                Logger.d("send onPieceFail %s %s", record, getStats());
             }
 
             @Override
-            public void onComplete(Void aVoid) {
-                Logger.d("Sender--onComplete~");
+            public void onPieceStart(DataRecord record) {
+                super.onPieceStart(record);
+                Logger.d("send onPieceStart %s", record);
+            }
+
+            @Override
+            public void onComplete() {
+                super.onComplete();
+                Logger.d("send onComplete~~");
+            }
+
+            @Override
+            public void onAbort(Throwable err) {
+                super.onAbort(err);
+                Logger.d("send onAbort %s", Logger.getStackTraceString(err));
             }
         });
     }
 
     private void mokeReceive() {
-        DataReceiverProxy.receive(InstrumentationRegistry.getTargetContext(), mServer, new ActionListener2<Void, Throwable>() {
+        Sleeper.sleepQuietly(Interval.Seconds.getIntervalMills());
+        DataReceiverProxy.receive(InstrumentationRegistry.getTargetContext(), mServer, new TransportListenerAdapter() {
             @Override
-            public void onStart() {
-
+            public void onPieceSuccess(DataRecord record) {
+                super.onPieceSuccess(record);
+                Logger.d("receive onPieceSuccess %s %s", record, getStats());
             }
 
             @Override
-            public void onError(Throwable throwable) {
-
+            public void onPieceFail(DataRecord record, Throwable err) {
+                super.onPieceFail(record, err);
+                Logger.d("receive onPieceFail %s %s", record, getStats());
             }
 
             @Override
-            public void onComplete(Void aVoid) {
-                Logger.d("Receiver--onComplete~");
+            public void onPieceStart(DataRecord record) {
+                super.onPieceStart(record);
+                Logger.d("receive onPieceStart %s", record);
+            }
+
+            @Override
+            public void onComplete() {
+                super.onComplete();
+                Logger.d("receive onComplete~~");
+            }
+
+            @Override
+            public void onAbort(Throwable err) {
+                super.onAbort(err);
+                Logger.d("receive onAbort %s", Logger.getStackTraceString(err));
             }
         });
     }

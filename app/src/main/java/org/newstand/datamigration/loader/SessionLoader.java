@@ -8,7 +8,7 @@ import org.newstand.datamigration.repo.BKSessionRepoService;
 import org.newstand.datamigration.repo.ReceivedSessionRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.logger.Logger;
 
 import java.io.File;

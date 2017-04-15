@@ -31,9 +31,8 @@ public class FileHeader implements Serializable, DeSerializable, ByteWriter {
         this.size = size;
     }
 
-    public static FileHeader from(String filePath) throws IOException {
-        String fileName = new File(filePath).getName();
-        long fileSize = Files.asByteSource(new File(filePath)).size();
+    public static FileHeader from(String path, String fileName) throws IOException {
+        long fileSize = Files.asByteSource(new File(path)).size();
         return new FileHeader(fileName, fileSize);
     }
 

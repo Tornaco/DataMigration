@@ -78,6 +78,7 @@
     <string name="title_restore_importing">正在导入数据</string>
     <string name="title_restore_import_complete">导入数据完成</string>
     <string name="action_done">完成</string>
+    <string name="action_preparing">正在准备…</string>
     <string name="action_remark">此次备份的备注：</string>
     <string name="action_remark_tips">，点击可修改</string>
     <string name="title_backup_at">备份于 %1$s</string>
@@ -88,6 +89,11 @@
     <string name="title_send_history_noop">无发送记录</string>
     <string name="title_only_root_dir">目前只支持根目录文件</string>
 
+    <string name="title_restore_sending">正在发送数据</string>
+    <string name="title_restore_sending_complete">数据发送完毕</string>
+
+    <string name="title_restore_receiving">正在接收数据</string>
+    <string name="title_restore_receiving_complete">数据接收完毕</string>
 
     <string name="summary_category_viewer">%1$s/%2$s</string>
     <string name="summary_category_viewer_need_click">点击选择条目</string>

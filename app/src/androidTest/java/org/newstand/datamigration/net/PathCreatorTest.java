@@ -15,7 +15,7 @@ import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.loader.DataLoaderManager;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.utils.Collections;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.logger.Logger;
 
 import java.util.Collection;

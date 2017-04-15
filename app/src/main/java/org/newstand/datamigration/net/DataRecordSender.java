@@ -38,9 +38,10 @@ public class DataRecordSender extends AbsSender<DataRecord> {
 
         String path = fileBasedRecord.getPath();
 
+        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(path);
 
-        FileHeader fileHeader = FileHeader.from(fileBasedRecord.getPath());
+        FileHeader fileHeader = FileHeader.from(fileBasedRecord.getPath(), fileBasedRecord.getDisplayName());
 
         Logger.d("Sending: %s", fileHeader.toString());
 

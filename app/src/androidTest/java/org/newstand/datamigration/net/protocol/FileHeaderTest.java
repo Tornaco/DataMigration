@@ -43,7 +43,7 @@ public class FileHeaderTest {
 
                         FileHeader header = null;
                         try {
-                            header = FileHeader.from(fileBasedRecord.getPath());
+                            header = FileHeader.from(fileBasedRecord.getPath(), fileBasedRecord.getDisplayName());
                         } catch (IOException e) {
                             Assert.fail(e.getLocalizedMessage());
                         }

@@ -32,7 +32,7 @@ public class DataRecordReceiverTest {
 
         Logger.d("to: %s", toFile.getPath());
 
-        FileHeader fileHeader = FileHeader.from(srcFile.getPath());
+        FileHeader fileHeader = FileHeader.from(srcFile.getPath(), srcFile.getName());
 
         Logger.d(fileHeader);
     }

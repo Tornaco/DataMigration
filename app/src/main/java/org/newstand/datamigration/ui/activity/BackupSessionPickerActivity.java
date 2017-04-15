@@ -8,7 +8,7 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.ui.fragment.BackupSessionPickerFragment;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/9 15:30

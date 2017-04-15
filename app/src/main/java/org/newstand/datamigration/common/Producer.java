@@ -6,6 +6,6 @@ package org.newstand.datamigration.common;
  * All right reserved.
  */
 
-public interface Producer<T, X> {
-    T produce(X source);
+public interface Producer<T> {
+    T produce();
 }

@@ -14,7 +14,7 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.strategy.Interval;
 import org.newstand.datamigration.strategy.WorkMode;
-import org.newstand.datamigration.worker.backup.session.Session;
+import org.newstand.datamigration.worker.transport.Session;
 
 import java.io.File;
 import java.util.Observable;

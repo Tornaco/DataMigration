@@ -16,6 +16,8 @@ public class WFDDataReceiverActivity extends WFDSetupActivity {
     public void onConnectionInfoAvailable(WifiP2pInfo info) {
         super.onConnectionInfoAvailable(info);
 
+        if (info.groupOwnerAddress == null) return;
+
         String host = info.groupOwnerAddress.toString();
         Logger.d("host = %s", host);
 
