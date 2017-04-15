@@ -1,6 +1,6 @@
 package org.newstand.datamigration.net;
 
-import org.newstand.datamigration.net.protocol.ACK;
+import org.newstand.datamigration.net.protocol.Acknowledge;
 import org.newstand.datamigration.net.protocol.CategoryHeader;
 import org.newstand.logger.Logger;
 
@@ -44,7 +44,7 @@ public class CategoryReceiver implements Receiver<Void> {
 
         Logger.i("received header: %s", header);
 
-        ACK.okTo(outputStream);
+        Acknowledge.okTo(outputStream);
 
         setHeader(header);
 

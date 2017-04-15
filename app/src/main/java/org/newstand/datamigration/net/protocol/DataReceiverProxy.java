@@ -11,9 +11,11 @@ import org.newstand.datamigration.common.Holder;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.net.BadResError;
+import org.newstand.datamigration.net.CanceledError;
 import org.newstand.datamigration.net.CategoryReceiver;
 import org.newstand.datamigration.net.DataRecordReceiver;
 import org.newstand.datamigration.net.IORES;
+import org.newstand.datamigration.net.NextPlanReceiver;
 import org.newstand.datamigration.net.OverviewReceiver;
 import org.newstand.datamigration.net.ReceiveSettings;
 import org.newstand.datamigration.net.server.TransportServer;
@@ -67,6 +69,7 @@ public class DataReceiverProxy {
         } catch (IOException e) {
             // Overview header fail, can not move~
             listener.onAbort(e);
+            transportServer.stop();
             return;
         }
 
@@ -81,7 +84,8 @@ public class DataReceiverProxy {
 
         for (int i = 0; i < CATEGORY_SIZE; i++) {
 
-            CategoryReceiver categoryReceiver = CategoryReceiver.with(transportServer.getInputStream(), transportServer.getOutputStream());
+            CategoryReceiver categoryReceiver = CategoryReceiver.with(transportServer.getInputStream(),
+                    transportServer.getOutputStream());
             try {
                 categoryReceiver.receive(null);
                 Logger.d("Received header: " + categoryReceiver.getHeader());
@@ -114,15 +118,30 @@ public class DataReceiverProxy {
                     if (res == IORES.OK) {
                         listener.onPieceSuccess(record);
                         stats.onSuccess();
+
+                        // Check next plan~
+                        NextPlanReceiver nextPlanReceiver = NextPlanReceiver.with(transportServer.getInputStream(),
+                                transportServer.getOutputStream());
+                        nextPlanReceiver.receive(null);
+                        Plans plan = nextPlanReceiver.getPlan();
+
+                        Logger.i("Next plan %s", plan);
+
+                        if (plan == Plans.CANCEL) {
+                            listener.onAbort(new CanceledError());
+                            transportServer.stop();
+                            return;
+                        }
+
                     } else {
                         listener.onPieceFail(record, new BadResError(res));
                         stats.onFail();
                     }
-                }
+                } // End for
             } catch (IOException e) {
                 listener.onAbort(e);
             }
-        }
+        } // End for
 
         listener.onComplete();
 

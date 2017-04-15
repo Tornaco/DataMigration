@@ -37,9 +37,12 @@ import lombok.Setter;
  * All right reserved.
  */
 
-// Importing from BK
 public class DataReceiverManageFragment extends DataTransportManageFragment
         implements TransportServer.ChannelHandler {
+
+    // Receiver is not cancelable~
+    @Setter
+    private boolean isCancelable = false;
 
     @Getter
     @Setter
@@ -81,7 +84,25 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
             super.onPieceStartMainThread(record);
             showCurrentPieceInUI(record);
         }
+
+        @Override
+        public void onAbortMainThread(Throwable err) {
+            super.onAbortMainThread(err);
+            ErrDialog.attach(getActivity(), err,
+                    new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
+                            transitionSafeActivity.finish();
+                        }
+                    });
+        }
     };
+
+    @Override
+    public boolean isCancelable() {
+        return isCancelable;
+    }
 
     private void showCurrentPieceInUI(DataRecord record) {
         getConsoleSummaryView().setText(record.getDisplayName());
@@ -182,15 +203,20 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     }
 
     @Override
-    public void onServerCreateFail(ErrorCode errCode) {
-        ErrDialog.attach(getActivity(), new ServerCreateFailError(errCode),
-                new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
-                        transitionSafeActivity.finish();
-                    }
-                });
+    public void onServerCreateFail(final ErrorCode errCode) {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                ErrDialog.attach(getActivity(), new ServerCreateFailError(errCode),
+                        new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
+                                transitionSafeActivity.finish();
+                            }
+                        });
+            }
+        });
     }
 
     @Override

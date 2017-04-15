@@ -75,20 +75,40 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
     @StringRes
     abstract int getCompleteTitle();
 
+    protected boolean isCancelable() {
+        return true;
+    }
+
     private void onTransportStart() {
+        updateConsoleTitleView();
+        updateConsoleDoneButton();
+    }
+
+    protected void updateConsoleTitleView() {
         getConsoleTitleView().setText(getStartTitle());
+    }
+
+    protected void updateConsoleDoneButton() {
         getConsoleDoneButton().setText(android.R.string.cancel);
-        getConsoleDoneButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Collections.consumeRemaining(getAbortSignals(), new Consumer<AbortSignal>() {
-                    @Override
-                    public void accept(@NonNull AbortSignal abortSignal) {
-                        abortSignal.abort();
-                    }
-                });
-            }
-        });
+        if (isCancelable()) {
+            getConsoleDoneButton().setVisibility(View.VISIBLE);
+            getConsoleDoneButton()
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Collections.consumeRemaining(getAbortSignals(),
+                                    new Consumer<AbortSignal>() {
+                                        @Override
+                                        public void accept(@NonNull AbortSignal abortSignal) {
+                                            Logger.i("Notifying abort signal to %s", abortSignal);
+                                            abortSignal.abort();
+                                        }
+                                    });
+                        }
+                    });
+        } else {
+            getConsoleDoneButton().setVisibility(View.INVISIBLE);
+        }
     }
 
     protected void onProgressUpdate() {
@@ -101,6 +121,8 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
     }
 
     private void onComplete() {
+
+        getConsoleDoneButton().setVisibility(View.VISIBLE);
 
         ViewAnimateUtils.alphaHide(getConsoleCardView(), new Runnable() {
             @Override

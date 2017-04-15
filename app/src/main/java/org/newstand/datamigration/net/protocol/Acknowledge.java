@@ -11,7 +11,7 @@ import java.io.OutputStream;
  * All right reserved.
  */
 
-public class ACK implements Serializable {
+public class Acknowledge implements Serializable {
 
     private enum Quality {GOOD, BAD}
 
@@ -22,16 +22,16 @@ public class ACK implements Serializable {
 
     private Quality q;
 
-    public ACK(Quality q) {
+    public Acknowledge(Quality q) {
         this.q = q;
     }
 
-    public static ACK ok() {
-        return new ACK(Quality.GOOD);
+    public static Acknowledge ok() {
+        return new Acknowledge(Quality.GOOD);
     }
 
-    public static ACK bad() {
-        return new ACK(Quality.BAD);
+    public static Acknowledge bad() {
+        return new Acknowledge(Quality.BAD);
     }
 
     public static byte[] allocate() {

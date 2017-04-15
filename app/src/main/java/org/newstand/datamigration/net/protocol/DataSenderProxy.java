@@ -5,13 +5,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
 import org.newstand.datamigration.cache.LoadingCacheManager;
+import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.net.BadResError;
+import org.newstand.datamigration.net.CanceledError;
 import org.newstand.datamigration.net.CategorySender;
 import org.newstand.datamigration.net.DataRecordSender;
 import org.newstand.datamigration.net.IORES;
+import org.newstand.datamigration.net.NextPlanSender;
 import org.newstand.datamigration.net.OverViewSender;
 import org.newstand.datamigration.net.PathCreator;
 import org.newstand.datamigration.net.server.TransportClient;
@@ -23,6 +26,8 @@ import org.newstand.logger.Logger;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,14 +42,35 @@ import lombok.ToString;
 
 public class DataSenderProxy {
 
+    @Setter
+    @Getter
+    Plans nextPlan = Plans.CONTINUE;
+
+    private DataSenderProxy() {
+    }
+
+    @WorkerThread
+    public static void send(final Context context, final TransportClient client,
+                            final TransportListener listener, AbortSignal abortSignal) {
+        new DataSenderProxy().sendInternal(context, client, listener, abortSignal);
+    }
+
     @WorkerThread
     public static void send(final Context context, final TransportClient client,
                             final TransportListener listener) {
-        sendInternal(context, client, listener);
+        new DataSenderProxy().sendInternal(context, client, listener, new AbortSignal());
     }
 
-    private static void sendInternal(final Context context, final TransportClient transportClient,
-                                     final TransportListener transportListener) {
+
+    private void sendInternal(final Context context, final TransportClient transportClient,
+                              final TransportListener transportListener, AbortSignal abortSignal) {
+
+        abortSignal.addObserver(new Observer() {
+            @Override
+            public void update(Observable o, Object arg) {
+                setNextPlan(Plans.CANCEL);
+            }
+        });
 
         final LoadingCacheManager cacheManager = LoadingCacheManager.droid();
 
@@ -71,6 +97,7 @@ public class DataSenderProxy {
         } catch (IOException e) {
             transportListener.onAbort(e);
             // Serious err.
+            transportClient.stop();
             return;
         }
 
@@ -96,37 +123,47 @@ public class DataSenderProxy {
             try {
                 CategorySender.with(transportClient.getInputStream(), transportClient.getOutputStream()).send(categoryHeader);
 
-                Collections.consumeRemaining(records, new Consumer<DataRecord>() {
-                    @Override
-                    public void accept(@NonNull DataRecord dataRecord) {
-                        try {
-                            transportListener.onPieceStart(dataRecord);
-                            int res = DataRecordSender.with(transportClient.getOutputStream(), transportClient.getInputStream())
-                                    .send(dataRecord);
-                            if (res == IORES.OK) {
-                                stats.onSuccess();
-                                transportListener.onPieceSuccess(dataRecord);
-                            } else {
-                                transportListener.onPieceFail(dataRecord, new BadResError(res));
-                                stats.onFail();
-                            }
-                        } catch (IOException e) {
-                            transportListener.onPieceFail(dataRecord, e);
+                for (DataRecord dataRecord : records) {
+                    try {
+                        transportListener.onPieceStart(dataRecord);
+                        int res = DataRecordSender.with(transportClient.getOutputStream(),
+                                transportClient.getInputStream())
+                                .send(dataRecord);
+                        if (res == IORES.OK) {
+                            stats.onSuccess();
+                            transportListener.onPieceSuccess(dataRecord);
+                        } else {
+                            transportListener.onPieceFail(dataRecord, new BadResError(res));
                             stats.onFail();
                         }
+
+                        // Send next plan, to cancel or continue?
+                        NextPlanSender.with(transportClient.getInputStream(), transportClient.getOutputStream(), nextPlan).send(null);
+
+                        if (nextPlan == Plans.CANCEL) {
+                            transportListener.onAbort(new CanceledError());
+                            transportClient.stop();
+                            return;
+                        }
+
+                    } catch (IOException e) {
+                        transportListener.onPieceFail(dataRecord, e);
+                        stats.onFail();
                     }
-                });
+                } // End for.
 
             } catch (final IOException e) {
                 // Notify listener to abort
                 transportListener.onAbort(e);
                 break;
             }
-        }
+        } // End for.
 
         transportListener.onComplete();
 
         transportClient.stop();
+
+        abortSignal.deleteObservers();
     }
 
     @ToString

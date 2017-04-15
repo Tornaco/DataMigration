@@ -1,5 +1,6 @@
 package org.newstand.datamigration.net.protocol;
 
+import com.google.common.base.Optional;
 import com.google.common.io.Files;
 import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Ints;
@@ -27,7 +28,7 @@ public class FileHeader implements Serializable, DeSerializable, ByteWriter {
     private long size;
 
     private FileHeader(String fileName, long size) {
-        this.fileName = fileName;
+        this.fileName = Optional.fromNullable(fileName).or("Unknown name");// FIXME Does this happen?
         this.size = size;
     }
 

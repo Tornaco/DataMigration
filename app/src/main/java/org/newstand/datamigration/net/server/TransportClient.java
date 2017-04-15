@@ -38,6 +38,7 @@ public class TransportClient extends ServerComponent {
 
         } catch (IOException e) {
             channelHandler.onServerChannelConnectedFailure(ErrorCode.ERROR_UNKNOWN);
+            stop();
             return false;
         }
         if (channelHandler != null) channelHandler.onServerChannelConnected();

@@ -3,7 +3,7 @@ package org.newstand.datamigration.net;
 import com.google.common.io.Files;
 import com.google.common.primitives.Ints;
 
-import org.newstand.datamigration.net.protocol.ACK;
+import org.newstand.datamigration.net.protocol.Acknowledge;
 import org.newstand.datamigration.net.protocol.FileHeader;
 import org.newstand.datamigration.utils.BlackHole;
 import org.newstand.logger.Logger;
@@ -45,7 +45,7 @@ public class DataRecordReceiver implements Receiver<ReceiveSettings> {
 
         Logger.d("Receiving: %s", fileHeader.toString());
 
-        ACK.okTo(os);
+        Acknowledge.okTo(os);
 
         String fileName = fileHeader.getFileName();
 
@@ -75,7 +75,7 @@ public class DataRecordReceiver implements Receiver<ReceiveSettings> {
             total += result;
         }
 
-        ACK.okTo(os);
+        Acknowledge.okTo(os);
 
         return OK;
     }

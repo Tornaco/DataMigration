@@ -115,7 +115,7 @@ public class NavigatorActivity extends TransitionSafeActivity {
         if (isDestroyedCompat()) return;
         Snackbar.make(findView(R.id.fab),
                 getString(R.string.title_new_update_available, info.getVersionName()),
-                Snackbar.LENGTH_LONG)
+                Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.action_look_up, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

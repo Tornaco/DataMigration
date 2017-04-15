@@ -8,7 +8,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.newstand.datamigration.cache.LoadingCacheManager;
+import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.common.Holder;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.net.server.ErrorCode;
@@ -25,6 +27,9 @@ import org.newstand.logger.Logger;
 
 import java.util.Random;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Created by Nick@NewStand.org on 2017/4/13 13:25
  * E-Mail: NewStand@163.com
@@ -35,6 +40,10 @@ public class DataSenderProxyTest {
 
     private TransportServer mServer;
     private TransportClient mClient;
+
+    @Getter
+    @Setter
+    private boolean cancelable;
 
     private void mokeChooseData() {
 
@@ -117,12 +126,30 @@ public class DataSenderProxyTest {
     }
 
     private void mokeSend() {
+        final Holder<Integer> count = new Holder<>();
+
         Sleeper.sleepQuietly(Interval.Seconds.getIntervalMills());
+
+        final AbortSignal abortSignal = new AbortSignal();
+
         DataSenderProxy.send(InstrumentationRegistry.getTargetContext(), mClient, new TransportListenerAdapter() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                count.setData(getStats().getTotal());
+            }
+
             @Override
             public void onPieceSuccess(DataRecord record) {
                 super.onPieceSuccess(record);
                 Logger.d("send onPieceSuccess %s %s", record, getStats());
+
+                // Cancel?
+                if (isCancelable() && getStats().getLeft() <= count.getData() / 2) {
+                    Logger.w("*********************Aborting ~~~~~~~~~~~~~~~~~~");
+                    abortSignal.abort();
+                }
             }
 
             @Override
@@ -148,7 +175,7 @@ public class DataSenderProxyTest {
                 super.onAbort(err);
                 Logger.d("send onAbort %s", Logger.getStackTraceString(err));
             }
-        });
+        }, abortSignal);
     }
 
     private void mokeReceive() {
@@ -193,6 +220,18 @@ public class DataSenderProxyTest {
 
     @Test
     public void send() throws Exception {
+        mokeChooseData();
+
+        mokeServerThenClient();
+
+        Sleeper.sleepQuietly(Interval.Day.getIntervalMills());
+    }
+
+    @Test
+    public void sendAndCancel() throws Exception {
+
+        setCancelable(true);
+
         mokeChooseData();
 
         mokeServerThenClient();

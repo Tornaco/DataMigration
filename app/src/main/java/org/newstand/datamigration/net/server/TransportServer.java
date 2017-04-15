@@ -72,6 +72,8 @@ public class TransportServer extends ServerComponent {
 
                 } catch (IOException e) {
                     channelHandler.onServerCreateFail(ErrorCode.ERROR_RETRIEVE_STREAM);
+
+                    stop();
                 }
             }
         };

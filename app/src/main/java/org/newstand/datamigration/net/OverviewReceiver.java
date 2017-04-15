@@ -1,6 +1,6 @@
 package org.newstand.datamigration.net;
 
-import org.newstand.datamigration.net.protocol.ACK;
+import org.newstand.datamigration.net.protocol.Acknowledge;
 import org.newstand.datamigration.net.protocol.OverviewHeader;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class OverviewReceiver implements Receiver<Void> {
     @Override
     public int receive(Void v) throws IOException {
         OverviewHeader header = OverviewHeader.from(inputStream);
-        ACK.okTo(outputStream);
+        Acknowledge.okTo(outputStream);
         setHeader(header);
         return OK;
     }

@@ -94,7 +94,7 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
     public void onCompleteMainThread() {
     }
 
-    public final void onAbortMainThread(Throwable err) {
+    public void onAbortMainThread(Throwable err) {
 
     }
 }

@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.ContextWireable;
-import org.newstand.datamigration.net.protocol.ACK;
+import org.newstand.datamigration.net.protocol.Acknowledge;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -35,7 +35,7 @@ public abstract class AbsSender<T> implements Sender<T>, ContextWireable {
     }
 
     protected int waitForAck(InputStream is) throws IOException {
-        byte[] ack = ACK.allocate();
+        byte[] ack = Acknowledge.allocate();
 
         int ret = is.read(ack);
 
@@ -43,11 +43,11 @@ public abstract class AbsSender<T> implements Sender<T>, ContextWireable {
             return ERR_READ_ACK;
         }
 
-        if (!ACK.isOk(ack)) {
+        if (!Acknowledge.isOk(ack)) {
             return ERR_BAD_ACK;
         }
 
-        Logger.i("ACK in");
+        Logger.i("Acknowledge in");
 
         return OK;
     }

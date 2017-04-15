@@ -12,4 +12,7 @@ public interface IORES {
     int ERR_BAD_ACK = 0x2;
 
     int ERR_WRITE_FAIL_IN_OUT_SIZE_MISMATCH = 0x3;
+
+    int ERR_READ_PLAN = 0x4;
+    int ERR_BAD_PLAN = 0x5;
 }

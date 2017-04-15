@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.data.SmsContentProviderCompat;
@@ -37,9 +38,11 @@ import lombok.Setter;
  * All right reserved.
  */
 
-// Importing from BK
 public class DataSenderManageFragment extends DataTransportManageFragment
         implements TransportClient.ChannelHandler {
+
+    @Setter
+    private boolean isCancelable;
 
     @Setter
     @Getter
@@ -48,6 +51,7 @@ public class DataSenderManageFragment extends DataTransportManageFragment
     private Producer<String> mHostProducer;
 
     private TransportListener mTransportListener = new TransportListenerMainThreadAdapter() {
+
         @Override
         public void onStartMainThread() {
             super.onStartMainThread();
@@ -77,7 +81,23 @@ public class DataSenderManageFragment extends DataTransportManageFragment
         @Override
         public void onPieceStartMainThread(DataRecord record) {
             super.onPieceStartMainThread(record);
+            // Sub record is sending, we can cancel now~
+            setCancelable(true);
+            updateConsoleDoneButton();
             showCurrentPieceInUI(record);
+        }
+
+        @Override
+        public void onAbortMainThread(Throwable err) {
+            super.onAbortMainThread(err);
+            ErrDialog.attach(getActivity(), err,
+                    new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
+                            transitionSafeActivity.finish();
+                        }
+                    });
         }
     };
 
@@ -110,6 +130,11 @@ public class DataSenderManageFragment extends DataTransportManageFragment
         startClient();
     }
 
+    @Override
+    public boolean isCancelable() {
+        return isCancelable;
+    }
+
     private void startClient() {
         int[] ports = SettingsProvider.getTransportServerPorts();
         String host = mHostProducer.produce();
@@ -122,7 +147,9 @@ public class DataSenderManageFragment extends DataTransportManageFragment
     }
 
     private void send() {
-        DataSenderProxy.send(getActivity(), getClient(), mTransportListener);
+        AbortSignal abortSignal = new AbortSignal();
+        getAbortSignals().add(abortSignal);
+        DataSenderProxy.send(getActivity(), getClient(), mTransportListener, abortSignal);
     }
 
     @Override
@@ -189,14 +216,19 @@ public class DataSenderManageFragment extends DataTransportManageFragment
     }
 
     @Override
-    public void onServerChannelConnectedFailure(ErrorCode errCode) {
-        ErrDialog.attach(getActivity(), new ServerCreateFailError(errCode),
-                new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
-                        transitionSafeActivity.finish();
-                    }
-                });
+    public void onServerChannelConnectedFailure(final ErrorCode errCode) {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                ErrDialog.attach(getActivity(), new ServerCreateFailError(errCode),
+                        new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
+                                transitionSafeActivity.finish();
+                            }
+                        });
+            }
+        });
     }
 }
