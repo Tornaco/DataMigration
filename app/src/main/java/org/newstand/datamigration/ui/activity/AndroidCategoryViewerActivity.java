@@ -8,7 +8,6 @@ import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.logger.Logger;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
@@ -51,7 +50,6 @@ public class AndroidCategoryViewerActivity extends CategoryViewerActivity {
     @Events(IntentEvents.EVENT_TRANSPORT_COMPLETE)
     @CallInMainThread
     public void onTransportComplete(Event event) {
-        Logger.d("onTransportComplete %s", event);
         finishWithAfterTransition();
         EventBus.from(this).unSubscribe(this);
     }

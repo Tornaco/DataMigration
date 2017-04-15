@@ -10,7 +10,6 @@ import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.logger.Logger;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
@@ -50,11 +49,11 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
         transitionTo(intent);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void resolveIntent() {
         Intent intent = getIntent();
         mSource = intent.getParcelableExtra(IntentEvents.KEY_SOURCE);
         Preconditions.checkNotNull(mSource);
-        Logger.d("Source = " + mSource);
         setTitle(mSource.getSession().getName());
         LoadingCacheManager.createBK(getApplicationContext(), mSource.getSession());
         EventBus.from(this).subscribe(this);
@@ -64,10 +63,8 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
     @Events(IntentEvents.EVENT_TRANSPORT_COMPLETE)
     @CallInMainThread
     public void onTransportComplete(Event event) {
-        Logger.d("onTransportComplete %s", event);
         Session session = (Session) event.getObj();
         if (onRequestLoaderSource().getSession().equals(session)) {
-            Logger.d("Matched session %s", session);
             finishWithAfterTransition();
             EventBus.from(this).unSubscribe(this);
         }
