@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.ui.tiles.CheckForUpdateTile;
 import org.newstand.datamigration.ui.tiles.DevTile;
 import org.newstand.datamigration.ui.tiles.DonateTile;
 import org.newstand.datamigration.ui.tiles.LicenceTile;
@@ -59,6 +60,8 @@ public class SettingsActivity extends TransitionSafeActivity {
             Category about = new ThemedCategory();
             about.titleRes = R.string.tile_category_about;
 
+            CheckForUpdateTile checkForUpdateTile = new CheckForUpdateTile(getActivity());
+            about.addTile(checkForUpdateTile);
             LicenceTile licenceTile = new LicenceTile(getActivity());
             about.addTile(licenceTile);
             DonateTile donateTile = new DonateTile(getContext());

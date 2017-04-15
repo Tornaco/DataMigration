@@ -135,6 +135,7 @@
     <string name="title_new_update_available">发现更新的版本：%1$s</string>
     <string name="action_look_up">查看</string>
     <string name="title_new_update_info">更新信息</string>
+    <string name="title_check_for_update">检查更新</string>
 
     <string name="phone_num_unknown">未知号码</string>
 
