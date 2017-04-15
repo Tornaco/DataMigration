@@ -105,8 +105,8 @@ public class ViewAnimateUtils {
         // get the final radius for the clipping circle
         int finalRadius = view.getWidth();
 
-        // create and start the animator for this view
-        // (the start radius is zero)
+        // create and startService the animator for this view
+        // (the startService radius is zero)
         Animator anim =
                 ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, finalRadius);
         anim.addListener(new AnimatorListenerAdapter() {

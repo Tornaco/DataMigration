@@ -2,6 +2,7 @@ package org.newstand.datamigration.loader.impl;
 
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderFilter;
+import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.worker.transport.Session;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class AlarmLoader extends BaseLoader {
     }
 
     @Override
-    public Collection<DataRecord> loadFromSession(Session session, LoaderFilter<DataRecord> filter) {
+    public Collection<DataRecord> loadFromSession(LoaderSource source, Session session, LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = new ArrayList<>();
         DataRecord dummy = new DataRecord();
         dummy.setDisplayName("Dummy");

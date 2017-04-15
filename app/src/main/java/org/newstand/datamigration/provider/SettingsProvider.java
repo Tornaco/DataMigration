@@ -21,7 +21,9 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.StringTokenizer;
 
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/8 17:42
@@ -50,6 +52,10 @@ public class SettingsProvider extends Observable {
     private static final String BACKUP_SESSION_INFO_FILE_NAME = "session.info";
 
     private static final String LICENSE_ROOT_DIR = "license";
+
+    @Getter
+    @Setter
+    private static boolean isUnderTest;
 
     private static SettingsProvider sMe;
 

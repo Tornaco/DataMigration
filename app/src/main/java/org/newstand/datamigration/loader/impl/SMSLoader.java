@@ -12,6 +12,7 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.MsgBox;
 import org.newstand.datamigration.data.model.SMSRecord;
 import org.newstand.datamigration.loader.LoaderFilter;
+import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Closer;
 import org.newstand.datamigration.utils.Collections;
@@ -92,10 +93,12 @@ public class SMSLoader extends BaseLoader {
     }
 
     @Override
-    public Collection<DataRecord> loadFromSession(Session session, final LoaderFilter<DataRecord> filter) {
+    public Collection<DataRecord> loadFromSession(LoaderSource source, Session session, final LoaderFilter<DataRecord> filter) {
         Logger.d("loadFromSession %s", session);
         final List<DataRecord> res = new ArrayList<>();
-        String dir = SettingsProvider.getBackupDirByCategory(DataCategory.Sms, session);
+        String dir = source.getParent() == LoaderSource.Parent.Received ?
+                SettingsProvider.getReceivedDirByCategory(DataCategory.Sms, session)
+                : SettingsProvider.getBackupDirByCategory(DataCategory.Sms, session);
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override

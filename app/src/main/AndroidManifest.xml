@@ -57,6 +57,10 @@
             android:label="@string/title_transport_sender"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.activity.ReceivedCategoryViewerActivity"
+            android:label="@string/title_transport_received_viewer"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".ui.activity.BackupSessionPickerActivity"
             android:label="@string/title_restore_picker"
             android:theme="@style/AppTheme" />
@@ -70,6 +74,9 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.AndroidDataListHostActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.activity.ReceivedDataListHostActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupDataListHostActivity"

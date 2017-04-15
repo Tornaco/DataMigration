@@ -13,6 +13,7 @@ import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderFilter;
+import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.ApkUtil;
 import org.newstand.datamigration.utils.Collections;
@@ -38,8 +39,6 @@ public class AppLoader extends BaseLoader {
         final Collection<DataRecord> records = new ArrayList<>();
         PackageManager pm = getContext().getPackageManager();
         List<PackageInfo> packages = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
-
-        Logger.d("packages size:%s", packages.size());
 
         for (PackageInfo packageInfo : packages) {
 
@@ -76,9 +75,12 @@ public class AppLoader extends BaseLoader {
     }
 
     @Override
-    public Collection<DataRecord> loadFromSession(Session session, LoaderFilter<DataRecord> filter) {
+    public Collection<DataRecord> loadFromSession(LoaderSource source, Session session, LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = new ArrayList<>();
-        String dir = SettingsProvider.getBackupDirByCategory(DataCategory.App, session);
+        String dir =
+                source.getParent() == LoaderSource.Parent.Received ?
+                        SettingsProvider.getReceivedDirByCategory(DataCategory.App, session)
+                        : SettingsProvider.getBackupDirByCategory(DataCategory.App, session);
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override

@@ -9,6 +9,7 @@ import com.google.common.io.Closer;
 
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.secure.DonateQRPathRetriever;
+import org.newstand.datamigration.service.DummSmsServiceProxy;
 import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.utils.OnDeviceLogAdapter;
 import org.newstand.logger.Logger;
@@ -61,6 +62,7 @@ public class DataMigrationApp extends Application {
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
         UserActionServiceProxy.startService(this);
-        DonateQRPathRetriever.cacheAsync(this);
+        DonateQRPathRetriever.loadAndCache(this);
+        DummSmsServiceProxy.startService(this);
     }
 }

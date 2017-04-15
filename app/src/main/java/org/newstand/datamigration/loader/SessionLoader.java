@@ -53,7 +53,7 @@ public abstract class SessionLoader {
                     Collections.consumeRemaining(all, new Consumer<Session>() {
                         @Override
                         public void accept(@NonNull Session session) {
-                            if (!validate(session)) {
+                            if (!validate(LoaderSource.builder().parent(LoaderSource.Parent.Backup).build(), session)) {
                                 Logger.w("Ignored bad session %s", session);
                                 return;
                             }
@@ -88,7 +88,7 @@ public abstract class SessionLoader {
                     Collections.consumeRemaining(all, new Consumer<Session>() {
                         @Override
                         public void accept(@NonNull Session session) {
-                            if (!validate(session)) {
+                            if (!validate(LoaderSource.builder().parent(LoaderSource.Parent.Received).build(), session)) {
                                 Logger.w("Ignored bad session %s", session);
                                 return;
                             }
@@ -110,8 +110,11 @@ public abstract class SessionLoader {
         SharedExecutor.execute(r);
     }
 
-    private static boolean validate(Session session) {
-        File file = new File(SettingsProvider.getBackupSessionDir(session));
+    private static boolean validate(LoaderSource source, Session session) {
+        String path = source.getParent() == LoaderSource.Parent.Backup
+                ? SettingsProvider.getBackupSessionDir(session)
+                : SettingsProvider.getRecSessionDir(session);
+        File file = new File(path);
         return file.exists();
     }
 }

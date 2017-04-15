@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
+import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.loader.SessionLoader;
 import org.newstand.datamigration.repo.BKSessionRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
@@ -251,7 +252,9 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
             public void run() {
                 boolean ok = BKSessionRepoService.get().update(worked);
                 if (ok) {
-                    ok = DataBackupManager.from(getContext()).renameSessionChecked(target, name);
+                    ok = DataBackupManager.from(getContext()).renameSessionChecked(
+                            LoaderSource.builder().parent(LoaderSource.Parent.Android).build(),
+                            target, name);
                 }
                 if (!ok) {
                     worked.setName(prevName);

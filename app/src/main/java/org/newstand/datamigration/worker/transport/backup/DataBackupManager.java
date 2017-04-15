@@ -17,11 +17,12 @@ import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.data.model.SMSRecord;
+import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
-import org.newstand.datamigration.worker.transport.Stats;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.Stats;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
 import org.newstand.logger.Logger;
@@ -60,9 +61,11 @@ public class DataBackupManager {
         return new DataBackupManager(context, session);
     }
 
-    public boolean renameSessionChecked(Session session, String name) {
+    public boolean renameSessionChecked(LoaderSource source, Session session, String name) {
         if (!name.equals(session.getName())) {
-            String dir = SettingsProvider.getBackupRootDir();
+            String dir = source.getParent() == LoaderSource.Parent.Backup
+                    ? SettingsProvider.getBackupRootDir()
+                    : SettingsProvider.getReceivedRootDir();
             File from = new File(dir + File.separator + session.getName());
             File to = new File(dir + File.separator + name);
             try {

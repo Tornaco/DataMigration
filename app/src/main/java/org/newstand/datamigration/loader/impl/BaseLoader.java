@@ -15,6 +15,7 @@ import org.newstand.datamigration.loader.DataLoader;
 import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,13 +38,14 @@ public abstract class BaseLoader implements DataLoader<DataRecord>, PermissionRe
 
     public abstract Collection<DataRecord> loadFromAndroid(LoaderFilter<DataRecord> filter);
 
-    public abstract Collection<DataRecord> loadFromSession(Session session, LoaderFilter<DataRecord> filter);
+    public abstract Collection<DataRecord> loadFromSession(LoaderSource source, Session session, LoaderFilter<DataRecord> filter);
 
     @Override
     public final Collection<DataRecord> load(LoaderSource source, LoaderFilter<DataRecord> filter) {
         switch (source.getParent()) {
             case Backup:
-                return loadFromSession(source.getSession(), filter);
+            case Received:
+                return loadFromSession(source, source.getSession(), filter);
             case Android:
                 return loadFromAndroid(filter);
         }

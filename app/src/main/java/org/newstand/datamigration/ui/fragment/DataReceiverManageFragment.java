@@ -17,6 +17,7 @@ import org.newstand.datamigration.net.server.ServerCreateFailError;
 import org.newstand.datamigration.net.server.TransportServer;
 import org.newstand.datamigration.net.server.TransportServerProxy;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.repo.ReceivedSessionRepoService;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.utils.Collections;
@@ -74,7 +75,7 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
         @Override
         public void onPieceSuccessMainThread(DataRecord record) {
             super.onPieceSuccessMainThread(record);
-            // Because we will never receive the start event, we show current ui here.
+            // Because we will never receive the startService event, we show current ui here.
             showCurrentPieceInUI(record);
             onProgressUpdate();
         }
@@ -199,7 +200,7 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        SmsContentProviderCompat.restoreDefSmsApp(getContext());
+        SmsContentProviderCompat.restoreDefSmsAppCheckedAsync(getContext());
     }
 
     @Override

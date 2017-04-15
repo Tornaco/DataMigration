@@ -76,12 +76,22 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
         setHasOptionsMenu(true);
     }
 
+    private LoadingCacheManager getCache(LoaderSource source) {
+        switch (source.getParent()) {
+            case Android:
+                return LoadingCacheManager.droid();
+            case Backup:
+                return LoadingCacheManager.bk();
+            case Received:
+                return LoadingCacheManager.received();
+            default:
+                throw new IllegalArgumentException("Bad source:" + source);
+        }
+    }
+
     protected void startLoading() {
         swipeRefreshLayout.setRefreshing(true);
-        final LoadingCacheManager cache = onCreateLoaderSource().getParent()
-                == LoaderSource.Parent.Android
-                ? LoadingCacheManager.droid()
-                : LoadingCacheManager.bk();
+        final LoadingCacheManager cache = getCache(onCreateLoaderSource());
         // From cache.
         Runnable r = new Runnable() {
             @Override

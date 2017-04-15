@@ -92,11 +92,24 @@ public class DataImportManageFragment extends DataTransportManageFragment {
         return mLoaderSourceProvider.onRequestLoaderSource().getSession();
     }
 
+    private LoadingCacheManager getCache(LoaderSource source) {
+        switch (source.getParent()) {
+            case Android:
+                return LoadingCacheManager.droid();
+            case Backup:
+                return LoadingCacheManager.bk();
+            case Received:
+                return LoadingCacheManager.received();
+            default:
+                throw new IllegalArgumentException("Bad source:" + source);
+        }
+    }
+
     @Override
     protected void readyToGo() {
         super.readyToGo();
 
-        final LoadingCacheManager cache = LoadingCacheManager.bk();
+        final LoadingCacheManager cache = getCache(mLoaderSourceProvider.onRequestLoaderSource());
 
         final DataBackupManager dataBackupManager = DataBackupManager.from(getContext(), getSession());
 
@@ -202,6 +215,6 @@ public class DataImportManageFragment extends DataTransportManageFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        SmsContentProviderCompat.restoreDefSmsApp(getContext());
+        SmsContentProviderCompat.restoreDefSmsAppCheckedAsync(getContext());
     }
 }

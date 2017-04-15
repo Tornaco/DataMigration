@@ -202,7 +202,7 @@ public class DataSenderManageFragment extends DataTransportManageFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        SmsContentProviderCompat.restoreDefSmsApp(getContext());
+        SmsContentProviderCompat.restoreDefSmsAppCheckedAsync(getContext());
     }
 
     @Override

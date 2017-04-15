@@ -33,7 +33,7 @@ import static org.newstand.datamigration.loader.LoaderSource.Parent.Android;
 
 public abstract class LoadingCacheManager {
 
-    private static LoadingCacheManager droid, bk;
+    private static LoadingCacheManager droid, bk, received;
 
     public static LoadingCacheManager droid() {
         return droid;
@@ -43,14 +43,26 @@ public abstract class LoadingCacheManager {
         return bk;
     }
 
+    public static LoadingCacheManager received() {
+        return received;
+    }
+
     public static void createDroid(Context appContext) {
+        Logger.i("Creating droid cache");
         Droid.create(appContext);
         droid = Droid.sMe;
     }
 
     public static void createBK(Context appContext, Session session) {
+        Logger.i("Creating backup cache for session %s", session);
         BK.create(appContext, session);
         bk = BK.sMe;
+    }
+
+    public static void createReceived(Context appContext, Session session) {
+        Logger.i("Creating received cache for session %s", session);
+        Received.create(appContext, session);
+        received = Received.sMe;
     }
 
     public abstract
@@ -192,6 +204,66 @@ public abstract class LoadingCacheManager {
         @Override
         public void clear() {
             Logger.d("clearing BK");
+            cache.cleanUp();
+            cache.invalidateAll();
+        }
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static class Received extends LoadingCacheManager {
+
+        private LoadingCache<DataCategory, Collection<DataRecord>> cache;
+
+        private static LoadingCacheManager sMe;
+
+        public Received(final Context context, final Session session) {
+            cache = CacheBuilder.newBuilder().maximumSize(DataCategory.values().length)
+                    .expireAfterAccess(365, TimeUnit.DAYS)
+                    .build(new CacheLoader<DataCategory, Collection<DataRecord>>() {
+                        @Override
+                        public Collection<DataRecord> load(@NonNull DataCategory key) throws Exception {
+                            DataLoaderManager manager = DataLoaderManager.from(context);
+                            return manager.load(LoaderSource.builder().parent(LoaderSource.Parent.Received)
+                                    .session(session).build(), key);
+                        }
+                    });
+        }
+
+        public static void create(Context context, Session session) {
+            if (sMe != null) sMe.clear();
+            Preconditions.checkNotNull(session);
+            sMe = new Received(context, session);
+        }
+
+        @NonNull
+        @Override
+        public Collection<DataRecord> get(DataCategory key) {
+            try {
+                return cache.get(key);
+            } catch (ExecutionException e) {
+                Logger.e("Fail to get from cache: %s", android.util.Log.getStackTraceString(e));
+                return java.util.Collections.emptyList();
+            } catch (CacheLoader.InvalidCacheLoadException e) {
+                Logger.e("Fail to get from cache: %s", android.util.Log.getStackTraceString(e));
+                return java.util.Collections.emptyList();
+            }
+        }
+
+        @NonNull
+        @Override
+        public Collection<DataRecord> getRefreshed(DataCategory key) {
+            cache.refresh(key);
+            return get(key);
+        }
+
+        @Override
+        public void refresh(DataCategory key) {
+            cache.refresh(key);
+        }
+
+        @Override
+        public void clear() {
+            Logger.d("clearing Received");
             cache.cleanUp();
             cache.invalidateAll();
         }

@@ -76,8 +76,6 @@ public class NavigatorActivity extends TransitionSafeActivity {
             checkForUpdate();
         }
 
-        // Check if user set us to def sms App~
-        SmsContentProviderCompat.restoreDefSmsApp(this);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

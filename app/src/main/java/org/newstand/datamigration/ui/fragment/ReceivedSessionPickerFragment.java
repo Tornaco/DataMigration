@@ -19,7 +19,7 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.loader.SessionLoader;
-import org.newstand.datamigration.repo.BKSessionRepoService;
+import org.newstand.datamigration.repo.ReceivedSessionRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.SessionListAdapter;
 import org.newstand.datamigration.ui.adapter.SessionListViewHolder;
@@ -198,7 +198,7 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
                                     @Override
                                     public void run() {
                                         Logger.d("Removing session %s", session);
-                                        boolean res = BKSessionRepoService.get().delete(session);
+                                        boolean res = ReceivedSessionRepoService.get().delete(session);
                                     }
                                 });
 
@@ -251,13 +251,15 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
         SharedExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                boolean ok = BKSessionRepoService.get().update(worked);
+                boolean ok = ReceivedSessionRepoService.get().update(worked);
                 if (ok) {
-                    ok = DataBackupManager.from(getContext()).renameSessionChecked(target, name);
+                    ok = DataBackupManager.from(getContext()).renameSessionChecked(
+                            LoaderSource.builder().parent(LoaderSource.Parent.Android).build(),
+                            target, name);
                 }
                 if (!ok) {
                     worked.setName(prevName);
-                    BKSessionRepoService.get().update(worked);
+                    ReceivedSessionRepoService.get().update(worked);
                 }
                 final boolean finalOk = ok;
                 post(new Runnable() {

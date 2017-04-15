@@ -1,7 +1,5 @@
 package org.newstand.datamigration.secure;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.test.InstrumentationRegistry;
 
 import org.junit.Assert;
@@ -21,10 +19,7 @@ public class DonateQRPathRetrieverTest {
         Logger.d(path);
         Assert.assertTrue(path != null);
 
-        String cache = DonateQRPathRetriever.load(InstrumentationRegistry.getTargetContext());
-        Bitmap bit = BitmapFactory.decodeFile(cache);
-
-        Assert.assertTrue(bit != null);
+        DonateQRPathRetriever.loadAndCache(InstrumentationRegistry.getTargetContext());
     }
 
 }

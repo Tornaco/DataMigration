@@ -12,6 +12,7 @@ import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderFilter;
+import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
@@ -47,9 +48,11 @@ public class ContactLoader extends BaseLoader {
     }
 
     @Override
-    public Collection<DataRecord> loadFromSession(Session session, LoaderFilter<DataRecord> filter) {
+    public Collection<DataRecord> loadFromSession(LoaderSource source, Session session, LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = new ArrayList<>();
-        String dir = SettingsProvider.getBackupDirByCategory(DataCategory.Contact, session);
+        String dir = source.getParent() == LoaderSource.Parent.Received ?
+                SettingsProvider.getReceivedDirByCategory(DataCategory.Contact, session)
+                : SettingsProvider.getBackupDirByCategory(DataCategory.Contact, session);
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override

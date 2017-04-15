@@ -25,6 +25,7 @@ public class DataImportActivity extends DataTransportActivity implements DataImp
     private void resolveIntent() {
         Intent intent = getIntent();
         mSource = intent.getParcelableExtra(IntentEvents.KEY_SOURCE);
+        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(mSource);
         Logger.d("Source = " + mSource);
     }

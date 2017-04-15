@@ -1,16 +1,29 @@
 package org.newstand.datamigration.data;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Telephony;
+import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 
+import org.newstand.datamigration.data.model.AppRecord;
+import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.loader.DataLoaderManager;
+import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.logger.Logger;
+
+import java.util.Collection;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/13 13:36
@@ -73,6 +86,16 @@ public class SmsContentProviderCompat {
         return false;
     }
 
+    public static void restoreDefSmsAppCheckedAsync(final Context context) {
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                restoreDefSmsApp(context);
+            }
+        });
+    }
+
+    @WorkerThread
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static void restoreDefSmsApp(Context context) {
         String defaultSmsApp = null;
@@ -87,9 +110,22 @@ public class SmsContentProviderCompat {
             return;
         }
 
+        // Find the most like app.
         if (me.equals(defaultSmsApp)) {
-            Logger.w("Current def SMS app is me??? WTF???");
-            return;
+            Logger.w("Current def SMS app is me??? WTF??? ");
+
+            Collection<DataRecord> apps = DataLoaderManager.from(context)
+                    .load(LoaderSource.builder().parent(LoaderSource.Parent.Android).build(),
+                            DataCategory.App);
+
+            for (DataRecord record : apps) {
+                AppRecord appRecord = (AppRecord) record;
+                if (isAndroidMmsApp(context, appRecord.getPkgName())) {
+                    defaultSmsApp = appRecord.getPkgName();
+                    Logger.d("Now trying to use %s as def Sms app", defaultSmsApp);
+                    break;
+                }
+            }
         }
 
         Logger.d("defaultSmsApp is %s", defaultSmsApp);
@@ -107,5 +143,29 @@ public class SmsContentProviderCompat {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
+    }
+
+    public static boolean isAndroidMmsApp(Context context, String strPkgName) {
+
+        if (context.getPackageName().equals(strPkgName)) return false;
+        if (!strPkgName.contains("android") && !strPkgName.contains("google")) return false;
+
+        PackageManager pkm = context.getPackageManager();
+        boolean isMms = false;
+        PackageInfo pkgInfo;
+        try {
+            pkgInfo = pkm.getPackageInfo(strPkgName, PackageManager.GET_SERVICES);
+            ServiceInfo[] servicesInfos = pkgInfo.services;
+            if (null != servicesInfos) {
+                for (ServiceInfo sInfo : servicesInfos) {
+                    if (null != sInfo.permission && sInfo.permission.equals(Manifest.permission.SEND_SMS)) {
+                        isMms = true;
+                        break;
+                    }
+                }
+            }
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+        return isMms;
     }
 }

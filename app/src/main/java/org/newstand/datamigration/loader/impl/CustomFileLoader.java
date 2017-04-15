@@ -10,6 +10,7 @@ import org.newstand.datamigration.data.model.CustomFileRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderFilter;
+import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
@@ -55,8 +56,11 @@ public class CustomFileLoader extends BaseLoader {
     }
 
     @Override
-    public Collection<DataRecord> loadFromSession(Session session, LoaderFilter<DataRecord> filter) {
-        return loadFrom(SettingsProvider.getBackupDirByCategory(DataCategory.CustomFile, session), filter);
+    public Collection<DataRecord> loadFromSession(LoaderSource source, Session session, LoaderFilter<DataRecord> filter) {
+        return loadFrom(
+                source.getParent() == LoaderSource.Parent.Received ?
+                        SettingsProvider.getReceivedDirByCategory(DataCategory.CustomFile, session)
+                        : SettingsProvider.getBackupDirByCategory(DataCategory.CustomFile, session), filter);
     }
 
     private Collection<DataRecord> loadFrom(String root, final LoaderFilter<DataRecord> filter) {

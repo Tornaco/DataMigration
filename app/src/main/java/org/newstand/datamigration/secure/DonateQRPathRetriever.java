@@ -2,10 +2,12 @@ package org.newstand.datamigration.secure;
 
 import android.content.Context;
 
-import com.bumptech.glide.Glide;
+import com.koushikdutta.async.http.AsyncHttpClient;
+import com.koushikdutta.async.http.AsyncHttpGet;
+import com.koushikdutta.async.http.AsyncHttpResponse;
 
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.sync.SharedExecutor;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 
@@ -21,24 +23,20 @@ public class DonateQRPathRetriever {
         System.loadLibrary("aio-lib");
     }
 
-    public static void cacheAsync(final Context context) {
-        SharedExecutor.execute(new Runnable() {
+    public static void loadAndCache(Context context) {
+        String path = getPathForDonateQRImage();
+        String toPath = SettingsProvider.getCommonDataDir() + File.separator + "QR";
+        AsyncHttpClient.getDefaultInstance().executeFile(new AsyncHttpGet(path), toPath, new AsyncHttpClient.FileCallback() {
             @Override
-            public void run() {
-                String path = load(context);
-                SettingsProvider.setDonateQrPath(path);
+            public void onCompleted(Exception e, AsyncHttpResponse source, File result) {
+                if (result == null) {
+                    Logger.e("Loading QR fail %s", Logger.getStackTraceString(e));
+                    return;
+                }
+                Logger.d("Loading QR onCompleted@ %s", result.getPath());
+                SettingsProvider.setDonateQrPath(result.getPath());
             }
         });
-    }
-
-    public static String load(Context context) {
-        String path = getPathForDonateQRImage();
-        try {
-            File file = Glide.with(context).load(path).downloadOnly(300, 300).get();
-            return file.getPath();
-        } catch (Throwable e) {
-            return null;
-        }
     }
 
     public static native String getPathForDonateQRImage();

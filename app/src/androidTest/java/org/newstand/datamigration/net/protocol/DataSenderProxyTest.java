@@ -180,7 +180,9 @@ public class DataSenderProxyTest {
 
     private void mokeReceive() {
         Sleeper.sleepQuietly(Interval.Seconds.getIntervalMills());
-        DataReceiverProxy.receive(InstrumentationRegistry.getTargetContext(), mServer, new TransportListenerAdapter() {
+        SettingsProvider.setUnderTest(true);
+        DataReceiverProxy.receive(InstrumentationRegistry.getTargetContext(), mServer,
+                new TransportListenerAdapter() {
             @Override
             public void onPieceSuccess(DataRecord record) {
                 super.onPieceSuccess(record);

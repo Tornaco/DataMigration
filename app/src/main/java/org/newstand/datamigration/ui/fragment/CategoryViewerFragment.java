@@ -33,6 +33,7 @@ import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -138,11 +139,26 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
         });
     }
 
+    private LoadingCacheManager getCacheManager(LoaderSource.Parent parent) {
+        switch (parent) {
+            case Android:
+                return LoadingCacheManager.droid();
+            case Received:
+                return LoadingCacheManager.received();
+            case Backup:
+                return LoadingCacheManager.bk();
+            default:
+                throw new IllegalArgumentException("Bad parent:" + parent);
+        }
+    }
+
     private void startLoading() {
         waitForAllLoader();
-        final LoadingCacheManager cache = loaderSourceProvider.onRequestLoaderSource().getParent()
-                == LoaderSource.Parent.Android
-                ? LoadingCacheManager.droid() : LoadingCacheManager.bk();
+        LoaderSource.Parent parent = loaderSourceProvider.onRequestLoaderSource().getParent();
+        final LoadingCacheManager cache = getCacheManager(parent);
+
+        Logger.i("startLoading from parent %s, cache %s", loaderSourceProvider.onRequestLoaderSource().getParent(), cache);
+
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
             public void accept(@NonNull final DataCategory category) {
