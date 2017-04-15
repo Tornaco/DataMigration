@@ -47,7 +47,7 @@ public class CheckForUpdateTile extends ThemedTile {
                 if (versionCheckResult.isHasLater()) {
                     VersionInfoDialog.attach(getContext(), versionCheckResult.getVersionInfo());
                 } else {
-                    Snackbar.make(getTileView(), "Already laters", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getTileView(), R.string.title_new_already_latest, Snackbar.LENGTH_LONG).show();
                 }
             }
         });
