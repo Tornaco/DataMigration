@@ -49,9 +49,9 @@
     <string name="summary_sms_template_draft">草稿&#160;%1$s \t%2$s</string>
 
     <string name="title_transport_report">报告：</string>
-    <string name="title_transport_report_total">总共：%1$s个</string>
-    <string name="title_transport_report_success">成功：%1$s个</string>
-    <string name="title_transport_report_fail">失败：%1$s个</string>
+    <string name="title_transport_report_total">共计：%1$s条</string>
+    <string name="title_transport_report_success">成功：%1$s条</string>
+    <string name="title_transport_report_fail">失败：%1$s条</string>
 
     <string name="title_setup_wfd">寻找连接</string>
     <string name="title_setup_wfd_sender">寻找连接@发送</string>
@@ -89,9 +89,11 @@
     <string name="title_restore_import_complete">导入数据完成</string>
     <string name="action_done">完成</string>
     <string name="action_preparing">正在准备…</string>
-    <string name="action_remark">此次备份的备注：</string>
-    <string name="action_remark_tips">，点击可修改</string>
-    <string name="title_backup_at">备份于 %1$s</string>
+    <string name="action_remark_backup">此次备份的备注为：</string>
+    <string name="action_remark_received">此次接收记录的备注为：</string>
+    <string name="action_remark_tips">，点击可进行修改。</string>
+    <string name="action_viewer_tips_received">你稍后可以在 主页-卡片-我接收到的文件 里查看或者导入你的设备。</string>
+    <string name="title_backup_at">%1$s</string>
     <string name="title_backup_invalid">无效备份</string>
     <string name="title_backup_history">最近备份 %1$s</string>
     <string name="title_backup_history_noop">无备份记录</string>

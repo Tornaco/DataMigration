@@ -253,7 +253,7 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                 boolean ok = BKSessionRepoService.get().update(worked);
                 if (ok) {
                     ok = DataBackupManager.from(getContext()).renameSessionChecked(
-                            LoaderSource.builder().parent(LoaderSource.Parent.Android).build(),
+                            LoaderSource.builder().parent(LoaderSource.Parent.Backup).build(),
                             target, name);
                 }
                 if (!ok) {

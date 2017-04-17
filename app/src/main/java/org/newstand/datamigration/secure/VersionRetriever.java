@@ -19,6 +19,10 @@ import org.newstand.datamigration.provider.SettingsProvider;
 
 public class VersionRetriever {
 
+    public static String currentVersionName() {
+        return BuildConfig.VERSION_NAME;
+    }
+
     public static void hasLaterVersionAsync(Context context,
                                             final ActionListener2<VersionCheckResult, Throwable> listener) {
 

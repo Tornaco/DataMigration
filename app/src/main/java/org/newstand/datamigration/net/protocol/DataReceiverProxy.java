@@ -108,7 +108,9 @@ public class DataReceiverProxy {
                     }
                 });
 
-                settings.setDestDir(SettingsProvider.getReceivedDirByCategory(category, session));
+                settings.setCategory(category);
+
+                settings.setRootDir(SettingsProvider.getReceivedDirByCategory(category, session));
 
                 for (int c = 0; c < FILE_COUNT; c++) {
                     int res = DataRecordReceiver.with(transportServer.getInputStream(),
@@ -143,11 +145,6 @@ public class DataReceiverProxy {
                 listener.onAbort(e);
             }
         } // End for
-
-        // Save session info.
-        if (!SettingsProvider.isUnderTest()) {
-            ReceivedSessionRepoService.get().insert(session);
-        }
 
         listener.onComplete();
 

@@ -11,6 +11,7 @@ import android.support.v4.content.FileProvider;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.secure.VersionRetriever;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.logger.Logger;
 
@@ -87,7 +88,11 @@ public abstract class Files {
 
     public static void shareApk(Context context, String file) {
         try {
-            String toPlace = SettingsProvider.getCommonDataDir() + File.separator + "DataMigrationToShare.jpeg";
+            String toPlace = SettingsProvider.getCommonDataDir()
+                    + File.separator
+                    + "DataMigration@"
+                    + VersionRetriever.currentVersionName()
+                    + ".jpeg";
             if (!new File(toPlace).exists())
                 com.google.common.io.Files.copy(new File(file), new File(toPlace));
             Intent share = new Intent(Intent.ACTION_SEND);

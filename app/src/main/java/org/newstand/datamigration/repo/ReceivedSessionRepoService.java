@@ -3,9 +3,9 @@ package org.newstand.datamigration.repo;
 import android.support.annotation.NonNull;
 
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.utils.Closer;
 import org.newstand.datamigration.utils.Files;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.logger.Logger;
 
 import java.io.File;
 
@@ -46,7 +46,6 @@ public class ReceivedSessionRepoService extends OneTimeRealmRepoService<Session>
 
     @Override
     public boolean update(@NonNull final Session session) {
-        Logger.d("update %s", session);
         final boolean[] res = {false};
         final Realm r = getRealm();
         r.executeTransaction(new Realm.Transaction() {
@@ -58,6 +57,7 @@ public class ReceivedSessionRepoService extends OneTimeRealmRepoService<Session>
                 res[0] = true;
             }
         });
+        Closer.closeQuietly(r);
         return res[0];
     }
 

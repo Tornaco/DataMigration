@@ -153,7 +153,7 @@ public class DataExportManageFragment extends DataTransportManageFragment {
     SimplifySpanBuild onCreateCompleteSummary() {
         SimplifySpanBuild summary = buildTransportReport(getStats());
         summary.append("\n\n");
-        summary.append(getStringSafety(R.string.action_remark));
+        summary.append(getStringSafety(R.string.action_remark_backup));
         summary.append(new SpecialTextUnit(getSession().getName())
                 .setTextColor(ContextCompat.getColor(getContext(), R.color.accent))
                 .showUnderline()
@@ -176,7 +176,7 @@ public class DataExportManageFragment extends DataTransportManageFragment {
 
     protected void showNameSettingsDialog(final String currentName) {
         new InputDialogCompat.Builder(getActivity())
-                .setTitle(getString(R.string.action_remark))
+                .setTitle(getString(R.string.action_remark_backup))
                 .setInputDefaultText(currentName)
                 .setInputMaxWords(32)
                 .setPositiveButton(getString(android.R.string.ok), new InputDialogCompat.ButtonActionListener() {
@@ -184,7 +184,7 @@ public class DataExportManageFragment extends DataTransportManageFragment {
                     public void onClick(CharSequence inputText) {
                         DataBackupManager.from(getContext())
                                 .renameSessionChecked(
-                                        LoaderSource.builder().parent(LoaderSource.Parent.Android).build(),
+                                        LoaderSource.builder().parent(LoaderSource.Parent.Backup).build(),
                                         getSession(), inputText.toString());
                         updateCompleteSummary();
                     }

@@ -3,6 +3,9 @@ package org.newstand.datamigration.ui.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
+import android.widget.TextView;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
@@ -20,15 +23,21 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.ReceivedSessionRepoService;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
+import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
+import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
 
+import java.io.File;
 import java.util.List;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
+import cn.iwgang.simplifyspan.other.OnClickableSpanListener;
+import cn.iwgang.simplifyspan.unit.SpecialClickableUnit;
+import cn.iwgang.simplifyspan.unit.SpecialTextUnit;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -167,7 +176,59 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
 
     @Override
     SimplifySpanBuild onCreateCompleteSummary() {
-        return buildTransportReport(getStats());
+        SimplifySpanBuild summary = buildTransportReport(getStats());
+        summary.append("\n\n");
+        summary.append(getStringSafety(R.string.action_remark_received));
+        summary.append(new SpecialTextUnit(getSession().getName())
+                .setTextColor(ContextCompat.getColor(getContext(), R.color.accent))
+                .showUnderline()
+                .useTextBold()
+                .showUnderline()
+                .setClickableUnit(new SpecialClickableUnit(getConsoleSummaryView(), new OnClickableSpanListener() {
+                    @Override
+                    public void onClick(TextView tv, String clickText) {
+                        showNameSettingsDialog(getSession().getName());
+                    }
+                })));
+        summary.append(getStringSafety(R.string.action_remark_tips));
+        summary.append(getStringSafety(R.string.action_viewer_tips_received));
+        return summary;
+    }
+
+    protected void showNameSettingsDialog(final String currentName) {
+        new InputDialogCompat.Builder(getActivity())
+                .setTitle(getString(R.string.action_remark_backup))
+                .setInputDefaultText(currentName)
+                .setInputMaxWords(32)
+                .setPositiveButton(getString(android.R.string.ok), new InputDialogCompat.ButtonActionListener() {
+                    @Override
+                    public void onClick(CharSequence inputText) {
+                        DataBackupManager.from(getContext())
+                                .renameSessionChecked(
+                                        LoaderSource.builder().parent(LoaderSource.Parent.Received).build(),
+                                        getSession(), inputText.toString());
+                        ReceivedSessionRepoService.get().update(getSession());
+                        updateCompleteSummary();
+                    }
+                })
+                .interceptButtonAction(new InputDialogCompat.ButtonActionIntercepter() {
+                    @Override
+                    public boolean onInterceptButtonAction(int whichButton, CharSequence inputText) {
+                        return !validateInput(inputText);
+                    }
+                })
+                .setNegativeButton(getString(android.R.string.cancel), new InputDialogCompat.ButtonActionListener() {
+                    @Override
+                    public void onClick(CharSequence inputText) {
+                        // Nothing.
+                    }
+                })
+                .show();
+    }
+
+    protected boolean validateInput(CharSequence in) {
+        return !TextUtils.isEmpty(in) && !in.toString().contains("Tmp_")
+                && !in.toString().contains(File.separator);
     }
 
     @Override
@@ -200,6 +261,8 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
+        // Save session info.
+        ReceivedSessionRepoService.get().insert(getSession());
         SmsContentProviderCompat.restoreDefSmsAppCheckedAsync(getContext());
     }
 

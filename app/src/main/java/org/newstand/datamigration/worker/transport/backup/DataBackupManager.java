@@ -62,19 +62,17 @@ public class DataBackupManager {
     }
 
     public boolean renameSessionChecked(LoaderSource source, Session session, String name) {
-        if (!name.equals(session.getName())) {
-            String dir = source.getParent() == LoaderSource.Parent.Backup
-                    ? SettingsProvider.getBackupRootDir()
-                    : SettingsProvider.getReceivedRootDir();
-            File from = new File(dir + File.separator + session.getName());
-            File to = new File(dir + File.separator + name);
-            try {
-                Files.move(from, to);
-                session.rename(name);
-                return true;
-            } catch (IOException e) {
-                Logger.e("Fail to rename session %s", e.getLocalizedMessage());
-            }
+        String dir = source.getParent() == LoaderSource.Parent.Backup
+                ? SettingsProvider.getBackupRootDir()
+                : SettingsProvider.getReceivedRootDir();
+        File from = new File(dir + File.separator + session.getName());
+        File to = new File(dir + File.separator + name);
+        try {
+            Files.move(from, to);
+            session.rename(name);
+            return true;
+        } catch (IOException e) {
+            Logger.e("Fail to rename session %s", e.getLocalizedMessage());
         }
         return false;
     }

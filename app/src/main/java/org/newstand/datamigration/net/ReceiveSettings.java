@@ -1,6 +1,7 @@
 package org.newstand.datamigration.net;
 
 import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.data.model.DataCategory;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReceiveSettings {
-    private String destDir;
+    private String rootDir;
+    private DataCategory category;
     private Consumer<String> nameConsumer;
 }

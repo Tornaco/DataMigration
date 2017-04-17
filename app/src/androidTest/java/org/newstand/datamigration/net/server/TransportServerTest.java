@@ -192,7 +192,7 @@ public class TransportServerTest implements Consumer<Exception> {
         DataRecordReceiver recordReceiver = DataRecordReceiver.with(transportClient.getInputStream(), transportClient.getOutputStream());
         ReceiveSettings settings = new ReceiveSettings();
         String tmpPath = Environment.getExternalStorageDirectory().getPath();
-        settings.setDestDir(tmpPath);
+        settings.setRootDir(tmpPath);
 
         try {
             int ret = recordReceiver.receive(settings);

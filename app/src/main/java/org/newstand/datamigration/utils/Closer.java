@@ -1,5 +1,7 @@
 package org.newstand.datamigration.utils;
 
+import org.newstand.logger.Logger;
+
 import java.io.Closeable;
 import java.io.IOException;
 
@@ -15,7 +17,7 @@ public abstract class Closer {
         try {
             closeable.close();
         } catch (IOException ignore) {
-
+            Logger.e("Fail to close %s with err", closeable, Logger.getStackTraceString(ignore));
         }
     }
 }

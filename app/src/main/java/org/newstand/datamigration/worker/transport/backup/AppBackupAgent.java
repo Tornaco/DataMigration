@@ -26,7 +26,8 @@ import lombok.Setter;
  * All right reserved.
  */
 
-class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSettings>, ContextWireable {
+class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSettings>,
+        ContextWireable {
 
     private FileBackupAgent fileBackupAgent;
     @Getter

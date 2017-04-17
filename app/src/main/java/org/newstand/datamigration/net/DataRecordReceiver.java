@@ -3,8 +3,10 @@ package org.newstand.datamigration.net;
 import com.google.common.io.Files;
 import com.google.common.primitives.Ints;
 
+import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.net.protocol.Acknowledge;
 import org.newstand.datamigration.net.protocol.FileHeader;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.BlackHole;
 import org.newstand.logger.Logger;
 
@@ -54,7 +56,22 @@ public class DataRecordReceiver implements Receiver<ReceiveSettings> {
 
         long size = fileHeader.getSize();
 
-        String destPath = settings.getDestDir() + File.separator + fileName;
+        String destPath;
+
+        // Apply dir settings.
+        switch (settings.getCategory()) {
+            case App:
+                destPath = settings.getRootDir()
+                        + File.separator + fileName
+                        + File.separator + SettingsProvider.getBackupAppApkDirName()
+                        + File.separator + fileName + AppRecord.APK_FILE_PREFIX;// DMBK2/APP/Phone/apk/XX.apk
+                break;
+            default:
+                destPath = settings.getRootDir() + File.separator + fileName;
+                break;
+        }
+
+        Logger.i("Using %s for dest path", destPath);
 
         int sizeInt = Ints.checkedCast(size);// FIXME
 

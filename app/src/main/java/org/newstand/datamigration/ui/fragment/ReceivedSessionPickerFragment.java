@@ -254,7 +254,7 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
                 boolean ok = ReceivedSessionRepoService.get().update(worked);
                 if (ok) {
                     ok = DataBackupManager.from(getContext()).renameSessionChecked(
-                            LoaderSource.builder().parent(LoaderSource.Parent.Android).build(),
+                            LoaderSource.builder().parent(LoaderSource.Parent.Received).build(),
                             target, name);
                 }
                 if (!ok) {

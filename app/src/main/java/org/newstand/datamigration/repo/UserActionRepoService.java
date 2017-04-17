@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.utils.Closer;
 import org.newstand.datamigration.utils.Collections;
 
 import java.io.File;
@@ -64,6 +65,7 @@ public class UserActionRepoService extends OneTimeRealmRepoService<UserAction> {
             }
         });
         r.commitTransaction();
+        Closer.closeQuietly(r);
         return res;
     }
 

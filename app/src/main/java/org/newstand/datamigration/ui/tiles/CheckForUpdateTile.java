@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
-import org.newstand.datamigration.BuildConfig;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.ActionListener2Adapter;
 import org.newstand.datamigration.secure.VersionCheckResult;
@@ -35,7 +34,8 @@ public class CheckForUpdateTile extends ThemedTile {
 
         this.titleRes = R.string.title_check_for_update;
         this.iconRes = R.drawable.ic_update;
-        this.summary = getContext().getString(R.string.summary_check_for_update_current_version, BuildConfig.VERSION_NAME);
+        this.summary = getContext().getString(R.string.summary_check_for_update_current_version,
+                VersionRetriever.currentVersionName());
 
         this.tileView = new QuickTileView(getContext(), this) {
             @Override
