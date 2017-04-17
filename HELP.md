@@ -2,6 +2,11 @@
 * 使用过程遇到问题请留言或者github上提交[ISSUE](https://github.com/Tornaco/DataMigration/issues/new)。
 * 你的问题将会被更新到这里。
 * 更新可能会很慢，业余时间搞一下~
+* 闪退问题，如果可以的话，用这个命令截取log发给我：
+  `
+  adb logcat > logs
+  `
+
 
 ### 目前收集的问题
 * 短信无法恢复：正在解决（5.0以上版本）
