@@ -1,31 +1,4 @@
-# Heading
+# 帮助信息
 
-## Sub-heading
-
-### Another deeper heading
- 
-Paragraphs are separated
-by a blank line.
-
-Two spaces at the end of a line leave a  
-line break.
-
-Text attributes _italic_, *italic*, __bold__, **bold**, `monospace`.
-
-Horizontal rule:
-
----
-
-Bullet list:
-
-  * apples
-  * oranges
-  * pears
-
-Numbered list:
-
-  1. apples
-  2. oranges
-  3. pears
-
-A [link](http://example.com).
+### 没错，你看到的是空白页~
+使用过程遇到问题请留言或者github上提交issue[https://github.com/Tornaco/DataMigration/issues/new](https://github.com/Tornaco/DataMigration/issues/new "[链接]")。你的问题将会被更新到这里。
