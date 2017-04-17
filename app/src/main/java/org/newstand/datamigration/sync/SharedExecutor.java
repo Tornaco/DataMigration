@@ -1,5 +1,8 @@
 package org.newstand.datamigration.sync;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,11 +16,17 @@ public abstract class SharedExecutor {
 
     private static ExecutorService executorService = Executors.newCachedThreadPool();
 
+    private static Handler mUIThreadHandler = new Handler(Looper.getMainLooper());
+
     public static void execute(Runnable runnable) {
         executorService.execute(runnable);
     }
 
     public static ExecutorService getService() {
         return executorService;
+    }
+
+    public static void runOnUIThread(Runnable runnable) {
+        mUIThreadHandler.post(runnable);
     }
 }

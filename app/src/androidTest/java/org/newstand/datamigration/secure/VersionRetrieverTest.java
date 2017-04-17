@@ -1,10 +1,9 @@
 package org.newstand.datamigration.secure;
 
-import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 
 import org.junit.Test;
-import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.common.ActionListener2Adapter;
 import org.newstand.datamigration.strategy.Interval;
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.logger.Logger;
@@ -18,9 +17,11 @@ public class VersionRetrieverTest {
     @Test
     public void getLatestVersionStringFromServerAsync() throws Exception {
 
-        VersionRetriever.hasLaterVersionAsync(InstrumentationRegistry.getTargetContext(), new Consumer<VersionCheckResult>() {
+        VersionRetriever.hasLaterVersionAsync(InstrumentationRegistry.getTargetContext(),
+                new ActionListener2Adapter<VersionCheckResult, Throwable>() {
             @Override
-            public void accept(@NonNull VersionCheckResult versionCheckResult) {
+            public void onComplete(VersionCheckResult versionCheckResult) {
+                super.onComplete(versionCheckResult);
                 Logger.d("hasLaterVersionAsync %s", versionCheckResult);
             }
         });

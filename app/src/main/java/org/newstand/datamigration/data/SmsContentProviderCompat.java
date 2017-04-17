@@ -128,8 +128,6 @@ public class SmsContentProviderCompat {
             }
         }
 
-        Logger.d("defaultSmsApp is %s", defaultSmsApp);
-
         String previousPkg = SettingsProvider.getDefSmsApp();
 
         if (TextUtils.isEmpty(previousPkg)) return;

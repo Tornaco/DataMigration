@@ -2,8 +2,10 @@ package org.newstand.datamigration.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import org.newstand.datamigration.data.event.IntentEvents;
+import org.newstand.datamigration.ui.fragment.SenderCategoryViewerFragment;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
@@ -40,5 +42,10 @@ public class SenderCategoryViewerActivity extends AndroidCategoryViewerActivity 
     public void onTransportComplete(Event event) {
         finishWithAfterTransition();
         EventBus.from(this).unSubscribe(this);
+    }
+
+    @Override
+    protected Fragment onCreateViewerFragment() {
+        return new SenderCategoryViewerFragment();
     }
 }

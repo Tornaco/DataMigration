@@ -9,8 +9,7 @@ import com.koushikdutta.async.http.AsyncHttpResponse;
 import org.newstand.datamigration.BuildConfig;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.ActionListener2;
-import org.newstand.datamigration.common.ActionListener2Adapter;
-import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.provider.SettingsProvider;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/14 15:41
@@ -20,7 +19,8 @@ import org.newstand.datamigration.common.Consumer;
 
 public class VersionRetriever {
 
-    private static void getLatestVersionStringFromServerAsync(Context context, final ActionListener2<VersionInfo, Exception> listener) {
+    public static void hasLaterVersionAsync(Context context,
+                                            final ActionListener2<VersionCheckResult, Throwable> listener) {
 
         AsyncHttpClient.getDefaultInstance().executeString(new AsyncHttpGet(context.getString(R.string.version_url)),
                 new AsyncHttpClient.StringCallback() {
@@ -33,39 +33,27 @@ public class VersionRetriever {
 
                     @Override
                     public void onCompleted(Exception e, AsyncHttpResponse source, String result) {
+                        if (e != null) {
+                            listener.onError(e);
+                            return;
+                        }
+                        final String currentVersion = BuildConfig.VERSION_NAME;
                         if (result != null) {
                             try {
-                                listener.onComplete(VersionInfo.fromJson(result));
+                                VersionInfo versionInfo = VersionInfo.fromJson(result);
+                                VersionCheckResult versionCheckResult = new VersionCheckResult();
+                                versionCheckResult.setHasLater(
+                                        !SettingsProvider.isTipsNoticed("checkForUpdate-" + versionInfo.getVersionName())
+                                                && !currentVersion.equals(versionInfo.getVersionName()));
+                                versionCheckResult.setVersionInfo(versionInfo);
+                                listener.onComplete(versionCheckResult);
                             } catch (Exception e1) {
-                                listener.onError(e);
+                                listener.onError(e1);
                             }
-                        } else {
-                            listener.onError(e);
                         }
                     }
                 });
-    }
 
-    public static void hasLaterVersionAsync(Context context,
-                                            final Consumer<VersionCheckResult> versionConsumer) {
-        final String currentVersion = BuildConfig.VERSION_NAME;
-        getLatestVersionStringFromServerAsync(context, new ActionListener2Adapter<VersionInfo, Exception>() {
-            @Override
-            public void onComplete(VersionInfo versionInfo) {
-                super.onComplete(versionInfo);
-                VersionCheckResult result = new VersionCheckResult();
-                result.setHasLater(!currentVersion.equals(versionInfo.getVersionName()));
-                result.setVersionInfo(versionInfo);
-                versionConsumer.accept(result);
-            }
 
-            @Override
-            public void onError(Exception e) {
-                super.onError(e);
-                VersionCheckResult result = new VersionCheckResult();
-                result.setHasLater(false);
-                versionConsumer.accept(result);
-            }
-        });
     }
 }

@@ -1,123 +1,16 @@
 package org.newstand.datamigration.ui.widget;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
-import android.os.Build;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.ViewAnimationUtils;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.TextView;
-
-import java.util.ArrayList;
 
 public class ViewAnimateUtils {
 
-    public static final String COLOR_PROPERTY = "color";
     public static final int DURATION_SHORT = 300;
     public static final int DURATION_MID = 800;
 
-    public static void animateColorChange(View view, int fromColor, int toColor, int duration,
-                                          Animator.AnimatorListener listener) {
-        if (view.getWindowToken() == null) {
-            return;
-        }
-        AnimatorSet animation = new AnimatorSet();
-        ObjectAnimator colorAnimator = ObjectAnimator.ofInt(view, COLOR_PROPERTY, fromColor, toColor);
-        colorAnimator.setEvaluator(new ArgbEvaluator());
-        colorAnimator.setDuration(duration);
-        if (listener != null)
-            animation.addListener(listener);
-        animation.play(colorAnimator);
-        animation.start();
-    }
-
-    public static void circularHide(final View view, Animator.AnimatorListener listener) {
-        Animator anim = createCircularHideAnimator(view, listener);
-        if (anim != null)
-            anim.start();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static Animator createCircularHideAnimator(final View view,
-                                                      @Nullable Animator.AnimatorListener listener) {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            view.setVisibility(View.INVISIBLE);
-            if (listener != null) listener.onAnimationEnd(null);
-        }
-
-        if (view.getWindowToken() == null
-                || view.getVisibility() == View.INVISIBLE)
-            return null;
-
-        // get the center for the clipping circle
-        int cx = (view.getLeft() + view.getRight()) / 2;
-        int cy = (view.getTop() + view.getBottom()) / 2;
-
-        // get the initial radius for the clipping circle
-        int initialRadius = view.getWidth();
-
-        // create the animation (the final radius is zero)
-        Animator anim =
-                ViewAnimationUtils.createCircularReveal(view, cx, cy, initialRadius, 0);
-
-        anim.addListener(new AnimatorListenerAdapter() {
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                view.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        if (listener != null) {
-            anim.addListener(listener);
-        }
-        return anim;
-    }
-
-    public static void circularShow(final View view) {
-        Animator anim = createCircularShowAnimator(view);
-        if (anim != null)
-            anim.start();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static Animator createCircularShowAnimator(final View view) {
-
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            view.setVisibility(View.VISIBLE);
-        }
-
-        if (view.getVisibility() == View.VISIBLE
-                || view.getWindowToken() == null)
-            return null;
-        // get the center for the clipping circle
-        int cx = (view.getLeft() + view.getRight()) / 2;
-        int cy = (view.getTop() + view.getBottom()) / 2;
-
-        // get the final radius for the clipping circle
-        int finalRadius = view.getWidth();
-
-        // create and startService the animator for this view
-        // (the startService radius is zero)
-        Animator anim =
-                ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, finalRadius);
-        anim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                view.setVisibility(View.VISIBLE);
-            }
-        });
-        return anim;
-    }
 
     public static void alphaShow(@NonNull final View view) {
         if (view.getWindowToken() == null)
@@ -159,95 +52,6 @@ public class ViewAnimateUtils {
             @Override
             public void onAnimationRepeat(Animator animation) {
 
-            }
-        });
-        alpha.start();
-    }
-
-    public static void animateTextChange(final TextView view, @IdRes final int toText,
-                                         final Runnable rWhenEnd) {
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
-        final ObjectAnimator restore = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
-        alpha.setDuration(DURATION_SHORT);
-        alpha.setInterpolator(new AccelerateDecelerateInterpolator());
-        restore.setDuration(DURATION_SHORT);
-        restore.setInterpolator(new AccelerateDecelerateInterpolator());
-        alpha.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                // Do nothing.
-            }
-
-            @SuppressWarnings("ResourceType")
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                view.setText(toText);
-                restore.start();
-            }
-
-            @SuppressWarnings("ResourceType")
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                view.setText(toText);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                // Do nothing.
-            }
-        });
-        if (rWhenEnd != null)
-            restore.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    rWhenEnd.run();
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                    rWhenEnd.run();
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-            });
-        alpha.start();
-    }
-
-    public static void animateTextChange(final TextView view, final String toText) {
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
-        final ObjectAnimator restore = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
-        alpha.setDuration(DURATION_SHORT);
-        alpha.setInterpolator(new AccelerateDecelerateInterpolator());
-        restore.setDuration(DURATION_SHORT);
-        restore.setInterpolator(new AccelerateDecelerateInterpolator());
-        alpha.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                // Do nothing.
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                view.setText(toText);
-                restore.start();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                view.setText(toText);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                // Do nothing.
             }
         });
         alpha.start();
@@ -394,54 +198,6 @@ public class ViewAnimateUtils {
                 }
             });
         set.start();
-    }
-
-    /**
-     * Given a coordinate relative to the descendant, find the coordinate in a parent view's
-     * coordinates.
-     *
-     * @param descendant        The descendant to which the passed coordinate is relative.
-     * @param root              The root view to make the coordinates relative to.
-     * @param coord             The coordinate that we want mapped.
-     * @param includeRootScroll Whether or not to account for the scroll of the descendant:
-     *                          sometimes this is relevant as in a child's coordinates within the descendant.
-     * @return The factor by which this descendant is scaled relative to this DragLayer. Caution
-     * this scale factor is assumed to be equal in X and Y, and so if at any point this
-     * assumption fails, we will need to return a pair of scale factors.
-     */
-    public static float getDescendantCoordRelativeToParent(View descendant, View root,
-                                                           int[] coord, boolean includeRootScroll) {
-        ArrayList<View> ancestorChain = new ArrayList<View>();
-
-        float[] pt = {coord[0], coord[1]};
-
-        View v = descendant;
-        while (v != root && v != null) {
-            ancestorChain.add(v);
-            v = (View) v.getParent();
-        }
-        ancestorChain.add(root);
-
-        float scale = 1.0f;
-        int count = ancestorChain.size();
-        for (int i = 0; i < count; i++) {
-            View v0 = ancestorChain.get(i);
-            // For TextViews, scroll has a meaning which relates to the text position
-            // which is very strange... ignore the scroll.
-            if (v0 != descendant || includeRootScroll) {
-                pt[0] -= v0.getScrollX();
-                pt[1] -= v0.getScrollY();
-            }
-
-            v0.getMatrix().mapPoints(pt);
-            pt[0] += v0.getLeft();
-            pt[1] += v0.getTop();
-            scale *= v0.getScaleX();
-        }
-
-        coord[0] = (int) Math.round(pt[0]);
-        coord[1] = (int) Math.round(pt[1]);
-        return scale;
     }
 
     public static int getColorWithAlpha(float alpha, int baseColor) {

@@ -44,6 +44,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_USER_NOTICED = "key_user_noticed";
     private static final String KEY_DONATE_QR_PATH = "key_donate_qr_path";
     private static final String KEY_LAST_UPDATE_CHECK_TIME = "key_last_update_check_time";
+    private static final String KEY_TIPS_NOTICED_PREFIX = "key_tips_noticed_";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -365,5 +366,15 @@ public class SettingsProvider extends Observable {
 
     public static boolean shouldCheckForUpdateNow() {
         return System.currentTimeMillis() - getLastUpdateCheckTime() > Interval.Hour.getIntervalMills();
+    }
+
+    public static boolean isTipsNoticed(String tips) {
+        String key = KEY_TIPS_NOTICED_PREFIX + tips;
+        return sMe.readBoolean(key, false);
+    }
+
+    public static void setTipsNoticed(String tips, boolean value) {
+        String key = KEY_TIPS_NOTICED_PREFIX + tips;
+        sMe.writeBoolean(key, value);
     }
 }

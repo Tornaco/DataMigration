@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
@@ -27,7 +28,7 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
 
     private static final boolean TRANSITION_ANIMATION = false;
 
-    private static final long UI_TRANSACTION_TIME_MILLS = 500;
+    protected static final long UI_TRANSACTION_TIME_MILLS = 500;
 
     protected Fragment mShowingFragment;
 
@@ -51,6 +52,10 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
             }, UI_TRANSACTION_TIME_MILLS);
         }
         setupEnterWindowAnimations();
+    }
+
+    public ViewGroup getContentView() {
+        return findView(android.R.id.content);
     }
 
     private void readSettings() {
@@ -104,7 +109,7 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
         }
     }
 
-    protected boolean isDestroyedCompat() {
+    public boolean isDestroyedCompat() {
         return mIsDestroyed;
     }
 

@@ -119,7 +119,8 @@ public class DashboardFragment extends Fragment {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void updateTileView(Context context, Resources res, final Tile tile,
+    private void updateTileView(Context context,
+                                Resources res, final Tile tile,
                                 ImageView tileIcon, TextView tileTextView, TextView statusTextView) {
         if (tile.iconRes > 0) {
             tileIcon.setImageResource(tile.iconRes);

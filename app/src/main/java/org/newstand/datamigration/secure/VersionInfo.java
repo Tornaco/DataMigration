@@ -1,7 +1,5 @@
 package org.newstand.datamigration.secure;
 
-import android.support.annotation.Nullable;
-
 import com.google.gson.Gson;
 
 import lombok.Getter;
@@ -37,7 +35,6 @@ public class VersionInfo {
         return gson.toJson(this);
     }
 
-    @Nullable
     public static VersionInfo fromJson(String jsonStr) throws Exception {
         Gson gson = new Gson();
         try {

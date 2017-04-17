@@ -91,10 +91,10 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.WFDDataSenderActivity"
-            android:label="@string/title_setup_wfd" />
+            android:label="@string/title_setup_wfd_sender" />
         <activity
             android:name=".ui.activity.WFDDataReceiverActivity"
-            android:label="@string/title_setup_wfd" />
+            android:label="@string/title_setup_wfd_receiver" />
         <activity
             android:name=".ui.activity.SettingsActivity"
             android:label="@string/action_settings" />

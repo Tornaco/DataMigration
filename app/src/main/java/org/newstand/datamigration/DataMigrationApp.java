@@ -1,11 +1,10 @@
 package org.newstand.datamigration;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
-
-import com.google.common.io.Closer;
 
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.secure.DonateQRPathRetriever;
@@ -15,11 +14,9 @@ import org.newstand.datamigration.utils.OnDeviceLogAdapter;
 import org.newstand.logger.Logger;
 import org.newstand.logger.Settings;
 
-import java.io.Closeable;
-import java.io.IOException;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import lombok.Getter;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 10:35
@@ -29,23 +26,16 @@ import io.realm.RealmConfiguration;
 
 public class DataMigrationApp extends Application {
 
-    private static final Closer sCloser = Closer.create();
-
     static {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }
 
-    public static <C extends Closeable> C registerClosable(C closeable) {
-        return sCloser.register(closeable);
+    public Activity getTopActivity() {
+        return topActivityObserver.getTopActivity();
     }
 
-    public void cleanup() {
-        try {
-            sCloser.close();
-        } catch (IOException e) {
-            Logger.e("Fail to close %s", e.getLocalizedMessage());
-        }
-    }
+    @Getter
+    private TopActivityObserver topActivityObserver = new TopActivityObserver();
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -64,5 +54,6 @@ public class DataMigrationApp extends Application {
         UserActionServiceProxy.startService(this);
         DonateQRPathRetriever.loadAndCache(this);
         DummSmsServiceProxy.startService(this);
+        registerActivityLifecycleCallbacks(topActivityObserver);
     }
 }

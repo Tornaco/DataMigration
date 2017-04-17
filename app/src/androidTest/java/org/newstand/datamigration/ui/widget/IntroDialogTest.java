@@ -1,8 +1,5 @@
 package org.newstand.datamigration.ui.widget;
 
-import android.content.DialogInterface;
-import android.support.test.InstrumentationRegistry;
-
 import org.junit.Test;
 
 /**
@@ -13,12 +10,6 @@ import org.junit.Test;
 public class IntroDialogTest {
     @Test
     public void attach() throws Exception {
-        IntroDialog.attach(InstrumentationRegistry.getTargetContext(), new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                // Canceled.
-            }
-        });
     }
 
 }

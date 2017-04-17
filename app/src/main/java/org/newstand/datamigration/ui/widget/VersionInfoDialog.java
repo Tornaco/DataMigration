@@ -24,7 +24,7 @@ import cn.iwgang.simplifyspan.unit.SpecialTextUnit;
 
 public class VersionInfoDialog {
 
-    public static void attach(Context context, VersionInfo info) {
+    public static void attach(Context context, final VersionInfo info) {
 
         SimplifySpanBuild simplifySpanBuild = new SimplifySpanBuild();
         simplifySpanBuild
@@ -67,11 +67,11 @@ public class VersionInfoDialog {
 
                     }
                 })
-                .setNeutralButton(R.string.title_never_remind,
+                .setNeutralButton(R.string.title_check_for_update_no_remind,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                SettingsProvider.setUserNoticed(true);
+                                SettingsProvider.setTipsNoticed("checkForUpdate-" + info.getVersionName(), true);
                             }
                         })
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

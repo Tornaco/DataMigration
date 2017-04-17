@@ -21,12 +21,18 @@ import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
+import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.shape.ShapeType;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
 import lombok.Getter;
@@ -155,12 +161,31 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
             }
         });
 
+        buildFabIntro();
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 startLoading();
             }
         });
+    }
+
+    private void buildFabIntro() {
+        new MaterialIntroView.Builder(getActivity())
+                .enableDotAnimation(true)
+                .enableIcon(true)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .enableFadeAnimation(true)
+                .performClick(false)
+                .setInfoText(getString(R.string.fab_intro_list))
+                .setShape(ShapeType.CIRCLE)
+                .setTarget(fab)
+                // Always show when in dev mode.
+                .setUsageId(SettingsProvider.isDebugEnabled() ? UUID.randomUUID().toString()
+                        : "data_list_viewer")
+                .show();
     }
 
     protected void onFabClick() {

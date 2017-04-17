@@ -32,9 +32,9 @@
 
                 <RelativeLayout
                     android:id="@+id/header1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small">
+                    android:background="@color/card_header">
 
                     <ImageView
                         android:id="@+id/icon1"
@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:padding="@dimen/activity_vertical_margin"
-                        android:tint="@color/secondary_text"
+                        android:tint="@color/white"
                         app:srcCompat="@drawable/ic_backup_restore" />
 
                     <TextView
@@ -58,7 +58,7 @@
                         android:text="@string/title_backup_restore"
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        android:textColor="@color/title"
+                        android:textColor="@color/white"
                         android:textStyle="normal" />
 
                 </RelativeLayout>
@@ -71,6 +71,7 @@
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="4dp"
+                    android:visibility="gone"
                     android:background="@color/dividerLight" />
 
                 <TextView
@@ -86,7 +87,7 @@
                     android:paddingTop="@dimen/activity_horizontal_margin"
                     android:text="@string/backup_intro"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="@color/text" />
+                    android:textColor="@color/primary_text" />
 
                 <View
                     android:id="@+id/divider2"
@@ -150,9 +151,9 @@
 
                 <RelativeLayout
                     android:id="@+id/header2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin_small">
+                    android:background="@color/card_header">
 
                     <ImageView
                         android:id="@+id/icon2"
@@ -160,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:padding="@dimen/activity_vertical_margin"
-                        android:tint="@color/secondary_text"
+                        android:tint="@color/white"
                         app:srcCompat="@drawable/ic_send" />
 
                     <TextView
@@ -176,7 +177,7 @@
                         android:text="@string/title_transport_sender_receiver"
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        android:textColor="@color/title"
+                        android:textColor="@color/white"
                         android:textStyle="normal" />
 
                 </RelativeLayout>
@@ -189,6 +190,7 @@
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="4dp"
+                    android:visibility="gone"
                     android:background="@color/dividerLight" />
 
                 <TextView
@@ -204,7 +206,7 @@
                     android:paddingTop="@dimen/activity_horizontal_margin"
                     android:text="@string/transport_intro"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="@color/text" />
+                    android:textColor="@color/primary_text" />
 
                 <View
                     android:id="@+id/divider22"
@@ -239,7 +241,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="@string/title_send_history_noop" />
+                        android:text="@string/title_receive_history_noop" />
                 </RelativeLayout>
 
             </RelativeLayout>

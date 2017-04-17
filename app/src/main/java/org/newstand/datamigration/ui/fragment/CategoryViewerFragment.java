@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,6 +29,7 @@ import org.newstand.datamigration.data.model.CategoryRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
@@ -39,11 +41,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.shape.ShapeType;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
+import dev.nick.eventbus.EventReceiver;
 import dev.nick.eventbus.annotation.Events;
 import dev.nick.eventbus.annotation.ReceiverMethod;
 import lombok.Getter;
@@ -83,13 +91,27 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
 
     private CountDownLatch loadingLatch;
 
+    private EventReceiver selectionEventReceiver = new EventReceiver() {
+        @Override
+        public void onReceive(@NonNull Event event) {
+            updateSelectionCount(event);
+        }
+
+        @Override
+        public int[] events() {
+            return new int[]{IntentEvents.EVENT_ON_CATEGORY_OF_DATA_SELECT_COMPLETE};
+        }
+    };
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         setSelectListener((OnCategorySelectListener) getActivity());
         setOnSubmitListener((OnSubmitListener) getActivity());
         setLoaderSourceProvider((LoaderSourceProvider) getActivity());
-        EventBus.from(getContext()).subscribe(this);
+
+        // Register events manually~
+        EventBus.from(getContext()).subscribe(selectionEventReceiver);
     }
 
     @Nullable
@@ -223,6 +245,29 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
         showFab(false);
     }
 
+    private void buildFabIntro() {
+        new MaterialIntroView.Builder(getActivity())
+                .enableDotAnimation(true)
+                .enableIcon(true)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .enableFadeAnimation(true)
+                .performClick(false)
+                .setInfoText(getString(getFabIntro()))
+                .setShape(ShapeType.CIRCLE)
+                .setTarget(fab)
+                // Always show when in dev mode.
+                .setUsageId(SettingsProvider.isDebugEnabled() ? UUID.randomUUID().toString()
+                        : "intro_category_viewer_" + getClass().getName())
+                .show();
+    }
+
+    protected
+    @StringRes
+    int getFabIntro() {
+        return -1;
+    }
+
     private void onFabClick() {
         onSubmitListener.onSubmit();
     }
@@ -323,8 +368,12 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
     }
 
     private void showFab(boolean show) {
-        if (show) fab.show();
-        else fab.hide();
+        if (show) {
+            fab.show();
+            buildFabIntro();
+        } else {
+            fab.hide();
+        }
     }
 
     private String buildSelectionSummary(int total, int selectionCnt) {
@@ -344,7 +393,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.from(getContext()).unSubscribe(this);
+        EventBus.from(getContext()).unSubscribe(selectionEventReceiver);
     }
 
     private void onCategorySelect(CategoryRecord cr) {

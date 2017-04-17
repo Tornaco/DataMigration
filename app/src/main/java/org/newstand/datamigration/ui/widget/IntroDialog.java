@@ -15,8 +15,12 @@ import org.newstand.datamigration.provider.SettingsProvider;
 
 public class IntroDialog {
 
-    public static void attach(Context context, final DialogInterface.OnCancelListener listener) {
-        if (SettingsProvider.isUserNoticed()) return;
+    public static void attach(Context context, final DialogInterface.OnCancelListener listener,
+                              final Runnable onOkRunnable) {
+        if (SettingsProvider.isUserNoticed()) {
+            onOkRunnable.run();
+            return;
+        }
         AlertDialog alertDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.title_user_notice)
                 .setMessage(R.string.message_user_notice)
@@ -31,9 +35,15 @@ public class IntroDialog {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 SettingsProvider.setUserNoticed(true);
+                                onOkRunnable.run();
                             }
                         })
-                .setPositiveButton(android.R.string.ok, null)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onOkRunnable.run();
+                    }
+                })
                 .setCancelable(false)
                 .create();
         alertDialog.show();

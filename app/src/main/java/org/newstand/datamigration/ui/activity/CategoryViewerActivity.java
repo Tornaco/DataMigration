@@ -3,6 +3,7 @@ package org.newstand.datamigration.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.cache.LoadingCacheManager;
@@ -23,7 +24,11 @@ public abstract class CategoryViewerActivity extends TransitionSafeActivity
     }
 
     protected void showViewerFragment() {
-        replaceV4(R.id.container, new CategoryViewerFragment(), null);
+        replaceV4(R.id.container, onCreateViewerFragment(), null);
+    }
+
+    protected Fragment onCreateViewerFragment() {
+        return new CategoryViewerFragment();
     }
 
     abstract LoadingCacheManager getCache();

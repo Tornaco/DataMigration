@@ -1,8 +1,16 @@
 <resources>
-    <string name="app_name">迁移</string>
+    <string name="app_name">数据迁移</string>
     <string name="app_intro">数据备份以及迁移助手</string>
+    <string name="card_intro">点击卡片可以展开菜单</string>
+    <string name="fab_intro_list">当你完成数据选择时，点击此处完成选择并返回汇总页</string>
+    <string name="fab_intro_category_backup">当你完成数据选择时，点击此处即可开始进行备份</string>
+    <string name="fab_intro_category_restore">当你完成数据选择时，点击此处即可开始进行还原</string>
+    <string name="fab_intro_category_received">当你完成数据选择时，点击此处即可将所选数据导入手机</string>
+    <string name="fab_intro_category_send">当你完成数据选择时，点击此处即可开始进行传输</string>
+    <string name="backup_intro_actions">此卡片包括</string>
+    <string name="backup_intro_and">和</string>
     <string name="backup_intro">支持联系人，短消息，通话记录，照片，音乐，视频，闹钟等数据备份与应用软件（应用数据的备份需要获取ROOT权限）备份到本地。\n备份需要您授予包括读取联系人，电话，短信，文件读写等权限。\n当您完成一次备份后，您可以随时使用还原功能进行数据还原。</string>
-    <string name="transport_intro">换新手机不再发愁旧手机里的数据，空中传输，可以将旧手机中上述可备份数据数据快速复制到新手机里。基于WIFI直连技术实现，不耗费蜂窝数据流量。\n另外需要您授予位置信息权限才能使用WIFI相关的技术进行数据传输。\n在使用的时候您只需要选择<b>发送</b>或者<b>接收</b>开始，按照引导操作即可。</string>
+    <string name="transport_intro">使用无线快传，你可以将A手机中上述可备份数据数据快速传输到B手机里。基于WIFI直连技术实现，不耗费蜂窝数据流量。\n另外需要您授予位置信息权限才能使用WIFI相关的技术进行数据传输。\n在使用的时候您只需要选择<b>发送</b>或者<b>接收</b>开始，按照引导操作即可。</string>
 
     <string name="title_activity_navigator">@string/app_name</string>
 
@@ -46,6 +54,8 @@
     <string name="title_transport_report_fail">失败：%1$s个</string>
 
     <string name="title_setup_wfd">寻找连接</string>
+    <string name="title_setup_wfd_sender">寻找连接@发送</string>
+    <string name="title_setup_wfd_receiver">寻找连接@接收</string>
     <string name="title_setup_wfd_note">注意：</string>
     <string name="title_restart_connector"><b><i>点此重新初始化连接器</i></b></string>
     <string name="summary_setup_wfd_note_name">*\t\t你的设备昵称为&#160;</string>
@@ -85,8 +95,8 @@
     <string name="title_backup_invalid">无效备份</string>
     <string name="title_backup_history">最近备份 %1$s</string>
     <string name="title_backup_history_noop">无备份记录</string>
-    <string name="title_send_history">无备份记录</string>
-    <string name="title_send_history_noop">无发送记录</string>
+    <string name="title_receive_history_noop">无接收记录</string>
+    <string name="title_receive_history_size">有%1$s条接收记录</string>
     <string name="title_only_root_dir">目前只支持根目录文件</string>
 
     <string name="title_restore_sending">正在发送数据</string>
@@ -111,14 +121,16 @@
     <string name="tile_transition_animation">过场动画</string>
     <string name="summary_transition_animation">开启更活泼的动画，仅作实验~</string>
     <string name="tile_work_mode_root">备份应用数据</string>
-    <string name="summary_work_mode_root">为已经root的设备备份应用数据</string>
+    <string name="summary_work_mode_root">为已经root的设备备份应用数据，将会检查并申请root权限，请在收到申请提示后，选择允许。如果你不清楚什么是root权限请不要开启本选项</string>
     <string name="tile_dev_mode">开发者模式</string>
-    <string name="summary_dev_mode">你可以查看程序日志</string>
+    <string name="summary_dev_mode">你可以查看程序日志，开启一些调试功能，也可能会引入一些未知问题，仅限开发者调试使用</string>
 
-    <string name="title_transport_sender_receiver">空中传输</string>
-    <string name="title_transport_sender">发送</string>
-    <string name="title_transport_receiver">接收</string>
+    <string name="title_transport_sender_receiver">无线快传</string>
+    <string name="title_transport_sender">我要发送</string>
+    <string name="title_transport_receiver">我要接收</string>
     <string name="title_transport_received_viewer">我接收到的文件</string>
+    <string name="title_transport_share">分享</string>
+    <string name="title_transport_share_tips">Google为了安全起见，禁止直接分享APK文件，因此我们把APK文件命名为JPEG文件，待对方收到该文件后，修改后缀名为APK即可安装使用</string>
 
     <string name="title_start">开始</string>
 
@@ -133,10 +145,13 @@
 
     <string name="title_err">错误信息</string>
     <string name="title_new_update_available">发现更新的版本：%1$s</string>
-    <string name="title_new_already_latest">当前已经是最新版本:)</string>
+    <string name="title_new_already_latest">当前已经是最新版本</string>
+    <string name="title_update_check_fail">检查更新时遇到了一个错误</string>
     <string name="action_look_up">查看</string>
     <string name="title_new_update_info">更新信息</string>
     <string name="title_check_for_update">检查更新</string>
+    <string name="summary_check_for_update_current_version">当前版本%1$s</string>
+    <string name="title_check_for_update_no_remind">该版本不再提醒</string>
 
     <string name="phone_num_unknown">未知号码</string>
 

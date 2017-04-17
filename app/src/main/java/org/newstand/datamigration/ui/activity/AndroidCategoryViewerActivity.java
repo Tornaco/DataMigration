@@ -3,10 +3,12 @@ package org.newstand.datamigration.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
+import org.newstand.datamigration.ui.fragment.AndroidCategoryViewerFragment;
 import org.newstand.datamigration.worker.transport.Session;
 
 import dev.nick.eventbus.Event;
@@ -62,5 +64,10 @@ public class AndroidCategoryViewerActivity extends CategoryViewerActivity {
     @Override
     protected Class<? extends Activity> getListHostActivityClz() {
         return AndroidDataListHostActivity.class;
+    }
+
+    @Override
+    protected Fragment onCreateViewerFragment() {
+        return new AndroidCategoryViewerFragment();
     }
 }
