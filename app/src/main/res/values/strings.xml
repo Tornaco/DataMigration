@@ -118,6 +118,7 @@
     <string name="tile_category_storage">存储</string>
     <string name="tile_category_view">视觉</string>
     <string name="tile_category_about">关于</string>
+    <string name="tile_category_in">参与</string>
     <string name="tile_category_strategy">策略</string>
     <string name="tile_title_auto_connect">自动连接</string>
     <string name="tile_transition_animation">过场动画</string>
@@ -159,6 +160,9 @@
 
     <string name="title_license">开放源代码许可</string>
     <string name="title_donate">捐赠</string>
+
+    <string name="title_feedback">问题反馈</string>
+    <string name="summary_feedback">请将详细的错误描述发送至%1$s</string>
 
     <string name="title_help">帮助</string>
     <string name="title_help_noop">这家伙很懒，留下了一个空白的帮助页~</string>

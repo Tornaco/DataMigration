@@ -9,6 +9,7 @@ import org.newstand.datamigration.ui.tiles.CheckForUpdateTile;
 import org.newstand.datamigration.ui.tiles.DevTile;
 import org.newstand.datamigration.ui.tiles.DonateTile;
 import org.newstand.datamigration.ui.tiles.LicenceTile;
+import org.newstand.datamigration.ui.tiles.MailTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.tiles.TransitionAnimationTile;
 import org.newstand.datamigration.ui.tiles.WorkModeTile;
@@ -64,14 +65,20 @@ public class SettingsActivity extends TransitionSafeActivity {
             about.addTile(checkForUpdateTile);
             LicenceTile licenceTile = new LicenceTile(getActivity());
             about.addTile(licenceTile);
+
+            Category involve = new ThemedCategory();
+            involve.titleRes = R.string.tile_category_in;
+
+            involve.addTile(new MailTile(getActivity()));
             DonateTile donateTile = new DonateTile(getContext());
-            about.addTile(donateTile);
+            involve.addTile(donateTile);
 
             if (SettingsProvider.isDebugEnabled()) {
                 categories.add(view);
             }
             categories.add(strategy);
             categories.add(about);
+            categories.add(involve);
 
             super.onCreateDashCategories(categories);
         }
