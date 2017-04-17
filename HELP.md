@@ -1,5 +1,5 @@
 ### 这是一个有灵性的区域
-* 使用过程遇到问题请留言或者github上提交[ISSUE](https://github.com/Tornaco/DataMigration/issues/new)
+* 使用过程遇到问题请留言或者github上提交[ISSUE](https://github.com/Tornaco/DataMigration/issues/new)。
 * 你的问题将会被更新到这里。
 
 ### 目前收集的问题
