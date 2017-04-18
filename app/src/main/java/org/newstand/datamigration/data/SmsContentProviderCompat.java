@@ -86,6 +86,24 @@ public class SmsContentProviderCompat {
         return false;
     }
 
+    public static boolean areWeDefSmsApp(Context context) {
+        String defaultSmsApp;
+
+        String me = context.getPackageName();
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            defaultSmsApp = Telephony.Sms.getDefaultSmsPackage(context);
+        } else {
+            return false;
+        }
+
+        if (TextUtils.isEmpty(defaultSmsApp)) {
+            return false;
+        }
+
+        return me.equals(defaultSmsApp);
+    }
+
     public static void restoreDefSmsAppCheckedAsync(final Context context) {
         SharedExecutor.execute(new Runnable() {
             @Override

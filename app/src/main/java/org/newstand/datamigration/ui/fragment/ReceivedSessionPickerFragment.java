@@ -1,6 +1,7 @@
 package org.newstand.datamigration.ui.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -227,7 +228,8 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
                 .interceptButtonAction(new InputDialogCompat.ButtonActionIntercepter() {
                     @Override
                     public boolean onInterceptButtonAction(int whichButton, CharSequence inputText) {
-                        return !validateInput(inputText);
+                        return whichButton == DialogInterface.BUTTON_POSITIVE
+                                && !validateInput(session, inputText);
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new InputDialogCompat.ButtonActionListener() {
@@ -239,8 +241,9 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
                 .show();
     }
 
-    protected boolean validateInput(CharSequence in) {
-        return !TextUtils.isEmpty(in) && !in.toString().contains("Tmp_")
+    protected boolean validateInput(Session session, CharSequence in) {
+        return !TextUtils.isEmpty(in) && (!in.toString().equals(session.getName()))
+                && !in.toString().contains("Tmp_")
                 && !in.toString().contains(File.separator);
     }
 

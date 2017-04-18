@@ -40,6 +40,10 @@ public class DummySmsService extends Service {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (SmsContentProviderCompat.areWeDefSmsApp(getApplicationContext())) {
+                    stopSelf();
+                    return;
+                }
                 SmsContentProviderCompat.restoreDefSmsAppCheckedAsync(getApplicationContext());
                 handler.postDelayed(this, Interval.Minutes.getIntervalMills());
             }

@@ -1,6 +1,7 @@
 package org.newstand.datamigration.ui.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -226,7 +227,8 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                 .interceptButtonAction(new InputDialogCompat.ButtonActionIntercepter() {
                     @Override
                     public boolean onInterceptButtonAction(int whichButton, CharSequence inputText) {
-                        return !validateInput(inputText);
+                        return whichButton == DialogInterface.BUTTON_POSITIVE
+                                && !validateInput(session, inputText);
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new InputDialogCompat.ButtonActionListener() {
@@ -238,8 +240,9 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                 .show();
     }
 
-    protected boolean validateInput(CharSequence in) {
-        return !TextUtils.isEmpty(in) && !in.toString().contains("Tmp_")
+    protected boolean validateInput(Session s, CharSequence in) {
+        return !TextUtils.isEmpty(in) && (!in.toString().equals(s.getName()))
+                && !in.toString().contains("Tmp_")
                 && !in.toString().contains(File.separator);
     }
 

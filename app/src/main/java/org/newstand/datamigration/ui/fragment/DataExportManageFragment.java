@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -169,8 +170,9 @@ public class DataExportManageFragment extends DataTransportManageFragment {
         return summary;
     }
 
-    protected boolean validateInput(CharSequence in) {
-        return !TextUtils.isEmpty(in) && !in.toString().contains("Tmp_")
+    protected boolean validateInput(String currentName, CharSequence in) {
+        return !TextUtils.isEmpty(in) && (!currentName.equals(in.toString()))
+                && !in.toString().contains("Tmp_")
                 && !in.toString().contains(File.separator);
     }
 
@@ -192,7 +194,8 @@ public class DataExportManageFragment extends DataTransportManageFragment {
                 .interceptButtonAction(new InputDialogCompat.ButtonActionIntercepter() {
                     @Override
                     public boolean onInterceptButtonAction(int whichButton, CharSequence inputText) {
-                        return !validateInput(inputText);
+                        return whichButton == DialogInterface.BUTTON_POSITIVE
+                                && !validateInput(currentName, inputText);
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new InputDialogCompat.ButtonActionListener() {

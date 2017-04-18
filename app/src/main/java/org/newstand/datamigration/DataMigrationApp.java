@@ -9,13 +9,11 @@ import android.support.v7.app.AppCompatDelegate;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.secure.DonateQRPathRetriever;
 import org.newstand.datamigration.service.DummSmsServiceProxy;
-import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.utils.OnDeviceLogAdapter;
 import org.newstand.logger.Logger;
 import org.newstand.logger.Settings;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import lombok.Getter;
 
 /**
@@ -49,9 +47,6 @@ public class DataMigrationApp extends Application {
         Logger.config(Settings.builder().tag(getClass().getSimpleName()).logLevel(0).logAdapter(new OnDeviceLogAdapter()).build());
         SettingsProvider.init(this);
         Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(config);
-        UserActionServiceProxy.startService(this);
         DonateQRPathRetriever.loadAndCache(this);
         DummSmsServiceProxy.startService(this);
         registerActivityLifecycleCallbacks(topActivityObserver);
