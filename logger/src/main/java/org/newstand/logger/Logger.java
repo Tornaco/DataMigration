@@ -12,6 +12,16 @@ import java.net.UnknownHostException;
 
 public class Logger {
 
+    public static enum LogLevel {
+        ALL,
+        VERBOSE,
+        INFO,
+        DEBUG,
+        WARN,
+        ERROR,
+        NONE
+    }
+
     private static Printer printer;
 
     public static void config(Settings settings) {

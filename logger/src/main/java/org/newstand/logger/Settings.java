@@ -8,11 +8,11 @@ package org.newstand.logger;
 
 public class Settings {
 
-    private int logLevel;
+    private Logger.LogLevel logLevel;
     private LogAdapter logAdapter;
     private String tag;
 
-    private Settings(int logLevel, LogAdapter logAdapter, String tag) {
+    private Settings(Logger.LogLevel logLevel, LogAdapter logAdapter, String tag) {
         this.logLevel = logLevel;
         this.logAdapter = logAdapter;
         this.tag = tag;
@@ -22,7 +22,7 @@ public class Settings {
         return new SettingsBuilder();
     }
 
-    public int getLogLevel() {
+    public Logger.LogLevel getLogLevel() {
         return this.logLevel;
     }
 
@@ -36,14 +36,14 @@ public class Settings {
 
     public static class SettingsBuilder {
 
-        private int logLevel = -1;
+        private Logger.LogLevel logLevel = Logger.LogLevel.WARN;
         private LogAdapter logAdapter = null;
         private String tag = "Logger";
 
         SettingsBuilder() {
         }
 
-        public Settings.SettingsBuilder logLevel(int logLevel) {
+        public Settings.SettingsBuilder logLevel(Logger.LogLevel logLevel) {
             this.logLevel = logLevel;
             return this;
         }

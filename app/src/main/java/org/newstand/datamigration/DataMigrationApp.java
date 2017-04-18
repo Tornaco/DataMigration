@@ -44,7 +44,11 @@ public class DataMigrationApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Logger.config(Settings.builder().tag(getClass().getSimpleName()).logLevel(0).logAdapter(new OnDeviceLogAdapter()).build());
+        Logger.config(Settings.builder()
+                .tag(getClass().getSimpleName())
+                .logLevel(SettingsProvider.isDebugEnabled() ? Logger.LogLevel.ALL : Logger.LogLevel.WARN)
+                .logAdapter(new OnDeviceLogAdapter())
+                .build());
         SettingsProvider.init(this);
         Realm.init(this);
         DonateQRPathRetriever.loadAndCache(this);
