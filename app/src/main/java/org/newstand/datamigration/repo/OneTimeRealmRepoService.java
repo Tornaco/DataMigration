@@ -113,7 +113,8 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     public int size() {
         Realm r = getRealm();
         List<T> ts = r.where(clz()).findAll();
+        int size = ts == null ? 0 : ts.size();
         Closer.closeQuietly(r);
-        return ts == null ? 0 : ts.size();
+        return size;
     }
 }
