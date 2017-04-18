@@ -15,6 +15,8 @@ import org.newstand.datamigration.strategy.WorkMode;
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.utils.MiscUtils;
 import org.newstand.datamigration.utils.RootTools2;
+import org.newstand.datamigration.utils.SeLinuxEnabler;
+import org.newstand.datamigration.utils.SeLinuxState;
 import org.newstand.logger.Logger;
 
 import lombok.Getter;
@@ -118,6 +120,14 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         installReceiver.unRegister(getContext());
 
         if (workMode == WorkMode.ROOT) {
+            // Disable selinux
+            SeLinuxState seLinuxState = SeLinuxEnabler.getSeLinuxState();
+            boolean permissive = SeLinuxEnabler.setState(SeLinuxState.Permissive);
+
+            if (!permissive) {
+                return new SeLinuxSetupFailError();
+            }
+
             // Install data
             String dataFromPath = restoreSettings.getSourceDataPath();
             String dataToPath = restoreSettings.getDestDataPath();
@@ -134,8 +144,12 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
             // Change owner and group.
             if (!RootTools2.changeOwner(restoreSettings.getDestDataPath(), uid)
                     || !RootTools2.changeGroup(restoreSettings.getDestDataPath(), uid)) {
+                SeLinuxEnabler.setState(seLinuxState);
                 return new OnwerGroupChangeFailException("Fail to change owner/group of " + restoreSettings.getDestDataPath() + " to" + uid);
             }
+
+            // Restore selinux state
+            SeLinuxEnabler.setState(seLinuxState);
         }
 
         return Res.OK;
