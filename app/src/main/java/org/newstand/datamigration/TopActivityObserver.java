@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
+
 import java.io.Closeable;
 import java.io.IOException;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/16 11:01
@@ -15,10 +19,15 @@ import lombok.Getter;
  * All right reserved.
  */
 
-public class TopActivityObserver implements Application.ActivityLifecycleCallbacks, Closeable {
+class TopActivityObserver implements Application.ActivityLifecycleCallbacks, Closeable {
 
     @Getter
     private Activity topActivity;
+
+    @Setter
+    private Consumer<Activity> onMainActivityDestroyConsumer;
+    @Setter
+    private Consumer<Activity> onMainActivityStartConsumer;
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -52,7 +61,12 @@ public class TopActivityObserver implements Application.ActivityLifecycleCallbac
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-
+        if (activity instanceof TransitionSafeActivity) {
+            TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) activity;
+            if (transitionSafeActivity.isMainActivity()) {
+                onMainActivityDestroyConsumer.accept(activity);
+            }
+        }
     }
 
     @Override

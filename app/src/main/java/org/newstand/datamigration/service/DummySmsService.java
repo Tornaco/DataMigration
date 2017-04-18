@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.strategy.Interval;
+import org.newstand.logger.Logger;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/7 13:36
@@ -27,6 +28,7 @@ public class DummySmsService extends Service {
 
     @Override
     public void onCreate() {
+        Logger.d("DummySmsService created~");
         super.onCreate();
         checkDefSmsAppInLoop();
     }
@@ -52,6 +54,7 @@ public class DummySmsService extends Service {
 
     @Override
     public void onDestroy() {
+        Logger.d("DummySmsService destroy~");
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
     }

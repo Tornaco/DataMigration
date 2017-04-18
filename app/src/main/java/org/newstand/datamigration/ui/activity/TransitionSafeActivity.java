@@ -234,7 +234,7 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
             overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 
-    protected boolean isMainActivity() {
+    public boolean isMainActivity() {
         return false;
     }
 

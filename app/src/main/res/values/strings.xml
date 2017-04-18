@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">数据迁移</string>
+    <string name="app_name_test_version">数据迁移-TEST_VERSION</string>
     <string name="app_intro">数据备份以及迁移助手</string>
     <string name="card_intro">点击卡片可以展开菜单</string>
     <string name="fab_intro_list">当你完成数据选择时，点击此处完成选择并返回汇总页</string>
@@ -38,7 +39,7 @@
     <string name="category_music">音乐</string>
     <string name="category_video">视频</string>
     <string name="category_contact">联系人</string>
-    <string name="category_sms">短信息</string>
+    <string name="category_sms">短信(BETA)</string>
     <string name="category_photo">照片</string>
     <string name="category_app">应用</string>
     <string name="category_alarm">闹钟</string>

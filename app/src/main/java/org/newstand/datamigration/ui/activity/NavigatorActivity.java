@@ -378,7 +378,7 @@ public class NavigatorActivity extends TransitionSafeActivity {
     }
 
     @Override
-    protected boolean isMainActivity() {
+    public boolean isMainActivity() {
         return true;
     }
 }
