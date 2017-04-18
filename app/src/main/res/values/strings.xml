@@ -71,7 +71,7 @@
     <string name="summary_wfd_requesting_conn_res">等待反馈</string>
     <string name="title_set_device_id">你的设备昵称</string>
 
-    <string name="title_err_wfd_device_not_support">看起来你的设备不支持WIFI-DIRECT技术，或者请检查你是否开启了WIFI热点，如果有，请关闭~</string>
+    <string name="title_err_wfd_device_not_support">看起来你的设备不支持WIFI-DIRECT技术，请尝试手动打开Wifi~~</string>
     <string name="title_err_wfd_device_not_support_action">再试试</string>
 
     <string name="title_err_wfd_device_not_found">未搜索到任何可用设备</string>
@@ -124,10 +124,12 @@
     <string name="tile_title_auto_connect">自动连接</string>
     <string name="tile_transition_animation">过场动画</string>
     <string name="summary_transition_animation">开启更活泼的动画，仅作实验~</string>
-    <string name="tile_work_mode_root">备份应用数据</string>
-    <string name="summary_work_mode_root">为已经root的设备备份应用数据，将会检查并申请root权限，请在收到申请提示后，选择允许。如果你不清楚什么是root权限请不要开启本选项</string>
+    <string name="tile_work_mode_root">备份/还原应用数据</string>
+    <string name="summary_work_mode_root">为已经root的设备备份/还原应用数据，稍后将会检查并申请root权限，请在收到申请提示后，选择允许。注意！由于SeLinux的机制，目前我们需要将你的设备SeLinux设置为许可状态</string>
     <string name="tile_dev_mode">开发者模式</string>
     <string name="summary_dev_mode">你可以查看程序日志，开启一些调试功能，也可能会引入一些未知问题，仅限开发者调试使用</string>
+    <string name="tile_auto_install">自动安装应用程序</string>
+    <string name="summaty_auto_install">为已经root的设备自动安装应用程序</string>
 
     <string name="title_transport_sender_receiver">无线快传</string>
     <string name="title_transport_sender">我要发送</string>

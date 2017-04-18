@@ -46,6 +46,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_LAST_UPDATE_CHECK_TIME = "key_last_update_check_time";
     private static final String KEY_TIPS_NOTICED_PREFIX = "key_tips_noticed_";
     private static final String KEY_AUTO_BUG_REPORT = "key_bug_report";
+    private static final String KEY_AUTO_INSTALL_APP = "key_auto_install_app";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -394,5 +395,13 @@ public class SettingsProvider extends Observable {
 
     public static void setBugReportEnabled(boolean value) {
         sMe.writeBoolean(KEY_AUTO_BUG_REPORT, value);
+    }
+
+    public static void setAutoInstallAppEnabled(boolean value) {
+        sMe.writeBoolean(KEY_AUTO_INSTALL_APP, value);
+    }
+
+    public static boolean isAutoInstallAppEnabled() {
+        return sMe.readBoolean(KEY_AUTO_INSTALL_APP, true);
     }
 }

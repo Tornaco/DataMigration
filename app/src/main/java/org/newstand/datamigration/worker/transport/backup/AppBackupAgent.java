@@ -96,12 +96,27 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
 
         WorkMode workMode = SettingsProvider.getWorkMode();
 
+        boolean autoInstall = SettingsProvider.isAutoInstallAppEnabled();
+
         // Install apk
-        if (workMode == WorkMode.ROOT) {
+        if (workMode == WorkMode.ROOT && autoInstall) {
             boolean hasRoot = RootManager.getInstance().obtainPermission();
             if (!hasRoot) {
                 Logger.e("Fail to obtain root~");
                 return new RootMissingException();
+            }
+
+            // Disable selinux
+            SeLinuxState seLinuxState = SeLinuxEnabler.getSeLinuxState();
+
+            if (seLinuxState != SeLinuxState.Permissive) {
+                boolean permissive = SeLinuxEnabler.setState(SeLinuxState.Permissive);
+
+                Logger.d("Set SeLinux state to permissive");
+
+                if (!permissive) {
+                    return new SeLinuxSetupFailError();
+                }
             }
 
             Result installRes = RootManager.getInstance().installPackage(restoreSettings.getSourceApkPath());
@@ -122,10 +137,15 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         if (workMode == WorkMode.ROOT) {
             // Disable selinux
             SeLinuxState seLinuxState = SeLinuxEnabler.getSeLinuxState();
-            boolean permissive = SeLinuxEnabler.setState(SeLinuxState.Permissive);
 
-            if (!permissive) {
-                return new SeLinuxSetupFailError();
+            if (seLinuxState != SeLinuxState.Permissive) {
+                boolean permissive = SeLinuxEnabler.setState(SeLinuxState.Permissive);
+
+                Logger.d("Set SeLinux state to permissive");
+
+                if (!permissive) {
+                    return new SeLinuxSetupFailError();
+                }
             }
 
             // Install data
@@ -144,12 +164,9 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
             // Change owner and group.
             if (!RootTools2.changeOwner(restoreSettings.getDestDataPath(), uid)
                     || !RootTools2.changeGroup(restoreSettings.getDestDataPath(), uid)) {
-                SeLinuxEnabler.setState(seLinuxState);
                 return new OnwerGroupChangeFailException("Fail to change owner/group of " + restoreSettings.getDestDataPath() + " to" + uid);
             }
 
-            // Restore selinux state
-            SeLinuxEnabler.setState(seLinuxState);
         }
 
         return Res.OK;

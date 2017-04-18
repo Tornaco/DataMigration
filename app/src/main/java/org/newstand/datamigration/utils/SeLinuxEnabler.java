@@ -47,6 +47,8 @@ public class SeLinuxEnabler {
         }
         Result result = RootManager.getInstance().runCommand("setenforce " + (seLinuxState == SeLinuxState.Permissive ? 0 : 1));
 
+        Logger.d("setenforce res %s", result.getResult());
+
         return result.getResult();
     }
 }

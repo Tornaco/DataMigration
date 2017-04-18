@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.ui.tiles.AutoInstallTile;
 import org.newstand.datamigration.ui.tiles.BugReportTile;
 import org.newstand.datamigration.ui.tiles.CheckForUpdateTile;
 import org.newstand.datamigration.ui.tiles.DevTile;
@@ -59,6 +60,7 @@ public class SettingsActivity extends TransitionSafeActivity {
             WorkModeTile workModeTile = new WorkModeTile(getContext());
             DevTile devTile = new DevTile(getContext());
             strategy.addTile(workModeTile);
+            strategy.addTile(new AutoInstallTile(getContext()));
             strategy.addTile(devTile);
 
             Category storage = new ThemedCategory();
