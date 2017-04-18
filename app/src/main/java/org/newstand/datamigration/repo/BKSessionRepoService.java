@@ -1,6 +1,9 @@
 package org.newstand.datamigration.repo;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.bugsnag.android.Bugsnag;
 
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Files;
@@ -32,11 +35,18 @@ public class BKSessionRepoService extends OneTimeRealmRepoService<Session> {
     }
 
     @Override
+    @Nullable
     Realm getRealm() {
-        return Realm.getInstance(new RealmConfiguration.Builder()
-                .directory(new File(SettingsProvider.getBackupRootDir()))
-                .name("backup_sessions")
-                .build());
+        Realm r = null;
+        try {
+            r = Realm.getInstance(new RealmConfiguration.Builder()
+                    .directory(new File(SettingsProvider.getBackupRootDir()))
+                    .name("backup_sessions")
+                    .build());
+        } catch (Throwable t) {
+            Logger.e(t, "Fail to get realm");
+        }
+        return r;
     }
 
     @Override
@@ -49,6 +59,7 @@ public class BKSessionRepoService extends OneTimeRealmRepoService<Session> {
         Logger.d("update %s", session);
         final boolean[] res = {false};
         final Realm r = getRealm();
+        if (r == null) return false;
         r.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {

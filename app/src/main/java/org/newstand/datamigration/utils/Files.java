@@ -101,8 +101,7 @@ public abstract class Files {
             share.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(Intent.createChooser(share, "Share this app"));
         } catch (IOException e) {
-            Logger.e("Fail to copy file %s", Logger.getStackTraceString(e));
-            return;
+            Logger.e(e, "Fail to copy file %s");
         }
     }
 }

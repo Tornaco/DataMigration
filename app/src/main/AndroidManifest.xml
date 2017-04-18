@@ -30,6 +30,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.bugsnag.android.API_KEY"
+            android:value="60f3f20bc06ef7b326523f6c7844e4bb"/>
+
         <activity
             android:name=".ui.activity.NavigatorActivity"
             android:theme="@style/AppTheme">

@@ -76,4 +76,6 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.github.iammert:MaterialIntroView:1.6.0'
     compile project(':materialicons')
+    // Bug reporter
+    compile 'com.bugsnag:bugsnag-android:3.+'
 }

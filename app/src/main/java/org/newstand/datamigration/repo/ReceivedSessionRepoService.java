@@ -2,10 +2,13 @@ package org.newstand.datamigration.repo;
 
 import android.support.annotation.NonNull;
 
+import com.bugsnag.android.Bugsnag;
+
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Closer;
 import org.newstand.datamigration.utils.Files;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 
@@ -33,10 +36,16 @@ public class ReceivedSessionRepoService extends OneTimeRealmRepoService<Session>
 
     @Override
     Realm getRealm() {
-        return Realm.getInstance(new RealmConfiguration.Builder()
-                .directory(new File(SettingsProvider.getReceivedRootDir()))
-                .name("received_sessions")
-                .build());
+        Realm r = null;
+        try {
+            r = Realm.getInstance(new RealmConfiguration.Builder()
+                    .directory(new File(SettingsProvider.getReceivedRootDir()))
+                    .name("received_sessions")
+                    .build());
+        } catch (Throwable e) {
+            Logger.e(e, "Fail to get realm");
+        }
+        return r;
     }
 
     @Override
@@ -48,6 +57,7 @@ public class ReceivedSessionRepoService extends OneTimeRealmRepoService<Session>
     public boolean update(@NonNull final Session session) {
         final boolean[] res = {false};
         final Realm r = getRealm();
+        if (r == null) return false;
         r.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {

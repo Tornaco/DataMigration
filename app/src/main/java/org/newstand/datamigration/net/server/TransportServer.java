@@ -99,7 +99,7 @@ public class TransportServer extends ServerComponent {
             closer.close();
             channelHandler.onServerChannelStop();
         } catch (IOException e) {
-            Logger.e("Close fail %s", e.getLocalizedMessage());
+            Logger.e(e, "Close fail");
             return false;
         }
         return true;

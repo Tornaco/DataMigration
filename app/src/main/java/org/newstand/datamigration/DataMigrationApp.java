@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.bugsnag.android.Bugsnag;
+
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.secure.DonateQRPathRetriever;
@@ -17,6 +19,7 @@ import org.newstand.logger.Logger;
 import org.newstand.logger.Settings;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import lombok.Getter;
 
 /**
@@ -47,6 +50,7 @@ public class DataMigrationApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Bugsnag.init(this);
         SettingsProvider.init(this);
         Logger.config(Settings.builder()
                 .tag(getClass().getSimpleName())
@@ -54,6 +58,7 @@ public class DataMigrationApp extends Application {
                 .logAdapter(new OnDeviceLogAdapter())
                 .build());
         Realm.init(this);
+        Realm.setDefaultConfiguration(new RealmConfiguration.Builder().build());
         DonateQRPathRetriever.loadAndCache(this);
 
         // Setup observer

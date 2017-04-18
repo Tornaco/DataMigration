@@ -77,14 +77,14 @@ class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestoreSetting
                 Logger.d("Found %s", smsRecord);
                 writeSMS(smsRecord);
             } catch (ClassNotFoundException e) {
-                Logger.e("Err when read sms:%s", e);
+                Logger.e(e, "Err when read sms");
             }
 
             Closer.closeQuietly(ois);
             Closer.closeQuietly(in);
 
         } catch (IOException e) {
-            Logger.e("Err when read sms:%s", e);
+            Logger.e(e, "Err when read sms");
         }
 
         return Res.OK;

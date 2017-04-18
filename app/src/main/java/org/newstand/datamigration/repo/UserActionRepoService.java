@@ -2,11 +2,14 @@ package org.newstand.datamigration.repo;
 
 import android.support.annotation.NonNull;
 
+import com.bugsnag.android.Bugsnag;
+
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Closer;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,10 +39,16 @@ public class UserActionRepoService extends OneTimeRealmRepoService<UserAction> {
 
     @Override
     Realm getRealm() {
-        return Realm.getInstance(new RealmConfiguration.Builder()
-                .directory(new File(SettingsProvider.getCommonDataDir()))
-                .name("user_actions")
-                .build());
+        Realm r = null;
+        try {
+            r = Realm.getInstance(new RealmConfiguration.Builder()
+                    .directory(new File(SettingsProvider.getCommonDataDir()))
+                    .name("user_actions")
+                    .build());
+        } catch (Throwable e) {
+            Logger.e(e, "Fail to get realm");
+        }
+        return r;
     }
 
     @Override
@@ -54,6 +63,7 @@ public class UserActionRepoService extends OneTimeRealmRepoService<UserAction> {
 
     public List<UserAction> findByFingerPrint(long fingerPrint) {
         Realm r = getRealm();
+        if (r == null) return java.util.Collections.emptyList();
         r.beginTransaction();
         List<UserAction> all = r.where(UserAction.class)
                 .equalTo("fingerPrint", fingerPrint).findAll();

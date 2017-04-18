@@ -125,7 +125,7 @@ public abstract class LoadingCacheManager {
             try {
                 return cache.get(key);
             } catch (ExecutionException e) {
-                Logger.e("Fail to get from cache: %s", android.util.Log.getStackTraceString(e));
+                Logger.e(e, "Fail to get from cache: %s");
                 return java.util.Collections.emptyList();
             }
         }
@@ -181,10 +181,10 @@ public abstract class LoadingCacheManager {
             try {
                 return cache.get(key);
             } catch (ExecutionException e) {
-                Logger.e("Fail to get from cache: %s", android.util.Log.getStackTraceString(e));
+                Logger.e(e, "Fail to get from cache: %s");
                 return java.util.Collections.emptyList();
             } catch (CacheLoader.InvalidCacheLoadException e) {
-                Logger.e("Fail to get from cache: %s", android.util.Log.getStackTraceString(e));
+                Logger.e(e, "Fail to get from cache: %s");
                 return java.util.Collections.emptyList();
             }
         }
@@ -241,10 +241,10 @@ public abstract class LoadingCacheManager {
             try {
                 return cache.get(key);
             } catch (ExecutionException e) {
-                Logger.e("Fail to get from cache: %s", android.util.Log.getStackTraceString(e));
+                Logger.e(e, "Fail to get from cache: %s");
                 return java.util.Collections.emptyList();
             } catch (CacheLoader.InvalidCacheLoadException e) {
-                Logger.e("Fail to get from cache: %s", android.util.Log.getStackTraceString(e));
+                Logger.e(e, "Fail to get from cache: %s");
                 return java.util.Collections.emptyList();
             }
         }

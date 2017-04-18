@@ -103,7 +103,7 @@ public class AppLoader extends BaseLoader {
                     record.setSize(Files.asByteSource(new File(record.getPath())).size());
                     records.add(record);
                 } catch (Throwable e) {
-                    Logger.e("Failed to query size for:%s %s", record, Logger.getStackTraceString(e));
+                    Logger.e(e, "Failed to query size for:%s %s", record);
                 }
             }
         });

@@ -1,6 +1,7 @@
 package org.newstand.datamigration.repo;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.utils.Closer;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
@@ -22,9 +22,9 @@ import io.realm.RealmResults;
 
 public abstract class OneTimeRealmRepoService<T extends RealmObject> implements RepoService<T> {
 
+    @Nullable
     Realm getRealm() {
-        return Realm.getInstance(new RealmConfiguration.Builder()
-                .build());
+        return null;
     }
 
     protected abstract Class<T> clz();
@@ -32,6 +32,9 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     @Override
     public boolean insert(@NonNull final T t) {
         Realm r = getRealm();
+        if (r == null) {
+            return false;
+        }
         r.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -46,6 +49,9 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     public boolean delete(@NonNull final T t) {
         final boolean[] res = {false};
         Realm realm = getRealm();
+        if (realm == null) {
+            return false;
+        }
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -72,6 +78,9 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     @Override
     public T findFirst() {
         Realm r = getRealm();
+        if (r == null) {
+            return null;
+        }
         T f = r.where(clz()).findFirst();
         T res = map(f);
         Closer.closeQuietly(r);
@@ -81,6 +90,9 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     @Override
     public T findLast() {
         Realm r = getRealm();
+        if (r == null) {
+            return null;
+        }
         T res = null;
         RealmResults<T> ts = r.where(clz()).findAll();
         if (!Collections.isNullOrEmpty(ts)) {
@@ -95,6 +107,9 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     @Override
     public List<T> findAll() {
         Realm r = getRealm();
+        if (r == null) {
+            return java.util.Collections.emptyList();
+        }
         List<T> ts = r.where(clz()).findAll();
         final List<T> res = new ArrayList<>();
         if (!Collections.isNullOrEmpty(ts)) {
@@ -112,6 +127,9 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     @Override
     public int size() {
         Realm r = getRealm();
+        if (r == null) {
+            return 0;
+        }
         List<T> ts = r.where(clz()).findAll();
         int size = ts == null ? 0 : ts.size();
         Closer.closeQuietly(r);

@@ -17,7 +17,7 @@ public abstract class Closer {
         try {
             closeable.close();
         } catch (IOException ignore) {
-            Logger.e("Fail to close %s with err", closeable, Logger.getStackTraceString(ignore));
+            Logger.e(ignore, "Fail to close %s with err", closeable);
         }
     }
 }

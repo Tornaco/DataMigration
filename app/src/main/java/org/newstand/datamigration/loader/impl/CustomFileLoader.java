@@ -80,7 +80,7 @@ public class CustomFileLoader extends BaseLoader {
                 if (!record.isDir()) try {
                     record.setSize(Files.asByteSource(file).size());
                 } catch (IOException e) {
-                    Logger.e("Failed to get file size", e.getLocalizedMessage());
+                    Logger.e(e, "Failed to get file size");
                 }
                 if (filter == null || !filter.ignored(record)) out.add(record);
             }

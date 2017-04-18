@@ -1,5 +1,7 @@
 package org.newstand.logger;
 
+import com.bugsnag.android.Bugsnag;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.UnknownHostException;
@@ -43,6 +45,7 @@ public class Logger {
 
     public static void e(Throwable throwable, String message, Object... args) {
         printer.e(throwable, message, args);
+        Bugsnag.notify(throwable);
     }
 
     public static void i(String message, Object... args) {

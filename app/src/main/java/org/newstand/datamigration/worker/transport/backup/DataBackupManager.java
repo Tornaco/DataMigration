@@ -72,7 +72,7 @@ public class DataBackupManager {
             session.rename(name);
             return true;
         } catch (IOException e) {
-            Logger.e("Fail to rename session %s", e.getLocalizedMessage());
+            Logger.e(e, "Fail to rename session %s");
         }
         return false;
     }
@@ -309,7 +309,7 @@ public class DataBackupManager {
                 Files.asCharSink(new File(infoFilePath), Charset.defaultCharset()).write(jsonStr);
                 Logger.v("Session info has been written to %s", infoFilePath);
             } catch (IOException e) {
-                Logger.e("Fail to write session info, WTF??? %s", Logger.getStackTraceString(e));
+                Logger.e(e, "Fail to write session info, WTF??? %s");
             }
 
             listener.onComplete();

@@ -151,7 +151,8 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
     }
 
     private void onPermissionNotGrant() {
-        ErrDialog.attach(getActivity(), new IllegalStateException("Permission denied!!!"), new DialogInterface.OnDismissListener() {
+        ErrDialog.attach(getActivity(), new IllegalStateException("Permission denied!!!"),
+                new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 getActivity().finish();
