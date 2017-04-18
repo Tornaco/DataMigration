@@ -352,6 +352,7 @@ public class SettingsProvider extends Observable {
     @Nullable
     public static String getDonateQrPathChecked() {
         String path = sMe.readString(KEY_DONATE_QR_PATH, null);
+        if (path == null) return null; // FIX NPE
         if (new File(path).exists()) return path;
         return null;
     }
