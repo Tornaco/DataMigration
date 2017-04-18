@@ -72,7 +72,7 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     @Override
     public T findFirst() {
         Realm r = getRealm();
-        T f = getRealm().where(clz()).findFirst();
+        T f = r.where(clz()).findFirst();
         T res = map(f);
         Closer.closeQuietly(r);
         return res;
@@ -95,7 +95,7 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     @Override
     public List<T> findAll() {
         Realm r = getRealm();
-        List<T> ts = getRealm().where(clz()).findAll();
+        List<T> ts = r.where(clz()).findAll();
         final List<T> res = new ArrayList<>();
         if (!Collections.isNullOrEmpty(ts)) {
             Collections.consumeRemaining(ts, new Consumer<T>() {
@@ -112,7 +112,7 @@ public abstract class OneTimeRealmRepoService<T extends RealmObject> implements 
     @Override
     public int size() {
         Realm r = getRealm();
-        List<T> ts = getRealm().where(clz()).findAll();
+        List<T> ts = r.where(clz()).findAll();
         Closer.closeQuietly(r);
         return ts == null ? 0 : ts.size();
     }

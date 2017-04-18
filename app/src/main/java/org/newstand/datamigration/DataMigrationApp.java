@@ -44,12 +44,12 @@ public class DataMigrationApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        SettingsProvider.init(this);
         Logger.config(Settings.builder()
                 .tag(getClass().getSimpleName())
                 .logLevel(SettingsProvider.isDebugEnabled() ? Logger.LogLevel.ALL : Logger.LogLevel.WARN)
                 .logAdapter(new OnDeviceLogAdapter())
                 .build());
-        SettingsProvider.init(this);
         Realm.init(this);
         DonateQRPathRetriever.loadAndCache(this);
         DummSmsServiceProxy.startService(this);
