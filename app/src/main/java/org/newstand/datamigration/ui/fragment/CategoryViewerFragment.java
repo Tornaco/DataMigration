@@ -29,7 +29,6 @@ import org.newstand.datamigration.data.model.CategoryRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
@@ -41,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -257,8 +255,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
                 .setShape(ShapeType.CIRCLE)
                 .setTarget(fab)
                 // Always show when in dev mode.
-                .setUsageId(SettingsProvider.isDebugEnabled() ? UUID.randomUUID().toString()
-                        : "intro_category_viewer_" + getClass().getName())
+                .setUsageId("intro_category_viewer_" + getClass().getName())
                 .show();
     }
 

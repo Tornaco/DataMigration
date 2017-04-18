@@ -21,13 +21,11 @@ import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
@@ -183,8 +181,7 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
                 .setShape(ShapeType.CIRCLE)
                 .setTarget(fab)
                 // Always show when in dev mode.
-                .setUsageId(SettingsProvider.isDebugEnabled() ? UUID.randomUUID().toString()
-                        : "data_list_viewer")
+                .setUsageId("data_list_viewer")
                 .show();
     }
 

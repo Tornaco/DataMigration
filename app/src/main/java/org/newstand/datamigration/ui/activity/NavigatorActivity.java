@@ -33,7 +33,6 @@ import org.newstand.datamigration.utils.Files;
 import org.newstand.datamigration.worker.transport.Session;
 
 import java.util.Date;
-import java.util.UUID;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
 import cn.iwgang.simplifyspan.unit.SpecialTextUnit;
@@ -197,7 +196,7 @@ public class NavigatorActivity extends TransitionSafeActivity {
                 .setShape(ShapeType.CIRCLE)
                 .setTarget(findView(R.id.card_1))
                 // Always show when in dev mode.
-                .setUsageId(SettingsProvider.isDebugEnabled() ? UUID.randomUUID().toString() : "intro_card_1")
+                .setUsageId("intro_card_1")
                 .setListener(new MaterialIntroListener() {
                     @Override
                     public void onUserClicked(String s) {
