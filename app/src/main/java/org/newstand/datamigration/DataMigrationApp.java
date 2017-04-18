@@ -67,7 +67,7 @@ public class DataMigrationApp extends Application {
         topActivityObserver.setOnMainActivityStartConsumer(new Consumer<Activity>() {
             @Override
             public void accept(@NonNull Activity activity) {
-                Logger.d("MainActivity has been finished, starting core service...");
+                Logger.d("MainActivity has been started, starting core service...");
                 startCore();
             }
         });

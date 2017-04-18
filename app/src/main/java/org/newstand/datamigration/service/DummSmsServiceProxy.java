@@ -20,6 +20,10 @@ public class DummSmsServiceProxy extends ServiceProxy {
         context.startService(new Intent(context, DummySmsService.class));
     }
 
+    public static void stopService(Context context) {
+        context.stopService(new Intent(context, DummySmsService.class));
+    }
+
     @Override
     public void onConnected(IBinder binder) {
 
