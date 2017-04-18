@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import org.newstand.datamigration.utils.DateUtils;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,11 +17,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Session extends RealmObject implements Parcelable {
+public class Session implements Parcelable {
+
+    private int id;
 
     private String name;
 
-    @PrimaryKey
     private long date;
 
     private Session(String name) {

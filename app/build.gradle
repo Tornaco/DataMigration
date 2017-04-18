@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
@@ -77,5 +76,5 @@ dependencies {
     compile 'com.github.iammert:MaterialIntroView:1.6.0'
     compile project(':materialicons')
     // Bug reporter
-    compile 'com.bugsnag:bugsnag-android:3.+'
+    compile 'com.bugsnag:bugsnag-android:3.4.0'
 }

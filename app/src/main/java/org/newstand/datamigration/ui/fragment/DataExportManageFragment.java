@@ -142,7 +142,7 @@ public class DataExportManageFragment extends DataTransportManageFragment {
     @Override
     void onDoneButtonClick() {
         // Save session
-        BKSessionRepoService.get().insert(getSession());
+        BKSessionRepoService.get().insert(getContext(), getSession());
         getActivity().finish();
     }
 

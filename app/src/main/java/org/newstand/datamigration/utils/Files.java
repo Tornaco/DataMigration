@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import android.support.v4.content.FileProvider;
 
 import org.newstand.datamigration.common.Consumer;
@@ -15,8 +17,12 @@ import org.newstand.datamigration.secure.VersionRetriever;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.logger.Logger;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/13 10:03
@@ -101,7 +107,50 @@ public abstract class Files {
             share.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(Intent.createChooser(share, "Share this app"));
         } catch (IOException e) {
-            Logger.e(e, "Fail to copy file %s");
+            Logger.e(e, "Fail to copy file");
         }
+    }
+
+    @SuppressWarnings("TryWithIdenticalCatches")
+    public static boolean writeString(String str, String path) {
+        BufferedWriter bf = null;
+        try {
+            com.google.common.io.Files.createParentDirs(new File(path));
+            bf = com.google.common.io.Files.newWriter(new File(path), Charset.defaultCharset());
+            bf.write(str, 0, str.length());
+            return true;
+        } catch (FileNotFoundException e) {
+            Logger.e(e, "Fail to write file %s", path);
+        } catch (IOException e) {
+            Logger.e(e, "Fail to write file %s", path);
+        } finally {
+            Closer.closeQuietly(bf);
+        }
+        return false;
+    }
+
+    @SuppressWarnings("TryWithIdenticalCatches")
+    @Nullable
+    @WorkerThread
+    public static String readString(String path) {
+        BufferedReader reader = null;
+        try {
+            if (!new File(path).exists())
+                return null;
+            reader = com.google.common.io.Files.newReader(new File(path), Charset.defaultCharset());
+            String line;
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            return stringBuilder.toString();
+        } catch (FileNotFoundException e) {
+            Logger.e(e, "Fail to read file %s", path);
+        } catch (IOException e) {
+            Logger.e(e, "Fail to read file %s", path);
+        } finally {
+            Closer.closeQuietly(reader);
+        }
+        return null;
     }
 }

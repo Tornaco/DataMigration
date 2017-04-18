@@ -5,11 +5,14 @@ import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.ui.tiles.BugReportTile;
 import org.newstand.datamigration.ui.tiles.CheckForUpdateTile;
 import org.newstand.datamigration.ui.tiles.DevTile;
 import org.newstand.datamigration.ui.tiles.DonateTile;
 import org.newstand.datamigration.ui.tiles.LicenceTile;
 import org.newstand.datamigration.ui.tiles.MailTile;
+import org.newstand.datamigration.ui.tiles.StorageLocationTile;
+import org.newstand.datamigration.ui.tiles.ThanksTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.tiles.TransitionAnimationTile;
 import org.newstand.datamigration.ui.tiles.WorkModeTile;
@@ -58,6 +61,11 @@ public class SettingsActivity extends TransitionSafeActivity {
             strategy.addTile(workModeTile);
             strategy.addTile(devTile);
 
+            Category storage = new ThemedCategory();
+            storage.titleRes = R.string.tile_category_storage;
+
+            storage.addTile(new StorageLocationTile(getContext()));
+
             Category about = new ThemedCategory();
             about.titleRes = R.string.tile_category_about;
 
@@ -69,7 +77,9 @@ public class SettingsActivity extends TransitionSafeActivity {
             Category involve = new ThemedCategory();
             involve.titleRes = R.string.tile_category_in;
 
+            involve.addTile(new BugReportTile(getActivity()));
             involve.addTile(new MailTile(getActivity()));
+            involve.addTile(new ThanksTile(getActivity()));
             DonateTile donateTile = new DonateTile(getContext());
             involve.addTile(donateTile);
 
@@ -77,6 +87,7 @@ public class SettingsActivity extends TransitionSafeActivity {
                 categories.add(view);
             }
             categories.add(strategy);
+            categories.add(storage);
             categories.add(about);
             categories.add(involve);
 

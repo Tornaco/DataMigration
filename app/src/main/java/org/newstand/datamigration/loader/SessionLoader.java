@@ -1,5 +1,6 @@
 package org.newstand.datamigration.loader;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.newstand.datamigration.common.Consumer;
@@ -23,24 +24,24 @@ import java.util.List;
 
 public abstract class SessionLoader {
 
-    public static void loadAsync(final LoaderListener<Session> loaderListener) {
-        loadAsync(LoaderSource.builder().parent(LoaderSource.Parent.Backup).build(), loaderListener);
+    public static void loadAsync(Context context, final LoaderListener<Session> loaderListener) {
+        loadAsync(context, LoaderSource.builder().parent(LoaderSource.Parent.Backup).build(), loaderListener);
     }
 
-    public static void loadAsync(LoaderSource source, final LoaderListener<Session> loaderListener) {
+    public static void loadAsync(Context context, LoaderSource source, final LoaderListener<Session> loaderListener) {
         switch (source.getParent()) {
             case Backup:
-                loadFromBackupAsync(loaderListener);
+                loadFromBackupAsync(context, loaderListener);
                 break;
             case Received:
-                loadFromReceivedAsync(loaderListener);
+                loadFromReceivedAsync(context, loaderListener);
                 break;
             default:
                 throw new IllegalArgumentException("Bad source:" + source);
         }
     }
 
-    private static void loadFromBackupAsync(final LoaderListener<Session> loaderListener) {
+    private static void loadFromBackupAsync(final Context context, final LoaderListener<Session> loaderListener) {
 
         final List<Session> res = new ArrayList<>();
 
@@ -49,7 +50,7 @@ public abstract class SessionLoader {
             public void run() {
                 loaderListener.onStart();
                 try {
-                    List<Session> all = BKSessionRepoService.get().findAll();
+                    List<Session> all = BKSessionRepoService.get().findAll(context);
                     Collections.consumeRemaining(all, new Consumer<Session>() {
                         @Override
                         public void accept(@NonNull Session session) {
@@ -75,7 +76,7 @@ public abstract class SessionLoader {
         SharedExecutor.execute(r);
     }
 
-    private static void loadFromReceivedAsync(final LoaderListener<Session> loaderListener) {
+    private static void loadFromReceivedAsync(final Context context, final LoaderListener<Session> loaderListener) {
 
         final List<Session> res = new ArrayList<>();
 
@@ -84,7 +85,7 @@ public abstract class SessionLoader {
             public void run() {
                 loaderListener.onStart();
                 try {
-                    List<Session> all = ReceivedSessionRepoService.get().findAll();
+                    List<Session> all = ReceivedSessionRepoService.get().findAll(context);
                     Collections.consumeRemaining(all, new Consumer<Session>() {
                         @Override
                         public void accept(@NonNull Session session) {

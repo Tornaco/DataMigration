@@ -45,6 +45,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_DONATE_QR_PATH = "key_donate_qr_path";
     private static final String KEY_LAST_UPDATE_CHECK_TIME = "key_last_update_check_time";
     private static final String KEY_TIPS_NOTICED_PREFIX = "key_tips_noticed_";
+    private static final String KEY_AUTO_BUG_REPORT = "key_bug_report";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -133,6 +134,10 @@ public class SettingsProvider extends Observable {
             + File.separator
             + "Data";
 
+    private static final String COMMON_ROOT_DIR = Environment.getExternalStorageDirectory().getPath()
+            + File.separator
+            + ".DataMigration";
+
     private static final String HELP_MD_FILE_PATH = COMMON_DATA_DIR
             + File.separator
             + "Help.md";
@@ -151,6 +156,10 @@ public class SettingsProvider extends Observable {
         return COMMON_BACKUP_DIR
                 + File.separator
                 + "backup_sessions_assets.realm";
+    }
+
+    public static String getCommonRootDir() {
+        return COMMON_ROOT_DIR;
     }
 
     public static String getBackupSessionDir(Session session) {
@@ -377,5 +386,13 @@ public class SettingsProvider extends Observable {
     public static void setTipsNoticed(String tips, boolean value) {
         String key = KEY_TIPS_NOTICED_PREFIX + tips;
         sMe.writeBoolean(key, value);
+    }
+
+    public static boolean isBugReportEnabled() {
+        return sMe.readBoolean(KEY_AUTO_BUG_REPORT, true);
+    }
+
+    public static void setBugReportEnabled(boolean value) {
+        sMe.writeBoolean(KEY_AUTO_BUG_REPORT, value);
     }
 }

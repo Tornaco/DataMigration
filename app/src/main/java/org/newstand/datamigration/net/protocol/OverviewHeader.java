@@ -122,7 +122,7 @@ public class OverviewHeader implements Serializable, DeSerializable, ByteWriter 
                         long size = Files.asByteSource(new File(path)).size();
                         fileSize += size;
                     } catch (IOException e) {
-                        Logger.e(e, "Fail to get file size: %s");
+                        Logger.e(e, "Fail to get file size: %s", path);
                     }
 
                     fileCount++;

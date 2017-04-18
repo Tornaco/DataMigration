@@ -224,7 +224,7 @@ public class NavigatorActivity extends TransitionSafeActivity {
         SharedExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                Session last = BKSessionRepoService.get().findLast();
+                Session last = BKSessionRepoService.get().findFirst(getApplicationContext());
                 final String intro;
                 if (last == null) {
                     intro = getString(R.string.title_backup_history_noop);
@@ -246,7 +246,7 @@ public class NavigatorActivity extends TransitionSafeActivity {
         SharedExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                int size = ReceivedSessionRepoService.get().size();
+                int size = ReceivedSessionRepoService.get().size(getApplicationContext());
                 final String intro;
                 if (size == 0) {
                     intro = getString(R.string.title_receive_history_noop);

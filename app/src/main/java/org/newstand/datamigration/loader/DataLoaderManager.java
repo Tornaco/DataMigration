@@ -61,7 +61,7 @@ public class DataLoaderManager {
         try {
             return (Collection<DataRecord>) getLoader(dataCategory).load(loaderSource, null);
         } catch (Throwable throwable) {
-            Logger.e(throwable, "Err when loading %s");
+            Logger.e(throwable, "Err when loading");
         }
         return Collections.emptyList();
     }
@@ -73,7 +73,7 @@ public class DataLoaderManager {
         try {
             return (Collection<DataRecord>) getLoader(dataCategory).load(loaderSource, filter);
         } catch (Throwable throwable) {
-            Logger.e(throwable, "Err when loading %s");
+            Logger.e(throwable, "Err when loading");
         }
         return Collections.emptyList();
     }

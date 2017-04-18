@@ -30,7 +30,7 @@ public class DonateQRPathRetriever {
             @Override
             public void onCompleted(Exception e, AsyncHttpResponse source, File result) {
                 if (result == null) {
-                    Logger.e(e, "Loading QR fail %s");
+                    Logger.e(e, "Loading QR fail");
                     return;
                 }
                 Logger.d("Loading QR onCompleted@ %s", result.getPath());

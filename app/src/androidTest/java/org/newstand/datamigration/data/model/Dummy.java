@@ -1,7 +1,5 @@
 package org.newstand.datamigration.data.model;
 
-import io.realm.RealmModel;
-import io.realm.annotations.RealmClass;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,8 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@RealmClass
-public class Dummy implements RealmModel {
+public class Dummy {
     private int id;
 
     private String name;

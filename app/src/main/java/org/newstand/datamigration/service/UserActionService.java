@@ -13,6 +13,7 @@ import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.repo.UserActionRepoService;
 import org.newstand.logger.Logger;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -78,7 +79,7 @@ public class UserActionService extends Service {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    UserActionRepoService.get().insert(action);
+                    UserActionRepoService.get().insert(getApplicationContext(), action);
                 }
             };
             mSingleThreadPool.execute(r);
@@ -87,13 +88,13 @@ public class UserActionService extends Service {
         @NonNull
         @Override
         public List<UserAction> getAll() {
-            return UserActionRepoService.get().findAll();
+            return UserActionRepoService.get().findAll(getApplicationContext());
         }
 
         @NonNull
         @Override
         public List<UserAction> getByFingerPrint(long finger) {
-            return UserActionRepoService.get().findByFingerPrint(finger);
+            return Collections.emptyList();//FIXME
         }
     }
 }

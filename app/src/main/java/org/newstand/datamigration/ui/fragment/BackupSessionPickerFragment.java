@@ -103,7 +103,7 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
 
     @Override
     void onRequestLoading() {
-        SessionLoader.loadAsync(new LoaderListenerMainThreadAdapter<Session>() {
+        SessionLoader.loadAsync(getContext(), new LoaderListenerMainThreadAdapter<Session>() {
             @Override
             public void onStartMainThread() {
                 super.onStartMainThread();
@@ -198,7 +198,7 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                                     @Override
                                     public void run() {
                                         Logger.d("Removing session %s", session);
-                                        boolean res = BKSessionRepoService.get().delete(session);
+                                        boolean res = BKSessionRepoService.get().delete(getContext(), session);
                                     }
                                 });
 
@@ -253,7 +253,7 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
         SharedExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                boolean ok = BKSessionRepoService.get().update(worked);
+                boolean ok = BKSessionRepoService.get().update(getContext(), worked);
                 if (ok) {
                     ok = DataBackupManager.from(getContext()).renameSessionChecked(
                             LoaderSource.builder().parent(LoaderSource.Parent.Backup).build(),
@@ -261,7 +261,7 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                 }
                 if (!ok) {
                     worked.setName(prevName);
-                    BKSessionRepoService.get().update(worked);
+                    BKSessionRepoService.get().update(getContext(), worked);
                 }
                 final boolean finalOk = ok;
                 post(new Runnable() {

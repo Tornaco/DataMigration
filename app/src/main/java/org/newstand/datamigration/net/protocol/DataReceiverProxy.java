@@ -20,7 +20,6 @@ import org.newstand.datamigration.net.OverviewReceiver;
 import org.newstand.datamigration.net.ReceiveSettings;
 import org.newstand.datamigration.net.server.TransportServer;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.repo.ReceivedSessionRepoService;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.Stats;
 import org.newstand.datamigration.worker.transport.TransportListener;

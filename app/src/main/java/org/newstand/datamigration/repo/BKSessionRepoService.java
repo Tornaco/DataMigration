@@ -1,19 +1,10 @@
 package org.newstand.datamigration.repo;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import com.google.gson.reflect.TypeToken;
 
-import com.bugsnag.android.Bugsnag;
-
-import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.utils.Files;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.logger.Logger;
 
-import java.io.File;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
+import java.util.ArrayList;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/28 10:04
@@ -21,74 +12,30 @@ import io.realm.RealmConfiguration;
  * All right reserved.
  */
 
-public class BKSessionRepoService extends OneTimeRealmRepoService<Session> {
+public class BKSessionRepoService extends GsonBasedRepoService<Session> {
 
     private static BKSessionRepoService sMe;
 
-    private BKSessionRepoService() {
-        super();
-    }
-
-    public static synchronized BKSessionRepoService get() {
-        if (sMe == null) sMe = new BKSessionRepoService();
+    public synchronized static BKSessionRepoService get() {
+        if (sMe == null) {
+            sMe = new BKSessionRepoService();
+        }
         return sMe;
     }
 
     @Override
-    @Nullable
-    Realm getRealm() {
-        Realm r = null;
-        try {
-            r = Realm.getInstance(new RealmConfiguration.Builder()
-                    .directory(new File(SettingsProvider.getBackupRootDir()))
-                    .name("backup_sessions")
-                    .build());
-        } catch (Throwable t) {
-            Logger.e(t, "Fail to get realm");
-        }
-        return r;
-    }
-
-    @Override
-    protected Class<Session> clz() {
+    protected Class<Session> getClz() {
         return Session.class;
     }
 
     @Override
-    public boolean update(@NonNull final Session session) {
-        Logger.d("update %s", session);
-        final boolean[] res = {false};
-        final Realm r = getRealm();
-        if (r == null) return false;
-        r.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Session old = findSame(r, session);
-                if (old == null) return;
-                old.setName(session.getName());
-                res[0] = true;
-            }
-        });
-        return res[0];
+    protected boolean matchCase(Session old, Session now) {
+        return old.getDate() == now.getDate();
     }
 
     @Override
-    Session findSame(Realm r, Session session) {
-        return r.where(Session.class).equalTo("date", session.getDate()).findFirst();
-    }
-
-    @Override
-    Session map(Session session) {
-        return Session.from(session);
-    }
-
-    @Override
-    public boolean delete(@NonNull Session session) {
-        boolean ok = super.delete(session);
-        if (ok) {
-            File targetFile = new File(SettingsProvider.getBackupSessionDir(session));
-            ok = Files.deleteDir(targetFile);
-        }
-        return ok;
+    protected TypeToken onCreateTypeToken() {
+        return new TypeToken<ArrayList<Session>>() {
+        };
     }
 }

@@ -1,5 +1,6 @@
 package org.newstand.datamigration.repo;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.util.List;
@@ -12,17 +13,17 @@ import java.util.List;
 
 public interface RepoService<T> {
 
-    boolean insert(@NonNull T t);
+    boolean insert(Context context, @NonNull T t);
 
-    boolean delete(@NonNull T t);
+    boolean delete(Context context, @NonNull T t);
 
-    boolean update(@NonNull T t);
+    boolean update(Context context, @NonNull T t);
 
-    T findFirst();
+    T findFirst(Context context);
 
-    T findLast();
+    T findLast(Context context);
 
-    List<T> findAll();
+    List<T> findAll(Context context);
 
-    int size();
+    int size(Context context);
 }

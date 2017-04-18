@@ -1,8 +1,7 @@
 package org.newstand.datamigration.data.event;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Builder;
 
@@ -12,14 +11,16 @@ import lombok.experimental.Builder;
  * All right reserved.
  */
 @Getter
+@Setter
 @Builder
 @ToString
-public class UserAction extends RealmObject {
+public class UserAction {
+
+    private int id;
 
     private String eventTitle;
     private String eventDescription;
 
-    @PrimaryKey
     private long fingerPrint;
 
     private long date;
@@ -27,7 +28,8 @@ public class UserAction extends RealmObject {
     public UserAction() {
     }
 
-    private UserAction(String eventTitle, String eventDescription, long fingerPrint, long date) {
+    public UserAction(int id, String eventTitle, String eventDescription, long fingerPrint, long date) {
+        this.id = id;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.fingerPrint = fingerPrint;
@@ -41,5 +43,29 @@ public class UserAction extends RealmObject {
                 .eventTitle(in.eventTitle)
                 .fingerPrint(in.fingerPrint)
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserAction that = (UserAction) o;
+
+        if (fingerPrint != that.fingerPrint) return false;
+        if (date != that.date) return false;
+        if (eventTitle != null ? !eventTitle.equals(that.eventTitle) : that.eventTitle != null)
+            return false;
+        return eventDescription != null ? eventDescription.equals(that.eventDescription) : that.eventDescription == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = eventTitle != null ? eventTitle.hashCode() : 0;
+        result = 31 * result + (eventDescription != null ? eventDescription.hashCode() : 0);
+        result = 31 * result + (int) (fingerPrint ^ (fingerPrint >>> 32));
+        result = 31 * result + (int) (date ^ (date >>> 32));
+        return result;
     }
 }

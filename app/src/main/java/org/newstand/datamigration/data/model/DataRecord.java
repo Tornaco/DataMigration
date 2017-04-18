@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.Checkable;
 
-import io.realm.annotations.PrimaryKey;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,6 @@ import lombok.ToString;
 public class DataRecord implements Parcelable, Checkable {
 
     private String displayName;
-    @PrimaryKey
     private String id;
     private boolean isChecked;
 

@@ -30,5 +30,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     // Bug reporter
-    compile 'com.bugsnag:bugsnag-android:3.+'
+    compile 'com.bugsnag:bugsnag-android:3.4.0'
 }

@@ -165,6 +165,15 @@
     <string name="title_feedback">问题反馈</string>
     <string name="summary_feedback">请将详细的错误描述发送至%1$s</string>
 
+    <string name="title_bugreport">自动上传CRASH日志</string>
+    <string name="summary_bugreport">当应用发生严重问题时，自动上传日志文件(30K左右)，可以帮助我们更好的收集分析应用bug</string>
+
+    <string name="title_thanks">特别感谢</string>
+    <string name="summary_thanks">以下各位基佬均对本软件做了巨大贡献[滑稽]</string>
+
+    <string name="title_storage_location">数据文件路径</string>
+    <string name="summary_storage_location">所备份与接收到的文件均放置在%1$s目录下，单纯的清除设备数据，并不会破坏备份与接收文件。因此当你清除设备数据后，你只需要重新下载本应用，安装即可无缝使用旧数据</string>
+
     <string name="title_help">帮助</string>
     <string name="title_help_noop">这家伙很懒，留下了一个空白的帮助页~</string>
 </resources>

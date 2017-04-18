@@ -103,7 +103,7 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
 
     @Override
     void onRequestLoading() {
-        SessionLoader.loadAsync(LoaderSource.builder().parent(LoaderSource.Parent.Received).build(),
+        SessionLoader.loadAsync(getContext(), LoaderSource.builder().parent(LoaderSource.Parent.Received).build(),
                 new LoaderListenerMainThreadAdapter<Session>() {
                     @Override
                     public void onStartMainThread() {
@@ -199,7 +199,7 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
                                     @Override
                                     public void run() {
                                         Logger.d("Removing session %s", session);
-                                        boolean res = ReceivedSessionRepoService.get().delete(session);
+                                        boolean res = ReceivedSessionRepoService.get().delete(getContext(), session);
                                     }
                                 });
 
@@ -254,7 +254,7 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
         SharedExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                boolean ok = ReceivedSessionRepoService.get().update(worked);
+                boolean ok = ReceivedSessionRepoService.get().update(getContext(), worked);
                 if (ok) {
                     ok = DataBackupManager.from(getContext()).renameSessionChecked(
                             LoaderSource.builder().parent(LoaderSource.Parent.Received).build(),
@@ -262,7 +262,7 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
                 }
                 if (!ok) {
                     worked.setName(prevName);
-                    ReceivedSessionRepoService.get().update(worked);
+                    ReceivedSessionRepoService.get().update(getContext(), worked);
                 }
                 final boolean finalOk = ok;
                 post(new Runnable() {

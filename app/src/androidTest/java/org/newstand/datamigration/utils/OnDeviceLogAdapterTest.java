@@ -16,7 +16,7 @@ public class OnDeviceLogAdapterTest {
     public void setUp() throws Exception {
         Logger.config(Settings
                 .builder()
-                .logLevel(0)
+                .logLevel(Logger.LogLevel.ALL)
                 .tag("OnDeviceLogAdapterTest")
                 .logAdapter(new OnDeviceLogAdapter())
                 .build());
