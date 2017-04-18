@@ -31,7 +31,12 @@ class TopActivityObserver implements Application.ActivityLifecycleCallbacks, Clo
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
+        if (activity instanceof TransitionSafeActivity) {
+            TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) activity;
+            if (transitionSafeActivity.isMainActivity()) {
+                onMainActivityStartConsumer.accept(activity);
+            }
+        }
     }
 
     @Override
