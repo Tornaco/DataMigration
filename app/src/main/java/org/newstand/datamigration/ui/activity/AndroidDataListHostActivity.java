@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.ui.fragment.AlarmListFragment;
 import org.newstand.datamigration.ui.fragment.AppListFragment;
+import org.newstand.datamigration.ui.fragment.CallListFragment;
 import org.newstand.datamigration.ui.fragment.ContactListFragment;
 import org.newstand.datamigration.ui.fragment.CustomFileListFragment;
 import org.newstand.datamigration.ui.fragment.MusicListFragment;
@@ -34,6 +35,10 @@ public class AndroidDataListHostActivity extends DataListHostActivity {
                 return new AppListFragment();
             case Sms:
                 return new SmsListFragment();
+            case CallLog:
+                return new CallListFragment();
+            case Alarm:
+                return new AlarmListFragment();
             case CustomFile:
                 return new CustomFileListFragment();
             default:

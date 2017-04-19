@@ -19,18 +19,12 @@ public class AlarmLoader extends BaseLoader {
     @Override
     public Collection<DataRecord> loadFromAndroid(LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = new ArrayList<>();
-        DataRecord dummy = new DataRecord();
-        dummy.setDisplayName("Dummy");
-        records.add(dummy);
         return records;
     }
 
     @Override
     public Collection<DataRecord> loadFromSession(LoaderSource source, Session session, LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = new ArrayList<>();
-        DataRecord dummy = new DataRecord();
-        dummy.setDisplayName("Dummy");
-        records.add(dummy);
         return records;
     }
 

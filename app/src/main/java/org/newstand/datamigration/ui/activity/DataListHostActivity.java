@@ -9,15 +9,7 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.ui.fragment.AlarmListFragment;
-import org.newstand.datamigration.ui.fragment.AppListFragment;
-import org.newstand.datamigration.ui.fragment.ContactListFragment;
-import org.newstand.datamigration.ui.fragment.CustomFileListFragment;
 import org.newstand.datamigration.ui.fragment.DataListViewerFragment;
-import org.newstand.datamigration.ui.fragment.MusicListFragment;
-import org.newstand.datamigration.ui.fragment.PhotoListFragment;
-import org.newstand.datamigration.ui.fragment.SmsListFragment;
-import org.newstand.datamigration.ui.fragment.VideoListFragment;
 import org.newstand.logger.Logger;
 
 /**

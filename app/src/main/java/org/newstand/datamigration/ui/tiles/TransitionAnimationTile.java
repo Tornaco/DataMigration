@@ -25,7 +25,7 @@ public class TransitionAnimationTile extends ThemedTile {
     void onInitView(Context context) {
         this.titleRes = R.string.tile_transition_animation;
         this.summaryRes = R.string.summary_transition_animation;
-        this.iconRes = R.drawable.ic_theme;
+        this.iconRes = R.drawable.ic_child;
 
         this.tileView = new SwitchTileView(context) {
             @Override

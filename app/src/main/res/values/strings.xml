@@ -39,10 +39,11 @@
     <string name="category_music">音乐</string>
     <string name="category_video">视频</string>
     <string name="category_contact">联系人</string>
-    <string name="category_sms">短信(BETA)</string>
+    <string name="category_sms">短信</string>
     <string name="category_photo">照片</string>
     <string name="category_app">应用</string>
     <string name="category_alarm">闹钟</string>
+    <string name="category_call">通话记录(BETA)</string>
     <string name="category_custom">自定义文件</string>
 
     <string name="summary_sms_template_rec">来自&#160;%1$s \t%2$s</string>

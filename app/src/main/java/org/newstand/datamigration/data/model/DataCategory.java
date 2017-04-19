@@ -7,6 +7,7 @@ import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.loader.DataLoader;
 import org.newstand.datamigration.loader.impl.AlarmLoader;
 import org.newstand.datamigration.loader.impl.AppLoader;
+import org.newstand.datamigration.loader.impl.CallLogLoader;
 import org.newstand.datamigration.loader.impl.ContactLoader;
 import org.newstand.datamigration.loader.impl.CustomFileLoader;
 import org.newstand.datamigration.loader.impl.MusicLoader;
@@ -26,6 +27,24 @@ import java.util.Arrays;
 
 public enum DataCategory implements LoaderGetter, ResBinder {
 
+    CallLog {
+        @NonNull
+        @Override
+        public DataLoader getLoader() {
+            return new CallLogLoader();
+        }
+
+        @Override
+        public int nameRes() {
+            return R.string.category_call;
+        }
+
+        @Override
+        public int iconRes() {
+            return R.drawable.ic_call;
+        }
+    },
+
     Contact {
         @NonNull
         @Override
@@ -43,6 +62,45 @@ public enum DataCategory implements LoaderGetter, ResBinder {
             return R.drawable.ic_contacts;
         }
     },
+
+    Sms {
+        @NonNull
+        @Override
+        public DataLoader getLoader() {
+            return new SMSLoader();
+        }
+
+        @Override
+        public int nameRes() {
+            return R.string.category_sms;
+        }
+
+        @Override
+        public int iconRes() {
+            return R.drawable.ic_text_sms;
+        }
+    },
+
+
+    Alarm {
+        @NonNull
+        @Override
+        public DataLoader getLoader() {
+            return new AlarmLoader();
+        }
+
+        @Override
+        public int nameRes() {
+            return R.string.category_alarm;
+        }
+
+        @Override
+        public int iconRes() {
+            return R.drawable.ic_alarm;
+        }
+    },
+
+
     Music {
         @NonNull
         @Override
@@ -95,24 +153,6 @@ public enum DataCategory implements LoaderGetter, ResBinder {
         }
     },
 
-    Sms {
-        @NonNull
-        @Override
-        public DataLoader getLoader() {
-            return new SMSLoader();
-        }
-
-        @Override
-        public int nameRes() {
-            return R.string.category_sms;
-        }
-
-        @Override
-        public int iconRes() {
-            return R.drawable.ic_text_sms;
-        }
-    },
-
     App {
         @NonNull
         @Override
@@ -130,24 +170,6 @@ public enum DataCategory implements LoaderGetter, ResBinder {
             return R.drawable.ic_app;
         }
     },
-
-//    Alarm {
-//        @NonNull
-//        @Override
-//        public DataLoader getLoader() {
-//            return new AlarmLoader();
-//        }
-//
-//        @Override
-//        public int nameRes() {
-//            return R.string.category_alarm;
-//        }
-//
-//        @Override
-//        public int iconRes() {
-//            return R.drawable.ic_alarm;
-//        }
-//    },
 
     CustomFile {
         @NonNull

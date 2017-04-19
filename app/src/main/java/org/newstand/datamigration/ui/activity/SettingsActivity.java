@@ -55,9 +55,8 @@ public class SettingsActivity extends TransitionSafeActivity {
             TransitionAnimationTile animationTile = new TransitionAnimationTile(getContext());
             if (SettingsProvider.isDebugEnabled()) {
                 view.addTile(animationTile);
+                view.addTile(new ThemeColorTile(getContext()));
             }
-
-            view.addTile(new ThemeColorTile(getContext()));
 
             Category strategy = new ThemedCategory();
             strategy.titleRes = R.string.tile_category_strategy;

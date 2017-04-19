@@ -137,6 +137,8 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_CONTACTS,
                 Manifest.permission.WRITE_CONTACTS,
+                Manifest.permission.READ_CALL_LOG,
+                Manifest.permission.WRITE_CALL_LOG,
                 Manifest.permission.READ_SMS)
                 .subscribe(new io.reactivex.functions.Consumer<Boolean>() {
                     @Override
@@ -153,11 +155,11 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
     private void onPermissionNotGrant() {
         ErrDialog.attach(getActivity(), new IllegalStateException("Permission denied!!!"),
                 new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                getActivity().finish();
-            }
-        });
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        getActivity().finish();
+                    }
+                });
     }
 
     private LoadingCacheManager getCacheManager(LoaderSource.Parent parent) {
@@ -317,6 +319,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
                                 java.util.Collections.sort(mokes, new Comparator<DataRecord>() {
                                     @Override
                                     public int compare(DataRecord r1, DataRecord r2) {
+                                        if (r1 == null || r2 == null) return 1;
                                         return r1.category().ordinal() < r2.category().ordinal() ? -1 : 1;
                                     }
                                 });

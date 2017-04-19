@@ -23,6 +23,10 @@ public class VersionRetriever {
         return BuildConfig.VERSION_NAME;
     }
 
+    public static String currentBuild() {
+        return BuildConfig.BUILD_TYPE;
+    }
+
     public static void hasLaterVersionAsync(Context context,
                                             final ActionListener2<VersionCheckResult, Throwable> listener) {
 

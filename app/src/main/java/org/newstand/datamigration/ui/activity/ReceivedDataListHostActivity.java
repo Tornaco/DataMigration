@@ -3,7 +3,9 @@ package org.newstand.datamigration.ui.activity;
 import android.support.v4.app.Fragment;
 
 import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.ui.fragment.AlarmListFragment;
 import org.newstand.datamigration.ui.fragment.BackupAppListFragment;
+import org.newstand.datamigration.ui.fragment.CallListFragment;
 import org.newstand.datamigration.ui.fragment.ContactListFragment;
 import org.newstand.datamigration.ui.fragment.CustomFileListFragment;
 import org.newstand.datamigration.ui.fragment.MusicListFragment;
@@ -35,6 +37,10 @@ public class ReceivedDataListHostActivity extends DataListHostActivity {
                 return new SmsListFragment();
             case CustomFile:
                 return new CustomFileListFragment();
+            case Alarm:
+                return new AlarmListFragment();
+            case CallLog:
+                return new CallListFragment();
             default:
                 throw new UnsupportedOperationException("UnSupported category " + category);
         }

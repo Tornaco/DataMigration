@@ -12,6 +12,7 @@ import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.common.StartSignal;
 import org.newstand.datamigration.data.model.AppRecord;
+import org.newstand.datamigration.data.model.CallLogRecord;
 import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
@@ -170,6 +171,16 @@ public class DataBackupManager {
                 smsBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
                         + File.separator + record.getId());
                 return smsBackupSettings;
+            case CallLog:
+                CallLogBackupSettings callLogBackupSettings = new CallLogBackupSettings();
+                callLogBackupSettings.setDataRecord(new CallLogRecord[]{(CallLogRecord) record});
+                callLogBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
+                        + File.separator
+                        + record.getDisplayName()
+                        + "@"
+                        + ((CallLogRecord) record).getDate()
+                        + CallLogBackupSettings.SUBFIX);
+                return callLogBackupSettings;
         }
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
     }
@@ -213,6 +224,10 @@ public class DataBackupManager {
                 SMSRestoreSettings smsRestoreSettings = new SMSRestoreSettings();
                 smsRestoreSettings.setSourcePath(((SMSRecord) record).getPath());
                 return smsRestoreSettings;
+            case CallLog:
+                CallLogRestoreSettings callLogRestoreSettings = new CallLogRestoreSettings();
+                callLogRestoreSettings.setCallLogRecord((CallLogRecord) record);
+                return callLogRestoreSettings;
 
         }
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
@@ -220,6 +235,8 @@ public class DataBackupManager {
 
     private BackupAgent getAgentByCategory(DataCategory category) {
         switch (category) {
+            case CallLog:
+                return new CallLogBackupAgent();
             case Music:
                 return new MusicBackupAgent();
             case Photo:

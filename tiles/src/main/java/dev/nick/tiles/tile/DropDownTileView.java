@@ -65,9 +65,14 @@ public class DropDownTileView extends TileView {
                 android.R.layout.simple_spinner_item, onCreateDropDownList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(adapter);
+        mSpinner.setSelection(getInitialSelection());
         int dropDownWidth = getResources().getDimensionPixelSize(R.dimen.drop_down_width);
         container.addView(mSpinner, generateCenterParams(dropDownWidth,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
+    }
+
+    protected int getInitialSelection() {
+        return 0;
     }
 
     protected List<String> onCreateDropDownList() {

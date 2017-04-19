@@ -35,7 +35,7 @@ public class CheckForUpdateTile extends ThemedTile {
         this.titleRes = R.string.title_check_for_update;
         this.iconRes = R.drawable.ic_update;
         this.summary = getContext().getString(R.string.summary_check_for_update_current_version,
-                VersionRetriever.currentVersionName());
+                VersionRetriever.currentVersionName() + "-" + VersionRetriever.currentBuild().toUpperCase());
 
         this.tileView = new QuickTileView(getContext(), this) {
             @Override

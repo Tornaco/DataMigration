@@ -18,12 +18,14 @@ import org.newstand.datamigration.net.NextPlanSender;
 import org.newstand.datamigration.net.OverViewSender;
 import org.newstand.datamigration.net.PathCreator;
 import org.newstand.datamigration.net.server.TransportClient;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.Stats;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.logger.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Observable;
@@ -164,6 +166,9 @@ public class DataSenderProxy {
         transportClient.stop();
 
         abortSignal.deleteObservers();
+
+        // Clean up Session
+        org.newstand.datamigration.utils.Files.deleteDir(new File(SettingsProvider.getBackupSessionDir(session)));
     }
 
     @ToString

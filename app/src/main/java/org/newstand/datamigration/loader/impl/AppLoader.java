@@ -39,7 +39,12 @@ public class AppLoader extends BaseLoader {
     public Collection<DataRecord> loadFromAndroid(LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = new ArrayList<>();
         PackageManager pm = getContext().getPackageManager();
-        List<PackageInfo> packages = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
+        List<PackageInfo> packages = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            packages = pm.getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES | PackageManager.MATCH_DISABLED_COMPONENTS);
+        } else {
+            packages = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES | PackageManager.GET_DISABLED_COMPONENTS);
+        }
 
         for (PackageInfo packageInfo : packages) {
 

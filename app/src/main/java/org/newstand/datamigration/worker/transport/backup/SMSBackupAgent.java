@@ -49,6 +49,7 @@ class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestoreSetting
         Logger.d("backup with settings:%s", backupSettings);
         String destPath = backupSettings.getDestPath();
         Files.createParentDirs(new File(destPath));
+
         OutputStream os = Files.asByteSink(new File(destPath)).openStream();
         ObjectOutputStream oos = new ObjectOutputStream(os);
         oos.writeObject(backupSettings.getSmsRecord());
@@ -57,7 +58,7 @@ class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestoreSetting
         oos.close();
 
         // Update file path
-        backupSettings.getSmsRecord().setPath(backupSettings.getDestPath());
+        backupSettings.getSmsRecord().setPath(destPath);
 
         return Res.OK;
     }

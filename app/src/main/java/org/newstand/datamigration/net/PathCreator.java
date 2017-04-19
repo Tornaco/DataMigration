@@ -39,7 +39,7 @@ public class PathCreator {
 
         if (Collections.isNullOrEmpty(workingList)) return;
 
-        Logger.d("Creating path with session %s", session);
+        Logger.d("Creating path with session %s, file count %d", session, workingList.size());
 
         DataBackupManager.from(context, session).performBackup(workingList, workingList.get(0).category());
     }

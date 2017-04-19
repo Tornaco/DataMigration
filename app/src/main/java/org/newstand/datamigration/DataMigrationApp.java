@@ -58,7 +58,7 @@ public class DataMigrationApp extends Application {
 
         Logger.config(Settings.builder()
                 .tag(getClass().getSimpleName())
-                .logLevel(SettingsProvider.isDebugEnabled() ? Logger.LogLevel.ALL : Logger.LogLevel.DEBUG)
+                .logLevel(SettingsProvider.isDebugEnabled() ? Logger.LogLevel.ALL : Logger.LogLevel.WARN)
                 .logAdapter(new OnDeviceLogAdapter())
                 .bugReportEnabled(SettingsProvider.isBugReportEnabled())
                 .build());
