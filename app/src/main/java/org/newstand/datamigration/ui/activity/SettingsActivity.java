@@ -53,10 +53,7 @@ public class SettingsActivity extends TransitionSafeActivity {
             view.titleRes = R.string.tile_category_view;
 
             TransitionAnimationTile animationTile = new TransitionAnimationTile(getContext());
-            if (SettingsProvider.isDebugEnabled()) {
-                view.addTile(animationTile);
-            }
-
+            view.addTile(animationTile);
             view.addTile(new ThemeColorTile(getContext()));
 
             Category strategy = new ThemedCategory();
@@ -90,8 +87,9 @@ public class SettingsActivity extends TransitionSafeActivity {
             DonateTile donateTile = new DonateTile(getContext());
             involve.addTile(donateTile);
 
-
-            categories.add(view);
+            if (SettingsProvider.isDebugEnabled()) {
+                categories.add(view);
+            }
             categories.add(strategy);
             categories.add(storage);
             categories.add(about);

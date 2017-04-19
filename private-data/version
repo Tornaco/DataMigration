@@ -1,7 +1,7 @@
 {
 "downloadUrl":"no_url",
 "updateDate":1492158928826,
-"updateDescription":"1. 更换数据库引擎，解决兼容问题。 2. 修复SeLinux执行时，还原应用的FC。 3. 添加BugReport。,
-"versionCode":21,
-"versionName":"2.1"
+"updateDescription":1. 通话记录支持。2. 显示禁用、冻结应用。3. 修复传输短信时只发一条记录问题。4. 主题支持。,
+"versionCode":22,
+"versionName":"2.2"
 }
