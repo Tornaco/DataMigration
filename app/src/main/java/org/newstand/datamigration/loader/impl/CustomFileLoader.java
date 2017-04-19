@@ -49,6 +49,7 @@ public class CustomFileLoader extends BaseLoader {
                         || Environment.DIRECTORY_ALARMS.equals(parentName)
                         || "Config".equals(parentName)
                         || "Android".equals(parentName)
+                        || ".android_secure".equals(parentName)
                         || "Documents".equals(parentName)
                         || parentName.startsWith(".");
             }

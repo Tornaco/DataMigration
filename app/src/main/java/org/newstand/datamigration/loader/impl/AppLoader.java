@@ -41,9 +41,9 @@ public class AppLoader extends BaseLoader {
         PackageManager pm = getContext().getPackageManager();
         List<PackageInfo> packages = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            packages = pm.getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES | PackageManager.MATCH_DISABLED_COMPONENTS);
+            packages = pm.getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES);
         } else {
-            packages = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES | PackageManager.GET_DISABLED_COMPONENTS);
+            packages = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
         }
 
         for (PackageInfo packageInfo : packages) {
@@ -53,12 +53,6 @@ public class AppLoader extends BaseLoader {
             appRecord.setPkgName(packageInfo.packageName);
             appRecord.setPath(packageInfo.applicationInfo.publicSourceDir);
             appRecord.setIcon(ApkUtil.loadIconByPkgName(getContext(), appRecord.getPkgName()));
-
-            boolean enabled = packageInfo.applicationInfo.enabled;
-
-            if (!enabled) {
-                continue;
-            }
 
             boolean isSystemApp = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
             if (isSystemApp) {
