@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.google.common.io.Files;
 
@@ -92,14 +93,20 @@ public class AppLoader extends BaseLoader {
                 boolean apkExist = new File(record.getPath()).exists();
                 if (!apkExist) {
                     Logger.e("APK Not found in %s", record.getPath());
+                    return;
                 }
                 boolean dataExist = new File(file.getPath() + File.separator + SettingsProvider.getBackupAppDataDirName()).exists();
                 record.setHasData(dataExist);
                 try {
+                    String packageName = ApkUtil.loadPkgNameByFilePath(getContext(), record.getPath());
+                    if (TextUtils.isEmpty(packageName)) {
+                        Logger.w("Ignore app while package name is null %s", file.getPath());
+                        return;
+                    }
                     Drawable icon = ApkUtil.loadIconByFilePath(getContext(), record.getPath());
                     record.setIcon(icon);
                     record.setVersionName(ApkUtil.loadVersionByFilePath(getContext(), record.getPath()));
-                    record.setPkgName(ApkUtil.loadPkgNameByFilePath(getContext(), record.getPath()));
+                    record.setPkgName(packageName);
                     record.setSize(Files.asByteSource(new File(record.getPath())).size());
                     records.add(record);
                 } catch (Throwable e) {

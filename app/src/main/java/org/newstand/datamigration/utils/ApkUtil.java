@@ -28,6 +28,7 @@ public abstract class ApkUtil {
     public static Drawable loadIconByFilePath(@NonNull Context context, String filePath) {
         PackageManager pm = context.getPackageManager();
         PackageInfo info = pm.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES);
+        if (info == null) return null; // FIX NPE
         ApplicationInfo appInfo = info.applicationInfo;
         appInfo.sourceDir = filePath;
         appInfo.publicSourceDir = filePath;
@@ -37,12 +38,14 @@ public abstract class ApkUtil {
     public static String loadVersionByFilePath(@NonNull Context context, String filePath) {
         PackageManager pm = context.getPackageManager();
         PackageInfo info = pm.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES);
+        if (info == null) return null; // FIX NPE
         return info.versionName;
     }
 
     public static String loadPkgNameByFilePath(@NonNull Context context, String filePath) {
         PackageManager pm = context.getPackageManager();
         PackageInfo info = pm.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES);
+        if (info == null) return null; // FIX NPE
         return info.packageName;
     }
 }
