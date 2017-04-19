@@ -2,13 +2,16 @@ package org.newstand.datamigration.ui.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,14 +22,16 @@ import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.provider.ThemeColor;
+import org.newstand.datamigration.utils.ColorUtils;
 import org.newstand.logger.Logger;
 
 import java.util.Observable;
 import java.util.Observer;
 
-public class TransitionSafeActivity extends AppCompatActivity implements Observer {
+import lombok.Getter;
 
-    private static final boolean TRANSITION_ANIMATION = false;
+public class TransitionSafeActivity extends AppCompatActivity {
 
     protected static final long UI_TRANSACTION_TIME_MILLS = 500;
 
@@ -34,13 +39,25 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
 
     private boolean mIsDestroyed, mTransitionAnimationEnabled;
 
+    @Getter
+    private ThemeColor themeColor;
+
+    @Getter
+    private Observer settingsObserver = new Observer() {
+        @Override
+        public void update(Observable o, Object arg) {
+            Logger.d("Settings changed %s", arg);
+            readSettings();
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         readSettings();
 
-        SettingsProvider.observe(this);
+        SettingsProvider.observe(settingsObserver);
 
         if (needSmoothHook()) {
             Handler handler = new Handler();
@@ -54,12 +71,46 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
         setupEnterWindowAnimations();
     }
 
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        applyThemeColor();
+    }
+
     public ViewGroup getContentView() {
         return findView(android.R.id.content);
     }
 
     private void readSettings() {
         mTransitionAnimationEnabled = SettingsProvider.isTransitionAnimationEnabled();
+        ThemeColor color = SettingsProvider.getThemeColor();
+        if (themeColor == null) {
+            themeColor = color;
+            return;
+        }
+        if (color != themeColor) {
+            themeColor = color;
+            onThemeColorChanged();
+        }
+    }
+
+    private void onThemeColorChanged() {
+        applyThemeColor();
+    }
+
+    protected void applyThemeColor() {
+        if (getSupportActionBar() == null) return;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int themeColorPrimary = ContextCompat.getColor(TransitionSafeActivity.this, themeColor.colorRes());
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(themeColorPrimary));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(ColorUtils.colorBurn(themeColorPrimary));
+                }
+            }
+        });
     }
 
     @Override
@@ -216,6 +267,7 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SettingsProvider.unObserve(settingsObserver);
         mIsDestroyed = true;
     }
 
@@ -236,11 +288,5 @@ public class TransitionSafeActivity extends AppCompatActivity implements Observe
 
     public boolean isMainActivity() {
         return false;
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        Logger.d("Settings changed");
-        readSettings();
     }
 }

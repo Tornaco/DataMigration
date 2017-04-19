@@ -1,7 +1,5 @@
 package org.newstand.datamigration.ui.fragment;
 
-import android.support.v4.content.ContextCompat;
-
 import com.bumptech.glide.Glide;
 
 import org.newstand.datamigration.R;
@@ -30,17 +28,16 @@ public class VideoListFragment extends DataListViewerFragment {
         return new CommonListAdapter(getContext()) {
             @Override
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
-                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_video_avatar));
-                super.onBindViewHolder(holder, record);
                 VideoRecord videoRecord = (VideoRecord) record;
                 holder.getLineTwoTextView().setText(Files.formatSize(videoRecord.getSize()));
                 Glide.with(VideoListFragment.this)
                         .load(videoRecord.getPath())
                         .centerCrop()
                         .animate(R.anim.fade_in)
-                        .fallback(R.mipmap.ic_video_avatar)
+                        .placeholder(R.mipmap.ic_video_avatar)
                         .error(R.mipmap.ic_video_avatar)
                         .into(holder.getCheckableImageView());
+                super.onBindViewHolder(holder, record);
 
             }
         };

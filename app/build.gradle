@@ -77,4 +77,6 @@ dependencies {
     compile project(':materialicons')
     // Bug reporter
     compile 'com.bugsnag:bugsnag-android:3.4.0'
+    // OurImageLoader
+    compile 'com.github.NickAndroid:MediaAccessories_Android:v1.2@aar'
 }

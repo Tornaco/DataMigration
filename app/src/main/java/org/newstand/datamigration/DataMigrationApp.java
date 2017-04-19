@@ -11,6 +11,7 @@ import com.bugsnag.android.Bugsnag;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.provider.ThemeManager;
 import org.newstand.datamigration.secure.DonateQRPathRetriever;
 import org.newstand.datamigration.service.DummSmsServiceProxy;
 import org.newstand.datamigration.service.UserActionServiceProxy;
@@ -53,13 +54,14 @@ public class DataMigrationApp extends Application {
 
         SettingsProvider.init(this);
 
+        ThemeManager.register(this);
+
         Logger.config(Settings.builder()
                 .tag(getClass().getSimpleName())
                 .logLevel(SettingsProvider.isDebugEnabled() ? Logger.LogLevel.ALL : Logger.LogLevel.DEBUG)
                 .logAdapter(new OnDeviceLogAdapter())
                 .bugReportEnabled(SettingsProvider.isBugReportEnabled())
                 .build());
-
 
         DonateQRPathRetriever.loadAndCache(this);
 

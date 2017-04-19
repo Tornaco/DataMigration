@@ -19,4 +19,13 @@
     <color name="special_button">#212121</color>
     <color name="dividerDark">#AAA</color>
     <color name="dividerLight">#DADADA</color>
+
+    <string name="name_indigo">印度狗</string>
+    <string name="name_blue">海蓝</string>
+    <string name="name_red">姨妈红</string>
+    <string name="name_coolapk">酷安绿</string>
+    <string name="name_purple">基佬紫</string>
+    <string name="name_pink">萌粉</string>
+    <string name="name_dark">酷黑</string>
+    <string name="name_def">默认</string>
 </resources>

@@ -22,15 +22,16 @@ public class BackupAppListFragment extends AppListFragment {
         return new CommonListAdapter(getContext()) {
             @Override
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
-                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_app_avatar));
-                super.onBindViewHolder(holder, record);
                 AppRecord appRecord = (AppRecord) record;
                 String summary = getStringSafety(R.string.summary_app_template2, appRecord.getVersionName()
                                 == null ? getString(R.string.unknown) : appRecord.getVersionName(),
                         Files.formatSize(appRecord.getSize()), getStringSafety(appRecord.isHasData() ? R.string.yes : R.string.no));
                 holder.getLineTwoTextView().setText(summary);
                 Drawable icon = appRecord.getIcon();
-                holder.getCheckableImageView().setImageDrawable(icon);
+                holder.getCheckableImageView().setImageDrawable(icon == null
+                        ? ContextCompat.getDrawable(getContext(), R.mipmap.ic_app_avatar)
+                        : icon);
+                super.onBindViewHolder(holder, record);
             }
         };
     }

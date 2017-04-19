@@ -13,6 +13,7 @@ import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -80,6 +81,16 @@ public class NavigatorActivity extends TransitionSafeActivity {
         if (SettingsProvider.shouldCheckForUpdateNow()) {
             checkForUpdate();
         }
+    }
+
+    @Override
+    protected void applyThemeColor() {
+        super.applyThemeColor();
+        int themeColorInt = ContextCompat.getColor(NavigatorActivity.this, getThemeColor().colorRes());
+        ViewGroup header1 = findView(findView(R.id.card_1), R.id.header1);
+        header1.setBackgroundColor(themeColorInt);
+        ViewGroup header2 = findView(findView(R.id.card_2), R.id.header2);
+        header2.setBackgroundColor(themeColorInt);
     }
 
     private void hideCards() {

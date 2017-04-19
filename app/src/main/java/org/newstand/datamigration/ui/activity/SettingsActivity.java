@@ -14,6 +14,7 @@ import org.newstand.datamigration.ui.tiles.LicenceTile;
 import org.newstand.datamigration.ui.tiles.MailTile;
 import org.newstand.datamigration.ui.tiles.StorageLocationTile;
 import org.newstand.datamigration.ui.tiles.ThanksTile;
+import org.newstand.datamigration.ui.tiles.ThemeColorTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.tiles.TransitionAnimationTile;
 import org.newstand.datamigration.ui.tiles.WorkModeTile;
@@ -52,7 +53,11 @@ public class SettingsActivity extends TransitionSafeActivity {
             view.titleRes = R.string.tile_category_view;
 
             TransitionAnimationTile animationTile = new TransitionAnimationTile(getContext());
-            view.addTile(animationTile);
+            if (SettingsProvider.isDebugEnabled()) {
+                view.addTile(animationTile);
+            }
+
+            view.addTile(new ThemeColorTile(getContext()));
 
             Category strategy = new ThemedCategory();
             strategy.titleRes = R.string.tile_category_strategy;
@@ -85,9 +90,8 @@ public class SettingsActivity extends TransitionSafeActivity {
             DonateTile donateTile = new DonateTile(getContext());
             involve.addTile(donateTile);
 
-            if (SettingsProvider.isDebugEnabled()) {
-                categories.add(view);
-            }
+
+            categories.add(view);
             categories.add(strategy);
             categories.add(storage);
             categories.add(about);

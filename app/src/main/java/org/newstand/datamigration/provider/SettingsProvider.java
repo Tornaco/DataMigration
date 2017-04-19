@@ -47,6 +47,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_TIPS_NOTICED_PREFIX = "key_tips_noticed_";
     private static final String KEY_AUTO_BUG_REPORT = "key_bug_report";
     private static final String KEY_AUTO_INSTALL_APP = "key_auto_install_app";
+    private static final String KEY_APP_THEME_COLOR = "key_app_theme_color";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -67,13 +68,6 @@ public class SettingsProvider extends Observable {
 
     public SettingsProvider(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        mSharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                setChanged();
-                notifyObservers(key);
-            }
-        });
         mRes = context.getResources();
     }
 
@@ -91,6 +85,8 @@ public class SettingsProvider extends Observable {
 
     public void writeBoolean(String key, boolean value) {
         mSharedPreferences.edit().putBoolean(key, value).apply();
+        setChanged();
+        notifyObservers();
     }
 
     public String readString(String key, String defValue) {
@@ -103,6 +99,8 @@ public class SettingsProvider extends Observable {
 
     public void writeString(String key, String value) {
         mSharedPreferences.edit().putString(key, value).apply();
+        setChanged();
+        notifyObservers();
     }
 
     private static final String COMMON_BACKUP_DIR = Environment.getExternalStorageDirectory().getPath()
@@ -403,5 +401,13 @@ public class SettingsProvider extends Observable {
 
     public static boolean isAutoInstallAppEnabled() {
         return sMe.readBoolean(KEY_AUTO_INSTALL_APP, true);
+    }
+
+    public static ThemeColor getThemeColor() {
+        return ThemeColor.valueOf(sMe.readString(KEY_APP_THEME_COLOR, ThemeColor.Default.name()));
+    }
+
+    public static void setAppThemeColor(ThemeColor color) {
+        sMe.writeString(KEY_APP_THEME_COLOR, color.name());
     }
 }

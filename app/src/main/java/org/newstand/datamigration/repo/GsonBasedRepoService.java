@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Files;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -106,7 +107,14 @@ public abstract class GsonBasedRepoService<T> implements RepoService<T> {
     public List<T> findAll(Context context) {
         String content = Files.readString(filePath);
         if (content == null) return new ArrayList<>();
-        return getGson().<ArrayList<T>>fromJson(content, onCreateTypeToken().getType());
+        ArrayList<T> all = null;
+        try {
+            all = getGson().<ArrayList<T>>fromJson(content, onCreateTypeToken().getType());
+        } catch (Throwable t) {
+            Logger.e(t, "Fail fromJson");
+        }
+        if (all == null) all = new ArrayList<>();
+        return all;
     }
 
     protected TypeToken onCreateTypeToken() {

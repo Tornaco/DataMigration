@@ -54,15 +54,16 @@ public class AppListFragment extends DataListViewerFragment {
         return new CommonListAdapter(getContext()) {
             @Override
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
-                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_app_avatar));
-                super.onBindViewHolder(holder, record);
                 AppRecord appRecord = (AppRecord) record;
                 String summary = getString(R.string.summary_app_template, appRecord.getVersionName()
                                 == null ? getString(R.string.unknown) : appRecord.getVersionName(),
                         Files.formatSize(appRecord.getSize()));
                 holder.getLineTwoTextView().setText(summary);
                 Drawable icon = appRecord.getIcon();
-                holder.getCheckableImageView().setImageDrawable(icon);
+                holder.getCheckableImageView().setImageDrawable(icon == null
+                        ? ContextCompat.getDrawable(getContext(), R.mipmap.ic_app_avatar)
+                        : icon);
+                super.onBindViewHolder(holder, record);
             }
         };
     }
