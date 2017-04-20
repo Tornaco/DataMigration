@@ -155,7 +155,8 @@ public class DataBackupManager {
                 appBackupSettings.setDestDataPath(
                         SettingsProvider.getBackupDirByCategory(dataCategory, session)
                                 + File.separator + record.getDisplayName()
-                                + File.separator + SettingsProvider.getBackupAppDataDirName());// DMBK2/APP/Phone/data
+                                + File.separator + SettingsProvider.getBackupAppDataDirName()
+                                + File.separator + "data.tar.gz");// DMBK2/APP/Phone/data/data.tar.gz
                 appBackupSettings.setSourceApkPath(((FileBasedRecord) record).getPath());
                 appBackupSettings.setSourceDataPath(SettingsProvider.getAppDataDir() + File.separator + ((AppRecord) record).getPkgName());
                 return appBackupSettings;
@@ -211,7 +212,7 @@ public class DataBackupManager {
                 appRestoreSettings.setSourceDataPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
                         + File.separator + record.getDisplayName()
                         + File.separator + SettingsProvider.getBackupAppDataDirName()
-                        + File.separator + "*");// DMBK2/APP/Phone/data/*
+                        + File.separator + "data.tar.gz");// DMBK2/APP/Phone/data/data.tar.gz
                 appRestoreSettings.setDestDataPath(SettingsProvider.getAppDataDir() + File.separator + ((AppRecord) record).getPkgName());
                 appRestoreSettings.setAppRecord((AppRecord) record);
                 return appRestoreSettings;

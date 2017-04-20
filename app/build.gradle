@@ -71,7 +71,6 @@ dependencies {
     provided project(':interface-adapter-annotation')
     apt project(':interface-adapter-generator')
     compile 'com.koushikdutta.async:androidasync:2.1.9'
-    compile 'com.github.tiagohm.MarkdownView:library:0.13.2'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.github.iammert:MaterialIntroView:1.6.0'
     compile project(':materialicons')

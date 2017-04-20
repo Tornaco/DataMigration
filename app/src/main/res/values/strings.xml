@@ -21,6 +21,7 @@
     <string name="action_settings">设置</string>
     <string name="action_user_actions">日志</string>
     <string name="action_scheduler">定时任务</string>
+    <string name="action_disable_selinux">禁用SeLinux</string>
     <string name="action_remove">删除</string>
     <string name="action_rename">修改名称</string>
     <string name="action_renamed_to">已经修改名称为 %1$s</string>
@@ -114,6 +115,8 @@
     <string name="summary_app_template">版本号: <i>%1$s</i>\n文件大小: <i>%2$s</i></string>
     <string name="summary_app_template2">版本号: <i>%1$s</i>\n文件大小: <i>%2$s</i>\n包含数据包: <i>%3$s</i></string>
     <string name="unknown">未知</string>
+    <string name="enforcing">执行中</string>
+    <string name="permissive">许可</string>
     <string name="empty_title">天哪</string>
     <string name="empty_summary">这里没有内容</string>
 
@@ -126,7 +129,7 @@
     <string name="tile_transition_animation">过场动画</string>
     <string name="summary_transition_animation">开启更活泼的动画，仅作实验~</string>
     <string name="tile_theme_color">主题颜色</string>
-    <string name="tile_work_mode_root">备份/还原应用数据</string>
+    <string name="tile_work_mode_root">备份/还原应用数据(BETA)</string>
     <string name="summary_work_mode_root">为已经root的设备备份/还原应用数据，稍后将会检查并申请root权限，请在收到申请提示后，选择允许。注意！由于SeLinux的机制，目前我们需要将你的设备SeLinux设置为许可状态</string>
     <string name="tile_dev_mode">开发者模式</string>
     <string name="summary_dev_mode">你可以查看程序日志，开启一些调试功能，也可能会引入一些未知问题，仅限开发者调试使用</string>
@@ -162,6 +165,11 @@
     <string name="title_check_for_update_no_remind">该版本不再提醒</string>
 
     <string name="phone_num_unknown">未知号码</string>
+
+    <string name="selinux_state">SeLinux状态</string>
+    <string name="title_secure">安全</string>
+    <string name="summary_selinux_state">点击以禁用</string>
+
 
     <string name="title_license">开放源代码许可</string>
     <string name="title_donate">捐赠</string>

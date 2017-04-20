@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.vlonjatg.progressactivity.ProgressRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/progress_layout"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
 
-    <br.tiagohm.markdownview.MarkdownView
-        android:id="@+id/markdown_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:escapeHtml="false" />
 </com.vlonjatg.progressactivity.ProgressRelativeLayout>
 
 

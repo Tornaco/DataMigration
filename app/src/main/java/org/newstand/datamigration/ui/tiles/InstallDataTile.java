@@ -4,12 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.RelativeLayout;
 
-import com.chrisplus.rootmanager.RootManager;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.strategy.WorkMode;
-import org.newstand.datamigration.sync.SharedExecutor;
 
 import dev.nick.tiles.tile.SwitchTileView;
 
@@ -19,9 +15,9 @@ import dev.nick.tiles.tile.SwitchTileView;
  * All right reserved.
  */
 
-public class WorkModeTile extends ThemedTile {
+public class InstallDataTile extends ThemedTile {
 
-    public WorkModeTile(@NonNull Context context) {
+    public InstallDataTile(@NonNull Context context) {
         super(context, null);
     }
 
@@ -35,24 +31,13 @@ public class WorkModeTile extends ThemedTile {
             @Override
             protected void onBindActionView(RelativeLayout container) {
                 super.onBindActionView(container);
-                setChecked(SettingsProvider.getWorkMode() == WorkMode.ROOT);
+                setChecked(SettingsProvider.isInstallDataEnabled());
             }
 
             @Override
             protected void onCheckChanged(boolean checked) {
                 super.onCheckChanged(checked);
-                WorkMode mode = SettingsProvider.getWorkMode();
-                SettingsProvider.setWorkMode(mode == WorkMode.ROOT ? WorkMode.NORMAL : WorkMode.ROOT);
-                mode = SettingsProvider.getWorkMode();
-
-                if (mode == WorkMode.ROOT) {
-                    SharedExecutor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            boolean res = RootManager.getInstance().obtainPermission();
-                        }
-                    });
-                }
+                SettingsProvider.setInstallData(checked);
             }
         };
     }

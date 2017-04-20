@@ -16,8 +16,6 @@ import org.newstand.logger.Logger;
 import java.io.File;
 import java.io.IOException;
 
-import br.tiagohm.markdownview.MarkdownView;
-
 /**
  * Created by Nick@NewStand.org on 2017/4/10 13:44
  * E-Mail: NewStand@163.com
@@ -27,7 +25,6 @@ import br.tiagohm.markdownview.MarkdownView;
 public class HelpActivity extends TransitionSafeActivity {
 
     private ProgressRelativeLayout mProgressRelativeLayout;
-    private MarkdownView markdownView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +32,6 @@ public class HelpActivity extends TransitionSafeActivity {
         showHomeAsUp();
         setContentView(R.layout.help);
 
-        markdownView = findView(R.id.markdown_view);
         mProgressRelativeLayout = findView(R.id.progress_layout);
 
         loadAndUpdate();
@@ -64,7 +60,6 @@ public class HelpActivity extends TransitionSafeActivity {
                         if (e == null) runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                markdownView.loadMarkdownFromFile(new File(fileName));
                                 mProgressRelativeLayout.showContent();
                             }
                         });
@@ -83,7 +78,6 @@ public class HelpActivity extends TransitionSafeActivity {
 
     private void showFallbackHelp() {
         // Load fallback file.
-        markdownView.loadMarkdownFromAsset(SettingsProvider.getDefHelpFileAssetsPath());
         mProgressRelativeLayout.showContent();
     }
 }

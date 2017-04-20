@@ -11,7 +11,6 @@ import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.strategy.WorkMode;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.utils.Files;
@@ -32,7 +31,7 @@ public class AppListFragment extends DataListViewerFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.action_work_mode).setChecked(SettingsProvider.getWorkMode() == WorkMode.ROOT);
+        menu.findItem(R.id.action_work_mode).setChecked(SettingsProvider.isInstallDataEnabled());
     }
 
     @Override
@@ -44,7 +43,7 @@ public class AppListFragment extends DataListViewerFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_work_mode) {
             item.setChecked(!item.isChecked());
-            SettingsProvider.setWorkMode(item.isChecked() ? WorkMode.ROOT : WorkMode.NORMAL);
+            SettingsProvider.setInstallData(item.isChecked());
         }
         return super.onOptionsItemSelected(item);
     }

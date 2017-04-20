@@ -1,10 +1,15 @@
 package org.newstand.datamigration.ui.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.tiles.AutoInstallTile;
 import org.newstand.datamigration.ui.tiles.BugReportTile;
 import org.newstand.datamigration.ui.tiles.CheckForUpdateTile;
@@ -12,12 +17,15 @@ import org.newstand.datamigration.ui.tiles.DevTile;
 import org.newstand.datamigration.ui.tiles.DonateTile;
 import org.newstand.datamigration.ui.tiles.LicenceTile;
 import org.newstand.datamigration.ui.tiles.MailTile;
+import org.newstand.datamigration.ui.tiles.SeLinuxTile;
 import org.newstand.datamigration.ui.tiles.StorageLocationTile;
 import org.newstand.datamigration.ui.tiles.ThanksTile;
 import org.newstand.datamigration.ui.tiles.ThemeColorTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.tiles.TransitionAnimationTile;
-import org.newstand.datamigration.ui.tiles.WorkModeTile;
+import org.newstand.datamigration.ui.tiles.InstallDataTile;
+import org.newstand.datamigration.utils.SeLinuxEnabler;
+import org.newstand.datamigration.utils.SeLinuxState;
 
 import java.util.List;
 
@@ -42,6 +50,32 @@ public class SettingsActivity extends TransitionSafeActivity {
     }
 
     public static class SettingsFragment extends DashboardFragment {
+
+        @Override
+        public void onAttach(Context context) {
+            super.onAttach(context);
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.settings, menu);
+            super.onCreateOptionsMenu(menu, inflater);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            if (item.getItemId() == R.id.action_disable_selinux) {
+                SharedExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        SeLinuxEnabler.setState(SeLinuxState.Permissive);
+                    }
+                });
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+
         public static SettingsFragment getInstance() {
             return new SettingsFragment();
         }
@@ -59,11 +93,15 @@ public class SettingsActivity extends TransitionSafeActivity {
             Category strategy = new ThemedCategory();
             strategy.titleRes = R.string.tile_category_strategy;
 
-            WorkModeTile workModeTile = new WorkModeTile(getContext());
+            InstallDataTile installDataTile = new InstallDataTile(getContext());
             DevTile devTile = new DevTile(getContext());
-            strategy.addTile(workModeTile);
+            strategy.addTile(installDataTile);
             strategy.addTile(new AutoInstallTile(getContext()));
             strategy.addTile(devTile);
+
+            Category selinux = new ThemedCategory();
+            selinux.titleRes = R.string.title_secure;
+            selinux.addTile(new SeLinuxTile(getActivity()));
 
             Category storage = new ThemedCategory();
             storage.titleRes = R.string.tile_category_storage;

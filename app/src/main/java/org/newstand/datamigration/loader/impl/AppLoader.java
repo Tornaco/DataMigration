@@ -94,7 +94,8 @@ public class AppLoader extends BaseLoader {
                     Logger.e("APK Not found in %s", record.getPath());
                     return;
                 }
-                boolean dataExist = new File(file.getPath() + File.separator + SettingsProvider.getBackupAppDataDirName()).exists();
+                boolean dataExist = new File(file.getPath() + File.separator + SettingsProvider.getBackupAppDataDirName()
+                        + File.separator + "data.tar.gz").exists();// FIXME Hard code?
                 record.setHasData(dataExist);
                 try {
                     String packageName = ApkUtil.loadPkgNameByFilePath(getContext(), record.getPath());

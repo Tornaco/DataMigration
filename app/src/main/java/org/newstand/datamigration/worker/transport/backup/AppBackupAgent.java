@@ -7,16 +7,14 @@ import android.support.annotation.NonNull;
 
 import com.chrisplus.rootmanager.RootManager;
 import com.chrisplus.rootmanager.container.Result;
-import com.stericson.rootools.RootTools;
 
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.strategy.WorkMode;
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.utils.MiscUtils;
 import org.newstand.datamigration.utils.RootTools2;
-import org.newstand.datamigration.utils.SeLinuxEnabler;
-import org.newstand.datamigration.utils.SeLinuxState;
+import org.newstand.datamigration.utils.SeLinuxContextChanger;
+import org.newstand.datamigration.utils.Zipper;
 import org.newstand.logger.Logger;
 
 import lombok.Getter;
@@ -60,9 +58,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
             return apkRes;
         }
 
-        // Check work mode and root.
-        WorkMode workMode = SettingsProvider.getWorkMode();
-        if (workMode == WorkMode.ROOT) {
+        if (SettingsProvider.isInstallDataEnabled()) {
             boolean hasRoot = RootManager.getInstance().obtainPermission();
             if (!hasRoot) {
                 Logger.e("Fail to obtain root~");
@@ -71,16 +67,14 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
 
             // Data source
             String appDataDir = backupSettings.getSourceDataPath();
-            // Debug
-            MiscUtils.printResult("ls -l dataDir", RootManager.getInstance().runCommand("ls -l " + appDataDir));
             // Data dest
             String destination = backupSettings.getDestDataPath();
 
-            Logger.d("Copying data from %s, to %s", appDataDir, destination);
+            Logger.d("Saving data from %s, to %s", appDataDir, destination);
 
-            boolean res = RootTools.copyFile(appDataDir, destination, true, true);
+            boolean res = Zipper.compressTar(destination, appDataDir);
 
-            Logger.d("Copy data res %s", res);
+            Logger.d("Saving data res %s", res);
         }
 
         return Res.OK;
@@ -94,79 +88,75 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         PackageInstallReceiver installReceiver = new PackageInstallReceiver(restoreSettings.getAppRecord().getPkgName());
         installReceiver.register(getContext());
 
-        WorkMode workMode = SettingsProvider.getWorkMode();
-
         boolean autoInstall = SettingsProvider.isAutoInstallAppEnabled();
 
-        // Install apk
-        if (workMode == WorkMode.ROOT && autoInstall) {
-            boolean hasRoot = RootManager.getInstance().obtainPermission();
-            if (!hasRoot) {
-                Logger.e("Fail to obtain root~");
-                return new RootMissingException();
-            }
-
-            // Disable selinux
-            SeLinuxState seLinuxState = SeLinuxEnabler.getSeLinuxState();
-
-            if (seLinuxState != SeLinuxState.Permissive) {
-                boolean permissive = SeLinuxEnabler.setState(SeLinuxState.Permissive);
-
-                Logger.d("Set SeLinux state to permissive");
-
-                if (!permissive) {
-                    return new SeLinuxSetupFailError();
-                }
-            }
-
-            Result installRes = RootManager.getInstance().installPackage(restoreSettings.getSourceApkPath());
-            MiscUtils.printResult("InstallApk", installRes);
-
-            if (!installRes.getResult()) {
-                Logger.e("Fail to install app, wont install data.");
-                return new ApkInstallFailException();
-            }
-        } else {
-            MiscUtils.installApkByIntent(getContext(), restoreSettings.getSourceApkPath());
+        if (!autoInstall || !installAppWithRoot(restoreSettings)) {
+            installAppWithIntent(restoreSettings);
         }
 
         installReceiver.waitUtilInstalled();
         Sleeper.sleepQuietly(1000); // Sleep for 1s to let user dismiss the install page...Maybe there is a better way?
         installReceiver.unRegister(getContext());
 
-        if (workMode == WorkMode.ROOT) {
-            // Disable selinux
-            SeLinuxState seLinuxState = SeLinuxEnabler.getSeLinuxState();
+        boolean installData = SettingsProvider.isInstallDataEnabled();
 
-            if (seLinuxState != SeLinuxState.Permissive) {
-                boolean permissive = SeLinuxEnabler.setState(SeLinuxState.Permissive);
+        Res res = Res.OK;
 
-                Logger.d("Set SeLinux state to permissive");
+        if (installData) {
+            res = installData(restoreSettings);
+        }
 
-                if (!permissive) {
-                    return new SeLinuxSetupFailError();
-                }
-            }
+        return res;
+    }
 
-            // Install data
-            String dataFromPath = restoreSettings.getSourceDataPath();
-            String dataToPath = restoreSettings.getDestDataPath();
+    private boolean installAppWithRoot(AppRestoreSettings restoreSettings) {
+        boolean hasRoot = RootManager.getInstance().obtainPermission();
+        if (!hasRoot) {
+            Logger.e("Fail to obtain root~");
+            return false;
+        }
+        Result installRes = RootManager.getInstance().installPackage(restoreSettings.getSourceApkPath());
+        MiscUtils.printResult("InstallApk", installRes);
 
-            Logger.d("Copying data from %s, to %s", dataFromPath, dataToPath);
+        if (!installRes.getResult()) {
+            Logger.e("Fail to install app with root");
+            return false;
+        }
 
-            boolean res = RootTools.copyFile(dataFromPath, dataToPath, true, true);
+        return true;
+    }
 
-            Logger.d("Copy data res %s", res);
+    private boolean installAppWithIntent(AppRestoreSettings restoreSettings) {
+        MiscUtils.installApkByIntent(getContext(), restoreSettings.getSourceApkPath());
+        return true;
+    }
 
-            int uid = getUID(getContext(), restoreSettings.getAppRecord().getPkgName());
-            Logger.d("Target uid %d", uid);
+    private Res installData(AppRestoreSettings restoreSettings) throws Exception {
+        // Install data
+        String dataFromPath = restoreSettings.getSourceDataPath();
+        String dataToPath = restoreSettings.getDestDataPath();
 
-            // Change owner and group.
-            if (!RootTools2.changeOwner(restoreSettings.getDestDataPath(), uid)
-                    || !RootTools2.changeGroup(restoreSettings.getDestDataPath(), uid)) {
-                return new OnwerGroupChangeFailException("Fail to change owner/group of " + restoreSettings.getDestDataPath() + " to" + uid);
-            }
+        Logger.d("Install data from %s, to %s", dataFromPath, dataToPath);
 
+        boolean res = Zipper.deCompressTar(dataFromPath);
+
+        Logger.d("Install data res %s", res);
+
+        // Restore selinux context
+        if (!SeLinuxContextChanger.restoreContext(dataToPath)) {
+            Res re = new SeLinuxModeChangeErr();
+            Logger.e(re, "Fail to change mode for %s", dataToPath);
+            return re;
+        }
+
+        int uid = getUID(getContext(), restoreSettings.getAppRecord().getPkgName());
+        Logger.d("Target uid %d", uid);
+
+        // Change owner and group.
+        if (!RootTools2.changeOwner(restoreSettings.getDestDataPath(), uid)
+                || !RootTools2.changeGroup(restoreSettings.getDestDataPath(), uid)) {
+            return new OnwerGroupChangeFailException("Fail to change owner/group of "
+                    + restoreSettings.getDestDataPath() + " to" + uid);
         }
 
         return Res.OK;
