@@ -15,15 +15,14 @@ import org.newstand.datamigration.ui.tiles.BugReportTile;
 import org.newstand.datamigration.ui.tiles.CheckForUpdateTile;
 import org.newstand.datamigration.ui.tiles.DevTile;
 import org.newstand.datamigration.ui.tiles.DonateTile;
+import org.newstand.datamigration.ui.tiles.InstallDataTile;
 import org.newstand.datamigration.ui.tiles.LicenceTile;
 import org.newstand.datamigration.ui.tiles.MailTile;
-import org.newstand.datamigration.ui.tiles.SeLinuxTile;
 import org.newstand.datamigration.ui.tiles.StorageLocationTile;
 import org.newstand.datamigration.ui.tiles.ThanksTile;
 import org.newstand.datamigration.ui.tiles.ThemeColorTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.tiles.TransitionAnimationTile;
-import org.newstand.datamigration.ui.tiles.InstallDataTile;
 import org.newstand.datamigration.utils.SeLinuxEnabler;
 import org.newstand.datamigration.utils.SeLinuxState;
 
@@ -101,7 +100,6 @@ public class SettingsActivity extends TransitionSafeActivity {
 
             Category selinux = new ThemedCategory();
             selinux.titleRes = R.string.title_secure;
-            selinux.addTile(new SeLinuxTile(getActivity()));
 
             Category storage = new ThemedCategory();
             storage.titleRes = R.string.tile_category_storage;
