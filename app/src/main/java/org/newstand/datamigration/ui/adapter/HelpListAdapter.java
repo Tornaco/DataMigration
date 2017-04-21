@@ -75,7 +75,7 @@ public class HelpListAdapter extends RecyclerView.Adapter<CommonListViewHolder> 
         holder.getLineOneTextView().setText(helpInfo.getQuestion());
         holder.getLineTwoTextView().setText(helpInfo.getAnswer());
         Glide.with(getContext()).load(helpInfo.getAskerAvatar())
-                .error(R.drawable.github)
+                .error(R.mipmap.ic_help_avatar)
                 .into(holder.getCheckableImageView());
     }
 

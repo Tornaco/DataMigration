@@ -140,7 +140,7 @@ public class SettingsProvider extends Observable {
 
     private static final String HELP_MD_FILE_PATH = COMMON_DATA_DIR
             + File.separator
-            + "Help.md";
+            + "Helps";
 
     private static final String DEF_HELP_FILE_ASSETS_PATH = "help/Def_Help.md";
 

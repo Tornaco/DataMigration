@@ -1,41 +1,34 @@
 [
 {
-"answer":"A",
-"asker":"A",
+{
+"answer":"不格式化外部存储的话",
+"asker":"Fince",
 "askerAvatar":"A",
 "date":1492755782711,
-"question":"Q"
+"question":"刷机双清之后数据还在吗？"
 },
 
 {
-"answer":"A",
-"asker":"A",
+"answer":"理论上Android4.1以上均可，未做全面测试",
+"asker":"无名kyc",
 "askerAvatar":"A",
 "date":1492755782711,
-"question":"Q"
+"question":"数据可以跨平台使用吗？"
 },
 
 {
-"answer":"A",
-"asker":"A",
+"answer":"已解决",
+"asker":"Weirdo123",
 "askerAvatar":"A",
 "date":1492755782711,
-"question":"Q"
+"question":"suda 7.1闪退？"
 },
 
 {
-"answer":"A",
+"answer":"需要设置本应用为默认短信应用",
 "asker":"A",
 "askerAvatar":"A",
 "date":1492755782711,
-"question":"Q"
-},
-
-{
-"answer":"A",
-"asker":"A",
-"askerAvatar":"A",
-"date":1492755782711,
-"question":"Q"
+"question":"短信无法恢复?"
 }
 ]

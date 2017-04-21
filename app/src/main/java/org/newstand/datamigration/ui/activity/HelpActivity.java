@@ -107,10 +107,17 @@ public class HelpActivity extends TransitionSafeActivity {
                 }
 
                 try {
-                    ArrayList<HelpInfo> helpInfos = new Gson().<ArrayList<HelpInfo>>fromJson(content, new TypeToken<HelpInfo>() {
+                    final ArrayList<HelpInfo> helpInfos = new Gson().fromJson(content, new TypeToken<ArrayList<HelpInfo>>() {
                     }.getType());
-                    adapter.update(helpInfos);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgressRelativeLayout.showContent();
+                            adapter.update(helpInfos);
+                        }
+                    });
                 } catch (Throwable w) {
+                    Logger.e("Fail to json %s", Logger.getStackTraceString(w));
                     onError();
                 }
             }
