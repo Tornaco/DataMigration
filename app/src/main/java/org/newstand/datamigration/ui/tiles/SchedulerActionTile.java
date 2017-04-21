@@ -6,6 +6,7 @@ import android.view.View;
 
 import org.newstand.datamigration.service.schedule.Condition;
 import org.newstand.datamigration.service.schedule.ScheduleAction;
+import org.newstand.logger.Logger;
 
 import dev.nick.tiles.tile.QuickTileView;
 
@@ -23,6 +24,8 @@ public class SchedulerActionTile extends ThemedTile {
         super(context, null);
         this.title = context.getString(scheduleAction.getActionType().nameRes());
         this.iconRes = scheduleAction.getActionType().iconRes();
+
+        Logger.d("Creating SchedulerActionTile %s", scheduleAction);
     }
 
     @Override

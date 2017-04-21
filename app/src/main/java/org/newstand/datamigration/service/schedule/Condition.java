@@ -1,6 +1,7 @@
 package org.newstand.datamigration.service.schedule;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Builder;
 
@@ -11,6 +12,7 @@ import lombok.experimental.Builder;
  */
 @Builder
 @Getter
+@Setter
 @ToString
 public class Condition {
     // Requirements.

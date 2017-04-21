@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.ui.fragment.ScheduledTaskFragment;
+import org.newstand.datamigration.ui.fragment.ScheduledTaskCreatorFragment;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/21 19:40
@@ -17,6 +17,7 @@ public class ScheduledTaskActivity extends TransitionSafeActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_container_template);
-        replaceV4(R.id.container, new ScheduledTaskFragment(), null);
+        showHomeAsUp();
+        replaceV4(R.id.container, new ScheduledTaskCreatorFragment(), null);
     }
 }

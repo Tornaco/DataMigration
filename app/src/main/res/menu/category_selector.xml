@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_contact"
+        android:checkable="true"
+        android:title="@string/category_contact"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_calllog"
+        android:checkable="true"
+        android:title="@string/category_call"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sms"
+        android:checkable="true"
+        android:title="@string/category_sms"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_photo"
+        android:checkable="true"
+        android:title="@string/category_photo"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_music"
+        android:checkable="true"
+        android:title="@string/category_music"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_video"
+        android:checkable="true"
+        android:title="@string/category_video"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_app"
+        android:checkable="true"
+        android:title="@string/category_app"
+        app:showAsAction="never" />
+</menu>
