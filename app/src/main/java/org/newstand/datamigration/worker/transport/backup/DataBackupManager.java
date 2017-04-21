@@ -177,13 +177,17 @@ public class DataBackupManager {
                 callLogBackupSettings.setDataRecord(new CallLogRecord[]{(CallLogRecord) record});
                 callLogBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
                         + File.separator
-                        + record.getDisplayName()
+                        + mixedName(record.getDisplayName())
                         + "@"
                         + ((CallLogRecord) record).getDate()
                         + CallLogBackupSettings.SUBFIX);
                 return callLogBackupSettings;
         }
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
+    }
+
+    public String mixedName(String from) {
+        return String.valueOf(from.hashCode());
     }
 
     private FileBackupSettings getFileBackupSettings(DataCategory category, DataRecord record) {
@@ -223,7 +227,7 @@ public class DataBackupManager {
                 return contactRestoreSettings;
             case Sms:
                 SMSRestoreSettings smsRestoreSettings = new SMSRestoreSettings();
-                smsRestoreSettings.setSourcePath(((SMSRecord) record).getPath());
+                smsRestoreSettings.setSmsRecord((SMSRecord) record);
                 return smsRestoreSettings;
             case CallLog:
                 CallLogRestoreSettings callLogRestoreSettings = new CallLogRestoreSettings();

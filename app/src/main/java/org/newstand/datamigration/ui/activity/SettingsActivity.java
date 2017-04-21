@@ -12,6 +12,7 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.tiles.AutoInstallTile;
 import org.newstand.datamigration.ui.tiles.DevTile;
+import org.newstand.datamigration.ui.tiles.EncryptTile;
 import org.newstand.datamigration.ui.tiles.InstallDataTile;
 import org.newstand.datamigration.ui.tiles.StorageLocationTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
@@ -90,8 +91,9 @@ public class SettingsActivity extends TransitionSafeActivity {
             strategy.addTile(new AutoInstallTile(getContext()));
             strategy.addTile(devTile);
 
-            Category selinux = new ThemedCategory();
-            selinux.titleRes = R.string.title_secure;
+            Category secure = new ThemedCategory();
+            secure.titleRes = R.string.title_secure;
+            secure.addTile(new EncryptTile(getContext()));
 
             Category storage = new ThemedCategory();
             storage.titleRes = R.string.tile_category_storage;
@@ -103,6 +105,7 @@ public class SettingsActivity extends TransitionSafeActivity {
             }
             categories.add(strategy);
             categories.add(storage);
+            categories.add(secure);
 
             super.onCreateDashCategories(categories);
         }

@@ -1,5 +1,7 @@
 package org.newstand.datamigration.net;
 
+import android.text.TextUtils;
+
 import com.google.common.base.Preconditions;
 
 import org.newstand.datamigration.data.model.DataRecord;
@@ -10,6 +12,7 @@ import org.newstand.logger.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.UUID;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/22 10:59
@@ -41,7 +44,9 @@ public class DataRecordSender extends AbsSender<DataRecord> {
         //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(path);
 
-        FileHeader fileHeader = FileHeader.from(fileBasedRecord.getPath(), fileBasedRecord.getDisplayName() + UniqueIdFactory.next());
+        FileHeader fileHeader = FileHeader.from(fileBasedRecord.getPath(),
+                fixedName(fileBasedRecord.getDisplayName())
+                        + UniqueIdFactory.next());
 
         Logger.d("Sending: %s", fileHeader.toString());
 
@@ -56,5 +61,12 @@ public class DataRecordSender extends AbsSender<DataRecord> {
         ret = waitForAck(is);
 
         return ret;
+    }
+
+    private String fixedName(String from) {
+        if (TextUtils.isEmpty(from)) {
+            return UUID.randomUUID().toString();
+        }
+        return from;
     }
 }

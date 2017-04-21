@@ -11,13 +11,12 @@ import com.google.common.io.Files;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.model.SMSRecord;
-import org.newstand.datamigration.utils.Closer;
+import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.secure.EncryptManager;
+import org.newstand.datamigration.utils.BlackHole;
 import org.newstand.logger.Logger;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
@@ -57,6 +56,18 @@ class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestoreSetting
         os.close();
         oos.close();
 
+
+        // Encrypt
+        boolean encrypt = SettingsProvider.isEncryptEnabled();
+        String encrypted = SettingsProvider.getEncryptPath(destPath);
+        boolean encryptOk = encrypt && EncryptManager.from(getContext())
+                .encrypt(destPath, encrypted);
+        if (encryptOk) {
+            BlackHole.eat(new File(destPath).delete());
+            Logger.i("Encrypt ok, assigning file to %s", encrypted);
+            destPath = encrypted;
+        }
+
         // Update file path
         backupSettings.getSmsRecord().setPath(destPath);
 
@@ -67,26 +78,10 @@ class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestoreSetting
     public Res restore(SMSRestoreSettings restoreSettings) throws Exception {
 
         Logger.d("restore with settings:%s", restoreSettings);
-        String srcPath = restoreSettings.getSourcePath();
-        File file = new File(srcPath);
-        try {
-            InputStream in = Files.asByteSource(file).openStream();
-            ObjectInputStream ois = new ObjectInputStream(in);
 
-            try {
-                SMSRecord smsRecord = (SMSRecord) ois.readObject();
-                Logger.d("Found %s", smsRecord);
-                writeSMS(smsRecord);
-            } catch (ClassNotFoundException e) {
-                Logger.e(e, "Err when read sms");
-            }
+        SMSRecord smsRecord = restoreSettings.getSmsRecord();
 
-            Closer.closeQuietly(ois);
-            Closer.closeQuietly(in);
-
-        } catch (IOException e) {
-            Logger.e(e, "Err when read sms");
-        }
+        writeSMS(smsRecord);
 
         return Res.OK;
     }

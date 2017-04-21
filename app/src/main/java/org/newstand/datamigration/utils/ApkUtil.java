@@ -48,4 +48,11 @@ public abstract class ApkUtil {
         if (info == null) return null; // FIX NPE
         return info.packageName;
     }
+
+    public static String loadAppNameByFilePath(@NonNull Context context, String filePath) {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo info = pm.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES);
+        if (info == null) return null; // FIX NPE
+        return info.applicationInfo.name;
+    }
 }

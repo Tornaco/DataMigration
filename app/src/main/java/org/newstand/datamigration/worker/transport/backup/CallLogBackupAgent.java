@@ -15,6 +15,10 @@ import com.google.gson.Gson;
 
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.data.model.CallLogRecord;
+import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.secure.EncryptManager;
+import org.newstand.datamigration.utils.BlackHole;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 
@@ -41,6 +45,17 @@ public class CallLogBackupAgent implements BackupAgent<CallLogBackupSettings, Ca
         String callStr = gson.toJson(backupSettings.getDataRecord()[0]); // FIXME Make more~
         boolean ok = org.newstand.datamigration.utils.Files.writeString(callStr, destPath);
         if (!ok) return new WriteFailError();
+
+        // Encrypt
+        boolean encrypt = SettingsProvider.isEncryptEnabled();
+        String encrypted = SettingsProvider.getEncryptPath(destPath);
+        boolean encryptOk = encrypt && EncryptManager.from(getContext()).encrypt(destPath, encrypted);
+        if (encryptOk) {
+            BlackHole.eat(new File(destPath).delete());
+            Logger.i("Encrypt ok, assigning file to %s", encrypted);
+            destPath = encrypted;
+        }
+
         // Update file path
         backupSettings.getDataRecord()[0].setPath(destPath);
         return Res.OK;

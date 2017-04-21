@@ -49,6 +49,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_AUTO_INSTALL_APP = "key_auto_install_app";
     private static final String KEY_INSTALL_DATA = "key_install_data";
     private static final String KEY_APP_THEME_COLOR = "key_app_theme_color";
+    private static final String KEY_ENCRYPT_ENABLED = "key_encrypt_enabled";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -229,6 +230,27 @@ public class SettingsProvider extends Observable {
         }
     }
 
+    public static String getEncryptPath(String from) {
+        File file = new File(from);
+        return file.getParent() + File.separator + file.getName() + "_Encrypt";
+    }
+
+    public static String getEncryptedName(String name) {
+        return name + "_Encrypt";
+    }
+
+    public static boolean isEncryptedName(String name) {
+        return name.endsWith("_Encrypt");
+    }
+
+    public static String getDecryptPath(String from) {
+        return from.substring(0, from.lastIndexOf("_Encrypt"));
+    }
+
+    public static boolean isEncryptedFile(String file) {
+        return file.endsWith("_Encrypt");
+    }
+
     public static int[] getTransportServerPorts() {
         String str = sMe.readString(KEY_SERVER_PORTS, R.string.def_transport_server_ports);
         StringTokenizer stringTokenizer = new StringTokenizer(str, ",");
@@ -404,7 +426,7 @@ public class SettingsProvider extends Observable {
         return sMe.readBoolean(KEY_AUTO_INSTALL_APP, true);
     }
 
-    public static void setInstallData(boolean value) {
+    public static void setInstallDataEnabled(boolean value) {
         sMe.writeBoolean(KEY_INSTALL_DATA, value);
     }
 
@@ -418,5 +440,13 @@ public class SettingsProvider extends Observable {
 
     public static void setAppThemeColor(ThemeColor color) {
         sMe.writeString(KEY_APP_THEME_COLOR, color.name());
+    }
+
+    public static boolean isEncryptEnabled() {
+        return sMe.readBoolean(KEY_ENCRYPT_ENABLED, false);
+    }
+
+    public static void setEncryptEnabled(boolean value) {
+        sMe.writeBoolean(KEY_ENCRYPT_ENABLED, value);
     }
 }

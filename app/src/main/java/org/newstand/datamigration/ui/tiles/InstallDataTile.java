@@ -37,7 +37,7 @@ public class InstallDataTile extends ThemedTile {
             @Override
             protected void onCheckChanged(boolean checked) {
                 super.onCheckChanged(checked);
-                SettingsProvider.setInstallData(checked);
+                SettingsProvider.setInstallDataEnabled(checked);
             }
         };
     }

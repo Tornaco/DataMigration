@@ -14,6 +14,8 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.secure.EncryptManager;
+import org.newstand.datamigration.utils.BlackHole;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.logger.Logger;
@@ -73,12 +75,26 @@ public class CallLogLoader extends BaseLoader {
             @Override
             public void accept(@NonNull File file) {
                 try {
-                    String content = org.newstand.datamigration.utils.Files.readString(file.getPath());
+                    String fileToParse = file.getPath();
+                    boolean isEncrypted = SettingsProvider.isEncryptedFile(file.getPath());
+                    Logger.i("isEncrypted %s %s", file, isEncrypted);
+                    String fileToDecrypt = isEncrypted ?
+                            SettingsProvider.getDecryptPath(fileToParse) : null;
+                    if (isEncrypted && EncryptManager.from(getContext()).decrypt(fileToParse, fileToDecrypt)) {
+                        Logger.i("Change file to parse %s", fileToDecrypt);
+                        fileToParse = fileToDecrypt;
+                    }
+                    String content = org.newstand.datamigration.utils.Files.readString(fileToParse);
                     Gson gson = new Gson();
                     CallLogRecord record = gson.fromJson(content, CallLogRecord.class);
                     record.setPath(file.getPath());
                     record.setChecked(false);
                     records.add(record);
+                    // Delete decrypted file
+                   if (fileToDecrypt != null) {
+                       File fileToDelete = new File(fileToDecrypt);
+                       if (fileToDelete.exists()) BlackHole.eat(fileToDelete.delete());
+                   }
                 } catch (Throwable t) {
                     Logger.e(t, "Fail to parse call log");
                 }

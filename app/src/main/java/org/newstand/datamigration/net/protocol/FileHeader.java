@@ -6,6 +6,8 @@ import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 
+import org.newstand.datamigration.provider.SettingsProvider;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +36,8 @@ public class FileHeader implements Serializable, DeSerializable, ByteWriter {
 
     public static FileHeader from(String path, String fileName) throws IOException {
         long fileSize = Files.asByteSource(new File(path)).size();
-        return new FileHeader(fileName, fileSize);
+        boolean isEncrypted = SettingsProvider.isEncryptedFile(path);
+        return new FileHeader(isEncrypted ? SettingsProvider.getEncryptedName(fileName) : fileName, fileSize);
     }
 
     public static FileHeader from(byte[] data) {

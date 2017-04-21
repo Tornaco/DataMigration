@@ -20,6 +20,7 @@ add_library( # Sets the name of the library.
              # file are automatically included.
              src/main/cpp/DonateQRPathJniStub.cpp
              src/main/cpp/AudioJniStub.cpp
+             src/main/cpp/SecretKey.cpp
              src/main/cpp/mp3/mp3.cpp
              src/main/cpp/mp3/mp3frame.cpp)
 

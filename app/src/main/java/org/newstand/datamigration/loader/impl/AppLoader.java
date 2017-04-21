@@ -108,6 +108,8 @@ public class AppLoader extends BaseLoader {
                     record.setVersionName(ApkUtil.loadVersionByFilePath(getContext(), record.getPath()));
                     record.setPkgName(packageName);
                     record.setSize(Files.asByteSource(new File(record.getPath())).size());
+                    String appName = ApkUtil.loadAppNameByFilePath(getContext(), record.getPath());
+                    if (appName != null) record.setDisplayName(appName);// FIX App name issue.
                     records.add(record);
                 } catch (Throwable e) {
                     Logger.e(e, "Failed to query size for %s", record);

@@ -19,9 +19,11 @@ import org.newstand.datamigration.net.server.TransportClientProxy;
 import org.newstand.datamigration.net.server.TransportServer;
 import org.newstand.datamigration.net.server.TransportServerProxy;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.repo.ReceivedSessionRepoService;
 import org.newstand.datamigration.strategy.Interval;
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
 import org.newstand.logger.Logger;
 
@@ -67,6 +69,20 @@ public class DataSenderProxyTest {
             @Override
             public void accept(@NonNull DataRecord dataRecord) {
                 dataRecord.setChecked(new Random().nextBoolean());
+            }
+        });
+
+        Collections.consumeRemaining(cacheManager.get(DataCategory.Sms), new Consumer<DataRecord>() {
+            @Override
+            public void accept(@NonNull DataRecord dataRecord) {
+                dataRecord.setChecked(true);
+            }
+        });
+
+        Collections.consumeRemaining(cacheManager.get(DataCategory.CallLog), new Consumer<DataRecord>() {
+            @Override
+            public void accept(@NonNull DataRecord dataRecord) {
+                dataRecord.setChecked(true);
             }
         });
     }
@@ -181,6 +197,7 @@ public class DataSenderProxyTest {
     private void mokeReceive() {
         Sleeper.sleepQuietly(Interval.Seconds.getIntervalMills());
         SettingsProvider.setUnderTest(true);
+        final Session session = Session.create();
         DataReceiverProxy.receive(InstrumentationRegistry.getTargetContext(), mServer,
                 new TransportListenerAdapter() {
             @Override
@@ -205,6 +222,8 @@ public class DataSenderProxyTest {
             public void onComplete() {
                 super.onComplete();
                 Logger.d("receive onComplete~~");
+
+                ReceivedSessionRepoService.get().insert(InstrumentationRegistry.getTargetContext(), session);
             }
 
             @Override
@@ -212,7 +231,7 @@ public class DataSenderProxyTest {
                 super.onAbort(err);
                 Logger.d("receive onAbort %s", Logger.getStackTraceString(err));
             }
-        });
+        }, session);
     }
 
     private void dump() {

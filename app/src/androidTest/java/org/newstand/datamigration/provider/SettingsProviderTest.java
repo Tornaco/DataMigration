@@ -1,5 +1,6 @@
 package org.newstand.datamigration.provider;
 
+import android.os.Environment;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Assert;
@@ -17,6 +18,139 @@ import java.util.Arrays;
  */
 @RunWith(AndroidJUnit4.class)
 public class SettingsProviderTest {
+    @Test
+    public void getCommonRootDir() throws Exception {
+
+    }
+
+    @Test
+    public void getEncryptPath() throws Exception {
+        String testPath = Environment.getExternalStorageDirectory().getPath() + "/test2222";
+        String encrypt = SettingsProvider.getEncryptPath(testPath);
+        Logger.d("Enc: %s", encrypt);
+    }
+
+    @Test
+    public void getDecryptPath() throws Exception {
+        String testPath = Environment.getExternalStorageDirectory().getPath() + "/test2222";
+        String encrypt = SettingsProvider.getEncryptPath(testPath);
+        Logger.d("Enc: %s", encrypt);
+
+        String re = SettingsProvider.getDecryptPath(encrypt);
+
+        Logger.d("DeEnc: %s", re);
+    }
+
+    @Test
+    public void isUserNoticed() throws Exception {
+
+    }
+
+    @Test
+    public void setUserNoticed() throws Exception {
+
+    }
+
+    @Test
+    public void getHelpMdFilePath() throws Exception {
+
+    }
+
+    @Test
+    public void getDefHelpFileAssetsPath() throws Exception {
+
+    }
+
+    @Test
+    public void getCommonDataDir() throws Exception {
+
+    }
+
+    @Test
+    public void setDonateQrPath() throws Exception {
+
+    }
+
+    @Test
+    public void getDonateQrPathChecked() throws Exception {
+
+    }
+
+    @Test
+    public void getLastUpdateCheckTime() throws Exception {
+
+    }
+
+    @Test
+    public void setLastUpdateCheckTime() throws Exception {
+
+    }
+
+    @Test
+    public void shouldCheckForUpdateNow() throws Exception {
+
+    }
+
+    @Test
+    public void isTipsNoticed() throws Exception {
+
+    }
+
+    @Test
+    public void setTipsNoticed() throws Exception {
+
+    }
+
+    @Test
+    public void isBugReportEnabled() throws Exception {
+
+    }
+
+    @Test
+    public void setBugReportEnabled() throws Exception {
+
+    }
+
+    @Test
+    public void setAutoInstallAppEnabled() throws Exception {
+
+    }
+
+    @Test
+    public void isAutoInstallAppEnabled() throws Exception {
+
+    }
+
+    @Test
+    public void setInstallData() throws Exception {
+
+    }
+
+    @Test
+    public void isInstallDataEnabled() throws Exception {
+
+    }
+
+    @Test
+    public void getThemeColor() throws Exception {
+
+    }
+
+    @Test
+    public void setAppThemeColor() throws Exception {
+
+    }
+
+    @Test
+    public void isUnderTest() throws Exception {
+
+    }
+
+    @Test
+    public void setUnderTest() throws Exception {
+
+    }
+
     @Test
     public void init() throws Exception {
 

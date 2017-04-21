@@ -54,6 +54,8 @@ public class DataRecordReceiver implements Receiver<ReceiveSettings> {
         // Notify the name of this file.
         settings.getNameConsumer().accept(fileName);
 
+        boolean isEncryptedName = SettingsProvider.isEncryptedName(fileName);
+
         long size = fileHeader.getSize();
 
         String destPath;
@@ -69,6 +71,10 @@ public class DataRecordReceiver implements Receiver<ReceiveSettings> {
             default:
                 destPath = settings.getRootDir() + File.separator + fileName;
                 break;
+        }
+
+        if (isEncryptedName) {
+            destPath = SettingsProvider.getEncryptPath(destPath);
         }
 
         Logger.i("Using %s for dest path", destPath);

@@ -137,6 +137,8 @@
     <string name="summary_dev_mode">你可以查看程序日志，开启一些调试功能，也可能会引入一些未知问题，仅限开发者调试使用</string>
     <string name="tile_auto_install">自动安装应用程序</string>
     <string name="summaty_auto_install">为已经root的设备自动安装应用程序</string>
+    <string name="title_encrypt">启用加密</string>
+    <string name="summary_encrypt">对备份或者传输的数据（通话记录，短信）进行加密</string>
 
     <string name="title_transport_sender_receiver">无线快传</string>
     <string name="title_transport_sender">发送数据给对方</string>

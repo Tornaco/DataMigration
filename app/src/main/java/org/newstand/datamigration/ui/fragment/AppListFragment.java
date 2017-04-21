@@ -43,7 +43,7 @@ public class AppListFragment extends DataListViewerFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_work_mode) {
             item.setChecked(!item.isChecked());
-            SettingsProvider.setInstallData(item.isChecked());
+            SettingsProvider.setInstallDataEnabled(item.isChecked());
         }
         return super.onOptionsItemSelected(item);
     }

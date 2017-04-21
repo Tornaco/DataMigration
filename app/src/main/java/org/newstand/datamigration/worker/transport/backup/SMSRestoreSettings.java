@@ -1,5 +1,7 @@
 package org.newstand.datamigration.worker.transport.backup;
 
+import org.newstand.datamigration.data.model.SMSRecord;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,5 +17,5 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class SMSRestoreSettings extends RestoreSettings {
-    private String sourcePath;
+    private SMSRecord smsRecord;
 }
