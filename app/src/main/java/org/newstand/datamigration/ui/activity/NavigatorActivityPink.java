@@ -6,5 +6,5 @@ package org.newstand.datamigration.ui.activity;
  * All right reserved.
  */
 
-public class NavigatorActivityPink extends NavigatorActivity {
+public class NavigatorActivityPink extends BaseNavigatorActivity {
 }

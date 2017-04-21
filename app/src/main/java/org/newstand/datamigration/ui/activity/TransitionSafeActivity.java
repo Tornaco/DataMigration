@@ -2,7 +2,6 @@ package org.newstand.datamigration.ui.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +10,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +21,6 @@ import android.view.ViewGroup;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
-import org.newstand.datamigration.utils.ColorUtils;
 import org.newstand.logger.Logger;
 
 import java.util.Observable;
@@ -33,7 +30,7 @@ import lombok.Getter;
 
 public class TransitionSafeActivity extends AppCompatActivity {
 
-    protected static final long UI_TRANSACTION_TIME_MILLS = 500;
+    protected static final long UI_TRANSACTION_TIME_MILLS = 300;
 
     protected Fragment mShowingFragment;
 
@@ -53,6 +50,7 @@ public class TransitionSafeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         readSettings();
@@ -75,7 +73,6 @@ public class TransitionSafeActivity extends AppCompatActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        applyThemeColor();
     }
 
     public ViewGroup getContentView() {
@@ -96,21 +93,6 @@ public class TransitionSafeActivity extends AppCompatActivity {
     }
 
     private void onThemeColorChanged() {
-        applyThemeColor();
-    }
-
-    protected void applyThemeColor() {
-        if (getSupportActionBar() == null) return;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                int themeColorPrimary = ContextCompat.getColor(TransitionSafeActivity.this, themeColor.colorRes());
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(themeColorPrimary));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(ColorUtils.colorBurn(themeColorPrimary));
-                }
-            }
-        });
     }
 
     @Override

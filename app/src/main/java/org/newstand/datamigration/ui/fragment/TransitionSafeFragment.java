@@ -1,9 +1,18 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.View;
+
+import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.provider.ThemeColor;
+import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
+import org.newstand.logger.Logger;
+
+import lombok.Getter;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/15 9:42
@@ -12,6 +21,24 @@ import android.view.View;
  */
 
 public class TransitionSafeFragment extends Fragment {
+
+    @Getter
+    private ThemeColor themeColor;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        themeColor = SettingsProvider.getThemeColor();
+    }
+
+    protected void applyThemeColor() {
+    }
+
+
+    protected void transitionTo(Intent intent) {
+        TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
+        transitionSafeActivity.transitionTo(intent);
+    }
 
     private static final long DURATION = 500;
 
@@ -37,5 +64,13 @@ public class TransitionSafeFragment extends Fragment {
     public final String getStringSafety(@StringRes int resId, Object... formatArgs) {
         if (!isAlive()) return null;
         return getString(resId, formatArgs);
+    }
+
+    public void onHidden() {
+
+    }
+
+    public void onShow() {
+        Logger.d("onShow %s", getClass().getSimpleName());
     }
 }

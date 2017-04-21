@@ -80,12 +80,14 @@
     <string name="title_err_wfd_device_not_found_action">再试试</string>
 
     <string name="title_category">类别</string>
+    <string name="title_more">更多</string>
+    <string name="title_others">其他</string>
     <string name="title_backup_restore">备份与恢复</string>
-    <string name="title_backup">备份</string>
+    <string name="title_backup">开始备份</string>
     <string name="title_backup_export">导出数据</string>
     <string name="title_backup_exporting">正在导出数据</string>
     <string name="title_backup_export_complete">导出数据完成</string>
-    <string name="title_restore">恢复</string>
+    <string name="title_restore">从一个备份还原</string>
     <string name="title_restore_picker">选择一个备份以恢复</string>
     <string name="title_restore_import">导入数据</string>
     <string name="title_restore_importing">正在导入数据</string>
@@ -137,13 +139,14 @@
     <string name="summaty_auto_install">为已经root的设备自动安装应用程序</string>
 
     <string name="title_transport_sender_receiver">无线快传</string>
-    <string name="title_transport_sender">我要发送</string>
-    <string name="title_transport_receiver">我要接收</string>
-    <string name="title_transport_received_viewer">我接收到的文件</string>
-    <string name="title_transport_share">分享</string>
+    <string name="title_transport_sender">发送数据给对方</string>
+    <string name="title_transport_receiver">从对方接收数据</string>
+    <string name="title_transport_received_viewer">查看接收到的数据记录</string>
+    <string name="title_transport_share">把我分享给别人</string>
     <string name="title_transport_share_tips">Google为了安全起见，禁止直接分享APK文件，因此我们把APK文件命名为JPEG文件，待对方收到该文件后，修改后缀名为APK即可安装使用</string>
 
     <string name="title_start">开始</string>
+    <string name="title_card_actions">接下来你可以</string>
 
     <string name="title_user_notice">必读</string>
     <string name="title_never_remind">不再提醒</string>

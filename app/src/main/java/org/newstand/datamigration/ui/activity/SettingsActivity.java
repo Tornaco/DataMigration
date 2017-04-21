@@ -11,16 +11,9 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.tiles.AutoInstallTile;
-import org.newstand.datamigration.ui.tiles.BugReportTile;
-import org.newstand.datamigration.ui.tiles.CheckForUpdateTile;
 import org.newstand.datamigration.ui.tiles.DevTile;
-import org.newstand.datamigration.ui.tiles.DonateTile;
 import org.newstand.datamigration.ui.tiles.InstallDataTile;
-import org.newstand.datamigration.ui.tiles.LicenceTile;
-import org.newstand.datamigration.ui.tiles.MailTile;
 import org.newstand.datamigration.ui.tiles.StorageLocationTile;
-import org.newstand.datamigration.ui.tiles.ThanksTile;
-import org.newstand.datamigration.ui.tiles.ThemeColorTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.tiles.TransitionAnimationTile;
 import org.newstand.datamigration.utils.SeLinuxEnabler;
@@ -87,7 +80,6 @@ public class SettingsActivity extends TransitionSafeActivity {
 
             TransitionAnimationTile animationTile = new TransitionAnimationTile(getContext());
             view.addTile(animationTile);
-            view.addTile(new ThemeColorTile(getContext()));
 
             Category strategy = new ThemedCategory();
             strategy.titleRes = R.string.tile_category_strategy;
@@ -106,30 +98,11 @@ public class SettingsActivity extends TransitionSafeActivity {
 
             storage.addTile(new StorageLocationTile(getContext()));
 
-            Category about = new ThemedCategory();
-            about.titleRes = R.string.tile_category_about;
-
-            CheckForUpdateTile checkForUpdateTile = new CheckForUpdateTile(getActivity());
-            about.addTile(checkForUpdateTile);
-            LicenceTile licenceTile = new LicenceTile(getActivity());
-            about.addTile(licenceTile);
-
-            Category involve = new ThemedCategory();
-            involve.titleRes = R.string.tile_category_in;
-
-            involve.addTile(new BugReportTile(getActivity()));
-            involve.addTile(new MailTile(getActivity()));
-            involve.addTile(new ThanksTile(getActivity()));
-            DonateTile donateTile = new DonateTile(getContext());
-            involve.addTile(donateTile);
-
             if (SettingsProvider.isDebugEnabled()) {
                 categories.add(view);
             }
             categories.add(strategy);
             categories.add(storage);
-            categories.add(about);
-            categories.add(involve);
 
             super.onCreateDashCategories(categories);
         }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/root"
     android:fitsSystemWindows="true"
-    tools:context="org.newstand.datamigration.ui.activity.NavigatorActivity">
+    tools:context="org.newstand.datamigration.ui.activity.BaseNavigatorActivity">
 
     <include layout="@layout/activity_home" />
 

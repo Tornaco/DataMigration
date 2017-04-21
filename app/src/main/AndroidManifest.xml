@@ -38,7 +38,7 @@
             android:value="60f3f20bc06ef7b326523f6c7844e4bb" />
 
         <activity
-            android:name=".ui.activity.NavigatorActivity"
+            android:name=".ui.activity.BaseNavigatorActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,6 +48,7 @@
         </activity>
         <activity
             android:name=".ui.activity.NavigatorActivityDefault"
+            android:enabled="false"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -134,11 +135,11 @@
         </activity>
         <activity
             android:name=".ui.activity.DrawerNavigatorActivity"
-            android:label="@string/app_name_test_version"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -191,6 +192,9 @@
         <activity
             android:name=".ui.activity.SettingsActivity"
             android:label="@string/action_settings" />
+        <activity
+            android:name=".ui.activity.AboutActivity"
+            android:label="@string/tile_category_about" />
         <activity
             android:name=".ui.activity.UserActionViewerActivity"
             android:label="@string/action_user_actions" />

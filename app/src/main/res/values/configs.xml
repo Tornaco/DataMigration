@@ -12,6 +12,6 @@
 
     <string name="def_transport_server_ports">8888,8899,9988,9999,6666,8866,6688,7788,8877,9876,6789</string>
 
-    <string name="help_page_url">https://raw.githubusercontent.com/Tornaco/DataMigration/master/HELP.md</string>
+    <string name="help_page_url">https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/helps</string>
     <string name="version_url">https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/version</string>
 </resources>

@@ -32,4 +32,7 @@
 
     <dimen name="list_item_elevation">1dp</dimen>
     <dimen name="list_item_margin">2dp</dimen>
+
+    <dimen name="card_radius">0dp</dimen>
+    <dimen name="card_elevation">1dp</dimen>
 </resources>

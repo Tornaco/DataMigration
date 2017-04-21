@@ -40,12 +40,16 @@ public class DashboardFragment extends Fragment {
 
         mLayoutInflater = inflater;
 
-        final View rootView = inflater.inflate(R.layout.dashboard, container, false);
+        final View rootView = inflater.inflate(getLayoutId(), container, false);
         mDashboard = (ViewGroup) rootView.findViewById(R.id.dashboard_container);
 
         return rootView;
     }
 
+
+    protected int getLayoutId() {
+        return R.layout.dashboard;
+    }
 
     private List<Category> getDashboardCategories() {
         List<Category> categories = new ArrayList<Category>();
