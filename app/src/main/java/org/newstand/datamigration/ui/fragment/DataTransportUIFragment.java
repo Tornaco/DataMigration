@@ -33,6 +33,7 @@ public abstract class DataTransportUIFragment extends StateBasedFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.data_transporter, container, false);
         progressBar = (ProgressWheel) root.findViewById(R.id.progress_view);
+        progressBar.setKeepScreenOn(true);
         consoleCardView = (CardView) root.findViewById(R.id.console_card);
         consoleTitleView = (TextView) root.findViewById(android.R.id.title);
         consoleSummaryView = (TextView) root.findViewById(android.R.id.text1);

@@ -32,6 +32,7 @@ import org.newstand.datamigration.ui.activity.BackupSessionPickerActivity;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.tiles.BackupTile;
 import org.newstand.datamigration.ui.tiles.RestoreTile;
+import org.newstand.datamigration.ui.tiles.SchedulerTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.IntroDialog;
@@ -88,6 +89,8 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
         actions.titleRes = R.string.title_card_actions;
         actions.addTile(new BackupTile(getActivity()));
         actions.addTile(new RestoreTile(getActivity()));
+
+        actions.addTile(new SchedulerTile(getActivity()));
 
         categories.add(actions);
     }

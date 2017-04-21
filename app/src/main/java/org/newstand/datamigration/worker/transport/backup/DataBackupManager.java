@@ -83,6 +83,11 @@ public class DataBackupManager {
         new BackupWorker(new TransportListenerAdapter(), dataRecords, dataCategory, new AbortSignal()).run();
     }
 
+    public void performBackup(TransportListener listener, final Collection<DataRecord> dataRecords,
+                              final DataCategory dataCategory) {
+        new BackupWorker(listener, dataRecords, dataCategory, new AbortSignal()).run();
+    }
+
     public AbortSignal performBackupAsync(final Collection<DataRecord> dataRecords,
                                           final DataCategory dataCategory,
                                           final TransportListener listener) {

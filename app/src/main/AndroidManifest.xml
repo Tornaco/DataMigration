@@ -167,6 +167,10 @@
             android:label="@string/title_restore"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.activity.ScheduledTaskActivity"
+            android:label="@string/action_scheduler"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".ui.activity.AndroidDataListHostActivity"
             android:theme="@style/AppTheme" />
         <activity
@@ -270,7 +274,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".service.SchedulerServiceV21"
+            android:name=".service.schedule.SchedulerServiceV21"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
