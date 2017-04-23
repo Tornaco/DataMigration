@@ -1,7 +1,9 @@
 package org.newstand.datamigration.service.schedule;
 
 import android.annotation.TargetApi;
+import android.os.BaseBundle;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 
@@ -27,14 +29,26 @@ import lombok.experimental.Builder;
 @Builder
 @Getter
 @ToString
-public class BackupActionSettings extends ActionSettings {
+public class BackupActionSettings {
+
     private List<DataCategory> dataCategories;
     private Session session;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
     public void inflateIntoBundle(PersistableBundle bundle) {
-        super.inflateIntoBundle(bundle);
+
+        String[] categoryArray = new String[dataCategories.size()];
+
+        for (int i = 0; i < dataCategories.size(); i++) {
+            categoryArray[i] = dataCategories.get(i).name();
+        }
+
+        bundle.putStringArray("dataCategories", categoryArray);
+
+        bundle.putString("session", new Gson().toJson(session));
+    }
+
+    public void inflateIntoBundle(Bundle bundle) {
 
         String[] categoryArray = new String[dataCategories.size()];
 
@@ -48,8 +62,7 @@ public class BackupActionSettings extends ActionSettings {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public ActionSettings fromBundle(PersistableBundle bundle) {
+    public BackupActionSettings fromBundle(BaseBundle bundle) {
 
         String[] categoryArray = bundle.getStringArray("dataCategories");
 

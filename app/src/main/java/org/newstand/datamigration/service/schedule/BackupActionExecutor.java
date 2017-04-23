@@ -24,24 +24,22 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class BackupActionExecutor implements ActionExecutor<ActionSettings>, ContextWireable {
+public class BackupActionExecutor implements ActionExecutor<BackupActionSettings>, ContextWireable {
     @Getter
     @Setter
     private Context context;
 
     @Override
-    public int execute(final ActionSettings settings) {
-
-        final BackupActionSettings backupActionSettings = (BackupActionSettings) settings;
+    public int execute(final BackupActionSettings settings) {
 
         DataCategory.consumeAll(new Consumer<DataCategory>() {
             @Override
             public void accept(@NonNull final DataCategory dataCategory) {
-                if (!backupActionSettings.getDataCategories().contains(dataCategory)) {
+                if (!settings.getDataCategories().contains(dataCategory)) {
                     return;
                 }
                 // Perform backup~
-                DataBackupManager.from(context, backupActionSettings.getSession())
+                DataBackupManager.from(context, settings.getSession())
                         .performBackup(new TransportListenerAdapter() {
                             @Override
                             public void onPieceFail(DataRecord record, Throwable err) {
@@ -54,7 +52,7 @@ public class BackupActionExecutor implements ActionExecutor<ActionSettings>, Con
             }
         });
 
-        onExecuted(backupActionSettings.getSession());
+        onExecuted(settings.getSession());
 
         return 0;
     }

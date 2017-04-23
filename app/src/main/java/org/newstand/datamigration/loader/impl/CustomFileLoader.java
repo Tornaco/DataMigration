@@ -32,7 +32,8 @@ public class CustomFileLoader extends BaseLoader {
 
     @Override
     public Collection<DataRecord> loadFromAndroid(LoaderFilter<DataRecord> filter) {
-        return loadFrom(Environment.getExternalStorageDirectory().getPath(), new LoaderFilter<DataRecord>() {
+        return loadFrom(Environment.getExternalStorageDirectory().getPath(),
+                new LoaderFilter<DataRecord>() {
             @Override
             public boolean ignored(@NonNull DataRecord ths) {
                 CustomFileRecord fb = (CustomFileRecord) ths;
@@ -49,7 +50,7 @@ public class CustomFileLoader extends BaseLoader {
                         || Environment.DIRECTORY_ALARMS.equals(parentName)
                         || "Config".equals(parentName)
                         || "Android".equals(parentName)
-                        || ".android_secure".equals(parentName)
+                        || ".android_secure".equals(fb.getDisplayName())
                         || "Documents".equals(parentName)
                         || parentName.startsWith(".");
             }

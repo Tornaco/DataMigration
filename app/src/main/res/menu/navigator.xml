@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_scheduler"
         android:orderInCategory="100"
-        android:title="@string/action_scheduler"
+        android:title="@string/action_scheduler_viewer"
         app:showAsAction="never" />
 
     <item

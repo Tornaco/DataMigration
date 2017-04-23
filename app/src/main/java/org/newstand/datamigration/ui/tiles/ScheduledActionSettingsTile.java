@@ -3,7 +3,7 @@ package org.newstand.datamigration.ui.tiles;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import org.newstand.datamigration.service.schedule.ActionSettings;
+import org.newstand.datamigration.service.schedule.BackupActionSettings;
 
 import dev.nick.tiles.tile.QuickTile;
 import lombok.Getter;
@@ -17,9 +17,9 @@ import lombok.Getter;
 public class ScheduledActionSettingsTile extends QuickTile {
 
     @Getter
-    private ActionSettings actionSettings;
+    private BackupActionSettings actionSettings;
 
-    public ScheduledActionSettingsTile(@NonNull Context context, ActionSettings settings) {
+    public ScheduledActionSettingsTile(@NonNull Context context, BackupActionSettings settings) {
         super(context, null);
         this.actionSettings = settings;
     }

@@ -26,7 +26,7 @@ public enum ScheduleActionType implements ActionExecutorProducer, ResBinder {
         }
 
         @Override
-        public ActionSettings createEmptySettings() {
+        public BackupActionSettings createEmptySettings() {
             return BackupActionSettings.builder()
                     .dataCategories(new ArrayList<DataCategory>())
                     .session(Session.create())

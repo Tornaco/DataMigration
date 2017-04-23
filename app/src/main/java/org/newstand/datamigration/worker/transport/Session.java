@@ -27,6 +27,7 @@ public class Session implements Parcelable {
 
     private Session(String name) {
         this.name = name;
+        this.date = System.currentTimeMillis();
     }
 
     private Session(String name, long date) {
@@ -110,7 +111,6 @@ public class Session implements Parcelable {
 
         if (date != session.date) return false;
         return name.equals(session.name);
-
     }
 
     @Override

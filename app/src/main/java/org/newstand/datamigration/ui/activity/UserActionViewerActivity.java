@@ -56,7 +56,7 @@ public class UserActionViewerActivity extends TransitionSafeActivity {
     private void resolveIntent() {
         Intent intent = getIntent();
         if (intent != null) {
-            fingerPrint = intent.getLongExtra(IntentEvents.KEY_USERACTION_FINGER_PRINT, fingerPrint);
+            fingerPrint = intent.getLongExtra(IntentEvents.KEY_USER_ACTION_FINGER_PRINT, fingerPrint);
         }
     }
 

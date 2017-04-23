@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.service.schedule.ActionSettings;
 import org.newstand.datamigration.service.schedule.BackupActionSettings;
 
 import dev.nick.tiles.tile.EditTextTileView;
@@ -17,10 +16,10 @@ import dev.nick.tiles.tile.EditTextTileView;
 
 public class ScheduledBackupActionSessionSettingsTile extends ScheduledBackupActionSettingsTile {
 
-    public ScheduledBackupActionSessionSettingsTile(@NonNull final Context context, ActionSettings settings) {
+    public ScheduledBackupActionSessionSettingsTile(@NonNull final Context context, BackupActionSettings settings) {
         super(context, settings);
 
-        final BackupActionSettings backupActionSettings = (BackupActionSettings) settings;
+        final BackupActionSettings backupActionSettings = settings;
 
         this.titleRes = R.string.title_settings_session;
         this.summary = backupActionSettings.getSession().getName();

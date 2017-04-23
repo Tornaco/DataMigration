@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.utils.Files;
 import org.newstand.logger.Logger;
 
@@ -32,6 +34,7 @@ public abstract class GsonBasedRepoService<T> implements RepoService<T> {
 
     public GsonBasedRepoService() {
         filePath = SettingsProvider.getCommonDataDir() + File.separator + dataFileName();
+        Logger.v("Init repo with path %s", filePath);
     }
 
     protected String dataFileName() {
@@ -39,8 +42,16 @@ public abstract class GsonBasedRepoService<T> implements RepoService<T> {
     }
 
     @Override
-    public boolean insert(Context context, @NonNull T t) {
+    public boolean insert(Context context, @NonNull final T t) {
         List<T> all = findAll(context);
+        Collections.consumeRemaining(all, new Consumer<T>() {
+            @Override
+            public void accept(@NonNull T c) {
+                if (matchCase(t, c)) {
+                    throw new IllegalArgumentException("Dup element:" + t);
+                }
+            }
+        });
         all.add(t);
         String content = getGson().toJson(all);
         return Files.writeString(content, filePath);

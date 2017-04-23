@@ -1,5 +1,10 @@
 package org.newstand.datamigration.service.schedule;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,9 +20,14 @@ import lombok.experimental.Builder;
 @Setter
 @ToString
 public class Condition {
+
     // Requirements.
     private boolean requiresCharging;
+    @RequiresApi(Build.VERSION_CODES.M)
     private boolean requiresDeviceIdle;
     private int networkType;
     private boolean isPersisted;
+    private long triggerAtMills;
+    private List<String> triggerContentUris;
+    private boolean repeat;
 }

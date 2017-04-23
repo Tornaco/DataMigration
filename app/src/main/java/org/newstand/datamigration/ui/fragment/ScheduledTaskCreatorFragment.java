@@ -4,18 +4,29 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.data.model.DataCategory;
-import org.newstand.datamigration.service.schedule.ActionSettings;
+import org.newstand.datamigration.repo.SchedulerParamRepoService;
 import org.newstand.datamigration.service.schedule.BackupActionSettings;
 import org.newstand.datamigration.service.schedule.Condition;
+import org.newstand.datamigration.service.schedule.ScheduleAction;
+import org.newstand.datamigration.service.schedule.ScheduleActionType;
+import org.newstand.datamigration.service.schedule.SchedulerParam;
+import org.newstand.datamigration.service.schedule.SchedulerServiceProxy;
+import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.tiles.ConditionChargeTile;
 import org.newstand.datamigration.ui.tiles.ConditionIdleTile;
 import org.newstand.datamigration.ui.tiles.ConditionNetworkTypeTile;
 import org.newstand.datamigration.ui.tiles.ConditionPersistTile;
+import org.newstand.datamigration.ui.tiles.ConditionRepeatTile;
+import org.newstand.datamigration.ui.tiles.ConditionTimeTile;
 import org.newstand.datamigration.ui.tiles.ScheduledBackupActionCategoriesSettingsTile;
 import org.newstand.datamigration.ui.tiles.ScheduledBackupActionSessionSettingsTile;
 import org.newstand.datamigration.worker.transport.Session;
@@ -35,13 +46,8 @@ import dev.nick.tiles.tile.DashboardFragment;
 
 public class ScheduledTaskCreatorFragment extends DashboardFragment {
 
-    ActionSettings actionSettings = null;
-
-    Condition condition = Condition.builder()
-            .isPersisted(true)
-            .requiresCharging(true)
-            .requiresDeviceIdle(true)
-            .build();
+    private SchedulerParam param;
+    private Producer<Integer> idProducer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,17 +67,73 @@ public class ScheduledTaskCreatorFragment extends DashboardFragment {
         return root;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        createDefSettings();
+        idProducer = (Producer<Integer>) context;
+        setHasOptionsMenu(true);
     }
 
-    private void createDefSettings() {
-        actionSettings = BackupActionSettings.builder()
-                .session(Session.from(getString(R.string.title_settings_session_def)))
-                .dataCategories(new ArrayList<DataCategory>(DataCategory.values().length))
-                .build();
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.task_viewer, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_remove) {
+            if (param == null) {
+                return false;
+            }
+            SchedulerParam ex = SchedulerParamRepoService.get()
+                    .findById(getContext(), idProducer.produce());
+
+            if (ex == null) {
+                return false;
+            }
+
+            SchedulerParamRepoService.get().delete(getContext(), ex);
+            getActivity().finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        loadOrCreateParams();
+    }
+
+    private void loadOrCreateParams() {
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                int id = idProducer.produce();
+                Logger.d("Query with id %s", id);
+                if (id < 0) {
+                    BackupActionSettings actionSettings = BackupActionSettings.builder()
+                            .session(Session.from(getString(R.string.title_settings_session_def)))
+                            .dataCategories(new ArrayList<DataCategory>(DataCategory.values().length))
+                            .build();
+                    param = new SchedulerParam(Condition.builder().build(),
+                            ScheduleAction.builder()
+                                    .actionType(ScheduleActionType.Backup)
+                                    .settings(actionSettings).build());
+                } else {
+                    param = SchedulerParamRepoService.get().findById(getContext(), id);
+                    Logger.v("Query result %s", param);
+                }
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        buildUI(getContext());
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -83,30 +145,41 @@ public class ScheduledTaskCreatorFragment extends DashboardFragment {
     protected void onCreateDashCategories(List<Category> categories) {
         super.onCreateDashCategories(categories);
 
+        if (param == null) {
+            return;
+        }
+
         Category conditions = new Category();
         conditions.titleRes = R.string.title_conditions;
+
+        Condition condition = param.getCondition();
 
         ConditionIdleTile conditionIdleTile = new ConditionIdleTile(getContext(), condition);
         ConditionChargeTile conditionChargeTile = new ConditionChargeTile(getContext(), condition);
         ConditionPersistTile conditionPersistTile = new ConditionPersistTile(getContext(), condition);
         ConditionNetworkTypeTile conditionNetworkTypeTile = new ConditionNetworkTypeTile(getContext(), condition);
+        ConditionTimeTile conditionTimeTile = new ConditionTimeTile(getContext(), condition);
+        ConditionRepeatTile conditionRepeatTile = new ConditionRepeatTile(getContext(), condition);
 
         conditions.addTile(conditionChargeTile);
         conditions.addTile(conditionIdleTile);
         conditions.addTile(conditionPersistTile);
         conditions.addTile(conditionNetworkTypeTile);
+        conditions.addTile(conditionTimeTile);
+        conditions.addTile(conditionRepeatTile);
 
         Category settings = new Category();
         settings.titleRes = R.string.action_settings;
 
-        settings.addTile(new ScheduledBackupActionSessionSettingsTile(getContext(), actionSettings));
-        settings.addTile(new ScheduledBackupActionCategoriesSettingsTile(getContext(), actionSettings));
+        settings.addTile(new ScheduledBackupActionSessionSettingsTile(getContext(), param.getAction().getSettings()));
+        settings.addTile(new ScheduledBackupActionCategoriesSettingsTile(getContext(), param.getAction().getSettings()));
 
         categories.add(conditions);
         categories.add(settings);
     }
 
     private void onFabClick() {
-        Logger.d("OnClick, condition %s settings %s", condition, actionSettings);
+        SchedulerServiceProxy.schedule(getContext(), param.getCondition(), param.getAction());
+        getActivity().finish();
     }
 }

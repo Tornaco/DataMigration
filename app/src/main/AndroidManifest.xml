@@ -167,8 +167,12 @@
             android:label="@string/title_restore"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.ScheduledTaskActivity"
-            android:label="@string/action_scheduler"
+        android:name=".ui.activity.ScheduledTaskViewerActivity"
+        android:label="@string/action_scheduler_viewer"
+        android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.activity.ScheduledTaskCreatorActivity"
+            android:label="@string/action_scheduler_creator"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.AndroidDataListHostActivity"
@@ -276,6 +280,14 @@
         <service
             android:name=".service.schedule.SchedulerServiceV21"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".service.schedule.SchedulerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="org.newstand.datamigration.ACTION_SCHEDULE_TASK" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

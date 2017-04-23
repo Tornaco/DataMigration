@@ -9,5 +9,5 @@ import org.newstand.datamigration.common.Producer;
  */
 
 public interface ActionExecutorProducer extends Producer<ActionExecutor> {
-    ActionSettings createEmptySettings();
+    BackupActionSettings createEmptySettings();
 }

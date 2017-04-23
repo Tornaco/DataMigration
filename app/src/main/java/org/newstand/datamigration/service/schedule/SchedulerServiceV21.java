@@ -7,12 +7,16 @@ import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
+import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.sync.SharedExecutor;
+import org.newstand.datamigration.utils.Collections;
 import org.newstand.logger.Logger;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,13 +38,23 @@ public class SchedulerServiceV21 extends JobService {
         Preconditions.checkNotNull(scheduleAction.getActionType());
         Preconditions.checkNotNull(scheduleAction.getSettings());
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
-        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID.incrementAndGet(),
+        final JobInfo.Builder builder = new JobInfo.Builder(JOB_ID.incrementAndGet(),
                 new ComponentName(context.getPackageName(), SchedulerServiceV21.class.getName()));
         builder.setRequiresCharging(condition.isRequiresCharging())
                 .setPersisted(condition.isPersisted())
                 .setRequiredNetworkType(condition.getNetworkType())
                 .setRequiresDeviceIdle(condition.isRequiresDeviceIdle());
-        builder.setExtras(scheduleAction.toBundle());
+        if (condition.getTriggerContentUris() != null)
+            Collections.consumeRemaining(condition.getTriggerContentUris(), new Consumer<String>() {
+                @Override
+                public void accept(@NonNull String uri) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        builder.addTriggerContentUri(new JobInfo.TriggerContentUri(Uri.parse(uri),
+                                JobInfo.TriggerContentUri.FLAG_NOTIFY_FOR_DESCENDANTS));
+                    }
+                }
+            });
+        builder.setExtras(scheduleAction.toPersistBundle());
         return jobScheduler.schedule(builder.build()) == JOB_ID.get();
     }
 

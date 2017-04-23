@@ -11,7 +11,11 @@ public interface IntentEvents {
     String KEY_CATEGORY = "category";
     String KEY_SOURCE = "session";
     String KEY_HOST = "host";
-    String KEY_USERACTION_FINGER_PRINT = "ua_fp";
+    String KEY_USER_ACTION_FINGER_PRINT = "ua_fp";
+
+    String ACTION_SCHEDULE_TASK = "org.newstand.datamigration.ACTION_SCHEDULE_TASK";
+    String KEY_ACTION_SCHEDULE_TASK = "key.org.newstand.datamigration.ACTION_SCHEDULE_TASK";
+
 
     int EVENT_TRANSPORT_COMPLETE = 0x99;
     int EVENT_ON_CATEGORY_OF_DATA_SELECT_COMPLETE = 0x100;

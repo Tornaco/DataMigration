@@ -20,7 +20,6 @@
 
     <string name="action_settings">设置</string>
     <string name="action_user_actions">日志</string>
-    <string name="action_scheduler">制定定时任务</string>
     <string name="action_disable_selinux">禁用SeLinux</string>
     <string name="action_remove">删除</string>
     <string name="action_rename">修改名称</string>
@@ -194,6 +193,9 @@
     <string name="title_help">帮助</string>
     <string name="title_help_noop">这家伙很懒，留下了一个空白的帮助页~</string>
 
+    <string name="action_scheduler_viewer">计划任务</string>
+    <string name="action_scheduler_creator">制定计划任务</string>
+    <string name="action_scheduler_creator_saving">正在保存计划</string>
     <string name="title_conditions">触发条件</string>
     <string name="title_condition_charge">仅设备充电时</string>
     <string name="title_condition_idle">仅空闲时</string>
@@ -205,6 +207,11 @@
     <string name="title_condition_network_type_unmetered">不按流量计费的</string>
     <string name="title_condition_network_type_mo_roaming">非漫游</string>
     <string name="title_settings_categories">要备份的数据</string>
+    <string name="summary_settings_categories">尚未指定</string>
     <string name="title_settings_session">备份备注</string>
     <string name="title_settings_session_def">自动备份</string>
+    <string name="title_settings_time">设置起始时间</string>
+    <string name="summary_settings_time">尚未指定</string>
+    <string name="title_settings_repeat">重复</string>
+    <string name="summary_settings_repeat">该计划会在每天的这个时间执行</string>
 </resources>

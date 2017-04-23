@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.ui.activity.ScheduledTaskActivity;
+import org.newstand.datamigration.ui.activity.ScheduledTaskViewerActivity;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 
 import dev.nick.tiles.tile.QuickTileView;
@@ -26,14 +26,14 @@ public class SchedulerTile extends ThemedTile {
     @Override
     void onInitView(Context context) {
 
-        this.titleRes = R.string.action_scheduler;
+        this.titleRes = R.string.action_scheduler_viewer;
         this.iconRes = R.drawable.ic_schedule;
         this.tileView = new QuickTileView(getContext(), this) {
             @Override
             public void onClick(View v) {
                 super.onClick(v);
                 TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getContext();
-                transitionSafeActivity.transitionTo(new Intent(getContext(), ScheduledTaskActivity.class));
+                transitionSafeActivity.transitionTo(new Intent(getContext(), ScheduledTaskViewerActivity.class));
             }
         };
     }

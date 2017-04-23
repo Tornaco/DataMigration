@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
-import org.newstand.datamigration.service.schedule.ActionSettings;
 import org.newstand.datamigration.service.schedule.BackupActionSettings;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.logger.Logger;
@@ -29,13 +28,11 @@ public class ScheduledBackupActionCategoriesSettingsTile extends ScheduledBackup
 
     private PopupMenu popupMenu;
 
-    public ScheduledBackupActionCategoriesSettingsTile(@NonNull final Context context, final ActionSettings settings) {
+    public ScheduledBackupActionCategoriesSettingsTile(@NonNull final Context context, final BackupActionSettings settings) {
         super(context, settings);
 
-        final BackupActionSettings backupActionSettings = (BackupActionSettings) settings;
-
         this.titleRes = R.string.title_settings_categories;
-        this.summary = buildSummary(((BackupActionSettings) settings).getDataCategories());
+        this.summary = buildSummary(settings.getDataCategories());
         this.iconRes = R.drawable.ic_backup;
 
 
@@ -63,44 +60,50 @@ public class ScheduledBackupActionCategoriesSettingsTile extends ScheduledBackup
                             int id = item.getItemId();
                             switch (id) {
                                 case R.id.action_contact:
-                                    if (checked && !((BackupActionSettings) settings).getDataCategories().contains(DataCategory.Contact))
-                                        ((BackupActionSettings) settings).getDataCategories().add(DataCategory.Contact);
+                                    if (checked && !settings.getDataCategories().contains(DataCategory.Contact))
+                                        settings.getDataCategories().add(DataCategory.Contact);
                                     else
-                                        ((BackupActionSettings) settings).getDataCategories().remove(DataCategory.Contact);
+                                        settings.getDataCategories().remove(DataCategory.Contact);
                                     break;
                                 case R.id.action_calllog:
-                                    if (checked && !((BackupActionSettings) settings).getDataCategories().contains(DataCategory.CallLog))
-                                        ((BackupActionSettings) settings).getDataCategories().add(DataCategory.CallLog);
+                                    if (checked && !settings.getDataCategories().contains(DataCategory.CallLog))
+                                        settings.getDataCategories().add(DataCategory.CallLog);
                                     else
-                                        ((BackupActionSettings) settings).getDataCategories().remove(DataCategory.CallLog);
+                                        settings.getDataCategories().remove(DataCategory.CallLog);
                                     break;
                                 case R.id.action_sms:
-                                    if (checked && !((BackupActionSettings) settings).getDataCategories().contains(DataCategory.Sms))
-                                        ((BackupActionSettings) settings).getDataCategories().add(DataCategory.Sms);
+                                    if (checked && !settings.getDataCategories().contains(DataCategory.Sms))
+                                        settings.getDataCategories().add(DataCategory.Sms);
                                     else
-                                        ((BackupActionSettings) settings).getDataCategories().remove(DataCategory.Sms);
+                                        settings.getDataCategories().remove(DataCategory.Sms);
                                     break;
                                 case R.id.action_photo:
-                                    if (checked && !((BackupActionSettings) settings).getDataCategories().contains(DataCategory.Photo))
-                                        ((BackupActionSettings) settings).getDataCategories().add(DataCategory.Photo);
+                                    if (checked && !settings.getDataCategories().contains(DataCategory.Photo))
+                                        settings.getDataCategories().add(DataCategory.Photo);
                                     else
-                                        ((BackupActionSettings) settings).getDataCategories().remove(DataCategory.Photo);
+                                        settings.getDataCategories().remove(DataCategory.Photo);
                                     break;
                                 case R.id.action_music:
-                                    if (checked && !((BackupActionSettings) settings).getDataCategories().contains(DataCategory.Music))
-                                        ((BackupActionSettings) settings).getDataCategories().add(DataCategory.Music);
+                                    if (checked && !settings.getDataCategories().contains(DataCategory.Music))
+                                        settings.getDataCategories().add(DataCategory.Music);
                                     else
-                                        ((BackupActionSettings) settings).getDataCategories().remove(DataCategory.Music);
+                                        settings.getDataCategories().remove(DataCategory.Music);
                                     break;
                                 case R.id.action_app:
-                                    if (checked && !((BackupActionSettings) settings).getDataCategories().contains(DataCategory.App))
-                                        ((BackupActionSettings) settings).getDataCategories().add(DataCategory.App);
+                                    if (checked && !settings.getDataCategories().contains(DataCategory.App))
+                                        settings.getDataCategories().add(DataCategory.App);
                                     else
-                                        ((BackupActionSettings) settings).getDataCategories().remove(DataCategory.App);
+                                        settings.getDataCategories().remove(DataCategory.App);
+                                    break;
+                                case R.id.action_video:
+                                    if (checked && !settings.getDataCategories().contains(DataCategory.Video))
+                                        settings.getDataCategories().add(DataCategory.Video);
+                                    else
+                                        settings.getDataCategories().remove(DataCategory.Video);
                                     break;
                             }
 
-                            getSummaryTextView().setText(buildSummary(((BackupActionSettings) settings).getDataCategories()));
+                            getSummaryTextView().setText(buildSummary(settings.getDataCategories()));
 
                             return false;
                         }
@@ -114,6 +117,9 @@ public class ScheduledBackupActionCategoriesSettingsTile extends ScheduledBackup
     }
 
     private String buildSummary(List<DataCategory> categories) {
+        if(Collections.isNullOrEmpty(categories)) {
+            return getContext().getString(R.string.summary_settings_categories);
+        }
         final StringBuilder sb = new StringBuilder();
         Collections.consumeRemaining(categories, new Consumer<DataCategory>() {
             @Override

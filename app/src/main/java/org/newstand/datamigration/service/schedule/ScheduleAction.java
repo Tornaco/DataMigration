@@ -2,12 +2,15 @@ package org.newstand.datamigration.service.schedule;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.BaseBundle;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.PersistableBundle;
 
 import org.newstand.datamigration.common.ContextWireable;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Builder;
 
@@ -18,34 +21,46 @@ import lombok.experimental.Builder;
  */
 @Builder
 @Getter
+@Setter
 @ToString
 public class ScheduleAction {
+
+    private long id;
     private ScheduleActionType actionType;
-    private ActionSettings settings;
+    private BackupActionSettings settings;
 
     public int execute(Context context) {
         //noinspection unchecked
-        ActionExecutor<ActionSettings> executor = actionType.produce();
+        ActionExecutor<BackupActionSettings> executor = actionType.produce();
         if (executor instanceof ContextWireable) {
             ((ContextWireable) executor).wire(context);
         }
         return executor.execute(settings);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public PersistableBundle toBundle() {
-        PersistableBundle persistableBundle = new PersistableBundle();
-        persistableBundle.putString("actionType", actionType.name());
+    public Bundle toBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString("actionType", actionType.name());
 
-        settings.inflateIntoBundle(persistableBundle);
+        settings.inflateIntoBundle(bundle);
 
-        return persistableBundle;
+        return bundle;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static ScheduleAction fromBundle(PersistableBundle bundle) {
+    public PersistableBundle toPersistBundle() {
+        PersistableBundle bundle = new PersistableBundle();
+        bundle.putString("actionType", actionType.name());
+
+        settings.inflateIntoBundle(bundle);
+
+        return bundle;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static ScheduleAction fromBundle(BaseBundle bundle) {
         ScheduleActionType actionType = ScheduleActionType.valueOf(bundle.getString("actionType"));
-        ActionSettings settings = actionType.createEmptySettings();
+        BackupActionSettings settings = actionType.createEmptySettings();
         return ScheduleAction.builder()
                 .actionType(actionType)
                 .settings(settings.fromBundle(bundle))
