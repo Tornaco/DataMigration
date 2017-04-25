@@ -42,6 +42,7 @@ public class DataSenderActivity extends DataTransportActivity implements Produce
 
     @Override
     public LoaderSource onRequestLoaderSource() {
-        return LoaderSource.builder().session(Session.create()).parent(LoaderSource.Parent.Received).build();
+        return LoaderSource.builder().session(Session.create())
+                .parent(LoaderSource.Parent.Received).build();
     }
 }

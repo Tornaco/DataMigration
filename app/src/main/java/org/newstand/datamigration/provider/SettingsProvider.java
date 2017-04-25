@@ -59,6 +59,8 @@ public class SettingsProvider extends Observable {
 
     private static final String LICENSE_ROOT_DIR = "license";
 
+    private static final String WIFI_CONFIG_FILE_PATH = "data/misc/wifi/wpa_supplicant.conf";
+
     @Getter
     @Setter
     private static boolean isUnderTest;
@@ -448,5 +450,9 @@ public class SettingsProvider extends Observable {
 
     public static void setEncryptEnabled(boolean value) {
         sMe.writeBoolean(KEY_ENCRYPT_ENABLED, value);
+    }
+
+    public static String getWifiConfigFilePath() {
+        return WIFI_CONFIG_FILE_PATH;
     }
 }

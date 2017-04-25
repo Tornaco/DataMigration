@@ -12,6 +12,7 @@ import org.newstand.datamigration.ui.fragment.MusicListFragment;
 import org.newstand.datamigration.ui.fragment.PhotoListFragment;
 import org.newstand.datamigration.ui.fragment.SmsListFragment;
 import org.newstand.datamigration.ui.fragment.VideoListFragment;
+import org.newstand.datamigration.ui.fragment.WifiListFragment;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/7 15:20
@@ -41,6 +42,8 @@ public class ReceivedDataListHostActivity extends DataListHostActivity {
                 return new AlarmListFragment();
             case CallLog:
                 return new CallListFragment();
+            case Wifi:
+                return new WifiListFragment();
             default:
                 throw new UnsupportedOperationException("UnSupported category " + category);
         }

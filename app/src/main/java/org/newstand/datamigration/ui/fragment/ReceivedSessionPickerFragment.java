@@ -222,7 +222,7 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
                 .setPositiveButton(getString(android.R.string.ok), new InputDialogCompat.ButtonActionListener() {
                     @Override
                     public void onClick(CharSequence inputText) {
-                        renameAsync(session, inputText.toString());
+                        renameAsync(session, inputText.toString().replace(" ", ""));
                     }
                 })
                 .interceptButtonAction(new InputDialogCompat.ButtonActionIntercepter() {

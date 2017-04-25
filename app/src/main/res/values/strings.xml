@@ -43,7 +43,8 @@
     <string name="category_photo">照片</string>
     <string name="category_app">应用</string>
     <string name="category_alarm">闹钟</string>
-    <string name="category_call">通话记录(BETA)</string>
+    <string name="category_wifi">Wifi</string>
+    <string name="category_call">通话记录</string>
     <string name="category_custom">自定义文件</string>
 
     <string name="summary_sms_template_rec">来自&#160;%1$s \t%2$s</string>
@@ -99,6 +100,8 @@
     <string name="action_remark_tips">，点击可进行修改。</string>
     <string name="action_viewer_tips_received">你稍后可以在 主页-卡片-我接收到的文件 里查看或者导入你的设备。</string>
     <string name="title_backup_at">%1$s</string>
+    <string name="title_backup_default_name">我的备份</string>
+    <string name="title_received_default_name">我收到的</string>
     <string name="title_backup_invalid">无效备份</string>
     <string name="title_backup_history">最近备份 %1$s</string>
     <string name="title_backup_history_noop">无备份记录</string>

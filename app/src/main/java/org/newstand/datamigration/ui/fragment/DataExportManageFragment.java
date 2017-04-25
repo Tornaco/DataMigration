@@ -126,7 +126,7 @@ public class DataExportManageFragment extends DataTransportManageFragment {
 
     @Override
     protected Session onCreateSession() {
-        return Session.create();
+        return Session.from(getString(R.string.title_backup_default_name));
     }
 
     @Override
@@ -187,7 +187,7 @@ public class DataExportManageFragment extends DataTransportManageFragment {
                         DataBackupManager.from(getContext())
                                 .renameSessionChecked(
                                         LoaderSource.builder().parent(LoaderSource.Parent.Backup).build(),
-                                        getSession(), inputText.toString());
+                                        getSession(), inputText.toString().replace(" ", ""));
                         updateCompleteSummary();
                     }
                 })

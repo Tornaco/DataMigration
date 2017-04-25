@@ -12,6 +12,7 @@ import org.newstand.datamigration.ui.fragment.MusicListFragment;
 import org.newstand.datamigration.ui.fragment.PhotoListFragment;
 import org.newstand.datamigration.ui.fragment.SmsListFragment;
 import org.newstand.datamigration.ui.fragment.VideoListFragment;
+import org.newstand.datamigration.ui.fragment.WifiListFragment;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/7 15:20
@@ -39,6 +40,8 @@ public class AndroidDataListHostActivity extends DataListHostActivity {
                 return new CallListFragment();
             case Alarm:
                 return new AlarmListFragment();
+            case Wifi:
+                return new WifiListFragment();
             case CustomFile:
                 return new CustomFileListFragment();
             default:

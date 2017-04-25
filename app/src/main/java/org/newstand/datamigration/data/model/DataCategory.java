@@ -14,6 +14,7 @@ import org.newstand.datamigration.loader.impl.MusicLoader;
 import org.newstand.datamigration.loader.impl.PhotoLoader;
 import org.newstand.datamigration.loader.impl.SMSLoader;
 import org.newstand.datamigration.loader.impl.VideoLoader;
+import org.newstand.datamigration.loader.impl.WifiLoader;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 
@@ -100,6 +101,23 @@ public enum DataCategory implements LoaderGetter, ResBinder {
         }
     },
 
+    Wifi {
+        @NonNull
+        @Override
+        public DataLoader getLoader() {
+            return new WifiLoader();
+        }
+
+        @Override
+        public int nameRes() {
+            return R.string.category_wifi;
+        }
+
+        @Override
+        public int iconRes() {
+            return R.drawable.ic_wifi;
+        }
+    },
 
     Music {
         @NonNull

@@ -18,6 +18,7 @@ import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.data.model.SMSRecord;
+import org.newstand.datamigration.data.model.WifiRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
@@ -187,6 +188,16 @@ public class DataBackupManager {
                         + ((CallLogRecord) record).getDate()
                         + CallLogBackupSettings.SUBFIX);
                 return callLogBackupSettings;
+            case Wifi:
+                WifiBackupSettings wifiBackupSettings = new WifiBackupSettings();
+                wifiBackupSettings.setRecord((WifiRecord) record);
+                wifiBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
+                        + File.separator
+                        + "wpa_supplicant"
+                        + "@"
+                        + mixedName(record.getDisplayName())
+                        + WifiBackupSettings.SUBFIX);
+                return wifiBackupSettings;
         }
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
     }
@@ -238,6 +249,10 @@ public class DataBackupManager {
                 CallLogRestoreSettings callLogRestoreSettings = new CallLogRestoreSettings();
                 callLogRestoreSettings.setCallLogRecord((CallLogRecord) record);
                 return callLogRestoreSettings;
+            case Wifi:
+                WifiRestoreSettings wifiRestoreSettings = new WifiRestoreSettings();
+                wifiRestoreSettings.setRecord((WifiRecord) record);
+                return wifiRestoreSettings;
 
         }
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
@@ -261,6 +276,8 @@ public class DataBackupManager {
                 return new AppBackupAgent();
             case Sms:
                 return new SMSBackupAgent();
+            case Wifi:
+                return new WifiBackupAgent();
         }
         throw new IllegalArgumentException("Unknown for:" + category.name());
     }

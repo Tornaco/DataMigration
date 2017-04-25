@@ -218,12 +218,13 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                 .setTitle(getString(R.string.action_rename))
                 .setInputDefaultText(session.getName())
                 .setInputMaxWords(32)
-                .setPositiveButton(getString(android.R.string.ok), new InputDialogCompat.ButtonActionListener() {
-                    @Override
-                    public void onClick(CharSequence inputText) {
-                        renameAsync(session, inputText.toString());
-                    }
-                })
+                .setPositiveButton(getString(android.R.string.ok),
+                        new InputDialogCompat.ButtonActionListener() {
+                            @Override
+                            public void onClick(CharSequence inputText) {
+                                renameAsync(session, inputText.toString().replace(" ", ""));
+                            }
+                        })
                 .interceptButtonAction(new InputDialogCompat.ButtonActionIntercepter() {
                     @Override
                     public boolean onInterceptButtonAction(int whichButton, CharSequence inputText) {

@@ -206,8 +206,8 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
                         DataBackupManager.from(getContext())
                                 .renameSessionChecked(
                                         LoaderSource.builder().parent(LoaderSource.Parent.Received).build(),
-                                        getSession(), inputText.toString());
-                        ReceivedSessionRepoService.get().update(getContext(),getSession());
+                                        getSession(), inputText.toString().replace(" ", ""));
+                        ReceivedSessionRepoService.get().update(getContext(), getSession());
                         updateCompleteSummary();
                     }
                 })
@@ -264,7 +264,7 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     public void onDestroy() {
         super.onDestroy();
         // Save session info.
-        ReceivedSessionRepoService.get().insert(getContext(),getSession());
+        ReceivedSessionRepoService.get().insert(getContext(), getSession());
         SmsContentProviderCompat.restoreDefSmsAppCheckedAsync(getContext());
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
@@ -42,6 +43,7 @@ public class DataReceiverActivity extends DataTransportActivity implements Produ
 
     @Override
     public LoaderSource onRequestLoaderSource() {
-        return LoaderSource.builder().session(Session.create()).parent(LoaderSource.Parent.Android).build();
+        return LoaderSource.builder().session(Session.from(getString(R.string.title_received_default_name)))
+                .parent(LoaderSource.Parent.Android).build();
     }
 }
