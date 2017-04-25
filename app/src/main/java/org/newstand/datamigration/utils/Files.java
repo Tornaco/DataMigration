@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.support.v4.content.FileProvider;
 
+import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.secure.VersionRetriever;
@@ -105,7 +106,7 @@ public abstract class Files {
             share.putExtra(Intent.EXTRA_STREAM, getUriForFile(context, new File(toPlace)));
             share.setType("image/jpeg");
             share.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(Intent.createChooser(share, "Share this app"));
+            context.startActivity(Intent.createChooser(share, context.getString(R.string.title_transport_share)));
         } catch (IOException e) {
             Logger.e(e, "Fail to copy file");
         }

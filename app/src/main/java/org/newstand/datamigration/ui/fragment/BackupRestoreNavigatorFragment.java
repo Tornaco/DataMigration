@@ -2,7 +2,6 @@ package org.newstand.datamigration.ui.fragment;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -38,7 +37,6 @@ import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.IntroDialog;
 import org.newstand.datamigration.ui.widget.VersionInfoDialog;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.logger.Logger;
 
 import java.util.Date;
 import java.util.List;
@@ -95,12 +93,6 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
         categories.add(actions);
     }
 
-    @Override
-    protected void buildUI(Context context) {
-        super.buildUI(context);
-        Logger.d("buildUI");
-    }
-
     @SuppressWarnings("unchecked")
     protected <T extends View> T findView(@IdRes int idRes) {
         return (T) getRootView().findViewById(idRes);
@@ -112,20 +104,9 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
     }
 
     protected void setupView() {
-        // Now hide the cards first.
-        hideCards();
-
         if (SettingsProvider.shouldCheckForUpdateNow()) {
             checkForUpdate();
         }
-    }
-
-    private void hideCards() {
-        findView(R.id.card).setVisibility(View.INVISIBLE);
-    }
-
-    private void showCards() {
-        findView(R.id.card).setVisibility(View.VISIBLE);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -196,9 +177,6 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
     }
 
     private void onPermissionGrant() {
-        showCards();
-        // Show card intro after our cards is visible~
-        buildCardIntros();
         queryShowHistory();
     }
 

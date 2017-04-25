@@ -88,6 +88,7 @@
                     android:paddingTop="@dimen/activity_horizontal_margin"
                     android:text="@string/backup_intro"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="@dimen/text_size_medium"
                     android:textColor="@color/primary_text" />
 
                 <View

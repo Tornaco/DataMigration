@@ -29,6 +29,10 @@ import cn.iwgang.simplifyspan.SimplifySpanBuild;
 import cn.iwgang.simplifyspan.other.OnClickableSpanListener;
 import cn.iwgang.simplifyspan.unit.SpecialClickableUnit;
 import cn.iwgang.simplifyspan.unit.SpecialTextUnit;
+import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.shape.ShapeType;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
 
@@ -152,6 +156,26 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
         if (!isAlive()) return;
         SimplifySpanBuild summary = onCreateCompleteSummary();
         getConsoleSummaryView().setText(summary.build());
+        buildSummaryIntro();
+    }
+
+    private void buildSummaryIntro() {
+        new MaterialIntroView.Builder(getActivity())
+                .enableDotAnimation(true)
+                .enableIcon(true)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .enableFadeAnimation(true)
+                .performClick(false)
+                .setInfoText(getString(getSummaryIntro()))
+                .setShape(ShapeType.CIRCLE)
+                .setTarget(getConsoleSummaryView())
+                .setUsageId("intro_transport_management_" + getClass().getName())
+                .show();
+    }
+
+    private int getSummaryIntro() {
+        return R.string.title_transport_intro;
     }
 
     abstract SimplifySpanBuild onCreateCompleteSummary();
@@ -197,10 +221,10 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
 
     protected void publishFailEvent(DataRecord handling, Throwable throwable) {
         Session session = getSession();
-        Logger.i("publishFailEvent with session %s for %s", session, handling);
         UserActionServiceProxy.publishNewAction(
+                getContext(),
                 UserAction.builder()
-                        .eventTitle("Fail@" + handling.getDisplayName())
+                        .eventTitle("Fail:" + handling.getDisplayName())
                         .date(session.getDate())
                         .fingerPrint(session.getDate())
                         .eventDescription(Logger.getStackTraceString(throwable))
@@ -222,7 +246,6 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
 
     protected List<UserAction> queryFailEvent() {
         Session session = getSession();
-        Logger.i("queryFailEvent with session %s", session);
         return UserActionServiceProxy.getByFingerPrint(getContext(), session.getDate());
     }
 

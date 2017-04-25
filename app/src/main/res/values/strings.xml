@@ -10,8 +10,8 @@
     <string name="fab_intro_category_send">当你完成数据选择时，点击此处即可开始进行传输</string>
     <string name="backup_intro_actions">此卡片包括</string>
     <string name="backup_intro_and">和</string>
-    <string name="backup_intro">支持联系人，短消息，通话记录，照片，音乐，视频，闹钟等数据备份与应用软件（应用数据的备份需要获取ROOT权限）备份到本地。\n备份需要您授予包括读取联系人，电话，短信，文件读写等权限。\n当您完成一次备份后，您可以随时使用还原功能进行数据还原。</string>
-    <string name="transport_intro">使用无线快传，你可以将A手机中上述可备份数据数据快速传输到B手机里。基于WIFI直连技术实现，不耗费蜂窝数据流量。\n另外需要您授予位置信息权限才能使用WIFI相关的技术进行数据传输。\n在使用的时候您只需要选择<b>发送</b>或者<b>接收</b>开始，按照引导操作即可。</string>
+    <string name="backup_intro">将联系人，短消息，通话记录，照片，音乐，视频，闹钟等数据备份与应用软件（应用数据的备份需要获取Root权限）备份到本地存储。\n\n备份需要你授予包括读取联系人，电话，短信，文件读写等权限。</string>
+    <string name="transport_intro">使用无线快传，你可以将A手机中上述可备份数据数据快速传输到B手机。\n\n需要你授予位置信息权限。\n</string>
 
     <string name="title_activity_navigator">@string/app_name</string>
 
@@ -54,6 +54,7 @@
     <string name="title_transport_report_total">共计：%1$s条</string>
     <string name="title_transport_report_success">成功：%1$s条</string>
     <string name="title_transport_report_fail">失败：%1$s条</string>
+    <string name="title_transport_intro">点击可以查看错误信息</string>
 
     <string name="title_setup_wfd">寻找连接</string>
     <string name="title_setup_wfd_sender">寻找连接@发送</string>
@@ -196,22 +197,25 @@
     <string name="action_scheduler_viewer">计划任务</string>
     <string name="action_scheduler_creator">制定计划任务</string>
     <string name="action_scheduler_creator_saving">正在保存计划</string>
-    <string name="title_conditions">触发条件</string>
-    <string name="title_condition_charge">仅设备充电时</string>
+    <string name="title_scheduler_pending">队列中</string>
+    <string name="title_scheduler_tips">新制定的计划稍后会显示在这里</string>
+    <string name="title_conditions">过滤条件</string>
+    <string name="title_condition_charge">仅充电时</string>
     <string name="title_condition_idle">仅空闲时</string>
     <string name="title_condition_persist">持久化</string>
     <string name="summary_condition_persist">该任务在设备重启后是否依旧生效</string>
     <string name="title_condition_network_type">网络要求</string>
     <string name="title_condition_network_type_none">无</string>
     <string name="title_condition_network_type_any">任意</string>
-    <string name="title_condition_network_type_unmetered">不按流量计费的</string>
+    <string name="title_condition_network_type_unmetered">不按流量计费</string>
     <string name="title_condition_network_type_mo_roaming">非漫游</string>
     <string name="title_settings_categories">要备份的数据</string>
     <string name="summary_settings_categories">尚未指定</string>
     <string name="title_settings_session">备份备注</string>
     <string name="title_settings_session_def">自动备份</string>
-    <string name="title_settings_time">设置起始时间</string>
+    <string name="title_settings_time">计划开始时间</string>
     <string name="summary_settings_time">尚未指定</string>
     <string name="title_settings_repeat">重复</string>
-    <string name="summary_settings_repeat">该计划会在每天的这个时间执行</string>
+    <string name="summary_settings_repeat">计划会在每天的指定时间执行</string>
+    <string name="title_validation_select_data">请选择要备份的数据</string>
 </resources>

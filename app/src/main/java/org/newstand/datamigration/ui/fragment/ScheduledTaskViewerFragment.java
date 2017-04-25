@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.SchedulerParamRepoService;
 import org.newstand.datamigration.service.schedule.SchedulerParam;
 import org.newstand.datamigration.ui.activity.ScheduledTaskCreatorActivity;
@@ -31,6 +34,7 @@ import dev.nick.tiles.tile.DashboardFragment;
 public class ScheduledTaskViewerFragment extends DashboardFragment {
 
     private List<SchedulerParam> mSchedulerParamList;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,12 +42,21 @@ public class ScheduledTaskViewerFragment extends DashboardFragment {
         FloatingActionButton fab = null;
         if (root != null) {
             fab = (FloatingActionButton) root.findViewById(R.id.fab);
+            swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe);
         }
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onFabClick();
+                }
+            });
+        }
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    startLoading();
                 }
             });
         }
@@ -66,18 +79,20 @@ public class ScheduledTaskViewerFragment extends DashboardFragment {
 
         if (Collections.isNullOrEmpty(mSchedulerParamList)) return;
 
-        final Category task = new Category();
+        final Category pending = new Category();
+        pending.titleRes = R.string.title_scheduler_pending;
 
-        Collections.consumeRemaining(mSchedulerParamList, new Consumer<SchedulerParam>() {
-            @Override
-            public void accept(@NonNull SchedulerParam schedulerParam) {
-                SchedulerActionTile tile = new SchedulerActionTile(getActivity(),
-                        schedulerParam.getCondition(), schedulerParam.getAction());
-                task.addTile(tile);
-            }
-        });
+        Collections.consumeRemaining(mSchedulerParamList,
+                new Consumer<SchedulerParam>() {
+                    @Override
+                    public void accept(@NonNull SchedulerParam schedulerParam) {
+                        SchedulerActionTile tile = new SchedulerActionTile(getActivity(),
+                                schedulerParam.getCondition(), schedulerParam.getAction());
+                        pending.addTile(tile);
+                    }
+                });
 
-        categories.add(task);
+        categories.add(pending);
     }
 
     @Override
@@ -87,11 +102,23 @@ public class ScheduledTaskViewerFragment extends DashboardFragment {
     }
 
     private void startLoading() {
+        swipeRefreshLayout.setRefreshing(true);
         mSchedulerParamList = SchedulerParamRepoService.get().findAll(getContext());
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 buildUI(getContext());
+                swipeRefreshLayout.setRefreshing(false);
+                if (!SettingsProvider.isTipsNoticed("scheduler_task_viewer")) {
+                    Snackbar.make(swipeRefreshLayout, R.string.title_scheduler_tips, Snackbar.LENGTH_LONG)
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    SettingsProvider.setTipsNoticed("scheduler_task_viewer", true);
+                                }
+                            })
+                            .show();
+                }
             }
         });
     }

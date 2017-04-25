@@ -64,6 +64,8 @@ public class BackupActionExecutor implements ActionExecutor<BackupActionSettings
 
     private void onExecuted(Session session) {
         Logger.d("Scheduled backup executed~ %s", session);
+        // Update session date.
+        session.setDate(System.currentTimeMillis());
         BKSessionRepoService.get().insert(getContext(), session);
     }
 }

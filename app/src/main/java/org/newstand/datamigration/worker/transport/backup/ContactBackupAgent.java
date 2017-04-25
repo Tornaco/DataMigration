@@ -21,7 +21,6 @@ import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.utils.Closer;
 import org.newstand.datamigration.utils.Collections;
-import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -47,7 +46,6 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
 
     @Override
     public Res backup(final ContactBackupSettings backupSettings) throws Exception {
-        Logger.d("backup with settings:%s", backupSettings);
         Writer writer = null;
         try {
             Files.createParentDirs(new File(backupSettings.getDestPath()));
@@ -58,12 +56,10 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
                 return new InitFailException("Unable to init:" + cardComposer.getErrorReason());
             }
             int count = cardComposer.getCount();
-            Logger.e("Found:" + count);
             Preconditions.checkState(count >= 1, "Expected at least 1 match but got " + count);
 
             while (!cardComposer.isAfterLast()) {
                 String entry = cardComposer.createOneEntry();
-                Logger.w(entry);
                 writer.write(entry);
             }
 
@@ -86,7 +82,6 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
             if (i > 0) sb.append(" or ");
             sb.append(selection);
         }
-        Logger.d(sb.toString());
         return sb.toString();
     }
 
@@ -123,16 +118,13 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
 
     @Override
     public void onStart() {
-        Logger.d("VCardEntryHandler:onStart");
     }
 
     @Override
     public void onEntryCreated(VCardEntry entry) {
-        Logger.d("VCardEntryHandler:onEntryCreated:%s", entry);
     }
 
     @Override
     public void onEnd() {
-        Logger.d("VCardEntryHandler:onEnd");
     }
 }

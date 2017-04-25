@@ -29,7 +29,7 @@ import lombok.experimental.Builder;
 @Builder
 @Getter
 @ToString
-public class BackupActionSettings {
+public class BackupActionSettings extends ActionSettings {
 
     private List<DataCategory> dataCategories;
     private Session session;

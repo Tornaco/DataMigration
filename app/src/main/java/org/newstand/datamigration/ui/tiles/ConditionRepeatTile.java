@@ -22,7 +22,7 @@ public class ConditionRepeatTile extends QuickTile {
         super(context, null);
 
         this.titleRes = R.string.title_settings_repeat;
-        this.iconRes = R.drawable.ic_clock;
+        this.iconRes = R.drawable.ic_repeat;
         this.summaryRes = R.string.summary_settings_repeat;
 
 

@@ -79,13 +79,12 @@ public class DataMigrationApp extends Application {
             }
         });
         registerActivityLifecycleCallbacks(topActivityObserver);
-
-        SchedulerServiceProxy.start(this);
     }
 
     private void startCore() {
         DummSmsServiceProxy.startService(this);
         UserActionServiceProxy.startService(getApplicationContext());
+        SchedulerServiceProxy.start(this);
     }
 
     private void cleanup() {

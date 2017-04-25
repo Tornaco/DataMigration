@@ -13,7 +13,6 @@ import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.repo.UserActionRepoService;
 import org.newstand.logger.Logger;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,6 +44,8 @@ public class UserActionService extends Service {
         super.onCreate();
         mStub = new ImplStub();
         EventBus.from(this).subscribe(this);
+        // Drop old actions.
+        UserActionRepoService.get().drop();
     }
 
     @Override
@@ -94,7 +95,7 @@ public class UserActionService extends Service {
         @NonNull
         @Override
         public List<UserAction> getByFingerPrint(long finger) {
-            return Collections.emptyList();//FIXME
+            return UserActionRepoService.get().findByFingerPrint(getApplicationContext(), finger);
         }
     }
 }

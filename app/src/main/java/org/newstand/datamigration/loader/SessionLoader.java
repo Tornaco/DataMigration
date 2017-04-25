@@ -93,11 +93,7 @@ public abstract class SessionLoader {
                                 Logger.w("Ignored bad session %s", session);
                                 return;
                             }
-                            if (!session.isTmp()) {
-                                res.add(Session.from(session));
-                            } else {
-                                Logger.w("Ignored tmp session %s", session);
-                            }
+                            res.add(Session.from(session));
                         }
                     });
                     java.util.Collections.reverse(res);

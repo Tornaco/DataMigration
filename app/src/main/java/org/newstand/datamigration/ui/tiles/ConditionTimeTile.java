@@ -6,12 +6,12 @@ import android.widget.DatePicker;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.service.schedule.Condition;
+import org.newstand.datamigration.ui.widget.TimeTileView;
 import org.newstand.datamigration.utils.DateUtils;
 
 import java.util.Calendar;
 
 import dev.nick.tiles.tile.QuickTile;
-import dev.nick.tiles.tile.TimeTileView;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/21 22:33
@@ -25,14 +25,20 @@ public class ConditionTimeTile extends QuickTile {
         super(context, null);
 
         this.titleRes = R.string.title_settings_time;
-        this.iconRes = R.drawable.ic_clock;
-        this.summaryRes = R.string.summary_settings_time;
+        this.iconRes = R.drawable.ic_schedule;
+        this.summary = DateUtils.formatLong(condition.getTriggerAtMills());
 
         TimeTileView view = new TimeTileView(getContext(), condition.getTriggerAtMills());
+
         view.setListener(new TimeTileView.OnDateSetListener() {
 
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth, int hourOfDay, int minute) {
+            public void onDateSet(DatePicker view,
+                                  int year,
+                                  int month,
+                                  int dayOfMonth,
+                                  int hourOfDay,
+                                  int minute) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, dayOfMonth, hourOfDay, minute);
                 Long timeInMills = calendar.getTimeInMillis();

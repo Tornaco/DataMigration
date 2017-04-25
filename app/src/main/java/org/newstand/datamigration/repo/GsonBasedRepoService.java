@@ -44,17 +44,23 @@ public abstract class GsonBasedRepoService<T> implements RepoService<T> {
     @Override
     public boolean insert(Context context, @NonNull final T t) {
         List<T> all = findAll(context);
-        Collections.consumeRemaining(all, new Consumer<T>() {
-            @Override
-            public void accept(@NonNull T c) {
-                if (matchCase(t, c)) {
-                    throw new IllegalArgumentException("Dup element:" + t);
+        if (!allowDupElements()) {
+            Collections.consumeRemaining(all, new Consumer<T>() {
+                @Override
+                public void accept(@NonNull T c) {
+                    if (matchCase(t, c)) {
+                        throw new IllegalArgumentException("Dup element:" + t);
+                    }
                 }
-            }
-        });
+            });
+        }
         all.add(t);
         String content = getGson().toJson(all);
         return Files.writeString(content, filePath);
+    }
+
+    protected boolean allowDupElements() {
+        return false;
     }
 
     @Override
@@ -143,5 +149,10 @@ public abstract class GsonBasedRepoService<T> implements RepoService<T> {
 
     protected Class<T> getClz() {
         return null;
+    }
+
+    @Override
+    public boolean drop() {
+        return new File(filePath).delete();
     }
 }

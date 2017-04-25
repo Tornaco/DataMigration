@@ -45,7 +45,6 @@ class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestoreSetting
 
     @Override
     public Res backup(SMSBackupSettings backupSettings) throws Exception {
-        Logger.d("backup with settings:%s", backupSettings);
         String destPath = backupSettings.getDestPath();
         Files.createParentDirs(new File(destPath));
 
@@ -76,13 +75,8 @@ class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestoreSetting
 
     @Override
     public Res restore(SMSRestoreSettings restoreSettings) throws Exception {
-
-        Logger.d("restore with settings:%s", restoreSettings);
-
         SMSRecord smsRecord = restoreSettings.getSmsRecord();
-
         writeSMS(smsRecord);
-
         return Res.OK;
     }
 

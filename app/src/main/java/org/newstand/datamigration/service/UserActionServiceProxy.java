@@ -8,14 +8,10 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 
-import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.event.UserAction;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import dev.nick.eventbus.Event;
-import dev.nick.eventbus.EventBus;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/29 16:43
@@ -39,8 +35,8 @@ public class UserActionServiceProxy extends ServiceProxy implements UserActionHa
         context.stopService(new Intent(context, UserActionService.class));
     }
 
-    public static void publishNewAction(String title, String summary) {
-        publishNewAction(UserAction.builder()
+    public static void publishNewAction(Context context, String title, String summary) {
+        publishNewAction(context, UserAction.builder()
                 .date(System.currentTimeMillis())
                 .fingerPrint(System.currentTimeMillis())
                 .eventTitle(title)
@@ -48,10 +44,8 @@ public class UserActionServiceProxy extends ServiceProxy implements UserActionHa
                 .build());
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void publishNewAction(@NonNull UserAction action) {
-        Preconditions.checkNotNull(action, "Null action!");
-        EventBus.from(null).publish(Event.builder().eventType(IntentEvents.EVENT_ON_USER_ACTION).obj(action).build());
+    public static void publishNewAction(Context context, @NonNull UserAction action) {
+        new UserActionServiceProxy(context).onUserAction(Preconditions.checkNotNull(action, "Null action!"));
     }
 
     public static List<UserAction> getAll(@NonNull Context context) {
@@ -68,8 +62,13 @@ public class UserActionServiceProxy extends ServiceProxy implements UserActionHa
     }
 
     @Override
-    public void onUserAction(@NonNull UserAction action) {
-        publishNewAction(action);
+    public void onUserAction(@NonNull final UserAction action) {
+        setTask(new ProxyTask() {
+            @Override
+            public void run() throws RemoteException {
+                handler.onUserAction(action);
+            }
+        });
     }
 
     @NonNull

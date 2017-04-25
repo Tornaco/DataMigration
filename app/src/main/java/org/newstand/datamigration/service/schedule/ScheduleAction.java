@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 
 import org.newstand.datamigration.common.ContextWireable;
+import org.newstand.logger.Logger;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class ScheduleAction {
     public int execute(Context context) {
         //noinspection unchecked
         ActionExecutor<BackupActionSettings> executor = actionType.produce();
+
         if (executor instanceof ContextWireable) {
             ((ContextWireable) executor).wire(context);
         }

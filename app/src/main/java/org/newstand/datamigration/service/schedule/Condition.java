@@ -21,6 +21,17 @@ import lombok.experimental.Builder;
 @ToString
 public class Condition {
 
+    public static Condition DEFAULT =
+            Condition.builder()
+                    .triggerAtMills(System.currentTimeMillis())
+                    .networkType(NetworkType.NETWORK_TYPE_ANY.ordinal())
+                    .triggerContentUris(null)
+                    .requiresDeviceIdle(false)
+                    .isPersisted(true)
+                    .repeat(true)
+                    .requiresCharging(true)
+                    .build();
+
     // Requirements.
     private boolean requiresCharging;
     @RequiresApi(Build.VERSION_CODES.M)

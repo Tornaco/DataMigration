@@ -1,0 +1,8 @@
+{
+ "title":"bugsnag-android",
+ "author":"bugsnag",
+ "description":"Bugsnag crash reporting for Android apps",
+ "fullLicense":"LICENSE",
+ "url":"https://bugsnag.com",
+ "version":"3.4.0"
+ }

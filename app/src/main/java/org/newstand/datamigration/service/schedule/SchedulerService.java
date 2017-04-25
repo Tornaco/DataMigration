@@ -36,15 +36,17 @@ public class SchedulerService extends Service {
     public void onCreate() {
         super.onCreate();
         mBinder = new ServiceStub();
-        scheduleAll();
+        scheduleAllPersisted();
     }
 
-    private void scheduleAll() {
+    private void scheduleAllPersisted() {
         Collections.consumeRemaining(SchedulerParamRepoService.get().findAll(this),
                 new Consumer<SchedulerParam>() {
                     @Override
                     public void accept(@NonNull SchedulerParam schedulerParam) {
-                        schedule(schedulerParam.getCondition(), schedulerParam.getAction());
+                        if (schedulerParam.getCondition().isPersisted()) {
+                            schedule(schedulerParam.getCondition(), schedulerParam.getAction());
+                        }
                     }
                 });
     }
@@ -57,6 +59,10 @@ public class SchedulerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if (intent == null) {
+            return START_STICKY;
+        }
 
         String action = intent.getAction();
         if (action == null) {
@@ -80,7 +86,7 @@ public class SchedulerService extends Service {
             action.setId(size + 1);
         }
 
-        Logger.d("schedule %s %s", condition, action);
+        Logger.v("Schedule %s %s", condition, action);
 
         // Replace
         SchedulerParam exist = SchedulerParamRepoService.get().findById(this, action.getId());
@@ -122,10 +128,20 @@ public class SchedulerService extends Service {
             @Override
             public void run() {
                 if (isInCondition(param.getCondition())) {
-                    param.getAction().getActionType().produce().execute(param.getAction().getSettings());
+                    param.getAction().execute(getApplicationContext());
                 }
             }
         });
+
+        SchedulerParamRepoService.get().delete(this, param);
+
+        // We should update the trigger time with an interval.
+        if (param.getCondition().isRepeat()) {
+            param.getCondition().setTriggerAtMills(param.getCondition().getTriggerAtMills()
+                    + Interval.Day.getIntervalMills());
+
+            SchedulerParamRepoService.get().insert(this, param);
+        }
     }
 
     private boolean isInCondition(Condition condition) {

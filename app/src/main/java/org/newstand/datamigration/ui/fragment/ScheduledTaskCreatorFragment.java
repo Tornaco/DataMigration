@@ -3,6 +3,7 @@ package org.newstand.datamigration.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,8 +30,8 @@ import org.newstand.datamigration.ui.tiles.ConditionRepeatTile;
 import org.newstand.datamigration.ui.tiles.ConditionTimeTile;
 import org.newstand.datamigration.ui.tiles.ScheduledBackupActionCategoriesSettingsTile;
 import org.newstand.datamigration.ui.tiles.ScheduledBackupActionSessionSettingsTile;
+import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class ScheduledTaskCreatorFragment extends DashboardFragment {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onFabClick();
+                    onFabClick(v);
                 }
             });
         }
@@ -111,19 +112,17 @@ public class ScheduledTaskCreatorFragment extends DashboardFragment {
             @Override
             public void run() {
                 int id = idProducer.produce();
-                Logger.d("Query with id %s", id);
                 if (id < 0) {
                     BackupActionSettings actionSettings = BackupActionSettings.builder()
                             .session(Session.from(getString(R.string.title_settings_session_def)))
                             .dataCategories(new ArrayList<DataCategory>(DataCategory.values().length))
                             .build();
-                    param = new SchedulerParam(Condition.builder().build(),
+                    param = new SchedulerParam(Condition.DEFAULT,
                             ScheduleAction.builder()
                                     .actionType(ScheduleActionType.Backup)
                                     .settings(actionSettings).build());
                 } else {
                     param = SchedulerParamRepoService.get().findById(getContext(), id);
-                    Logger.v("Query result %s", param);
                 }
 
                 getActivity().runOnUiThread(new Runnable() {
@@ -178,8 +177,23 @@ public class ScheduledTaskCreatorFragment extends DashboardFragment {
         categories.add(settings);
     }
 
-    private void onFabClick() {
+    private void onFabClick(View view) {
+
+        if (!validateParam(view)) return;
+
         SchedulerServiceProxy.schedule(getContext(), param.getCondition(), param.getAction());
         getActivity().finish();
+    }
+
+    private boolean validateParam(View view) {
+
+        if (Collections.isNullOrEmpty(param.getAction().getSettings().getDataCategories())) {
+
+            Snackbar.make(view, R.string.title_validation_select_data, Snackbar.LENGTH_LONG).show();
+
+            return false;
+        }
+
+        return true;
     }
 }

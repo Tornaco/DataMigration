@@ -167,9 +167,9 @@
             android:label="@string/title_restore"
             android:theme="@style/AppTheme" />
         <activity
-        android:name=".ui.activity.ScheduledTaskViewerActivity"
-        android:label="@string/action_scheduler_viewer"
-        android:theme="@style/AppTheme" />
+            android:name=".ui.activity.ScheduledTaskViewerActivity"
+            android:label="@string/action_scheduler_viewer"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ScheduledTaskCreatorActivity"
             android:label="@string/action_scheduler_creator"
@@ -288,6 +288,12 @@
                 <action android:name="org.newstand.datamigration.ACTION_SCHEDULE_TASK" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".broadcast.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

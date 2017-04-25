@@ -26,4 +26,6 @@ public interface RepoService<T> {
     List<T> findAll(Context context);
 
     int size(Context context);
+
+    boolean drop();
 }

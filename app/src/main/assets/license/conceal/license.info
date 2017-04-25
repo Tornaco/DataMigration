@@ -1,0 +1,8 @@
+{
+ "title":"conceal",
+ "author":"facebook",
+ "description":"Conceal provides easy Android APIs for performing fast encryption and authentication of data.",
+ "fullLicense":"LICENSE",
+ "url":"https://github.com/facebook/conceal",
+ "version":"1.1.3"
+ }

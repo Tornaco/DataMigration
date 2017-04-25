@@ -128,7 +128,6 @@ public class ScheduledBackupActionCategoriesSettingsTile extends ScheduledBackup
                 sb.append("\t");
             }
         });
-        Logger.d("build summary %s", sb.toString());
         return sb.toString();
     }
 
