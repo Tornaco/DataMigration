@@ -10,7 +10,7 @@
     <string name="fab_intro_category_send">当你完成数据选择时，点击此处即可开始进行传输</string>
     <string name="backup_intro_actions">此卡片包括</string>
     <string name="backup_intro_and">和</string>
-    <string name="backup_intro">支持联系人，短信，通话记录，多媒体，Wifi等数据备份与应用（应用数据的备份需要获取Root权限）的本地备份。\n\n备份需要你授予包括读取联系人，电话，短信，文件读写等权限。</string>
+    <string name="backup_intro">支持联系人，短信，通话记录，多媒体，WLAN等数据备份与应用（应用数据的备份需要获取Root权限）的本地备份。\n\n备份需要你授予包括读取联系人，电话，短信，文件读写等权限。</string>
     <string name="transport_intro">设备之间，快速传输文件。\n\n需要你授予位置信息权限。\n</string>
 
     <string name="title_activity_navigator">@string/app_name</string>
@@ -43,7 +43,7 @@
     <string name="category_photo">照片</string>
     <string name="category_app">应用</string>
     <string name="category_alarm">闹钟</string>
-    <string name="category_wifi">Wifi</string>
+    <string name="category_wifi">WLAN</string>
     <string name="category_call">通话记录</string>
     <string name="category_custom">自定义文件</string>
 
