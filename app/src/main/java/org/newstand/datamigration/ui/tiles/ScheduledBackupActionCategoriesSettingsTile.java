@@ -12,7 +12,6 @@ import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.service.schedule.BackupActionSettings;
 import org.newstand.datamigration.utils.Collections;
-import org.newstand.logger.Logger;
 
 import java.util.List;
 
@@ -50,6 +49,15 @@ public class ScheduledBackupActionCategoriesSettingsTile extends ScheduledBackup
                 if (popupMenu == null) {
                     popupMenu = new PopupMenu(context, this);
                     popupMenu.inflate(R.menu.category_selector);
+
+                    popupMenu.getMenu().findItem(R.id.action_app).setChecked(settings.getDataCategories().contains(DataCategory.App));
+                    popupMenu.getMenu().findItem(R.id.action_calllog).setChecked(settings.getDataCategories().contains(DataCategory.CallLog));
+                    popupMenu.getMenu().findItem(R.id.action_contact).setChecked(settings.getDataCategories().contains(DataCategory.Contact));
+                    popupMenu.getMenu().findItem(R.id.action_sms).setChecked(settings.getDataCategories().contains(DataCategory.Sms));
+                    popupMenu.getMenu().findItem(R.id.action_music).setChecked(settings.getDataCategories().contains(DataCategory.Music));
+                    popupMenu.getMenu().findItem(R.id.action_video).setChecked(settings.getDataCategories().contains(DataCategory.Video));
+                    popupMenu.getMenu().findItem(R.id.action_wifi).setChecked(settings.getDataCategories().contains(DataCategory.Wifi));
+                    popupMenu.getMenu().findItem(R.id.action_photo).setChecked(settings.getDataCategories().contains(DataCategory.Photo));
 
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
@@ -123,7 +131,7 @@ public class ScheduledBackupActionCategoriesSettingsTile extends ScheduledBackup
     }
 
     private String buildSummary(List<DataCategory> categories) {
-        if(Collections.isNullOrEmpty(categories)) {
+        if (Collections.isNullOrEmpty(categories)) {
             return getContext().getString(R.string.summary_settings_categories);
         }
         final StringBuilder sb = new StringBuilder();
