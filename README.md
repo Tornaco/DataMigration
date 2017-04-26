@@ -1,3 +1,5 @@
+# STOPPED
+
 # DataMigration
 ### Advanced android tool to backup/restore or send/receive your data.
 
@@ -26,11 +28,3 @@ Just send your data to another device, support all category of data listed in ba
 Receive data from Sender and import to your device automaticlly!!!
 
 ----------
-
-
-# Current design
-![AIO](art/aio.jpg)
-
-
-# Progress
-Developing...
