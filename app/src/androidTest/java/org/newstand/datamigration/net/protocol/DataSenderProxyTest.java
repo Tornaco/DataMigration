@@ -85,6 +85,13 @@ public class DataSenderProxyTest {
                 dataRecord.setChecked(true);
             }
         });
+
+        Collections.consumeRemaining(cacheManager.get(DataCategory.Wifi), new Consumer<DataRecord>() {
+            @Override
+            public void accept(@NonNull DataRecord dataRecord) {
+                dataRecord.setChecked(true);
+            }
+        });
     }
 
     private void mokeServerThenClient() {

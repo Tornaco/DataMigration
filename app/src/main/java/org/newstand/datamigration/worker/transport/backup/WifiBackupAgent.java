@@ -8,16 +8,15 @@ import com.chrisplus.rootmanager.container.Result;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 
-import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.secure.EncryptManager;
 import org.newstand.datamigration.utils.BlackHole;
-import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.utils.WifiUtils;
 import org.newstand.logger.Logger;
 
 import java.io.File;
-import java.util.List;
+import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -61,26 +60,30 @@ public class WifiBackupAgent implements BackupAgent<WifiBackupSettings, WifiRest
 
     @Override
     public Res restore(WifiRestoreSettings restoreSettings) throws Exception {
-        final String destPath = SettingsProvider.getWifiConfigFilePath();
 
-        List<String> rawLines = restoreSettings.getRecord().getRawLines();
+        // Disable wifi first.
+        if (!WifiUtils.setWifiEnabled(getContext(), false)) {
+            return new ToogleStateErr();
+        }
 
-        String start = String.format("echo %s >> %s", "network={", destPath);
-        Result startRes = RootManager.getInstance().runCommand(start);
-        Logger.v("Write start cmd %s, res %s %s", start, startRes.getMessage(), startRes.getResult());
+        String destPath = SettingsProvider.getWifiConfigFilePath();
 
-        Collections.consumeRemaining(rawLines, new Consumer<String>() {
-            @Override
-            public void accept(@NonNull String s) {
-                String cmd = String.format("echo %s >> %s", "\t" + s + "\n", destPath);
-                Result result = RootManager.getInstance().runCommand(cmd);
-                Logger.v("Write wifi cmd %s, res %s %s", cmd, result.getMessage(), result.getResult());
-            }
-        });
+        String node = restoreSettings.getRecord().toString();
 
-        String end = String.format("echo %s >> %s", "}", destPath);
-        Result endRes = RootManager.getInstance().runCommand(end);
-        Logger.v("Write end cmd %s, res %s %s", start, endRes.getMessage(), endRes.getResult());
+        File tmpDir = Files.createTempDir();
+
+        String randomFilePath = tmpDir.getPath() + File.separator + UUID.randomUUID().toString();
+
+        if (!org.newstand.datamigration.utils.Files.writeString(node, randomFilePath)) {
+            return new WriteFailError();
+        }
+
+        String cmd = String.format("cat %s >> %s", randomFilePath, destPath);
+
+        Result startRes = RootManager.getInstance().runCommand(cmd);
+        Logger.v("Write start cmd:%s,\n msg: %s, res: %s", cmd, startRes.getMessage(), startRes.getResult());
+
+        BlackHole.eat(new File(randomFilePath));
 
         return Res.OK;
     }

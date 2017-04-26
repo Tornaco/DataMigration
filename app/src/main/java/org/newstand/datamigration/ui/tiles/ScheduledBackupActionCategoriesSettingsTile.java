@@ -101,6 +101,12 @@ public class ScheduledBackupActionCategoriesSettingsTile extends ScheduledBackup
                                     else
                                         settings.getDataCategories().remove(DataCategory.Video);
                                     break;
+                                case R.id.action_wifi:
+                                    if (checked && !settings.getDataCategories().contains(DataCategory.Wifi))
+                                        settings.getDataCategories().add(DataCategory.Wifi);
+                                    else
+                                        settings.getDataCategories().remove(DataCategory.Wifi);
+                                    break;
                             }
 
                             getSummaryTextView().setText(buildSummary(settings.getDataCategories()));

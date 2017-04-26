@@ -18,6 +18,11 @@
         android:title="@string/category_sms"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_wifi"
+        android:checkable="true"
+        android:title="@string/category_wifi"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_photo"
         android:checkable="true"
         android:title="@string/category_photo"

@@ -10,8 +10,8 @@
     <string name="fab_intro_category_send">当你完成数据选择时，点击此处即可开始进行传输</string>
     <string name="backup_intro_actions">此卡片包括</string>
     <string name="backup_intro_and">和</string>
-    <string name="backup_intro">将联系人，短消息，通话记录，照片，音乐，视频，闹钟等数据备份与应用软件（应用数据的备份需要获取Root权限）备份到本地存储。\n\n备份需要你授予包括读取联系人，电话，短信，文件读写等权限。</string>
-    <string name="transport_intro">使用无线快传，你可以将A手机中上述可备份数据数据快速传输到B手机。\n\n需要你授予位置信息权限。\n</string>
+    <string name="backup_intro">支持联系人，短信，通话记录，多媒体，Wifi等数据备份与应用（应用数据的备份需要获取Root权限）的本地备份。\n\n备份需要你授予包括读取联系人，电话，短信，文件读写等权限。</string>
+    <string name="transport_intro">设备之间，快速传输文件。\n\n需要你授予位置信息权限。\n</string>
 
     <string name="title_activity_navigator">@string/app_name</string>
 
@@ -141,7 +141,7 @@
     <string name="tile_auto_install">自动安装应用程序</string>
     <string name="summaty_auto_install">为已经root的设备自动安装应用程序</string>
     <string name="title_encrypt">启用加密</string>
-    <string name="summary_encrypt">对备份或者传输的数据（通话记录，短信）进行加密</string>
+    <string name="summary_encrypt">对备份或者传输的数据（通话记录，短信，Wifi）进行加密</string>
 
     <string name="title_transport_sender_receiver">无线快传</string>
     <string name="title_transport_sender">发送数据给对方</string>

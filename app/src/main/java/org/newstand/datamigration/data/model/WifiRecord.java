@@ -28,11 +28,15 @@ public class WifiRecord extends FileBasedRecord {
 
     @Override
     public String toString() {
-        String d = "network={\n";
+
+        StringBuilder sb = new StringBuilder("\n\n");
+        sb.append("network={")
+                .append("\n");
+
         for (String line : rawLines) {
-            d = d + String.format("   %s\n", line);
+            sb.append("\t").append(line).append("\n");
         }
-        d = d + "}";
-        return d;
+        sb.append("}");
+        return sb.toString();
     }
 }

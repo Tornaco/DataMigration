@@ -1,6 +1,7 @@
 package org.newstand.datamigration.ui.fragment;
 
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
@@ -28,7 +29,11 @@ public class WifiListFragment extends DataListViewerFragment {
             @Override
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
                 holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_wifi_avatar));
-                holder.getLineTwoTextView().setText(((WifiRecord) record).getPsk());
+                String psk = ((WifiRecord) record).getPsk();
+                if (TextUtils.isEmpty(psk)) {
+                    psk = "*";
+                }
+                holder.getLineTwoTextView().setText(psk);
                 super.onBindViewHolder(holder, record);
             }
         };
