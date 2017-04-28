@@ -118,7 +118,7 @@
     <string name="summary_category_viewer">%1$s/%2$s</string>
     <string name="summary_category_viewer_need_click">点击选择条目</string>
     <string name="summary_app_template">版本号: <i>%1$s</i>\n文件大小: <i>%2$s</i></string>
-    <string name="summary_app_template2">版本号: <i>%1$s</i>\n文件大小: <i>%2$s</i>\n包含数据包: <i>%3$s</i></string>
+    <string name="summary_app_template2">版本号: <i>%1$s</i>\n文件大小: <i>%2$s</i>\n包含数据包: <i>%3$s</i>\n包含附加数据包: <i>%4$s</i></string>
     <string name="unknown">未知</string>
     <string name="enforcing">执行中</string>
     <string name="permissive">许可</string>
@@ -198,7 +198,9 @@
     <string name="title_help_noop">这家伙很懒，留下了一个空白的帮助页~</string>
 
     <string name="action_scheduler_viewer">计划任务</string>
+    <string name="action_extra_data_rules_viewer">制定应用附加数据规则(BETA)</string>
     <string name="action_scheduler_creator">制定计划任务</string>
+    <string name="action_extra_data_rules_creator">制定附加规则</string>
     <string name="action_scheduler_creator_saving">正在保存计划</string>
     <string name="title_scheduler_pending">队列中</string>
     <string name="title_scheduler_tips">新制定的计划稍后会显示在这里</string>
@@ -221,4 +223,13 @@
     <string name="title_settings_repeat">重复</string>
     <string name="summary_settings_repeat">计划会在每天的指定时间执行</string>
     <string name="title_validation_select_data">请选择要备份的数据</string>
+
+    <string name="category_rule_intro">关于</string>
+    <string name="title_my_rules">我的规则</string>
+    <string name="title_rule_intro">应用附加数据规则</string>
+    <string name="summary_rule_intro">附加数据是指备份某些应用数据的同时备份附加的某些目录，例如微信的聊天文件是存储在外部存储上的，你可以通过指定其规则来轻松对额外数据进行备份</string>
+    <string name="title_package_name">包</string>
+    <string name="title_dir_name">文件目录</string>
+    <string name="title_not_set">尚未指定</string>
+    <string name="title_dir_divider">多个目录使用英文逗号隔开</string>
 </resources>

@@ -54,6 +54,7 @@ public class SettingsProvider extends Observable {
     private static final String APP_DATA_DIR = "data/data";
 
     private static final String BACKUP_DATA_DIR_NAME = "data";
+    private static final String BACKUP_EXTRA_DATA_DIR_NAME = "extra_data";
     private static final String BACKUP_APK_DIR_NAME = "apk";
     private static final String BACKUP_SESSION_INFO_FILE_NAME = "session.info";
 
@@ -324,6 +325,10 @@ public class SettingsProvider extends Observable {
 
     public static String getBackupAppDataDirName() {
         return BACKUP_DATA_DIR_NAME;
+    }
+
+    public static String getBackupExtraDataDirName() {
+        return BACKUP_EXTRA_DATA_DIR_NAME;
     }
 
     public static String getBackupAppApkDirName() {

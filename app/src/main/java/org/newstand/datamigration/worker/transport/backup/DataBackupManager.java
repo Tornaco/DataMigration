@@ -20,7 +20,9 @@ import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.data.model.SMSRecord;
 import org.newstand.datamigration.data.model.WifiRecord;
 import org.newstand.datamigration.loader.LoaderSource;
+import org.newstand.datamigration.policy.ExtraDataRule;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.repo.ExtraDataRulesRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
@@ -163,8 +165,18 @@ public class DataBackupManager {
                                 + File.separator + record.getDisplayName()
                                 + File.separator + SettingsProvider.getBackupAppDataDirName()
                                 + File.separator + "data.tar.gz");// DMBK2/APP/Phone/data/data.tar.gz
+                appBackupSettings.setDestExtraDataPath(
+                        SettingsProvider.getBackupDirByCategory(dataCategory, session)
+                                + File.separator + record.getDisplayName()
+                                + File.separator + SettingsProvider.getBackupExtraDataDirName());// DMBK2/APP/Phone/extra_data
                 appBackupSettings.setSourceApkPath(((FileBasedRecord) record).getPath());
                 appBackupSettings.setSourceDataPath(SettingsProvider.getAppDataDir() + File.separator + ((AppRecord) record).getPkgName());
+                // Query extra rules.
+                ExtraDataRule rule = ExtraDataRulesRepoService.get().findByPkg(context, ((AppRecord) record).getPkgName());
+                if (rule != null && rule.isEnabled()) {
+                    String[] dirs = rule.parseDir();
+                    appBackupSettings.setExtraDirs(dirs);
+                }
                 return appBackupSettings;
             case Contact:
                 ContactBackupSettings contactBackupSettings = new ContactBackupSettings();
@@ -235,6 +247,9 @@ public class DataBackupManager {
                         + File.separator + "data.tar.gz");// DMBK2/APP/Phone/data/data.tar.gz
                 appRestoreSettings.setDestDataPath(SettingsProvider.getAppDataDir() + File.separator + ((AppRecord) record).getPkgName());
                 appRestoreSettings.setAppRecord((AppRecord) record);
+                appRestoreSettings.setExtraSourceDataPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
+                        + File.separator + record.getDisplayName()
+                        + File.separator + SettingsProvider.getBackupExtraDataDirName());
                 return appRestoreSettings;
             case Contact:
                 ContactRestoreSettings contactRestoreSettings = new ContactRestoreSettings();

@@ -20,6 +20,7 @@ import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.utils.DateUtils;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
@@ -126,7 +127,9 @@ public class DataExportManageFragment extends DataTransportManageFragment {
 
     @Override
     protected Session onCreateSession() {
-        return Session.from(getString(R.string.title_backup_default_name));
+        return Session.from(getString(R.string.title_backup_default_name)
+                + "@"
+                + DateUtils.formatForFileName(System.currentTimeMillis()));
     }
 
     @Override

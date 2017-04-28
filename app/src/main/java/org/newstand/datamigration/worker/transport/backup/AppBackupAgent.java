@@ -7,15 +7,20 @@ import android.support.annotation.NonNull;
 
 import com.chrisplus.rootmanager.RootManager;
 import com.chrisplus.rootmanager.container.Result;
+import com.google.common.io.Files;
 
+import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.Sleeper;
+import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.utils.MiscUtils;
 import org.newstand.datamigration.utils.RootTools2;
 import org.newstand.datamigration.utils.SeLinuxContextChanger;
 import org.newstand.datamigration.utils.Zipper;
 import org.newstand.logger.Logger;
+
+import java.io.File;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +44,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
     }
 
     @Override
-    public Res backup(AppBackupSettings backupSettings) throws Exception {
+    public Res backup(final AppBackupSettings backupSettings) throws Exception {
 
         Logger.d("backup with settings %s", backupSettings);
 
@@ -58,6 +63,8 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
             return apkRes;
         }
 
+        final Res[] res = {Res.OK};
+
         if (SettingsProvider.isInstallDataEnabled()) {
             boolean hasRoot = RootManager.getInstance().obtainPermission();
             if (!hasRoot) {
@@ -72,12 +79,40 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
 
             Logger.d("Saving data from %s, to %s", appDataDir, destination);
 
-            boolean res = Zipper.compressTar(destination, appDataDir);
+            boolean cr = Zipper.compressTar(destination, appDataDir);
 
-            Logger.d("Saving data res %s", res);
+            Logger.d("Saving data res %s", cr);
+
+            if (!cr) {
+                res[0] = new CompressErr();
+                return res[0];
+            }
+
+            // ExtraData
+            final String[] extraDataDirs = backupSettings.getExtraDirs();
+            if (extraDataDirs != null) {
+                Collections.consumeRemaining(extraDataDirs, new Consumer<String>() {
+                    @Override
+                    public void accept(@NonNull String s) {
+                        File extraDir = new File(s);
+                        if (extraDir.exists()) {
+                            String destExtraPath = backupSettings.getDestExtraDataPath()
+                                    + File.separator
+                                    + Files.getNameWithoutExtension(s)
+                                    + ".tar.gz";
+
+                            boolean b = Zipper.compressTar(destExtraPath, extraDir.getPath());
+                            Logger.d("Saving extra data res %s", b);
+                            if (!b) {
+                                res[0] = new CompressErr();
+                            }
+                        }
+                    }
+                });
+            }
         }
 
-        return Res.OK;
+        return res[0];
     }
 
     @Override
@@ -104,6 +139,10 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
 
         if (installData) {
             res = installData(restoreSettings);
+
+            if (res == Res.OK) {
+                res = installExtraData(restoreSettings);
+            }
         }
 
         return res;
@@ -160,6 +199,24 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         }
 
         return Res.OK;
+    }
+
+    private Res installExtraData(AppRestoreSettings restoreSettings) throws Exception {
+        String extraSourceDir = restoreSettings.getExtraSourceDataPath();
+        File dir = new File(extraSourceDir);
+        Iterable<File> sunFiles = Files.fileTreeTraverser().children(dir);
+        final Res[] res = {Res.OK};
+        if (sunFiles != null) {
+            Collections.consumeRemaining(sunFiles, new Consumer<File>() {
+                @Override
+                public void accept(@NonNull File file) {
+                    boolean b = Zipper.deCompressTar(file.getPath());
+                    Logger.d("Decompress extra files, res %s", b);
+                    res[0] = new DeCompressErr();
+                }
+            });
+        }
+        return res[0];
     }
 
     @Override

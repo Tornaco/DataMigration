@@ -9,6 +9,7 @@ import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.ui.fragment.DataReceiverManageFragment;
+import org.newstand.datamigration.utils.DateUtils;
 import org.newstand.datamigration.worker.transport.Session;
 
 import lombok.Getter;
@@ -43,7 +44,8 @@ public class DataReceiverActivity extends DataTransportActivity implements Produ
 
     @Override
     public LoaderSource onRequestLoaderSource() {
-        return LoaderSource.builder().session(Session.from(getString(R.string.title_received_default_name)))
+        return LoaderSource.builder().session(Session.from(getString(R.string.title_received_default_name)
+                + "@" + DateUtils.formatForFileName(System.currentTimeMillis())))
                 .parent(LoaderSource.Parent.Android).build();
     }
 }

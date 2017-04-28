@@ -171,8 +171,16 @@
             android:label="@string/action_scheduler_viewer"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.activity.ExtraRulesViewerActivity"
+            android:label="@string/action_extra_data_rules_viewer"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".ui.activity.ScheduledTaskCreatorActivity"
             android:label="@string/action_scheduler_creator"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.activity.RulesCreatorActivity"
+            android:label="@string/action_extra_data_rules_creator"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.AndroidDataListHostActivity"
@@ -203,6 +211,9 @@
         <activity
             android:name=".ui.activity.AboutActivity"
             android:label="@string/tile_category_about" />
+        <activity
+            android:name=".ui.activity.ComeInActivity"
+            android:label="@string/tile_category_in" />
         <activity
             android:name=".ui.activity.UserActionViewerActivity"
             android:label="@string/action_user_actions" />

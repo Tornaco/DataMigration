@@ -15,10 +15,22 @@ import android.support.annotation.NonNull;
 
 public abstract class ApkUtil {
 
+    public static CharSequence loadNameByPkgName(@NonNull Context context, String pkg) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            ApplicationInfo info = pm.getApplicationInfo(pkg, PackageManager.GET_UNINSTALLED_PACKAGES);
+            if (info == null) return null;
+            return info.loadLabel(pm);
+        } catch (PackageManager.NameNotFoundException ignored) {
+            return null;
+        }
+    }
+
     public static Drawable loadIconByPkgName(@NonNull Context context, String pkg) {
         PackageManager pm = context.getPackageManager();
         try {
-            ApplicationInfo info = pm.getApplicationInfo(pkg, 0);
+            ApplicationInfo info = pm.getApplicationInfo(pkg, PackageManager.GET_UNINSTALLED_PACKAGES);
+            if (info == null) return null;
             return info.loadIcon(pm);
         } catch (PackageManager.NameNotFoundException ignored) {
             return null;

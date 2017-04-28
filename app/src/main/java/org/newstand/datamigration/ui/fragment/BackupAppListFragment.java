@@ -25,7 +25,9 @@ public class BackupAppListFragment extends AppListFragment {
                 AppRecord appRecord = (AppRecord) record;
                 String summary = getStringSafety(R.string.summary_app_template2, appRecord.getVersionName()
                                 == null ? getString(R.string.unknown) : appRecord.getVersionName(),
-                        Files.formatSize(appRecord.getSize()), getStringSafety(appRecord.isHasData() ? R.string.yes : R.string.no));
+                        Files.formatSize(appRecord.getSize()),
+                        getStringSafety(appRecord.isHasData() ? R.string.yes : R.string.no),
+                        getStringSafety(appRecord.isHasExtraData() ? R.string.yes : R.string.no));
                 holder.getLineTwoTextView().setText(summary);
                 Drawable icon = appRecord.getIcon();
                 holder.getCheckableImageView().setImageDrawable(icon == null

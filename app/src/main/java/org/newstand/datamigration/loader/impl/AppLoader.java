@@ -94,9 +94,12 @@ public class AppLoader extends BaseLoader {
                     Logger.e("APK Not found in %s", record.getPath());
                     return;
                 }
-                boolean dataExist = new File(file.getPath() + File.separator + SettingsProvider.getBackupAppDataDirName()
-                        + File.separator + "data.tar.gz").exists();// FIXME Hard code?
+                boolean dataExist = new File(file.getPath() + File.separator + SettingsProvider.getBackupAppDataDirName())
+                        .exists();
                 record.setHasData(dataExist);
+                boolean extraDataExist = new File(file.getPath() + File.separator + SettingsProvider.getBackupExtraDataDirName())
+                        .exists();
+                record.setHasExtraData(extraDataExist);
                 try {
                     String packageName = ApkUtil.loadPkgNameByFilePath(getContext(), record.getPath());
                     if (TextUtils.isEmpty(packageName)) {
@@ -109,7 +112,8 @@ public class AppLoader extends BaseLoader {
                     record.setPkgName(packageName);
                     record.setSize(Files.asByteSource(new File(record.getPath())).size());
                     String appName = ApkUtil.loadAppNameByFilePath(getContext(), record.getPath());
-                    if (appName != null) record.setDisplayName(appName);// FIX App name issue.
+                    Logger.v("appName %s", appName);
+                    record.setDisplayName(file.getName());
                     records.add(record);
                 } catch (Throwable e) {
                     Logger.e(e, "Failed to query size for %s", record);

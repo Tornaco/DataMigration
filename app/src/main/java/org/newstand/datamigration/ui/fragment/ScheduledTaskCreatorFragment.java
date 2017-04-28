@@ -31,6 +31,7 @@ import org.newstand.datamigration.ui.tiles.ConditionTimeTile;
 import org.newstand.datamigration.ui.tiles.ScheduledBackupActionCategoriesSettingsTile;
 import org.newstand.datamigration.ui.tiles.ScheduledBackupActionSessionSettingsTile;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.utils.DateUtils;
 import org.newstand.datamigration.worker.transport.Session;
 
 import java.util.ArrayList;
@@ -114,7 +115,9 @@ public class ScheduledTaskCreatorFragment extends DashboardFragment {
                 int id = idProducer.produce();
                 if (id < 0) {
                     BackupActionSettings actionSettings = BackupActionSettings.builder()
-                            .session(Session.from(getString(R.string.title_settings_session_def)))
+                            .session(Session.from(getString(R.string.title_settings_session_def)
+                                    + "@"
+                                    + DateUtils.formatForFileName(System.currentTimeMillis())))
                             .dataCategories(new ArrayList<DataCategory>(DataCategory.values().length))
                             .build();
                     param = new SchedulerParam(Condition.DEFAULT,

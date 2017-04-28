@@ -107,6 +107,11 @@ public abstract class GsonBasedRepoService<T> implements RepoService<T> {
     }
 
     @Override
+    public boolean updateOrInsert(Context context, @NonNull T t) {
+        return update(context, t) || insert(context, t);
+    }
+
+    @Override
     public T findFirst(Context context) {
         List<T> data = findAll(context);
         if (data.size() == 0) return null;

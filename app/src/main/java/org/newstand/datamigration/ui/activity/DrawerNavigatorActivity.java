@@ -123,6 +123,18 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
                 };
 
                 handler.postDelayed(r2, UI_TRANSACTION_TIME_MILLS);
+                break;
+
+            case R.id.nav_in:
+                // Delay to show.
+                Runnable r3 = new Runnable() {
+                    @Override
+                    public void run() {
+                        transitionTo(new Intent(DrawerNavigatorActivity.this, ComeInActivity.class));
+                    }
+                };
+
+                handler.postDelayed(r3, UI_TRANSACTION_TIME_MILLS);
 
                 break;
         }

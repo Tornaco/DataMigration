@@ -10,9 +10,7 @@ import android.view.MenuItem;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.tiles.BugReportTile;
-import org.newstand.datamigration.ui.tiles.CheckForUpdateTile;
 import org.newstand.datamigration.ui.tiles.DonateTile;
-import org.newstand.datamigration.ui.tiles.LicenceTile;
 import org.newstand.datamigration.ui.tiles.MailTile;
 import org.newstand.datamigration.ui.tiles.ThanksTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
@@ -30,7 +28,7 @@ import dev.nick.tiles.tile.DashboardFragment;
  * All right reserved.
  */
 
-public class AboutActivity extends TransitionSafeActivity {
+public class ComeInActivity extends TransitionSafeActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,15 +73,16 @@ public class AboutActivity extends TransitionSafeActivity {
         @Override
         protected void onCreateDashCategories(List<Category> categories) {
 
-            Category about = new ThemedCategory();
-            about.titleRes = R.string.tile_category_about;
+            Category involve = new ThemedCategory();
+            involve.titleRes = R.string.tile_category_in;
 
-            CheckForUpdateTile checkForUpdateTile = new CheckForUpdateTile(getActivity());
-            about.addTile(checkForUpdateTile);
-            LicenceTile licenceTile = new LicenceTile(getActivity());
-            about.addTile(licenceTile);
+            involve.addTile(new BugReportTile(getActivity()));
+            involve.addTile(new MailTile(getActivity()));
+            involve.addTile(new ThanksTile(getActivity()));
+            DonateTile donateTile = new DonateTile(getContext());
+            involve.addTile(donateTile);
 
-            categories.add(about);
+            categories.add(involve);
 
             super.onCreateDashCategories(categories);
         }

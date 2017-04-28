@@ -20,11 +20,13 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.loader.SessionLoader;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.BKSessionRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.SessionListAdapter;
 import org.newstand.datamigration.ui.adapter.SessionListViewHolder;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
+import org.newstand.datamigration.utils.Files;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
@@ -199,6 +201,12 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                                     public void run() {
                                         Logger.d("Removing session %s", session);
                                         boolean res = BKSessionRepoService.get().delete(getContext(), session);
+                                        if (res) {
+                                            res = Files.deleteDir(new File(SettingsProvider.getBackupSessionDir(session)));
+                                        }
+                                        if (!res) {
+                                            Logger.e("Fail remove session %s", session);
+                                        }
                                     }
                                 });
 

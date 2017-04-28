@@ -19,6 +19,8 @@ public interface RepoService<T> {
 
     boolean update(Context context, @NonNull T t);
 
+    boolean updateOrInsert(Context context, @NonNull T t);
+
     T findFirst(Context context);
 
     T findLast(Context context);

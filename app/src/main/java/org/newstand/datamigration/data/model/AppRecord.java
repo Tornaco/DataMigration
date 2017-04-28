@@ -25,7 +25,7 @@ public class AppRecord extends FileBasedRecord implements Parcelable {
     private String pkgName;
     private String versionName;
 
-    private boolean hasData;
+    private boolean hasData, hasExtraData;
 
     private transient Drawable icon;
 

@@ -3,6 +3,8 @@ package org.newstand.datamigration.ui.widget;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import org.newstand.datamigration.sync.SharedExecutor;
+
 /**
  * Created by Nick@NewStand.org on 2017/3/9 16:28
  * E-Mail: NewStand@163.com
@@ -19,8 +21,13 @@ public class ProgressDialogCompat {
     }
 
     public static ProgressDialog createUnCancelableIndeterminateShow(Context context) {
-        ProgressDialog progressDialog = createUnCancelableIndeterminate(context);
-        progressDialog.show();
+        final ProgressDialog progressDialog = createUnCancelableIndeterminate(context);
+        SharedExecutor.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.show();
+            }
+        });
         return progressDialog;
     }
 

@@ -31,6 +31,7 @@ import org.newstand.datamigration.ui.activity.BackupSessionPickerActivity;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.tiles.BackupTile;
 import org.newstand.datamigration.ui.tiles.RestoreTile;
+import org.newstand.datamigration.ui.tiles.RulesTile;
 import org.newstand.datamigration.ui.tiles.SchedulerTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.ErrDialog;
@@ -89,6 +90,7 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
         actions.addTile(new RestoreTile(getActivity()));
 
         actions.addTile(new SchedulerTile(getActivity()));
+        actions.addTile(new RulesTile(getActivity()));
 
         categories.add(actions);
     }

@@ -51,7 +51,7 @@ public class TransportClient extends ServerComponent {
         try {
             closer.close();
             channelHandler.onClientStop();
-        } catch (IOException e) {
+        } catch (Throwable e) {
             Logger.e(e, "Close fail");
             return false;
         }

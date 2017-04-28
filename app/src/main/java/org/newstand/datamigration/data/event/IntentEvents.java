@@ -12,6 +12,7 @@ public interface IntentEvents {
     String KEY_SOURCE = "session";
     String KEY_HOST = "host";
     String KEY_USER_ACTION_FINGER_PRINT = "ua_fp";
+    String KEY_PKG_NAME = "pkg";
 
     String ACTION_SCHEDULE_TASK = "org.newstand.datamigration.ACTION_SCHEDULE_TASK";
     String KEY_ACTION_SCHEDULE_TASK = "key.org.newstand.datamigration.ACTION_SCHEDULE_TASK";

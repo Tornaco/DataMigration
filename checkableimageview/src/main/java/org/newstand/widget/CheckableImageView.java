@@ -86,9 +86,11 @@ public class CheckableImageView extends ImageView implements Checkable {
     }
 
     private void applyCheckState(boolean animate) {
-        mDrawable.flipTo(!mChecked);
-        if (!animate) {
-            mDrawable.reset();
+        if (mDrawable != null) {
+            mDrawable.flipTo(!mChecked);
+            if (!animate) {
+                mDrawable.reset();
+            }
         }
     }
 }
