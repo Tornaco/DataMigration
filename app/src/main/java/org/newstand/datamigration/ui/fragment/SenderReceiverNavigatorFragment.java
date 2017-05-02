@@ -32,6 +32,7 @@ import org.newstand.datamigration.ui.activity.ReceivedSessionPickerActivity;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.activity.WFDDataReceiverActivity;
 import org.newstand.datamigration.ui.activity.WFDDataSenderActivity;
+import org.newstand.datamigration.ui.tiles.AdsTile;
 import org.newstand.datamigration.ui.tiles.ReceiveTile;
 import org.newstand.datamigration.ui.tiles.ReceivedViewerTile;
 import org.newstand.datamigration.ui.tiles.SendTile;
@@ -93,7 +94,12 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
         actions.addTile(new ReceivedViewerTile(getActivity()));
         actions.addTile(new ShareTile(getActivity()));
 
+        Category adc = new ThemedCategory();
+        adc.titleRes = R.string.title_card_ad;
+        adc.addTile(new AdsTile(getActivity()));
+
         categories.add(actions);
+        categories.add(adc);
     }
 
     @SuppressWarnings("unchecked")

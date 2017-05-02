@@ -26,6 +26,7 @@ import org.newstand.datamigration.secure.VersionInfo;
 import org.newstand.datamigration.secure.VersionRetriever;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
+import org.newstand.datamigration.ui.tiles.AdsTile;
 import org.newstand.datamigration.ui.tiles.BackupTile;
 import org.newstand.datamigration.ui.tiles.RestoreTile;
 import org.newstand.datamigration.ui.tiles.RulesTile;
@@ -85,7 +86,12 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
         actions.addTile(new SchedulerTile(getActivity()));
         actions.addTile(new RulesTile(getActivity()));
 
+        Category adc = new ThemedCategory();
+        adc.titleRes = R.string.title_card_ad;
+        adc.addTile(new AdsTile(getActivity()));
+
         categories.add(actions);
+        categories.add(adc);
     }
 
     @SuppressWarnings("unchecked")

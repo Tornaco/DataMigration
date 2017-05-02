@@ -126,23 +126,30 @@ public class DashboardFragment extends Fragment {
     private void updateTileView(Context context,
                                 Resources res, final Tile tile,
                                 ImageView tileIcon, TextView tileTextView, TextView statusTextView) {
-        if (tile.iconRes > 0) {
-            tileIcon.setImageResource(tile.iconRes);
-        } else if (tile.iconDrawable != null) {
-            tileIcon.setImageDrawable(tile.iconDrawable);
-        } else {
-            tileIcon.setImageDrawable(null);
-            tileIcon.setBackground(null);
+
+        if (tileIcon != null) {
+            if (tile.iconRes > 0) {
+                tileIcon.setImageResource(tile.iconRes);
+            } else if (tile.iconDrawable != null) {
+                tileIcon.setImageDrawable(tile.iconDrawable);
+            } else {
+                tileIcon.setImageDrawable(null);
+                tileIcon.setBackground(null);
+            }
         }
 
-        tileTextView.setText(tile.getTitle(res));
+        if (tileTextView != null) {
+            tileTextView.setText(tile.getTitle(res));
+        }
 
-        CharSequence summary = tile.getSummary(res);
-        if (!TextUtils.isEmpty(summary)) {
-            statusTextView.setVisibility(View.VISIBLE);
-            statusTextView.setText(summary);
-        } else {
-            statusTextView.setVisibility(View.GONE);
+        if (statusTextView != null) {
+            CharSequence summary = tile.getSummary(res);
+            if (!TextUtils.isEmpty(summary)) {
+                statusTextView.setVisibility(View.VISIBLE);
+                statusTextView.setText(summary);
+            } else {
+                statusTextView.setVisibility(View.GONE);
+            }
         }
     }
 

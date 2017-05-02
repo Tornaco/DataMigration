@@ -156,6 +156,7 @@
 
     <string name="title_start">开始</string>
     <string name="title_card_actions">接下来你可以</string>
+    <string name="title_card_ad">或者</string>
 
     <string name="title_user_notice">必读</string>
     <string name="title_never_remind">不再提醒</string>
@@ -227,6 +228,7 @@
     <string name="title_settings_repeat">重复</string>
     <string name="summary_settings_repeat">计划会在每天的指定时间执行</string>
     <string name="title_validation_select_data">请选择要备份的数据</string>
+    <string name="title_show_ads">欣赏精美广告%1$s</string>
 
     <string name="category_rule_intro">关于</string>
     <string name="title_my_rules">我的规则</string>
