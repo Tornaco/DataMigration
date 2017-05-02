@@ -4,6 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,13 +23,24 @@ import lombok.ToString;
 public class AppRecord extends FileBasedRecord implements Parcelable {
 
     public static final String APK_FILE_PREFIX = ".apk";
+    public static final String APK_META_PREFIX = ".meta";
 
     private String pkgName;
     private String versionName;
 
-    private boolean hasData, hasExtraData;
+    private boolean hasApk, hasData, hasExtraData;
+
+    private boolean handleApk, handleData;
 
     private transient Drawable icon;
+
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
+
+    public static AppRecord fromJson(String json) {
+        return new Gson().fromJson(json, AppRecord.class);
+    }
 
     private AppRecord(Parcel in) {
         super(in);

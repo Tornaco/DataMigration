@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableList;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Producer;
+import org.newstand.datamigration.provider.ThemeColor;
 import org.newstand.datamigration.ui.FragmentController;
 import org.newstand.datamigration.ui.fragment.BackupRestoreNavigatorFragment;
 import org.newstand.datamigration.ui.fragment.SenderReceiverNavigatorFragment;
@@ -47,6 +48,11 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
     }
 
     @Override
+    protected void onApplyTheme(ThemeColor color) {
+        int themeRes = getAppThemeNoActionBar(color);
+        setTheme(themeRes);
+    }
+
     protected void setupView() {
 
         Toolbar toolbar = findView(R.id.toolbar);
@@ -63,7 +69,6 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
 
         navigationView.setCheckedItem(R.id.nav_backup_restore);
 
-        super.setupView();
     }
 
     protected void setupFragment() {
@@ -84,6 +89,11 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onThemeChange() {
+        finishWithAfterTransition();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

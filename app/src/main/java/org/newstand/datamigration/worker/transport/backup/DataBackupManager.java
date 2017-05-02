@@ -160,6 +160,11 @@ public class DataBackupManager {
                                 + File.separator + record.getDisplayName()
                                 + File.separator + SettingsProvider.getBackupAppApkDirName()
                                 + File.separator + record.getDisplayName() + AppRecord.APK_FILE_PREFIX);// DMBK2/APP/Phone/apk/XX.apk
+                appBackupSettings.setDestMetaPath(
+                        SettingsProvider.getBackupDirByCategory(dataCategory, session)
+                                + File.separator + record.getDisplayName()
+                                + File.separator + SettingsProvider.getBackupAppApkDirName()
+                                + File.separator + record.getDisplayName() + AppRecord.APK_META_PREFIX);// DMBK2/APP/Phone/apk/XX.meta
                 appBackupSettings.setDestDataPath(
                         SettingsProvider.getBackupDirByCategory(dataCategory, session)
                                 + File.separator + record.getDisplayName()
@@ -170,6 +175,10 @@ public class DataBackupManager {
                                 + File.separator + record.getDisplayName()
                                 + File.separator + SettingsProvider.getBackupExtraDataDirName());// DMBK2/APP/Phone/extra_data
                 appBackupSettings.setSourceApkPath(((FileBasedRecord) record).getPath());
+
+                appBackupSettings.setBackupApp(((AppRecord) record).isHandleApk());
+                appBackupSettings.setBackupData(((AppRecord) record).isHandleData());
+
                 appBackupSettings.setSourceDataPath(SettingsProvider.getAppDataDir() + File.separator + ((AppRecord) record).getPkgName());
                 // Query extra rules.
                 ExtraDataRule rule = ExtraDataRulesRepoService.get().findByPkg(context, ((AppRecord) record).getPkgName());
@@ -245,6 +254,8 @@ public class DataBackupManager {
                         + File.separator + record.getDisplayName()
                         + File.separator + SettingsProvider.getBackupAppDataDirName()
                         + File.separator + "data.tar.gz");// DMBK2/APP/Phone/data/data.tar.gz
+                appRestoreSettings.setInstallApp(((AppRecord) record).isHandleApk());
+                appRestoreSettings.setInstallData(((AppRecord) record).isHandleData());
                 appRestoreSettings.setDestDataPath(SettingsProvider.getAppDataDir() + File.separator + ((AppRecord) record).getPkgName());
                 appRestoreSettings.setAppRecord((AppRecord) record);
                 appRestoreSettings.setExtraSourceDataPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)

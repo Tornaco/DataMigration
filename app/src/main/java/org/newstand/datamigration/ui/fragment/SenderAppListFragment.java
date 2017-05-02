@@ -1,6 +1,5 @@
 package org.newstand.datamigration.ui.fragment;
 
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.Menu;
@@ -14,7 +13,6 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
-import org.newstand.datamigration.ui.widget.ApkDataPickerDialog;
 import org.newstand.datamigration.utils.Files;
 
 /**
@@ -23,7 +21,7 @@ import org.newstand.datamigration.utils.Files;
  * All right reserved.
  */
 
-public class AppListFragment extends DataListViewerFragment {
+public class SenderAppListFragment extends DataListViewerFragment {
 
     @Override
     DataCategory getDataType() {
@@ -56,31 +54,15 @@ public class AppListFragment extends DataListViewerFragment {
             @Override
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
                 AppRecord appRecord = (AppRecord) record;
-                String summary = getString(R.string.summary_app_template, appRecord.getVersionName()
+                String summary = getString(R.string.summary_app_template_short, appRecord.getVersionName()
                                 == null ? getString(R.string.unknown) : appRecord.getVersionName(),
-                        Files.formatSize(appRecord.getSize()),
-                        getStringSafety(appRecord.isHandleApk() ? R.string.yes : R.string.no),
-                        getStringSafety(appRecord.isHandleData() ? R.string.yes : R.string.no));
+                        Files.formatSize(appRecord.getSize()));
                 holder.getLineTwoTextView().setText(summary);
                 Drawable icon = appRecord.getIcon();
                 holder.getCheckableImageView().setImageDrawable(icon == null
                         ? ContextCompat.getDrawable(getContext(), R.mipmap.ic_app_avatar)
                         : icon);
                 super.onBindViewHolder(holder, record);
-            }
-
-            @Override
-            protected void onItemClick(final CommonListViewHolder holder) {
-                final AppRecord r = (AppRecord) getDataRecords().get(holder.getAdapterPosition());
-                ApkDataPickerDialog.attach(getActivity(), r,
-                        new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                boolean willCheck = r.isHandleApk() || r.isHandleData();
-                                onCheckStateChanged(willCheck, holder.getAdapterPosition());
-                                onUpdate();
-                            }
-                        });
             }
         };
     }

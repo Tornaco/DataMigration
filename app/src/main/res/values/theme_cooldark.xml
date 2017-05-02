@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme.CoolDark">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/dark</item>
+        <item name="colorPrimaryDark">@color/dark_dark</item>
+        <item name="colorAccent">@color/dark</item>
+    </style>
+
+    <style name="AppTheme.CoolDark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>

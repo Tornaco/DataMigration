@@ -7,7 +7,6 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
-import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +29,6 @@ public class ThemeColorTile extends ThemedTile {
     void onInitView(Context context) {
 
         final ThemeColor current = SettingsProvider.getThemeColor();
-
-        Logger.d("current theme is %s", current);
 
         this.summary = getContext().getString(current.nameRes());
 

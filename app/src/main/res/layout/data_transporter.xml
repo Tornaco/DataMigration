@@ -32,15 +32,14 @@
                 android:layout_height="240dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                app:pwBarColor="@color/accent"
+                app:pwBarColor="@color/dark"
                 app:pwBarLength="12dp"
                 app:pwBarWidth="12dp"
                 app:pwRimColor="@color/divider"
                 app:pwRimWidth="1dp"
                 app:pwSpinSpeed="3dp"
-                app:pwTextColor="@color/accent"
-                app:pwTextSize="48sp"
-                app:pwTypeface="fonts/agency.ttf" />
+                app:pwTextColor="@color/dark"
+                app:pwTextSize="48sp" />
 
         </RelativeLayout>
 

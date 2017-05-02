@@ -9,5 +9,9 @@
         <item>@color/orange</item>
     </string-array>
 
+    <string-array name="apk_data_selections">
+        <item>@string/title_apk</item>
+        <item>@string/title_data</item>
+    </string-array>
 
 </resources>

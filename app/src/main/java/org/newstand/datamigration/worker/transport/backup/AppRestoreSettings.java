@@ -25,4 +25,7 @@ public class AppRestoreSettings extends RestoreSettings {
     private String sourceApkPath;
 
     private String extraSourceDataPath;
+
+    private boolean installApp;
+    private boolean installData;
 }

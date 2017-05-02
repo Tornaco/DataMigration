@@ -15,6 +15,7 @@ import org.newstand.datamigration.ui.tiles.DevTile;
 import org.newstand.datamigration.ui.tiles.EncryptTile;
 import org.newstand.datamigration.ui.tiles.InstallDataTile;
 import org.newstand.datamigration.ui.tiles.StorageLocationTile;
+import org.newstand.datamigration.ui.tiles.ThemeColorTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.tiles.TransitionAnimationTile;
 import org.newstand.datamigration.utils.SeLinuxEnabler;
@@ -81,6 +82,8 @@ public class SettingsActivity extends TransitionSafeActivity {
 
             TransitionAnimationTile animationTile = new TransitionAnimationTile(getContext());
             view.addTile(animationTile);
+
+            view.addTile(new ThemeColorTile(getActivity()));
 
             Category strategy = new ThemedCategory();
             strategy.titleRes = R.string.tile_category_strategy;

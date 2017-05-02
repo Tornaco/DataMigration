@@ -25,6 +25,10 @@ public class AppBackupSettings extends BackupSettings {
 
     private String sourceApkPath;
     private String destApkPath;
+    private String destMetaPath;
 
     private String[] extraDirs;
+
+    private boolean backupApp;
+    private boolean backupData;
 }

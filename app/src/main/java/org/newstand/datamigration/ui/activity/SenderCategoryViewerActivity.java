@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,5 +48,10 @@ public class SenderCategoryViewerActivity extends AndroidCategoryViewerActivity 
     @Override
     protected Fragment onCreateViewerFragment() {
         return new SenderCategoryViewerFragment();
+    }
+
+    @Override
+    protected Class<? extends Activity> getListHostActivityClz() {
+        return SenderDataListHostActivity.class;
     }
 }

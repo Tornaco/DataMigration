@@ -38,104 +38,9 @@
             android:value="60f3f20bc06ef7b326523f6c7844e4bb" />
 
         <activity
-            android:name=".ui.activity.BaseNavigatorActivity"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.activity.NavigatorActivityDefault"
-            android:enabled="false"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.activity.NavigatorActivityIndigo"
-            android:enabled="false"
-            android:icon="@mipmap/ic_launcher"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.activity.NavigatorActivityBlue"
-            android:enabled="false"
-            android:icon="@mipmap/ic_launcher_blue"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.activity.NavigatorActivityRed"
-            android:enabled="false"
-            android:icon="@mipmap/ic_launcher_red"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.activity.NavigatorActivityCoolApk"
-            android:enabled="false"
-            android:icon="@mipmap/ic_launcher_green"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.activity.NavigatorActivityPink"
-            android:enabled="false"
-            android:icon="@mipmap/ic_launcher_pink"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.activity.NavigatorActivityPurple"
-            android:enabled="false"
-            android:icon="@mipmap/ic_launcher_purple"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.activity.NavigatorActivityCoolDark"
-            android:enabled="false"
-            android:icon="@mipmap/ic_launcher_dark"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ui.activity.DrawerNavigatorActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -145,78 +50,103 @@
         <activity
             android:name=".ui.activity.AndroidCategoryViewerActivity"
             android:label="@string/title_backup"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.SenderCategoryViewerActivity"
             android:label="@string/title_transport_sender"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ReceivedCategoryViewerActivity"
             android:label="@string/title_transport_received_viewer"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupSessionPickerActivity"
             android:label="@string/title_restore_picker"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ReceivedSessionPickerActivity"
             android:label="@string/title_transport_received_viewer"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupCategoryViewerActivity"
             android:label="@string/title_restore"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ScheduledTaskViewerActivity"
             android:label="@string/action_scheduler_viewer"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ExtraRulesViewerActivity"
             android:label="@string/action_extra_data_rules_viewer"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ScheduledTaskCreatorActivity"
             android:label="@string/action_scheduler_creator"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.RulesCreatorActivity"
             android:label="@string/action_extra_data_rules_creator"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.AndroidDataListHostActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.activity.SenderDataListHostActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ReceivedDataListHostActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupDataListHostActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.DataImportActivity"
             android:label="@string/title_restore_import"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.DataExportActivity"
             android:label="@string/title_backup_export"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.WFDDataSenderActivity"
-            android:label="@string/title_setup_wfd_sender" />
+            android:label="@string/title_setup_wfd_sender"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.WFDDataReceiverActivity"
-            android:label="@string/title_setup_wfd_receiver" />
+            android:label="@string/title_setup_wfd_receiver"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingsActivity"
-            android:label="@string/action_settings" />
+            android:label="@string/action_settings"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AboutActivity"
-            android:label="@string/tile_category_about" />
+            android:label="@string/tile_category_about"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ComeInActivity"
-            android:label="@string/tile_category_in" />
+            android:label="@string/tile_category_in"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.UserActionViewerActivity"
-            android:label="@string/action_user_actions" />
+            android:label="@string/action_user_actions"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LicenseViewerActivity"
             android:label="@string/title_license" />

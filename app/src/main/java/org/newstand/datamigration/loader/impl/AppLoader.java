@@ -85,38 +85,64 @@ public class AppLoader extends BaseLoader {
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override
             public void accept(@NonNull File file) {
+
                 AppRecord record = new AppRecord();
                 record.setDisplayName(Files.getNameWithoutExtension(file.getPath()));
                 record.setPath(file.getPath() + File.separator + SettingsProvider.getBackupAppApkDirName()
                         + File.separator + record.getDisplayName() + AppRecord.APK_FILE_PREFIX);
+
                 boolean apkExist = new File(record.getPath()).exists();
-                if (!apkExist) {
-                    Logger.e("APK Not found in %s", record.getPath());
-                    return;
-                }
+                record.setHasApk(apkExist);
+
                 boolean dataExist = new File(file.getPath() + File.separator + SettingsProvider.getBackupAppDataDirName())
                         .exists();
                 record.setHasData(dataExist);
                 boolean extraDataExist = new File(file.getPath() + File.separator + SettingsProvider.getBackupExtraDataDirName())
                         .exists();
                 record.setHasExtraData(extraDataExist);
-                try {
-                    String packageName = ApkUtil.loadPkgNameByFilePath(getContext(), record.getPath());
-                    if (TextUtils.isEmpty(packageName)) {
-                        Logger.w("Ignore app while package name is null %s", file.getPath());
-                        return;
+                if (apkExist) {
+                    try {
+                        String packageName = ApkUtil.loadPkgNameByFilePath(getContext(), record.getPath());
+                        if (TextUtils.isEmpty(packageName)) {
+                            Logger.w("Ignore app while package name is null %s", file.getPath());
+                            return;
+                        }
+                        Drawable icon = ApkUtil.loadIconByFilePath(getContext(), record.getPath());
+                        record.setIcon(icon);
+                        record.setVersionName(ApkUtil.loadVersionByFilePath(getContext(), record.getPath()));
+                        record.setPkgName(packageName);
+                        record.setSize(Files.asByteSource(new File(record.getPath())).size());
+                        String appName = ApkUtil.loadAppNameByFilePath(getContext(), record.getPath());
+                        Logger.v("appName %s", appName);
+                        record.setDisplayName(file.getName());
+
+                        record.setHandleApk(false);
+                        record.setHandleData(false);
+
+                        records.add(record);
+                    } catch (Throwable e) {
+                        Logger.e(e, "Failed to query size for %s", record);
                     }
-                    Drawable icon = ApkUtil.loadIconByFilePath(getContext(), record.getPath());
-                    record.setIcon(icon);
-                    record.setVersionName(ApkUtil.loadVersionByFilePath(getContext(), record.getPath()));
-                    record.setPkgName(packageName);
-                    record.setSize(Files.asByteSource(new File(record.getPath())).size());
-                    String appName = ApkUtil.loadAppNameByFilePath(getContext(), record.getPath());
-                    Logger.v("appName %s", appName);
-                    record.setDisplayName(file.getName());
-                    records.add(record);
-                } catch (Throwable e) {
-                    Logger.e(e, "Failed to query size for %s", record);
+                } else {
+                    // Find app record info.
+                    String jsonPath = file.getPath() + File.separator + SettingsProvider.getBackupAppApkDirName()
+                            + File.separator + record.getDisplayName() + AppRecord.APK_META_PREFIX;
+                    File jsonFile = new File(jsonPath);
+                    if (jsonFile.exists()) try {
+                        AppRecord jsonRecord = AppRecord.fromJson(org.newstand.datamigration.utils.Files.readString(jsonPath));
+
+                        record.setIcon(jsonRecord.getIcon());
+                        record.setVersionName(jsonRecord.getVersionName());
+                        record.setPkgName(jsonRecord.getPkgName());
+                        record.setSize(0);
+                        record.setDisplayName(jsonRecord.getDisplayName());
+                        record.setHandleApk(false);
+                        record.setHandleData(false);
+
+                        records.add(record);
+                    } catch (Throwable e) {
+                        Logger.e(e, "Failed to parse app meta in %s", jsonPath);
+                    }
                 }
             }
         });

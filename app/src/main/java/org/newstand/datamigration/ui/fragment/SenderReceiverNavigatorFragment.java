@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -37,8 +38,8 @@ import org.newstand.datamigration.ui.tiles.SendTile;
 import org.newstand.datamigration.ui.tiles.ShareTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.ErrDialog;
-import org.newstand.datamigration.ui.widget.IntroDialog;
 import org.newstand.datamigration.ui.widget.VersionInfoDialog;
+import org.newstand.datamigration.utils.EmojiUtils;
 import org.newstand.datamigration.utils.Files;
 
 import java.util.List;
@@ -107,40 +108,24 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
 
     protected void setupView() {
 
-        // Now hide the cards first.
-        hideCards();
+        findView(rootView, R.id.card).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), EmojiUtils.getEmojiByUnicode(0x1F680), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         if (SettingsProvider.shouldCheckForUpdateNow()) {
             checkForUpdate();
         }
     }
 
-    private void hideCards() {
-        findView(R.id.card).setVisibility(View.INVISIBLE);
-    }
-
-    private void showCards() {
-        findView(R.id.card).setVisibility(View.VISIBLE);
-    }
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onStart() {
         super.onStart();
-
-        // Show intro dialog
-        IntroDialog.attach(getContext(), new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                getActivity().finish();
-            }
-        }, new Runnable() {
-            @Override
-            public void run() {
-                // Ask for perms
-                requestPerms();
-            }
-        });
+        // Ask for perms
+        requestPerms();
     }
 
     private void requestPerms() {
@@ -161,16 +146,17 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
 
 
     private void checkForUpdate() {
-        VersionRetriever.hasLaterVersionAsync(getContext(), new ActionListener2Adapter<VersionCheckResult, Throwable>() {
-            @Override
-            public void onComplete(VersionCheckResult versionCheckResult) {
-                super.onComplete(versionCheckResult);
-                if (versionCheckResult.isHasLater()) {
-                    showUpdateSnake(versionCheckResult.getVersionInfo());
-                    SettingsProvider.setLastUpdateCheckTime(System.currentTimeMillis());
-                }
-            }
-        });
+        VersionRetriever.hasLaterVersionAsync(getContext(),
+                new ActionListener2Adapter<VersionCheckResult, Throwable>() {
+                    @Override
+                    public void onComplete(VersionCheckResult versionCheckResult) {
+                        super.onComplete(versionCheckResult);
+                        if (versionCheckResult.isHasLater()) {
+                            showUpdateSnake(versionCheckResult.getVersionInfo());
+                            SettingsProvider.setLastUpdateCheckTime(System.currentTimeMillis());
+                        }
+                    }
+                });
     }
 
     private void showUpdateSnake(final VersionInfo info) {
@@ -190,8 +176,6 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
     }
 
     private void onPermissionGrant() {
-        showCards();
-        // Show card intro after our cards is visible~
         queryShowHistory();
     }
 

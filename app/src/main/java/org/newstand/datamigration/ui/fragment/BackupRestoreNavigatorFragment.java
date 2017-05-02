@@ -8,12 +8,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -26,8 +25,6 @@ import org.newstand.datamigration.secure.VersionCheckResult;
 import org.newstand.datamigration.secure.VersionInfo;
 import org.newstand.datamigration.secure.VersionRetriever;
 import org.newstand.datamigration.sync.SharedExecutor;
-import org.newstand.datamigration.ui.activity.AndroidCategoryViewerActivity;
-import org.newstand.datamigration.ui.activity.BackupSessionPickerActivity;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.tiles.BackupTile;
 import org.newstand.datamigration.ui.tiles.RestoreTile;
@@ -37,16 +34,12 @@ import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.IntroDialog;
 import org.newstand.datamigration.ui.widget.VersionInfoDialog;
+import org.newstand.datamigration.utils.EmojiUtils;
 import org.newstand.datamigration.worker.transport.Session;
 
 import java.util.Date;
 import java.util.List;
 
-import co.mobiwise.materialintro.animation.MaterialIntroListener;
-import co.mobiwise.materialintro.shape.Focus;
-import co.mobiwise.materialintro.shape.FocusGravity;
-import co.mobiwise.materialintro.shape.ShapeType;
-import co.mobiwise.materialintro.view.MaterialIntroView;
 import dev.nick.tiles.tile.Category;
 import dev.nick.tiles.tile.DashboardFragment;
 import io.reactivex.functions.Consumer;
@@ -106,16 +99,22 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
     }
 
     protected void setupView() {
+
+        findView(rootView, R.id.card).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), EmojiUtils.getEmojiByUnicode(0x1F60F), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         if (SettingsProvider.shouldCheckForUpdateNow()) {
             checkForUpdate();
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onStart() {
-        super.onStart();
-
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         // Show intro dialog
         IntroDialog.attach(getContext(), new DialogInterface.OnCancelListener() {
             @Override
@@ -129,7 +128,6 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
                 requestPerms();
             }
         });
-
     }
 
     private void requestPerms() {
@@ -182,31 +180,6 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
         queryShowHistory();
     }
 
-    private void buildCardIntros() {
-        // Show card intros.
-        new MaterialIntroView.Builder(getActivity())
-                .enableDotAnimation(true)
-                .enableIcon(true)
-                .setFocusGravity(FocusGravity.CENTER)
-                .setFocusType(Focus.MINIMUM)
-                .enableFadeAnimation(true)
-                .performClick(false)
-                .setInfoText(getString(R.string.card_intro))
-                .setShape(ShapeType.CIRCLE)
-                .setTarget(findView(R.id.card))
-                .setUsageId("intro_card")
-                .setListener(new MaterialIntroListener() {
-                    @Override
-                    public void onUserClicked(String s) {
-                        onCardsIntroClick();
-                    }
-                })
-                .show();
-    }
-
-    private void onCardsIntroClick() {
-    }
-
     private void onPermissionNotGrant() {
         ErrDialog.attach(getContext(), new IllegalStateException("Permission denied"), new DialogInterface.OnDismissListener() {
             @Override
@@ -239,35 +212,6 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
                 });
             }
         });
-    }
-
-    private void showCard1Pop(View anchor) {
-        PopupMenu popup = new PopupMenu(getActivity(), anchor);
-
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_backup:
-                        onActionBackup();
-                        break;
-                    case R.id.action_restore:
-                        onActionRestore();
-                        break;
-                }
-                return true;
-            }
-        });
-        popup.inflate(R.menu.navigator_card_1);
-        popup.show();
-    }
-
-    private void onActionBackup() {
-        transitionTo(new Intent(getContext(), AndroidCategoryViewerActivity.class));
-    }
-
-    private void onActionRestore() {
-        transitionTo(new Intent(getContext(), BackupSessionPickerActivity.class));
     }
 
     protected void transitionTo(Intent intent) {

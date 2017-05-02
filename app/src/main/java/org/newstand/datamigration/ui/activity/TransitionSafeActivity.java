@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
@@ -21,7 +22,6 @@ import android.view.ViewGroup;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
-import org.newstand.logger.Logger;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -37,23 +37,23 @@ public class TransitionSafeActivity extends AppCompatActivity {
     private boolean mIsDestroyed, mTransitionAnimationEnabled;
 
     @Getter
-    private ThemeColor themeColor;
+    private ThemeColor themeColor = ThemeColor.Default;
 
     @Getter
     private Observer settingsObserver = new Observer() {
         @Override
         public void update(Observable o, Object arg) {
-            Logger.d("Settings changed %s", arg);
-            readSettings();
+            updateSettings();
         }
     };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-
         readSettings();
+        applyTheme();
+
+        super.onCreate(savedInstanceState);
 
         SettingsProvider.observe(settingsObserver);
 
@@ -69,6 +69,14 @@ public class TransitionSafeActivity extends AppCompatActivity {
         setupEnterWindowAnimations();
     }
 
+    protected void applyTheme() {
+        onApplyTheme(themeColor);
+    }
+
+    protected void onApplyTheme(ThemeColor color) {
+        int themeRes = getAppTheme(color);
+        setTheme(themeRes);
+    }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -81,18 +89,63 @@ public class TransitionSafeActivity extends AppCompatActivity {
 
     private void readSettings() {
         mTransitionAnimationEnabled = SettingsProvider.isTransitionAnimationEnabled();
-        ThemeColor color = SettingsProvider.getThemeColor();
-        if (themeColor == null) {
-            themeColor = color;
-            return;
-        }
-        if (color != themeColor) {
-            themeColor = color;
-            onThemeColorChanged();
+        themeColor = SettingsProvider.getThemeColor();
+    }
+
+    private void updateSettings() {
+        mTransitionAnimationEnabled = SettingsProvider.isTransitionAnimationEnabled();
+        ThemeColor newColor = SettingsProvider.getThemeColor();
+        if (themeColor != newColor) {
+            onThemeChange();
         }
     }
 
-    private void onThemeColorChanged() {
+    protected void onThemeChange() {
+        recreate();
+    }
+
+    protected
+    @StyleRes
+    int getAppTheme(ThemeColor color) {
+        switch (color) {
+            case CoolApk:
+                return R.style.AppTheme_CoolApk;
+            case CoolDark:
+                return R.style.AppTheme_CoolDark;
+            case Pink:
+                return R.style.AppTheme_Pink;
+            case Teal:
+                return R.style.AppTheme_Teal;
+            case Red:
+                return R.style.AppTheme_Red;
+            case Purple:
+                return R.style.AppTheme_Purple;
+            case Default:
+            default:
+                return R.style.AppTheme;
+        }
+    }
+
+    protected
+    @StyleRes
+    int getAppThemeNoActionBar(ThemeColor color) {
+        switch (color) {
+            case CoolApk:
+                return R.style.AppTheme_CoolApk_NoActionBar;
+            case CoolDark:
+                return R.style.AppTheme_CoolDark_NoActionBar;
+            case Pink:
+                return R.style.AppTheme_Pink_NoActionBar;
+            case Teal:
+                return R.style.AppTheme_Teal_NoActionBar;
+            case Red:
+                return R.style.AppTheme_Red_NoActionBar;
+            case Purple:
+                return R.style.AppTheme_Purple_NoActionBar;
+            case Default:
+            default:
+                return R.style.AppTheme_NoActionBar;
+        }
     }
 
     @Override
@@ -126,7 +179,6 @@ public class TransitionSafeActivity extends AppCompatActivity {
             startActivity(i, transitionActivityOptions.toBundle());
         } else {
             startActivity(i);
-            overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
         }
     }
 
@@ -182,7 +234,7 @@ public class TransitionSafeActivity extends AppCompatActivity {
     protected boolean replaceV4(final int containerId,
                                 Fragment f, Bundle bundle, boolean animate) {
 
-        if (isDestroyed() || f == null) {
+        if (isDestroyedCompat() || f == null) {
             return false;
         }
 
@@ -229,11 +281,11 @@ public class TransitionSafeActivity extends AppCompatActivity {
         }
 
         if (!animate) {
-            getSupportFragmentManager().beginTransaction().remove(f).commit();
+            getSupportFragmentManager().beginTransaction().remove(f).commitAllowingStateLoss();
         } else {
             getSupportFragmentManager().beginTransaction()
                     .remove(f)
-                    .commit();//TODO Ignore the result?
+                    .commitAllowingStateLoss();//TODO Ignore the result?
         }
         mShowingFragment = null;
         return true;
@@ -259,13 +311,6 @@ public class TransitionSafeActivity extends AppCompatActivity {
         } else {
             finish();
         }
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        if (!isMainActivity())
-            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 
     public boolean isMainActivity() {

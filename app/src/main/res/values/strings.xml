@@ -15,8 +15,8 @@
 
     <string name="title_activity_navigator">@string/app_name</string>
 
-    <string name="yes">√</string>
-    <string name="no">×</string>
+    <string name="yes">Y</string>
+    <string name="no">N</string>
 
     <string name="action_settings">设置</string>
     <string name="action_user_actions">日志</string>
@@ -46,6 +46,9 @@
     <string name="category_wifi">WLAN</string>
     <string name="category_call">通话记录</string>
     <string name="category_custom">自定义文件</string>
+
+    <string name="title_apk">安装包</string>
+    <string name="title_data">数据</string>
 
     <string name="summary_sms_template_rec">来自&#160;%1$s \t%2$s</string>
     <string name="summary_sms_template_send">发给&#160;%1$s \t%2$s</string>
@@ -117,8 +120,9 @@
 
     <string name="summary_category_viewer">%1$s/%2$s</string>
     <string name="summary_category_viewer_need_click">点击选择条目</string>
-    <string name="summary_app_template">版本号: <i>%1$s</i>\n文件大小: <i>%2$s</i></string>
-    <string name="summary_app_template2">版本号: <i>%1$s</i>\n文件大小: <i>%2$s</i>\n包含数据包: <i>%3$s</i>\n包含附加数据包: <i>%4$s</i></string>
+    <string name="summary_app_template_short">版本号: %1$s\n文件大小: %2$s</string>
+    <string name="summary_app_template">版本号: %1$s\n文件大小: %2$s\n\n将会备份安装包: %3$s\n将会备份数据包: %4$s</string>
+    <string name="summary_app_template2">版本号: %1$s\n文件大小: %2$s\n\n包含安装包: %3$s\n包含数据包: %4$s\n包含附加数据包: %5$s\n\n将会还原安装包: %6$s\n将会还原数据包: %7$s</string>
     <string name="unknown">未知</string>
     <string name="enforcing">执行中</string>
     <string name="permissive">许可</string>
@@ -135,20 +139,20 @@
     <string name="summary_transition_animation">开启更活泼的动画，仅作实验~</string>
     <string name="tile_theme_color">主题颜色</string>
     <string name="tile_work_mode_root">备份/还原应用数据(BETA)</string>
-    <string name="summary_work_mode_root">为已经root的设备备份/还原应用数据，稍后将会检查并申请root权限，请在收到申请提示后，选择允许</string>
+    <string name="summary_work_mode_root">为具有root权限的设备备份/还原应用数据，稍后将会检查并申请root权限，请在收到申请提示后，选择允许。还原之前注意要先关闭正在运行的相关应用，否则可能造成应用的数据丢失</string>
     <string name="tile_dev_mode">开发者模式</string>
     <string name="summary_dev_mode">你可以查看程序日志，开启一些调试功能，也可能会引入一些未知问题，仅限开发者调试使用</string>
     <string name="tile_auto_install">自动安装应用程序</string>
     <string name="summaty_auto_install">为已经root的设备自动安装应用程序</string>
     <string name="title_encrypt">启用加密</string>
-    <string name="summary_encrypt">对备份或者传输的数据（通话记录，短信，Wifi）进行加密</string>
+    <string name="summary_encrypt">对备份或者传输的数据（通话记录，短信，Wifi）进行加密，注意，这可能会导致备份的数据失去兼容性</string>
 
     <string name="title_transport_sender_receiver">无线快传</string>
     <string name="title_transport_sender">发送数据给对方</string>
     <string name="title_transport_receiver">从对方接收数据</string>
     <string name="title_transport_received_viewer">查看接收到的数据记录</string>
     <string name="title_transport_share">把我分享给别人</string>
-    <string name="title_transport_share_tips">Google为了安全起见，禁止直接分享APK文件，因此我们把APK文件命名为JPEG文件，待对方收到该文件后，修改后缀名为APK即可安装使用</string>
+    <string name="title_transport_share_tips">为了安全起见，Android禁止直接分享APK文件，因此我们把APK文件命名为JPEG文件，待对方收到该文件后，修改后缀名为APK即可安装使用</string>
 
     <string name="title_start">开始</string>
     <string name="title_card_actions">接下来你可以</string>
@@ -189,7 +193,7 @@
     <string name="summary_bugreport">当应用发生严重问题时，自动上传日志文件(30K左右)，可以帮助我们更好的收集分析应用bug</string>
 
     <string name="title_thanks">特别感谢</string>
-    <string name="summary_thanks">以下各位基佬均对本软件做了巨大贡献[滑稽]</string>
+    <string name="summary_thanks">以下各位对本软件做了巨大贡献%1$s</string>
 
     <string name="title_storage_location">数据文件路径</string>
     <string name="summary_storage_location">所备份与接收到的文件均放置在%1$s目录下，单纯的清除设备数据，并不会破坏备份与接收文件。因此当你清除设备数据后，你只需要重新下载本应用，安装即可无缝使用旧数据</string>

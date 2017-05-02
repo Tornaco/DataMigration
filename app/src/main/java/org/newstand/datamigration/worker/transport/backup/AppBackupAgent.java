@@ -48,24 +48,32 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
 
         Logger.d("backup with settings %s", backupSettings);
 
-        // Apk source
-        String apkPath = backupSettings.getSourceApkPath();
-        // Apk dest
-        String destApkPath = backupSettings.getDestApkPath();
+        // Write meta info.
+        String metaPath = backupSettings.getDestMetaPath();
+        if (!org.newstand.datamigration.utils.Files.writeString(backupSettings.getAppRecord().toJson(), metaPath)) {
+            Logger.e("Fail to write app meta~");// We are still ok.
+        }
 
-        // Apk backup go~
-        FileBackupSettings apkSettings = new FileBackupSettings();
-        apkSettings.setSourcePath(apkPath);
-        apkSettings.setDestPath(destApkPath);
-        Res apkRes = fileBackupAgent.backup(apkSettings);
+        if (backupSettings.isBackupApp()) {
+            // Apk source
+            String apkPath = backupSettings.getSourceApkPath();
+            // Apk dest
+            String destApkPath = backupSettings.getDestApkPath();
 
-        if (!Res.isOk(apkRes)) {
-            return apkRes;
+            // Apk backup go~
+            FileBackupSettings apkSettings = new FileBackupSettings();
+            apkSettings.setSourcePath(apkPath);
+            apkSettings.setDestPath(destApkPath);
+            Res apkRes = fileBackupAgent.backup(apkSettings);
+
+            if (!Res.isOk(apkRes)) {
+                return apkRes;
+            }
         }
 
         final Res[] res = {Res.OK};
 
-        if (SettingsProvider.isInstallDataEnabled()) {
+        if (backupSettings.isBackupData()) {
             boolean hasRoot = RootManager.getInstance().obtainPermission();
             if (!hasRoot) {
                 Logger.e("Fail to obtain root~");
@@ -111,7 +119,6 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
                 });
             }
         }
-
         return res[0];
     }
 
@@ -120,20 +127,22 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
 
         Logger.d("restore with settings %s", restoreSettings);
 
-        PackageInstallReceiver installReceiver = new PackageInstallReceiver(restoreSettings.getAppRecord().getPkgName());
-        installReceiver.register(getContext());
+        if (restoreSettings.isInstallApp()) {
+            PackageInstallReceiver installReceiver = new PackageInstallReceiver(restoreSettings.getAppRecord().getPkgName());
+            installReceiver.register(getContext());
 
-        boolean autoInstall = SettingsProvider.isAutoInstallAppEnabled();
+            boolean autoInstall = SettingsProvider.isAutoInstallAppEnabled();
 
-        if (!autoInstall || !installAppWithRoot(restoreSettings)) {
-            installAppWithIntent(restoreSettings);
+            if (!autoInstall || !installAppWithRoot(restoreSettings)) {
+                installAppWithIntent(restoreSettings);
+            }
+
+            installReceiver.waitUtilInstalled();
+            Sleeper.sleepQuietly(1000); // Sleep for 1s to let user dismiss the install page...Maybe there is a better way?
+            installReceiver.unRegister(getContext());
         }
 
-        installReceiver.waitUtilInstalled();
-        Sleeper.sleepQuietly(1000); // Sleep for 1s to let user dismiss the install page...Maybe there is a better way?
-        installReceiver.unRegister(getContext());
-
-        boolean installData = SettingsProvider.isInstallDataEnabled();
+        boolean installData = restoreSettings.isInstallData();
 
         Res res = Res.OK;
 
@@ -171,6 +180,14 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
     }
 
     private Res installData(AppRestoreSettings restoreSettings) throws Exception {
+        if (!RootManager.getInstance().obtainPermission()) {
+            Logger.d("Fail to obtain root permission");
+            return new RootMissingException();
+        }
+
+        // Kill if app is running~
+        RootManager.getInstance().killProcessByName(restoreSettings.getAppRecord().getPkgName());
+
         // Install data
         String dataFromPath = restoreSettings.getSourceDataPath();
         String dataToPath = restoreSettings.getDestDataPath();

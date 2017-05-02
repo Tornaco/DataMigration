@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.utils.EmojiUtils;
 
 import dev.nick.tiles.tile.QuickTileView;
 
@@ -25,7 +26,7 @@ public class ThanksTile extends ThemedTile {
     void onInitView(Context context) {
 
         this.titleRes = R.string.title_thanks;
-        this.summaryRes = R.string.summary_thanks;
+        this.summary = getContext().getString(R.string.summary_thanks, EmojiUtils.getEmojiByUnicode(0x1F602));
         this.iconRes = R.drawable.ic_gift;
 
         this.tileView = new QuickTileView(getContext(), this) {
@@ -38,8 +39,8 @@ public class ThanksTile extends ThemedTile {
     }
 
     private String guys() {
-        return "学渣匆匆\n" +
-                "Dwughjsd";
+        return "@学渣匆匆\n" +
+                "@Dwughjsd";
     }
 
     private void showThanks() {
