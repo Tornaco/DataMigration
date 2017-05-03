@@ -2,6 +2,7 @@ package org.newstand.logger;
 
 import com.bugsnag.android.Bugsnag;
 
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.UnknownHostException;
@@ -32,6 +33,14 @@ public class Logger {
         printer = new LogPrinter();
         printer.set(settings);
         bugReportEnabled = settings.isBugReportEnabled();
+    }
+
+    public static void startRedirection(PrintStream ps) {
+        printer.startRedirection(ps);
+    }
+
+    public static void stopRedirection() {
+        printer.stopRedirection();
     }
 
     public static void d(String message, Object... args) {

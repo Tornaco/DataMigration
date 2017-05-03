@@ -9,6 +9,7 @@ import net.youmi.android.normal.banner.BannerManager;
 import net.youmi.android.normal.banner.BannerViewListener;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.logger.Logger;
 
 import dev.nick.tiles.tile.TileView;
@@ -31,30 +32,36 @@ public class YMTileView extends TileView {
     }
 
     @Override
-    protected void onViewInflated(View view) {
-        Logger.i("Loading ads...");
-        View banner = BannerManager.getInstance(getContext()).getBannerView(getContext(),
-                new BannerViewListener() {
+    protected void onViewInflated(final View view) {
+        Runnable loader = new Runnable() {
             @Override
-            public void onRequestSuccess() {
-                Logger.d("BannerManager, onRequestSuccess");
-            }
+            public void run() {
+                View banner = BannerManager.getInstance(getContext()).getBannerView(getContext(),
+                        new BannerViewListener() {
+                            @Override
+                            public void onRequestSuccess() {
+                                Logger.v("BannerManager, onRequestSuccess");
+                            }
 
-            @Override
-            public void onSwitchBanner() {
-                Logger.d("BannerManager, onSwitchBanner");
-            }
+                            @Override
+                            public void onSwitchBanner() {
+                                Logger.v("BannerManager, onSwitchBanner");
+                            }
 
-            @Override
-            public void onRequestFailed() {
-                Logger.d("BannerManager, onRequestFailed");
-            }
-        });
+                            @Override
+                            public void onRequestFailed() {
+                                Logger.v("BannerManager, onRequestFailed");
+                            }
+                        });
 
-        if (banner != null) {
-            LinearLayout container = (LinearLayout) view.findViewById(R.id.ad_container);
-            container.addView(banner);
-        }
+                if (banner != null) {
+                    LinearLayout container = (LinearLayout) view.findViewById(R.id.ad_container);
+                    container.addView(banner);
+                }
+            }
+        };
+
+        SharedExecutor.runOnUIThread(loader);
     }
 
     @Override

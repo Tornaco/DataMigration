@@ -12,6 +12,7 @@ import android.support.annotation.WorkerThread;
 import android.support.v4.content.FileProvider;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.common.ActionListener;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.secure.VersionRetriever;
@@ -153,5 +154,26 @@ public abstract class Files {
             Closer.closeQuietly(reader);
         }
         return null;
+    }
+
+    public static boolean isEmptyDir(File dir) {
+        return dir.exists() && dir.isDirectory() && dir.list().length == 0;
+    }
+
+    public static void moveAsync(final File from, final File to,
+                                 final ActionListener<Boolean> listener) {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    com.google.common.io.Files.move(from, to);
+                    listener.onAction(true);
+                } catch (IOException e) {
+                    Logger.e(e, "Fail to move from %s to %s", from, to);
+                    listener.onAction(false);
+                }
+            }
+        };
+        SharedExecutor.execute(r);
     }
 }

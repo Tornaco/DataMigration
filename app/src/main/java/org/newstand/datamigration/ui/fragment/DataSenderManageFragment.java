@@ -83,7 +83,7 @@ public class DataSenderManageFragment extends DataTransportManageFragment
             super.onPieceStartMainThread(record);
             // Sub record is sending, we can cancel now~
             setCancelable(true);
-            updateConsoleDoneButton();
+            updateConsoleDoneButtonOnStart();
             showCurrentPieceInUI(record);
         }
 

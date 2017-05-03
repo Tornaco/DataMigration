@@ -50,6 +50,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_INSTALL_DATA = "key_install_data";
     private static final String KEY_APP_THEME_COLOR = "key_app_theme_color";
     private static final String KEY_ENCRYPT_ENABLED = "key_encrypt_enabled";
+    private static final String KEY_DATA_MIGRATION_ROOT_DIR = "key_data_migration_root_dir";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -108,66 +109,30 @@ public class SettingsProvider extends Observable {
         notifyObservers();
     }
 
-    private static final String COMMON_BACKUP_DIR = Environment.getExternalStorageDirectory().getPath()
-            + File.separator
-            + ".DataMigration"
-            + File.separator
-            + "Backup";
-
-    private static final String COMMON_RECEIVED_DIR = Environment.getExternalStorageDirectory().getPath()
-            + File.separator
-            + ".DataMigration"
-            + File.separator
-            + "Received";
-
-    private static final String LOG_DIR = Environment.getExternalStorageDirectory().getPath()
-            + File.separator
-            + ".DataMigration"
-            + File.separator
-            + "Logs";
-
-    private static final String TEST_DIR = Environment.getExternalStorageDirectory().getPath()
-            + File.separator
-            + ".DataMigration"
-            + File.separator
-            + "Test";
-
-    private static final String COMMON_DATA_DIR = Environment.getExternalStorageDirectory().getPath()
-            + File.separator
-            + ".DataMigration"
-            + File.separator
-            + "Data";
-
     private static final String COMMON_ROOT_DIR = Environment.getExternalStorageDirectory().getPath()
             + File.separator
             + ".DataMigration";
 
-    private static final String HELP_MD_FILE_PATH = COMMON_DATA_DIR
-            + File.separator
-            + "Helps";
-
     private static final String DEF_HELP_FILE_ASSETS_PATH = "help/Def_Help.md";
 
     public static String getBackupRootDir() {
-        return COMMON_BACKUP_DIR;
+        return getDataMigrationRootDir()
+                + File.separator
+                + "Backup";
     }
 
     public static String getReceivedRootDir() {
-        return COMMON_RECEIVED_DIR;
-    }
-
-    public static String getBackupSessionAssetFile() {
-        return COMMON_BACKUP_DIR
+        return getDataMigrationRootDir()
                 + File.separator
-                + "backup_sessions_assets.realm";
+                + "Received";
     }
 
-    public static String getCommonRootDir() {
+    private static String getCommonRootDir() {
         return COMMON_ROOT_DIR;
     }
 
     public static String getBackupSessionDir(Session session) {
-        return COMMON_BACKUP_DIR + File.separator + session.getName();
+        return getBackupRootDir() + File.separator + session.getName();
     }
 
     // .DM/Backup/XXXX-XX/session.info
@@ -180,19 +145,23 @@ public class SettingsProvider extends Observable {
     }
 
     public static String getRecSessionDir(Session session) {
-        return COMMON_RECEIVED_DIR + File.separator + session.getName();
+        return getReceivedRootDir() + File.separator + session.getName();
     }
 
     public static String getLogDir() {
-        return LOG_DIR;
+        return getDataMigrationRootDir()
+                + File.separator
+                + "Logs";
     }
 
     public static String getTestDir() {
-        return TEST_DIR;
+        return getDataMigrationRootDir()
+                + File.separator
+                + "Test";
     }
 
     public static String getBackupDirByCategory(DataCategory category, Session session) {
-        return COMMON_BACKUP_DIR
+        return getBackupRootDir()
                 + File.separator
                 + session.getName()
                 + File.separator
@@ -200,7 +169,7 @@ public class SettingsProvider extends Observable {
     }
 
     public static String getReceivedDirByCategory(DataCategory category, Session session) {
-        return COMMON_RECEIVED_DIR
+        return getReceivedRootDir()
                 + File.separator
                 + session.getName()
                 + File.separator
@@ -372,7 +341,9 @@ public class SettingsProvider extends Observable {
     }
 
     public static String getHelpMdFilePath() {
-        return HELP_MD_FILE_PATH;
+        return getCommonDataDir()
+                + File.separator
+                + "Helps";
     }
 
     public static String getDefHelpFileAssetsPath() {
@@ -380,7 +351,9 @@ public class SettingsProvider extends Observable {
     }
 
     public static String getCommonDataDir() {
-        return COMMON_DATA_DIR;
+        return getDataMigrationRootDir()
+                + File.separator
+                + "Data";
     }
 
     public static void setDonateQrPath(String donateQrPath) {
@@ -438,7 +411,7 @@ public class SettingsProvider extends Observable {
     }
 
     public static boolean isInstallDataEnabled() {
-        return sMe.readBoolean(KEY_INSTALL_DATA, true);
+        return sMe.readBoolean(KEY_INSTALL_DATA, false);
     }
 
     public static ThemeColor getThemeColor() {
@@ -459,5 +432,13 @@ public class SettingsProvider extends Observable {
 
     public static String getWifiConfigFilePath() {
         return WIFI_CONFIG_FILE_PATH;
+    }
+
+    public static String getDataMigrationRootDir() {
+        return sMe.readString(KEY_DATA_MIGRATION_ROOT_DIR, COMMON_ROOT_DIR);
+    }
+
+    public static void setDataMigrationRootDir(String dir) {
+        sMe.writeString(KEY_DATA_MIGRATION_ROOT_DIR, dir);
     }
 }

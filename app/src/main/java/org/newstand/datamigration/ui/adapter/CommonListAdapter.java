@@ -25,7 +25,7 @@ import lombok.Getter;
 public class CommonListAdapter extends RecyclerView.Adapter<CommonListViewHolder> {
 
     @Getter
-    private final List<DataRecord> dataRecords;
+    protected final List<DataRecord> dataRecords;
 
     @Getter
     private Context context;

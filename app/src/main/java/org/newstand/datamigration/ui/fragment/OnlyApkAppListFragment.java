@@ -10,7 +10,6 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
-import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.utils.Files;
@@ -21,17 +20,11 @@ import org.newstand.datamigration.utils.Files;
  * All right reserved.
  */
 
-public class SenderAppListFragment extends DataListViewerFragment {
+public class OnlyApkAppListFragment extends DataListViewerFragment {
 
     @Override
     DataCategory getDataType() {
         return DataCategory.App;
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.action_work_mode).setChecked(SettingsProvider.isInstallDataEnabled());
     }
 
     @Override
@@ -41,10 +34,6 @@ public class SenderAppListFragment extends DataListViewerFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_work_mode) {
-            item.setChecked(!item.isChecked());
-            SettingsProvider.setInstallDataEnabled(item.isChecked());
-        }
         return super.onOptionsItemSelected(item);
     }
 

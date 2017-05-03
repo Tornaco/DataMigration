@@ -8,9 +8,7 @@ import android.view.View;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.ui.activity.ReceivedSessionPickerActivity;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
-import org.newstand.datamigration.ui.activity.WFDDataReceiverActivity;
-
-import dev.nick.tiles.tile.QuickTileView;
+import org.newstand.datamigration.ui.widget.StaticColorQuickTileView;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/6 18:26
@@ -29,7 +27,7 @@ public class ReceivedViewerTile extends ThemedTile {
 
         this.titleRes = R.string.title_transport_received_viewer;
         this.iconRes = R.drawable.ic_assignment;
-        this.tileView = new QuickTileView(getContext(), this) {
+        this.tileView = new StaticColorQuickTileView(getContext(), this) {
             @Override
             public void onClick(View v) {
                 super.onClick(v);

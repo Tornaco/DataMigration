@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,7 +8,6 @@ import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.TextView;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.AbortSignal;
@@ -17,6 +17,7 @@ import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.sync.SharedExecutor;
+import org.newstand.datamigration.ui.activity.LogViewerActivity;
 import org.newstand.datamigration.ui.widget.ViewAnimateUtils;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
@@ -26,8 +27,6 @@ import org.newstand.logger.Logger;
 import java.util.List;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
-import cn.iwgang.simplifyspan.other.OnClickableSpanListener;
-import cn.iwgang.simplifyspan.unit.SpecialClickableUnit;
 import cn.iwgang.simplifyspan.unit.SpecialTextUnit;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
@@ -84,15 +83,28 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
     }
 
     private void onTransportStart() {
-        updateConsoleTitleView();
-        updateConsoleDoneButton();
+        updateConsoleTitleViewOnStart();
+        updateConsoleDoneButtonOnStart();
+        hideConsoleLoggerButtonOnStart();
+
+        // Start log tracker.
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                startLoggerReDirection();
+            }
+        });
     }
 
-    protected void updateConsoleTitleView() {
+    private void hideConsoleLoggerButtonOnStart() {
+        getConsoleLoggerButton().setVisibility(View.INVISIBLE);
+    }
+
+    protected void updateConsoleTitleViewOnStart() {
         getConsoleTitleView().setText(getStartTitle());
     }
 
-    protected void updateConsoleDoneButton() {
+    protected void updateConsoleDoneButtonOnStart() {
         getConsoleDoneButton().setText(android.R.string.cancel);
         if (isCancelable()) {
             getConsoleDoneButton().setVisibility(View.VISIBLE);
@@ -126,7 +138,16 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
 
     private void onComplete() {
 
+        // Stop log tracker.
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                stopLoggerRedirection();
+            }
+        });
+
         getConsoleDoneButton().setVisibility(View.VISIBLE);
+        getConsoleLoggerButton().setVisibility(View.VISIBLE);
 
         ViewAnimateUtils.alphaHide(getConsoleCardView(), new Runnable() {
             @Override
@@ -142,12 +163,25 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
                         onDoneButtonClick();
                     }
                 });
+                getConsoleLoggerButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onLoggerButtonClick();
+                    }
+                });
 
                 updateCompleteSummary();
 
                 ViewAnimateUtils.alphaShow(getConsoleCardView());
             }
         });
+    }
+
+    protected void onLoggerButtonClick() {
+        Logger.d("onLoggerButtonClick, with logger %s", getLogFileName());
+        Intent intent = new Intent(getContext(), LogViewerActivity.class);
+        intent.putExtra(IntentEvents.KEY_LOG_PATH, getLogFileName());
+        startActivity(intent);
     }
 
     abstract void onDoneButtonClick();
@@ -162,15 +196,14 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
     private void buildSummaryIntro() {
         new MaterialIntroView.Builder(getActivity())
                 .enableDotAnimation(true)
-                .enableIcon(true)
                 .setFocusGravity(FocusGravity.CENTER)
                 .setFocusType(Focus.MINIMUM)
                 .enableFadeAnimation(true)
                 .performClick(false)
                 .setInfoText(getString(getSummaryIntro()))
                 .setShape(ShapeType.CIRCLE)
-                .setTarget(getConsoleSummaryView())
-                .setUsageId("intro_transport_management_" + getClass().getName())
+                .setTarget(getConsoleLoggerButton())
+                .setUsageId("intro_transport_management_logger" + getClass().getName())
                 .show();
     }
 
@@ -186,22 +219,10 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
         report.append(getString(R.string.title_transport_report_total, String.valueOf(stats.getTotal())));
         report.append("\n");
         report.append(new SpecialTextUnit(getString(R.string.title_transport_report_success,
-                String.valueOf(stats.getSuccess())), ContextCompat.getColor(getContext(), R.color.green_dark))
-                .setClickableUnit(new SpecialClickableUnit(getConsoleSummaryView(), new OnClickableSpanListener() {
-                    @Override
-                    public void onClick(TextView tv, String clickText) {
-                        onSuccessTextInSummaryClick();
-                    }
-                })));
+                String.valueOf(stats.getSuccess())), ContextCompat.getColor(getContext(), R.color.green_dark)));
         report.append("\n");
         report.append(new SpecialTextUnit(getString(R.string.title_transport_report_fail,
-                String.valueOf(stats.getFail())), ContextCompat.getColor(getContext(), R.color.red_dark))
-                .setClickableUnit(new SpecialClickableUnit(getConsoleSummaryView(), new OnClickableSpanListener() {
-                    @Override
-                    public void onClick(TextView tv, String clickText) {
-                        onFailTextInSummaryClick();
-                    }
-                })));
+                String.valueOf(stats.getFail())), ContextCompat.getColor(getContext(), R.color.red_dark)));
         return report;
     }
 

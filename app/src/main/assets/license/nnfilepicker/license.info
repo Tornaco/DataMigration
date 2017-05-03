@@ -1,0 +1,8 @@
+{
+ "title":"NoNonsense-FilePicker",
+ "author":"spacecowboy",
+ "description":"A file/directory-picker for android. Implemented as a library project.",
+ "fullLicense":"LICENSE",
+ "url":"https://github.com/spacecowboy/NoNonsense-FilePicker",
+ "version":"4.1.0"
+ }

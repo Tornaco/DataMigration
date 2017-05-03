@@ -2,18 +2,14 @@ package org.newstand.datamigration.ui.tiles;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.ui.activity.ReceivedSessionPickerActivity;
-import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
+import org.newstand.datamigration.ui.widget.StaticColorQuickTileView;
 import org.newstand.datamigration.utils.Files;
-
-import dev.nick.tiles.tile.QuickTileView;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/6 18:26
@@ -32,7 +28,7 @@ public class ShareTile extends ThemedTile {
 
         this.titleRes = R.string.title_transport_share;
         this.iconRes = R.drawable.ic_menu_share;
-        this.tileView = new QuickTileView(getContext(), this) {
+        this.tileView = new StaticColorQuickTileView(getContext(), this) {
             @Override
             public void onClick(View v) {
                 super.onClick(v);

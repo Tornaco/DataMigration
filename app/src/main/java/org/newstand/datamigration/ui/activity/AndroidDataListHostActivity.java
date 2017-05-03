@@ -3,12 +3,14 @@ package org.newstand.datamigration.ui.activity;
 import android.support.v4.app.Fragment;
 
 import org.newstand.datamigration.data.model.DataCategory;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.ui.fragment.AlarmListFragment;
 import org.newstand.datamigration.ui.fragment.AppListFragment;
 import org.newstand.datamigration.ui.fragment.CallListFragment;
 import org.newstand.datamigration.ui.fragment.ContactListFragment;
 import org.newstand.datamigration.ui.fragment.CustomFileListFragment;
 import org.newstand.datamigration.ui.fragment.MusicListFragment;
+import org.newstand.datamigration.ui.fragment.OnlyApkAppListFragment;
 import org.newstand.datamigration.ui.fragment.PhotoListFragment;
 import org.newstand.datamigration.ui.fragment.SmsListFragment;
 import org.newstand.datamigration.ui.fragment.VideoListFragment;
@@ -33,7 +35,7 @@ public class AndroidDataListHostActivity extends DataListHostActivity {
             case Video:
                 return new VideoListFragment();
             case App:
-                return new AppListFragment();
+                return SettingsProvider.isInstallDataEnabled() ? new AppListFragment() : new OnlyApkAppListFragment();
             case Sms:
                 return new SmsListFragment();
             case CallLog:

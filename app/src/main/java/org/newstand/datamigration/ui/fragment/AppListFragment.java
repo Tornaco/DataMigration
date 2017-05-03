@@ -11,7 +11,6 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
-import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.ApkDataPickerDialog;
@@ -31,22 +30,12 @@ public class AppListFragment extends DataListViewerFragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.action_work_mode).setChecked(SettingsProvider.isInstallDataEnabled());
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.data_list_app, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_work_mode) {
-            item.setChecked(!item.isChecked());
-            SettingsProvider.setInstallDataEnabled(item.isChecked());
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -81,6 +70,19 @@ public class AppListFragment extends DataListViewerFragment {
                                 onUpdate();
                             }
                         });
+            }
+
+            @Override
+            public void selectAll(boolean select) {
+                synchronized (dataRecords) {
+                    for (DataRecord c : dataRecords) {
+                        c.setChecked(select);
+                        AppRecord ar = (AppRecord) c;
+                        ar.setHandleApk(select);
+                        ar.setHandleData(select);
+                    }
+                }
+                notifyDataSetChanged();
             }
         };
     }

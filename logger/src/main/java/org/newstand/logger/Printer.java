@@ -1,5 +1,7 @@
 package org.newstand.logger;
 
+import java.io.PrintStream;
+
 /**
  * Created by Nick@NewStand.org on 2017/3/31 17:08
  * E-Mail: NewStand@163.com
@@ -27,4 +29,8 @@ interface Printer {
     void v(String message, Object... args);
 
     void wtf(String message, Object... args);
+
+    void startRedirection(PrintStream ps);
+
+    void stopRedirection();
 }

@@ -58,7 +58,7 @@
     <string name="title_transport_report_total">共计：%1$s条</string>
     <string name="title_transport_report_success">成功：%1$s条</string>
     <string name="title_transport_report_fail">失败：%1$s条</string>
-    <string name="title_transport_intro">点击可以查看错误信息</string>
+    <string name="title_transport_intro">点击可以查看详细日志</string>
 
     <string name="title_setup_wfd">寻找连接</string>
     <string name="title_setup_wfd_sender">寻找连接@发送</string>
@@ -97,6 +97,8 @@
     <string name="title_restore_importing">正在导入数据</string>
     <string name="title_restore_import_complete">导入数据完成</string>
     <string name="action_done">完成</string>
+    <string name="action_log">查看日志</string>
+    <string name="action_log_with_other_app">在其他应用打开</string>
     <string name="action_preparing">正在准备…</string>
     <string name="action_remark_backup">此次备份的备注为：</string>
     <string name="action_remark_received">此次接收记录的备注为：</string>
@@ -189,6 +191,7 @@
 
     <string name="title_feedback">问题反馈</string>
     <string name="summary_feedback">请将详细的错误描述发送至%1$s</string>
+    <string name="title_rate">评分</string>
 
     <string name="title_bugreport">自动上传CRASH日志</string>
     <string name="summary_bugreport">当应用发生严重问题时，自动上传日志文件(30K左右)，可以帮助我们更好的收集分析应用bug</string>
@@ -197,7 +200,10 @@
     <string name="summary_thanks">以下各位对本软件做了巨大贡献%1$s</string>
 
     <string name="title_storage_location">数据文件路径</string>
-    <string name="summary_storage_location">所备份与接收到的文件均放置在%1$s目录下，单纯的清除设备数据，并不会破坏备份与接收文件。因此当你清除设备数据后，你只需要重新下载本应用，安装即可无缝使用旧数据</string>
+    <string name="warn_storage_location_empty">你设置了非空文件夹，将会尝试导入该文件下相关数据</string>
+    <string name="res_storage_location_move_fail">数据转移失败</string>
+    <string name="res_storage_location_move_ok">数据转移成功</string>
+    <string name="summary_storage_location">所备份与接收到的文件均放置在[%1$s]目录下，单纯的清除设备数据，并不会破坏备份与接收文件。因此当你清除设备数据后，你只需要重新下载本应用，安装即可无缝使用旧数据\n\n%2$s现在你可以任意指定该目录，当你指定了新的（建议选用空的）目录后，之前的数据将会被转移到新目录下。\n\n%3$s如果你选择了非空文件夹，则会尝试使用该文件夹做为主存储目录\n\n相关修改在APP下次冷启动后生效</string>
 
     <string name="title_help">帮助</string>
     <string name="title_help_noop">这家伙很懒，留下了一个空白的帮助页~</string>

@@ -1,15 +1,24 @@
 package org.newstand.datamigration.ui.fragment;
 
 import android.content.Context;
+import android.support.annotation.WorkerThread;
+
+import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.StartSignal;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.Stats;
+import org.newstand.logger.Logger;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +51,9 @@ public abstract class DataTransportLogicFragment extends DataTransportUIFragment
     @Getter
     private Stats stats = new MultipleStats();
 
+    @Getter
+    private String logFileName = SettingsProvider.getLogDir() + File.separator + UUID.randomUUID().toString();
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -52,6 +64,21 @@ public abstract class DataTransportLogicFragment extends DataTransportUIFragment
     public void onDetach() {
         super.onDetach();
         enterState(STATE_DETACHED);
+    }
+
+    @WorkerThread
+    protected void startLoggerReDirection() {
+        try {
+            Files.createParentDirs(new File(getLogFileName()));
+            Logger.startRedirection(new PrintStream(new File(getLogFileName())));
+        } catch (IOException e) {
+            Logger.e(e, "Fail start logger redirection");
+        }
+    }
+
+    @WorkerThread
+    protected void stopLoggerRedirection() {
+        Logger.stopRedirection();
     }
 
     private class MultipleStats implements Stats {

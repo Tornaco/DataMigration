@@ -24,7 +24,7 @@ public abstract class DataTransportUIFragment extends StateBasedFragment {
     @Getter
     private ProgressWheel progressBar;
     @Getter
-    private TextView consoleTitleView, consoleSummaryView, consoleDoneButton;
+    private TextView consoleTitleView, consoleSummaryView, consoleDoneButton, consoleLoggerButton;
     @Getter
     private CardView consoleCardView;
 
@@ -38,6 +38,7 @@ public abstract class DataTransportUIFragment extends StateBasedFragment {
         consoleTitleView = (TextView) root.findViewById(android.R.id.title);
         consoleSummaryView = (TextView) root.findViewById(android.R.id.text1);
         consoleDoneButton = (TextView) root.findViewById(R.id.button);
+        consoleLoggerButton = (TextView) root.findViewById(R.id.log);
         return root;
     }
 }

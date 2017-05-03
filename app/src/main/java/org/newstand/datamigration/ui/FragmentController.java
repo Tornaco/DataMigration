@@ -21,6 +21,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.utils.Collections;
+import org.newstand.logger.Logger;
 
 import java.util.List;
 
@@ -45,6 +47,15 @@ public class FragmentController {
     private void init() {
         FragmentManager fragmentManager = mFragmentManager;
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        List<Fragment> olds = fragmentManager.getFragments();
+
+        if (!Collections.isNullOrEmpty(olds)) {
+            for (Fragment fragment : olds) {
+                transaction.remove(fragment);
+                Logger.v("Removed %s", fragment);
+            }
+        }
 
         for (Fragment fragment : mPages) {
             transaction.add(containerId, fragment, fragment.getClass().getSimpleName());

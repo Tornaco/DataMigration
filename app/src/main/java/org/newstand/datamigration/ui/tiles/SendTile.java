@@ -8,8 +8,7 @@ import android.view.View;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.activity.WFDDataSenderActivity;
-
-import dev.nick.tiles.tile.QuickTileView;
+import org.newstand.datamigration.ui.widget.StaticColorQuickTileView;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/6 18:26
@@ -28,7 +27,7 @@ public class SendTile extends ThemedTile {
 
         this.titleRes = R.string.title_transport_sender;
         this.iconRes = R.drawable.ic_send;
-        this.tileView = new QuickTileView(getContext(), this) {
+        this.tileView = new StaticColorQuickTileView(getContext(), this) {
             @Override
             public void onClick(View v) {
                 super.onClick(v);

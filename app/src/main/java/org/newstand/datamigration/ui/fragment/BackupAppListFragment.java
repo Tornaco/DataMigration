@@ -19,6 +19,7 @@ import org.newstand.datamigration.utils.Files;
  */
 
 public class BackupAppListFragment extends AppListFragment {
+
     @Override
     CommonListAdapter onCreateAdapter() {
         return new CommonListAdapter(getContext()) {
@@ -64,6 +65,24 @@ public class BackupAppListFragment extends AppListFragment {
                     r.setChecked(r.isHandleApk() || r.isHandleData());
                     onUpdate();
                 }
+            }
+
+            @Override
+            public void selectAll(boolean select) {
+                synchronized (dataRecords) {
+                    for (DataRecord c : dataRecords) {
+                        c.setChecked(select);
+                        AppRecord ar = (AppRecord) c;
+                        if (!select) {
+                            ar.setHandleApk(false);
+                            ar.setHandleData(false);
+                        } else {
+                            ar.setHandleApk(ar.isHasApk());
+                            ar.setHandleData(ar.isHasData());
+                        }
+                    }
+                }
+                notifyDataSetChanged();
             }
         };
     }

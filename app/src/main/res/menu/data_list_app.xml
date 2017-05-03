@@ -13,10 +13,4 @@
         android:title="@string/action_clear_selection"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_work_mode"
-        android:orderInCategory="100"
-        android:checkable="true"
-        android:title="@string/tile_work_mode_root"
-        app:showAsAction="never" />
 </menu>

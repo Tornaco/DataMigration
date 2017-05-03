@@ -8,8 +8,7 @@ import android.view.View;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.ui.activity.ExtraRulesViewerActivity;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
-
-import dev.nick.tiles.tile.QuickTileView;
+import org.newstand.datamigration.ui.widget.StaticColorQuickTileView;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/6 18:26
@@ -28,7 +27,7 @@ public class RulesTile extends ThemedTile {
 
         this.titleRes = R.string.action_extra_data_rules_viewer;
         this.iconRes = R.drawable.ic_smoke;
-        this.tileView = new QuickTileView(getContext(), this) {
+        this.tileView = new StaticColorQuickTileView(getContext(), this) {
             @Override
             public void onClick(View v) {
                 super.onClick(v);

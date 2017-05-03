@@ -12,6 +12,7 @@ import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.tiles.BugReportTile;
 import org.newstand.datamigration.ui.tiles.DonateTile;
 import org.newstand.datamigration.ui.tiles.MailTile;
+import org.newstand.datamigration.ui.tiles.RaterTile;
 import org.newstand.datamigration.ui.tiles.ThanksTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.utils.SeLinuxEnabler;
@@ -81,6 +82,7 @@ public class ComeInActivity extends TransitionSafeActivity {
             involve.addTile(new ThanksTile(getActivity()));
             DonateTile donateTile = new DonateTile(getContext());
             involve.addTile(donateTile);
+            involve.addTile(new RaterTile(getContext()));
 
             categories.add(involve);
 

@@ -97,6 +97,15 @@
                 android:textColor="@color/secondary_text" />
 
             <Button
+                android:id="@+id/log"
+                style="@style/ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@android:id/text1"
+                android:layout_toLeftOf="@+id/button"
+                android:text="@string/action_log" />
+
+            <Button
                 android:id="@+id/button"
                 style="@style/ActionButton"
                 android:layout_width="wrap_content"

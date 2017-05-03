@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <root-path
-        name="newstand"
-        path="" />
-
-    <cache-path
-        name="apk1"
-        path="." />
-    <external-path
-        name="apk2"
+        name="root"
         path="." />
 </paths>

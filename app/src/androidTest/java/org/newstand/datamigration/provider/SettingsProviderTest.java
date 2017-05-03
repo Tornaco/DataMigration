@@ -6,7 +6,9 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.strategy.Interval;
+import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.logger.Logger;
 
 import java.util.Arrays;
@@ -21,6 +23,31 @@ public class SettingsProviderTest {
     @Test
     public void getCommonRootDir() throws Exception {
 
+        String root = SettingsProvider.getDataMigrationRootDir();
+
+        SettingsProvider.setDataMigrationRootDir(Environment.getExternalStorageDirectory().getPath()
+                + "TestDataMDir");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(SettingsProvider.getDataMigrationRootDir()).append("\n");
+        sb.append(SettingsProvider.getBackupRootDir()).append("\n");
+        sb.append(SettingsProvider.getReceivedRootDir()).append("\n");
+        sb.append(SettingsProvider.getTestDir()).append("\n");
+        sb.append(SettingsProvider.getLogDir()).append("\n");
+        sb.append(SettingsProvider.getLicenseRootDir()).append("\n");
+        sb.append(SettingsProvider.getReceivedDirByCategory(DataCategory.Wifi, Session.create())).append("\n");
+        sb.append(SettingsProvider.getReceivedRootDir()).append("\n");
+        sb.append(SettingsProvider.getRecSessionDir(Session.create())).append("\n");
+        sb.append(SettingsProvider.getAppDataDir()).append("\n");
+        sb.append(SettingsProvider.getBackupAppApkDirName()).append("\n");
+        sb.append(SettingsProvider.getBackupAppDataDirName()).append("\n");
+        sb.append(SettingsProvider.getBackupDirByCategory(DataCategory.Wifi, Session.from("Test"))).append("\n");
+        sb.append(SettingsProvider.getBackupSessionDir(Session.from("Test2"))).append("\n");
+        sb.append(SettingsProvider.getBackupSessionInfoPath(Session.create())).append("\n");
+
+        Logger.d(sb.toString());
+
+        SettingsProvider.setDataMigrationRootDir(root);
     }
 
     @Test

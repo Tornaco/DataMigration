@@ -9,7 +9,7 @@ import org.newstand.datamigration.ui.fragment.ContactListFragment;
 import org.newstand.datamigration.ui.fragment.CustomFileListFragment;
 import org.newstand.datamigration.ui.fragment.MusicListFragment;
 import org.newstand.datamigration.ui.fragment.PhotoListFragment;
-import org.newstand.datamigration.ui.fragment.SenderAppListFragment;
+import org.newstand.datamigration.ui.fragment.OnlyApkAppListFragment;
 import org.newstand.datamigration.ui.fragment.SmsListFragment;
 import org.newstand.datamigration.ui.fragment.VideoListFragment;
 import org.newstand.datamigration.ui.fragment.WifiListFragment;
@@ -33,7 +33,7 @@ public class SenderDataListHostActivity extends DataListHostActivity {
             case Video:
                 return new VideoListFragment();
             case App:
-                return new SenderAppListFragment();
+                return new OnlyApkAppListFragment();
             case Sms:
                 return new SmsListFragment();
             case CallLog:

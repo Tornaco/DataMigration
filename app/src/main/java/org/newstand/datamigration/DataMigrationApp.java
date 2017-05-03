@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatDelegate;
 
 import com.bugsnag.android.Bugsnag;
 
+import org.codechimp.apprater.AppRater;
 import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.policy.CoolApkMaket;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.secure.DonateQRPathRetriever;
 import org.newstand.datamigration.service.DummSmsServiceProxy;

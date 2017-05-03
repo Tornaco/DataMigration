@@ -249,7 +249,6 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
     private void buildFabIntro() {
         new MaterialIntroView.Builder(getActivity())
                 .enableDotAnimation(true)
-                .enableIcon(true)
                 .setFocusGravity(FocusGravity.CENTER)
                 .setFocusType(Focus.MINIMUM)
                 .enableFadeAnimation(true)

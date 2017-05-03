@@ -62,7 +62,7 @@ public class TileView extends FrameLayout implements View.OnClickListener {
 
     protected void onViewInflated(View view) {
         mImageView = (ImageView) view.findViewById(R.id.icon);
-        if (isIconTintEnabled())
+        if (useStaticTintColor())
             mImageView.setColorFilter(ContextCompat.getColor(getContext(), R.color.tile_icon_tint));
         mTitleTextView = (TextView) view.findViewById(R.id.title);
         mStatusTextView = (TextView) view.findViewById(R.id.status);
@@ -104,8 +104,8 @@ public class TileView extends FrameLayout implements View.OnClickListener {
         mColSpan = span;
     }
 
-    protected boolean isIconTintEnabled() {
-        return true;
+    protected boolean useStaticTintColor() {
+        return false;
     }
 
     @Override
