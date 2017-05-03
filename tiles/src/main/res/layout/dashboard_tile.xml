@@ -46,7 +46,7 @@
             android:layout_alignStart="@android:id/title"
             android:layout_below="@id/title"
             android:ellipsize="end"
-            android:maxLines="10"
+            android:maxLines="30"
             android:textAppearance="@style/TextAppearance.TileSubTitle" />
 
     </RelativeLayout>
