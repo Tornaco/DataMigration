@@ -30,7 +30,7 @@ public class RulesViewerTile extends QuickTile {
         super(context, null);
 
         this.title = TextUtils.isEmpty(rule.getAlias()) ? rule.getPackageName() : rule.getAlias();
-        this.iconRes = R.drawable.ic_child;
+        this.iconRes = R.drawable.ic_settings_app;
         this.tileView = new SwitchTileView(getContext()) {
             @Override
             public void onClick(View v) {

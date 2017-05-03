@@ -34,7 +34,7 @@ public class PackageNameTile extends QuickTile {
             this.summary = alias;
         }
 
-        this.iconRes = R.drawable.ic_child;
+        this.iconRes = R.drawable.ic_settings_app;
 
         this.tileView = new QuickTileView(context, this) {
             @Override
