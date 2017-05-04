@@ -1,6 +1,7 @@
 package org.newstand.datamigration.ui.tiles;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.view.View;
 
@@ -34,8 +35,17 @@ public class StorageLocationTile extends ThemedTile {
 
             TransitionSafeActivity safeActivity = (TransitionSafeActivity) getContext();
             if (!safeActivity.isDestroyedCompat()) {
-                summary = getContext().getString(R.string.summary_storage_location,
-                        SettingsProvider.getDataMigrationRootDir(), EmojiUtils.getEmojiByUnicode(0x1F6A9), EmojiUtils.getEmojiByUnicode(0x1F6A9));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    summary = getContext().getString(R.string.summary_storage_location,
+                            SettingsProvider.getDataMigrationRootDir(),
+                            EmojiUtils.getEmojiByUnicode(0x1F6A9),
+                            EmojiUtils.getEmojiByUnicode(0x1F6A9));
+                } else {
+                    summary = getContext().getString(R.string.summary_storage_location,
+                            SettingsProvider.getDataMigrationRootDir(),
+                            "!!!",
+                            "!!!");
+                }
                 getTileView().getSummaryTextView().setText(summary);
             }
             SettingsProvider.unObserve(this);
@@ -46,8 +56,17 @@ public class StorageLocationTile extends ThemedTile {
     void onInitView(final Context context) {
 
         this.titleRes = R.string.title_storage_location;
-        this.summary = getContext().getString(R.string.summary_storage_location,
-                SettingsProvider.getDataMigrationRootDir(), EmojiUtils.getEmojiByUnicode(0x1F6A9), EmojiUtils.getEmojiByUnicode(0x1F6A9));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.summary = getContext().getString(R.string.summary_storage_location,
+                    SettingsProvider.getDataMigrationRootDir(),
+                    EmojiUtils.getEmojiByUnicode(0x1F6A9),
+                    EmojiUtils.getEmojiByUnicode(0x1F6A9));
+        } else {
+            this.summary = getContext().getString(R.string.summary_storage_location,
+                    SettingsProvider.getDataMigrationRootDir(),
+                    "!!!",
+                    "!!!");
+        }
         this.iconRes = R.drawable.ic_sd;
 
         this.tileView = new QuickTileView(getContext(), this) {

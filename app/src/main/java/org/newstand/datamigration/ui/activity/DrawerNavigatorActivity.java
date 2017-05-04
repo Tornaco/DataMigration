@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.common.collect.ImmutableList;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Producer;
@@ -24,6 +26,7 @@ import org.newstand.datamigration.ui.fragment.SenderReceiverNavigatorFragment;
 
 import java.util.List;
 
+import io.reactivex.functions.Consumer;
 import lombok.Getter;
 
 public class DrawerNavigatorActivity extends BaseNavigatorActivity
@@ -43,6 +46,33 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_navigator);
         handler = new Handler();
+        requestPerms();
+    }
+
+    private void requestPerms() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.READ_PHONE_STATE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean granted) throws Exception {
+                        if (granted) {
+                            onPermissionGrant();
+                        } else {
+                            onPermissionNotGrant();
+                        }
+                    }
+                });
+    }
+
+    private void onPermissionNotGrant() {
+        finishWithAfterTransition();
+    }
+
+    private void onPermissionGrant() {
         setupView();
         setupFragment();
     }

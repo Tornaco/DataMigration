@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ad_container"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tile_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="@dimen/dashboard_tile_minimum_height"
-    android:orientation="vertical">
+    android:minHeight="@dimen/dashboard_tile_minimum_height">
 
-    <TextView
-        android:id="@+id/textView2"
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/dashboard_tile_image_size"
+        android:layout_height="@dimen/dashboard_tile_image_size"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dashboard_tile_image_margin_end"
+        android:layout_marginLeft="@dimen/dashboard_tile_image_margin_start"
+        android:layout_marginRight="@dimen/dashboard_tile_image_margin_end"
+        android:layout_marginStart="@dimen/dashboard_tile_image_margin_start"
+        android:scaleType="fitXY"
+        android:tint="?attr/colorAccent"
+        app:srcCompat="@drawable/ic_ad" />
+
+    <RelativeLayout
+        android:id="@+id/ad_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:text="Help others, help yourself."
-        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-</LinearLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/icon"
+        android:minHeight="@dimen/dashboard_tile_minimum_height" />
+
+
+</RelativeLayout>

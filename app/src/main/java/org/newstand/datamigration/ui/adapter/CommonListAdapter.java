@@ -2,7 +2,6 @@ package org.newstand.datamigration.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,6 +89,11 @@ public class CommonListAdapter extends RecyclerView.Adapter<CommonListViewHolder
     }
 
     protected void onCheckStateChanged(boolean checked, int position) {
+        if (position < 0) {
+            // This is a workaround to fix the issue, when adapter position is -1.
+            // which means before/under init???
+            return;
+        }
         DataRecord r = getDataRecords().get(position);
         r.setChecked(checked);
     }

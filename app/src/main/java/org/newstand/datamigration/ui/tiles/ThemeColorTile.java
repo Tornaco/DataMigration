@@ -2,11 +2,13 @@ package org.newstand.datamigration.ui.tiles;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
+import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,10 +65,22 @@ public class ThemeColorTile extends ThemedTile {
             protected void onItemSelected(int position) {
                 super.onItemSelected(position);
                 ThemeColor color = allColor.get(position);
+
+                Logger.v("on color select current-%s, color-%s", current, color);
+
+                if (color == current) {
+                    return;
+                }
+
                 SettingsProvider.setAppThemeColor(color);
                 updateSummary();
+                showTips();
             }
         };
+    }
+
+    private void showTips() {
+        Snackbar.make(getTileView(), R.string.tips_theme_color, Snackbar.LENGTH_LONG).show();
     }
 
     private void updateSummary() {

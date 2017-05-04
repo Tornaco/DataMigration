@@ -52,6 +52,7 @@ import dev.nick.tiles.tile.DashboardFragment;
  */
 
 public class SettingsActivity extends TransitionSafeActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

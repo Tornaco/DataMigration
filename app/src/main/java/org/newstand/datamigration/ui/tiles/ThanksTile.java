@@ -1,6 +1,7 @@
 package org.newstand.datamigration.ui.tiles;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -26,7 +27,13 @@ public class ThanksTile extends ThemedTile {
     void onInitView(Context context) {
 
         this.titleRes = R.string.title_thanks;
-        this.summary = getContext().getString(R.string.summary_thanks, EmojiUtils.getEmojiByUnicode(0x1F602));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.summary = getContext().getString(R.string.summary_thanks,
+                    EmojiUtils.getEmojiByUnicode(0x1F602));
+        } else {
+            this.summary = getContext().getString(R.string.summary_thanks,
+                    ":)");
+        }
         this.iconRes = R.drawable.ic_gift;
 
         this.tileView = new QuickTileView(getContext(), this) {

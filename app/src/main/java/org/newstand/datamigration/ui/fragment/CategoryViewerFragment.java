@@ -247,18 +247,18 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
     }
 
     private void buildFabIntro() {
-        new MaterialIntroView.Builder(getActivity())
-                .enableDotAnimation(true)
-                .setFocusGravity(FocusGravity.CENTER)
-                .setFocusType(Focus.MINIMUM)
-                .enableFadeAnimation(true)
-                .performClick(false)
-                .setInfoText(getString(getFabIntro()))
-                .setShape(ShapeType.CIRCLE)
-                .setTarget(fab)
-                // Always show when in dev mode.
-                .setUsageId("intro_category_viewer_" + getClass().getName())
-                .show();
+        if (isAlive()) new MaterialIntroView.Builder(getActivity())
+                    .enableDotAnimation(true)
+                    .setFocusGravity(FocusGravity.CENTER)
+                    .setFocusType(Focus.MINIMUM)
+                    .enableFadeAnimation(true)
+                    .performClick(false)
+                    .setInfoText(getString(getFabIntro()))
+                    .setShape(ShapeType.CIRCLE)
+                    .setTarget(fab)
+                    // Always show when in dev mode.
+                    .setUsageId("intro_category_viewer_" + getClass().getName())
+                    .show();
     }
 
     protected
@@ -284,7 +284,13 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
 
             @Override
             protected void onItemClick(CommonListViewHolder holder) {
-                CategoryRecord cr = (CategoryRecord) getAdapter().getDataRecords().get(holder.getAdapterPosition());
+                int position = holder.getAdapterPosition();
+                if (position < 0) {
+                    // This is a workaround to fix the issue, when adapter position is -1.
+                    // which means before/under init???
+                    return;
+                }
+                CategoryRecord cr = (CategoryRecord) getAdapter().getDataRecords().get(position);
                 onCategorySelect(cr);
             }
         };
@@ -377,7 +383,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
     }
 
     private String buildSelectionSummary(int total, int selectionCnt) {
-        if (isDetached()) return null;
+        if (!isAlive()) return null;
         return getString(R.string.summary_category_viewer, String.valueOf(selectionCnt), String.valueOf(total));
     }
 

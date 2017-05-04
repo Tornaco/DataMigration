@@ -89,3 +89,14 @@
   void set*(***);
   *** get*();
 }
+
+# Gson uses generic type information stored in a class file when working with fields . Proguard
+# removes such information by default , so configure it to keep all of it .
+-keepattributes Signature
+-keep class com . wandoujia . ads . sdk . * * { * ; }
+-dontwarn com . wandoujia . ads . sdk . * *
+-keepattributes Signature
+-dontwarn android . support . * *
+-dontwarn com . squareup . * *
+-dontwarn okio . * *
+-keep class com . wandoujia . ads . sdk . * * { * ; }

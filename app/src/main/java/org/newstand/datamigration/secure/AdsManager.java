@@ -6,7 +6,31 @@ package org.newstand.datamigration.secure;
  * All right reserved.
  */
 
-public class AdsManager {
-    public static final String APP_ID = "e9d5c139876231d1";
-    public static final String APP_SECRET = "3e93eb3431c82723";
+public enum AdsManager implements AdsInterface {
+    Ali {
+        @Override
+        public String appId() {
+            return "100051094";
+        }
+
+        @Override
+        public String appSecret() {
+            return "430a768ba1631863fd48c6e31637d08f";
+        }
+
+        @Override
+        public String banner() {
+            return "0a15b46aab96477ea49bf49760631b19";
+        }
+
+        @Override
+        public String appWall() {
+            return "b0c6c7001cae9a439fdfcd88deec95e9";
+        }
+
+        @Override
+        public String insert() {
+            return "a9cbfbbe7e933abb3074245bef8f4a34";
+        }
+    },
 }

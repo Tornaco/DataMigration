@@ -53,7 +53,7 @@ public class TransitionSafeFragment extends Fragment {
     }
 
     public boolean isAlive() {
-        return !isDetached() && isAdded();
+        return !isDetached() && isAdded() && getActivity() != null;
     }
 
     public String getStringSafety(@StringRes int idRes) {

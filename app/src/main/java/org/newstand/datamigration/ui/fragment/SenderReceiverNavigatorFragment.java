@@ -94,12 +94,14 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
         actions.addTile(new ReceivedViewerTile(getActivity()));
         actions.addTile(new ShareTile(getActivity()));
 
-        Category adc = new ThemedCategory();
-        adc.titleRes = R.string.title_card_ad;
-        adc.addTile(new AdsTile(getActivity()));
-
         categories.add(actions);
-        categories.add(adc);
+
+        if (SettingsProvider.isShowAdEnabled()) {
+            Category adc = new ThemedCategory();
+            adc.titleRes = R.string.title_card_ad;
+            adc.addTile(new AdsTile(getActivity()));
+            categories.add(adc);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -117,7 +119,9 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
         findView(rootView, R.id.card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), EmojiUtils.getEmojiByUnicode(0x1F680), Toast.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Toast.makeText(getActivity(), EmojiUtils.getEmojiByUnicode(0x1F680), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

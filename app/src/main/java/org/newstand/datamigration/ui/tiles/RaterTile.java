@@ -25,6 +25,7 @@ public class RaterTile extends ThemedTile {
     void onInitView(final Context context) {
 
         this.titleRes = R.string.title_rate;
+        this.summaryRes = R.string.summary_rate;
         this.iconRes = R.drawable.ic_stars;
 
         this.tileView = new QuickTileView(getContext(), this) {

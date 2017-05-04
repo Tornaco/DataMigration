@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.datamigration.ui.activity.BaseNavigatorActivity;
+import org.newstand.datamigration.ui.activity.NavigatorActivity;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.logger.Logger;
 
@@ -35,7 +35,7 @@ public class ThemeManager implements Observer {
 
     public void disable(ThemeColor themeColor) {
 
-        String currentActivity = BaseNavigatorActivity.class.getName() + themeColor.name();
+        String currentActivity = NavigatorActivity.class.getName() + themeColor.name();
 
         Logger.d("Disabling %s", currentActivity);
 
@@ -47,7 +47,7 @@ public class ThemeManager implements Observer {
     }
 
     public void enable(ThemeColor themeColor) {
-        String currentActivity = BaseNavigatorActivity.class.getName() + themeColor.name();
+        String currentActivity = NavigatorActivity.class.getName() + themeColor.name();
 
         Logger.d("Enabling %s", currentActivity);
 
@@ -58,7 +58,11 @@ public class ThemeManager implements Observer {
                 PackageManager.DONT_KILL_APP);
     }
 
-    public static void register(Context context) {
+    public static void init(Context context) {
+        register(context);
+    }
+
+    private static void register(Context context) {
         SettingsProvider.observe(new ThemeManager(context));
     }
 

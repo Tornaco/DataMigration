@@ -86,12 +86,14 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
         actions.addTile(new SchedulerTile(getActivity()));
         actions.addTile(new RulesTile(getActivity()));
 
-        Category adc = new ThemedCategory();
-        adc.titleRes = R.string.title_card_ad;
-        adc.addTile(new AdsTile(getActivity()));
-
         categories.add(actions);
-        categories.add(adc);
+
+        if (SettingsProvider.isShowAdEnabled()) {
+            Category adc = new ThemedCategory();
+            adc.titleRes = R.string.title_card_ad;
+            adc.addTile(new AdsTile(getActivity()));
+            categories.add(adc);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -109,7 +111,9 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
         findView(rootView, R.id.card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), EmojiUtils.getEmojiByUnicode(0x1F60F), Toast.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Toast.makeText(getActivity(), EmojiUtils.getEmojiByUnicode(0x1F60F), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

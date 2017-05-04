@@ -140,6 +140,7 @@
     <string name="tile_transition_animation">过场动画</string>
     <string name="summary_transition_animation">开启更活泼的动画，仅作实验~</string>
     <string name="tile_theme_color">主题颜色</string>
+    <string name="tips_theme_color">更改主题会更改应用图标而被暂时禁用，请等待应用被重新启用</string>
     <string name="tile_work_mode_root">备份/还原应用数据(BETA)</string>
     <string name="summary_work_mode_root">为具有root权限的设备备份/还原应用数据，稍后将会检查并申请root权限，请在收到申请提示后，选择允许。还原之前注意要先关闭正在运行的相关应用，否则可能造成应用的数据丢失</string>
     <string name="tile_dev_mode">开发者模式</string>
@@ -158,7 +159,7 @@
 
     <string name="title_start">开始</string>
     <string name="title_card_actions">接下来你可以</string>
-    <string name="title_card_ad">或者</string>
+    <string name="title_card_ad">或者，欣赏广告放松下</string>
 
     <string name="title_user_notice">必读</string>
     <string name="title_never_remind">不再提醒</string>
@@ -188,10 +189,12 @@
 
     <string name="title_license">开放源代码许可</string>
     <string name="title_donate">捐赠</string>
+    <string name="summary_donate">柴米油盐酱醋茶</string>
 
     <string name="title_feedback">问题反馈</string>
     <string name="summary_feedback">请将详细的错误描述发送至%1$s</string>
     <string name="title_rate">评分</string>
+    <string name="summary_rate">顶起来，让更多人知道这款软件</string>
 
     <string name="title_bugreport">自动上传CRASH日志</string>
     <string name="summary_bugreport">当应用发生严重问题时，自动上传日志文件(30K左右)，可以帮助我们更好的收集分析应用bug</string>

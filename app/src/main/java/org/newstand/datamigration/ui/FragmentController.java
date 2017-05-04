@@ -48,10 +48,10 @@ public class FragmentController {
         FragmentManager fragmentManager = mFragmentManager;
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        List<Fragment> olds = fragmentManager.getFragments();
+        List<Fragment> old = fragmentManager.getFragments();
 
-        if (!Collections.isNullOrEmpty(olds)) {
-            for (Fragment fragment : olds) {
+        if (!Collections.isNullOrEmpty(old)) {
+            for (Fragment fragment : old) {
                 transaction.remove(fragment);
                 Logger.v("Removed %s", fragment);
             }
@@ -63,7 +63,6 @@ public class FragmentController {
         }
 
         transaction.commitAllowingStateLoss();
-        fragmentManager.executePendingTransactions();
     }
 
     public void setDefaultIndex(int index) {

@@ -424,7 +424,9 @@ public class WFDSetupActivity extends TransitionSafeActivity implements Discover
         Logger.d("restartWFDService...");
         getAdapter().update(java.util.Collections.<Peer>emptyList());
         progressRelativeLayout.showContent();
-        wfdManager.tearDown();
-        startAndDiscovery();
+        if (wfdManager != null){
+            wfdManager.tearDown();
+            startAndDiscovery();
+        }
     }
 }

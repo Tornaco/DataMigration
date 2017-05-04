@@ -51,6 +51,8 @@ public class SettingsProvider extends Observable {
     private static final String KEY_APP_THEME_COLOR = "key_app_theme_color";
     private static final String KEY_ENCRYPT_ENABLED = "key_encrypt_enabled";
     private static final String KEY_DATA_MIGRATION_ROOT_DIR = "key_data_migration_root_dir";
+    private static final String KEY_SHOW_AD = "key_show_ad";
+    private static final String KEY_AD_PRESENT_TIMES = "key_ad_present_times";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -440,5 +442,21 @@ public class SettingsProvider extends Observable {
 
     public static void setDataMigrationRootDir(String dir) {
         sMe.writeString(KEY_DATA_MIGRATION_ROOT_DIR, dir);
+    }
+
+    public static boolean isShowAdEnabled() {
+        return sMe.readBoolean(KEY_SHOW_AD, true);
+    }
+
+    public static void setShowAdEnabled(boolean enabled) {
+        sMe.writeBoolean(KEY_SHOW_AD, enabled);
+    }
+
+    public static int getAdPresentTimes() {
+        return Integer.parseInt(sMe.readString(KEY_AD_PRESENT_TIMES, String.valueOf(0)));
+    }
+
+    public static void increaseAdPresentTimes() {
+        sMe.writeString(KEY_AD_PRESENT_TIMES, String.valueOf(getAdPresentTimes() + 1));
     }
 }

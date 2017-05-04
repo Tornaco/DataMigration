@@ -8,11 +8,14 @@ import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.bugsnag.android.Bugsnag;
+import com.squareup.otto.Subscribe;
+import com.wandoujia.ads.sdk.Ads;
+import com.wandoujia.ads.sdk.events.AdNoAdsFoundEvent;
+import com.wandoujia.ads.sdk.events.AdPresentEvent;
 
-import org.codechimp.apprater.AppRater;
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.datamigration.policy.CoolApkMaket;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.provider.ThemeManager;
 import org.newstand.datamigration.secure.DonateQRPathRetriever;
 import org.newstand.datamigration.service.DummSmsServiceProxy;
 import org.newstand.datamigration.service.UserActionServiceProxy;
@@ -81,12 +84,27 @@ public class DataMigrationApp extends Application {
             }
         });
         registerActivityLifecycleCallbacks(topActivityObserver);
+
+        Ads.bus.register(this);
+
+        ThemeManager.init(this);
     }
 
     private void startCore() {
         DummSmsServiceProxy.startService(this);
         UserActionServiceProxy.startService(getApplicationContext());
         SchedulerServiceProxy.start(this);
+    }
+
+    @Subscribe
+    public void onAdsNotFound(AdNoAdsFoundEvent event) {
+        Logger.d("onAdsNotFound %s", event);
+    }
+
+    @Subscribe
+    public void onAdPresentEvent(AdPresentEvent event) {
+        Logger.d("onAdPresentEvent %s", event);
+        SettingsProvider.increaseAdPresentTimes();
     }
 
     private void cleanup() {

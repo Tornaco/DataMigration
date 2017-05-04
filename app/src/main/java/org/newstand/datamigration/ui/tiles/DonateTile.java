@@ -29,6 +29,7 @@ public class DonateTile extends ThemedTile {
     @Override
     void onInitView(Context context) {
         this.titleRes = R.string.title_donate;
+        this.summaryRes = R.string.summary_donate;
         this.iconRes = R.drawable.ic_coffee;
 
         this.tileView = new QuickTileView(getContext(), this) {

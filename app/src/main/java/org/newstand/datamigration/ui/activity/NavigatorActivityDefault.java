@@ -6,5 +6,5 @@ package org.newstand.datamigration.ui.activity;
  * All right reserved.
  */
 
-public class NavigatorActivityDefault extends BaseNavigatorActivity {
+public class NavigatorActivityDefault extends DrawerNavigatorActivity {
 }
