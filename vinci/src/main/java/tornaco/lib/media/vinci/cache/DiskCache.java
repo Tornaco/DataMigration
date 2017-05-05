@@ -13,6 +13,7 @@ import java.io.OutputStream;
 
 import lombok.Getter;
 import tornaco.lib.media.vinci.ErrorReporter;
+import tornaco.lib.media.vinci.utils.Logger;
 
 /**
  * Created by Nick on 2017/5/5 13:20
@@ -47,16 +48,18 @@ public class DiskCache implements Cache<String, Bitmap> {
     @NonNull
     @Override
     public Bitmap put(@NonNull String key, @NonNull Bitmap value) {
+        Logger.dbg("put for key %s", key);
         String targetPath = getPathFromKey(key);
         File targetFile = new File(targetPath);
         if (targetFile.exists() && !targetFile.delete()) {
-            return value; // FIXME Log.
+            Logger.dbg("Error!!! Target file exist and can not be delete");
+            return value;
         }
         try {
             OutputStream os = Files.asByteSink(targetFile).openBufferedStream();
             value.compress(Bitmap.CompressFormat.PNG, 100, os);
         } catch (IOException ignored) {
-            // FIXME Log.
+            Logger.dbg("IOError!!! %s", ignored.getMessage());
         }
         return value;
     }

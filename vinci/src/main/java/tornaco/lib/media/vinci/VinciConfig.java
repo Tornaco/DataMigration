@@ -3,6 +3,7 @@ package tornaco.lib.media.vinci;
 import java.io.File;
 
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Builder;
 import tornaco.lib.media.vinci.policy.CacheKeyPolicy;
 
@@ -13,6 +14,7 @@ import tornaco.lib.media.vinci.policy.CacheKeyPolicy;
  */
 @Getter
 @Builder
+@ToString
 public class VinciConfig {
     private File diskCacheDir;
     private int memCachePoolSize;
