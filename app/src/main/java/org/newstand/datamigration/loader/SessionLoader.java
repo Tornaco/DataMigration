@@ -2,6 +2,9 @@ package org.newstand.datamigration.loader;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+
+import com.google.common.io.Files;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.provider.SettingsProvider;
@@ -50,6 +53,7 @@ public abstract class SessionLoader {
             public void run() {
                 loaderListener.onStart();
                 try {
+                    // Load from database.
                     List<Session> all = BKSessionRepoService.get().findAll(context);
                     Collections.consumeRemaining(all, new Consumer<Session>() {
                         @Override
@@ -58,13 +62,34 @@ public abstract class SessionLoader {
                                 Logger.w("Ignored bad session %s", session);
                                 return;
                             }
-                            if (!session.isTmp()) {
-                                res.add(Session.from(session));
-                            } else {
-                                Logger.w("Ignored tmp session %s", session);
-                            }
+                            res.add(Session.from(session));
                         }
                     });
+
+                    String root = SettingsProvider.getBackupRootDir();
+                    // Check missing.
+                    Iterable<File> iterable = Files.fileTreeTraverser().children(new File(root));
+
+                    if (iterable != null) {
+                        Collections.consumeRemaining(iterable, new Consumer<File>() {
+                            @Override
+                            public void accept(@NonNull File file) {
+                                if (file.isDirectory()) {
+                                    String name = Files.getNameWithoutExtension(file.getPath());
+                                    if (!TextUtils.isEmpty(name) && !isSameFileExistInSessions(res, name)) {
+                                        Logger.d("Found maybe missing backup dir: %s, importing...", file);
+                                        if (!org.newstand.datamigration.utils.Files.isEmptyDir(file)) {
+                                            // Now import it into db.
+                                            Session session = Session.from(name, file.lastModified());
+                                            Logger.d("Created new session: %s for importing", session);
+                                            BKSessionRepoService.get().insert(context, session);
+                                            res.add(session);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
                     java.util.Collections.reverse(res);
                     loaderListener.onComplete(res);
                 } catch (Throwable throwable) {
@@ -74,6 +99,15 @@ public abstract class SessionLoader {
         };
 
         SharedExecutor.execute(r);
+    }
+
+    private static boolean isSameFileExistInSessions(List<Session> sessions, String name) {
+        for (Session s : sessions) {
+            if (name.equals(s.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void loadFromReceivedAsync(final Context context, final LoaderListener<Session> loaderListener) {

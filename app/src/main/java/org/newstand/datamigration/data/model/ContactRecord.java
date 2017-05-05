@@ -1,5 +1,6 @@
 package org.newstand.datamigration.data.model;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -21,6 +22,7 @@ import lombok.ToString;
 public class ContactRecord extends FileBasedRecord implements Parcelable {
     private String email;
     private String phoneNum;
+    private Uri uri;
 
     private ContactRecord(Parcel in) {
         super(in);

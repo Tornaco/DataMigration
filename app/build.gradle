@@ -10,8 +10,8 @@ android {
         targetSdkVersion 25
         // Enabling multidex support.
         multiDexEnabled true
-        versionCode 28
-        versionName "2.8"
+        versionCode 29
+        versionName "2.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -81,12 +81,10 @@ dependencies {
     compile 'com.facebook.conceal:conceal:1.1.3@aar'
     compile 'com.nononsenseapps:filepicker:4.1.0'
     compile 'com.github.codechimp-org.apprater:library:1.0.29'
-
     /**
      * 引用WandoujiaSDK.aar
      */
     compile(name: 'WandoujiaSDK', ext: 'aar')
-
     /**
      * 下面是sdk的依赖包
      */
@@ -94,4 +92,5 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
     compile 'com.squareup:otto:1.3.6'
     compile 'com.squareup.picasso:picasso:2.4.0'
+    compile project(':vinci')
 }

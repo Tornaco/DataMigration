@@ -1,7 +1,9 @@
 package org.newstand.datamigration.loader.impl;
 
 import android.Manifest;
+import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 
@@ -126,6 +128,9 @@ public class ContactLoader extends BaseLoader {
         }
 
         record.setId(contactId);
+
+        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
+        record.setUri(uri);
 
         return record;
     }
