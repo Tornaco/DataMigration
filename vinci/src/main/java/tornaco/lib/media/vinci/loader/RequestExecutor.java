@@ -8,8 +8,11 @@ import java.util.concurrent.Executors;
 
 import lombok.Getter;
 import tornaco.lib.media.vinci.Enforcer;
+import tornaco.lib.media.vinci.ErrorReporter;
 import tornaco.lib.media.vinci.Request;
+import tornaco.lib.media.vinci.cache.FastSmallMemoryCache;
 import tornaco.lib.media.vinci.common.Consumer;
+import tornaco.lib.media.vinci.common.Holder;
 import tornaco.lib.media.vinci.display.ImageConsumer;
 import tornaco.lib.media.vinci.effect.EffectProcessor;
 import tornaco.lib.media.vinci.utils.BitmapUtils;
@@ -21,31 +24,64 @@ import tornaco.lib.media.vinci.utils.Logger;
  * All right reserved.
  */
 @Getter
-public class RequestExecutor implements Consumer<LoadResult> {
+public class RequestExecutor {
 
     private Request r;
 
-    public static final ExecutorService CACHE_POOL_EXECUTOR = Executors.newCachedThreadPool();
+    public static final ExecutorService CACHE_POOL_EXECUTOR =
+            Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 4 + 1);
 
     public RequestExecutor(Request r) {
         this.r = r;
-        Logger.dbg("Request %s", r);
     }
 
     private void executeInternal(ExecutorService service) {
-        List<Loader> loaders = r.getLoaders();
+        final List<Loader> loaders = r.getLoaders();
         String sourceUrl = r.getSourceUrl();
 
-        // Before submit, apply the placeholder.
+        // Apply the placeholder.
         int ph = r.getPlaceHolderRes();
         if (ph > 0) {
-            Bitmap holder = BitmapUtils.getBitmap(r.getContext(), ph);
-            for (Consumer<Bitmap> consumer : r.getImageConsumers()) {
-                consumer.accept(holder);
+            Bitmap holder = FastSmallMemoryCache.get().get(String.valueOf(ph));
+            if (holder == null) {
+                holder = BitmapUtils.getBitmap(r.getContext(), ph);
+                if (holder != null) {
+                    FastSmallMemoryCache.get().put(String.valueOf(ph), holder);
+
+                    for (Consumer<Bitmap> consumer : r.getImageConsumers()) {
+                        consumer.accept(holder);
+                    }
+                }
             }
         }
 
-        service.submit(new LoadRunner(loaders, sourceUrl, this));
+        final Holder<FutureRequestTask> requestTaskHolder = new Holder<>(null);
+
+        FutureRequestTask fr = new FutureRequestTask(new RequestTask(loaders, sourceUrl,
+                new Consumer<LoadResult>() {
+                    @Override
+                    public void accept(LoadResult loadResult) {
+
+                        Logger.d("LoadResult %s", loadResult);
+
+                        OnLoadCompleteEvent onLoadCompleteEvent =
+                                new OnLoadCompleteEvent(loadResult.loader, r.getSourceUrl(), loadResult.res);
+                        LoaderEventProvider.getInstance().publish(onLoadCompleteEvent);
+
+                        RequestExecutor.this.accept(loadResult.res);
+
+                        FutureRequestTask fft = requestTaskHolder.getHost();
+                        if (fft != null) {
+                            FutureTaskManager.getInstance().publish(new OnFutureTaskDoneEvent(r.getSourceUrl(), fft, r.imageConsumerId()));
+                        }
+                    }
+                }));
+
+        FutureTaskManager.getInstance().publish(new OnFutureTaskCommitEvent(fr, r.getSourceUrl(), r.imageConsumerId()));
+
+        service.submit(fr);
+
+        requestTaskHolder.setHost(fr);
     }
 
     public void execute() {
@@ -66,22 +102,28 @@ public class RequestExecutor implements Consumer<LoadResult> {
         } else {
             // Apply from err res.
             int errRes = r.getErrorRes();
-            if (errRes > 0)
-                bitmap = BitmapUtils.getBitmap(r.getContext(), errRes);
+            if (errRes > 0) {
+                bitmap = FastSmallMemoryCache.get().get(String.valueOf(errRes));
+                if (bitmap == null) {
+                    bitmap = BitmapUtils.getBitmap(r.getContext(), errRes);
+                    if (bitmap != null)
+                        FastSmallMemoryCache.get().put(String.valueOf(errRes), bitmap);
+                }
+            }
         }
+
+        Logger.d("Before applying image size %s", r.getImageConsumers().size());
 
         for (ImageConsumer consumer : r.getImageConsumers()) {
-            consumer.applyAnimator(r.getAnimator());
-            consumer.accept(bitmap);
+
+            Logger.d("Now applying image to %s", consumer);
+            try {
+                consumer.applyAnimator(r.getAnimator());
+                consumer.accept(bitmap);
+            } catch (Throwable e) {
+                Logger.d("Error apply %s", Logger.getStackTraceString(e));
+                ErrorReporter.reThrow(e);
+            }
         }
-    }
-
-    @Override
-    public void accept(LoadResult loadResult) {
-
-        OnLoadCompleteEvent onLoadCompleteEvent = new OnLoadCompleteEvent(loadResult.loader, r.getSourceUrl(), loadResult.res);
-        LoaderEventProvider.getInstance().publish(onLoadCompleteEvent);
-
-        accept(loadResult.res);
     }
 }

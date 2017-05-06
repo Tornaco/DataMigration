@@ -41,7 +41,7 @@ public class MusicListFragment extends DataListViewerFragment {
 
                 Vinci.load(getContext(), musicRecord.getArtUri())
                         .placeHolder(R.mipmap.ic_music_avatar)
-                        .error(R.mipmap.ic_music_avatar)
+                        .error(R.mipmap.ic_launcher_red)
                         .animator(new FadeInViewAnimator())
                         .into(holder.getCheckableImageView());
 

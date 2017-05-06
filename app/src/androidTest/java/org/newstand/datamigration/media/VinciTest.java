@@ -6,14 +6,17 @@ import android.support.annotation.Nullable;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.strategy.Interval;
+import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.logger.Logger;
 
-import tornaco.lib.media.vinci.DefaultVinciConfig;
 import tornaco.lib.media.vinci.Vinci;
-import tornaco.lib.media.vinci.common.Consumer;
+import tornaco.lib.media.vinci.display.ImageConsumer;
+import tornaco.lib.media.vinci.effect.Animator;
 import tornaco.lib.media.vinci.effect.EffectProcessor;
 import tornaco.lib.media.vinci.loader.Loader;
 import tornaco.lib.media.vinci.loader.Priority;
@@ -28,8 +31,6 @@ public class VinciTest {
 
     @Test
     public void getInstanceTest() {
-
-        Vinci.config(new DefaultVinciConfig(InstrumentationRegistry.getTargetContext()));
 
         Vinci.load(InstrumentationRegistry.getTargetContext(),
                 "drawable://ic_help")
@@ -46,6 +47,7 @@ public class VinciTest {
                     @Override
                     public Bitmap load(@NonNull String sourceUrl) {
                         Logger.d("VinciTest-load %s", sourceUrl);
+                        Sleeper.sleepQuietly(Interval.Minutes.getIntervalMills());
                         return null;
                     }
 
@@ -56,11 +58,22 @@ public class VinciTest {
                 })
                 .error(R.drawable.github)
                 .placeHolder(R.drawable.forktocat)
-                .into(new Consumer<Bitmap>() {
+                .into(new ImageConsumer() {
+                    @Override
+                    public void applyAnimator(@Nullable Animator animator) {
+
+                    }
+
                     @Override
                     public void accept(Bitmap bitmap) {
-                        Logger.d("VinciTest-accept %s", bitmap);
+
                     }
                 });
+
+        boolean canceled = Vinci.cancel("drawable://ic_help");
+
+        Assert.assertTrue(canceled);
+
+        Sleeper.sleepQuietly(Interval.Minutes.getIntervalMills());
     }
 }

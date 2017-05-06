@@ -32,5 +32,4 @@ dependencies {
     provided 'org.projectlombok:lombok:1.12.6'
     apt "org.projectlombok:lombok:1.12.6"
     compile 'com.google.guava:guava:20.0'
-    compile project(':logger')
 }

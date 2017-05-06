@@ -10,9 +10,9 @@ import android.support.annotation.Nullable;
  * All right reserved.
  */
 
-public interface SourceLoader {
+interface SourceLoader {
     @Nullable
     Bitmap loadFromSource(@NonNull Source source);
 
-    String sourceUrlPrefix();
+    boolean canHandle(@NonNull String sourceUrl);
 }

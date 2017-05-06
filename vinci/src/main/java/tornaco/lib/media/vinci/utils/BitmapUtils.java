@@ -2,6 +2,7 @@ package tornaco.lib.media.vinci.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -20,6 +21,8 @@ import android.support.v4.content.ContextCompat;
  */
 
 public abstract class BitmapUtils {
+
+    private static final Object LOCK = new Object();
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public static Bitmap getBitmap(VectorDrawable vectorDrawable) {
@@ -54,6 +57,12 @@ public abstract class BitmapUtils {
             return null;
         } else {
             throw new IllegalArgumentException("Unsupported drawable type");
+        }
+    }
+
+    public static Bitmap decodeFileLocked(String path, BitmapFactory.Options decodeOptions) {
+        synchronized (LOCK) {
+            return BitmapFactory.decodeFile(path, decodeOptions);
         }
     }
 }

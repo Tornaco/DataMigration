@@ -1,7 +1,5 @@
 package org.newstand.datamigration.ui.fragment;
 
-import com.bumptech.glide.Glide;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
@@ -9,6 +7,8 @@ import org.newstand.datamigration.data.model.PhotoRecord;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.utils.Files;
+
+import tornaco.lib.media.vinci.Vinci;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -30,13 +30,13 @@ public class PhotoListFragment extends DataListViewerFragment {
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
                 PhotoRecord photoRecord = (PhotoRecord) record;
                 holder.getLineTwoTextView().setText(Files.formatSize(photoRecord.getSize()));
-                Glide.with(PhotoListFragment.this)
-                        .load(photoRecord.getPath())
-                        .centerCrop()
-                        .animate(R.anim.fade_in)
-                        .placeholder(R.mipmap.ic_photo_avatar)
+
+                Vinci.load(getContext(), photoRecord.getPath())
+                        .placeHolder(R.mipmap.ic_photo_avatar)
                         .error(R.mipmap.ic_photo_avatar)
+                        .animation(R.anim.grow_fade_in)
                         .into(holder.getCheckableImageView());
+
                 super.onBindViewHolder(holder, record);
             }
         };

@@ -10,7 +10,6 @@ import java.io.File;
 import tornaco.lib.media.vinci.cache.DiskCache;
 import tornaco.lib.media.vinci.common.Consumer;
 import tornaco.lib.media.vinci.policy.CacheKeyPolicy;
-import tornaco.lib.media.vinci.utils.Logger;
 
 /**
  * Created by Nick on 2017/5/5 12:50
@@ -31,12 +30,10 @@ public class DiskCacheLoader implements Loader {
             @Override
             public void accept(OnLoadCompleteEvent onLoadCompleteEvent) {
 
-                Logger.dbg("received OnLoadCompleteEvent %s", onLoadCompleteEvent);
-
                 Bitmap res = onLoadCompleteEvent.getImage();
                 if (res != null) {
                     Loader who = onLoadCompleteEvent.getWho();
-                    if (who != DiskCacheLoader.this) {
+                    if (who != DiskCacheLoader.this && who.getClass() != MemoryCacheLoader.class) {
                         // Add this entry.
                         mDiskCache.put(mCacheKeyPolicy.createCacheKey(onLoadCompleteEvent.getSourceUrl()),
                                 onLoadCompleteEvent.getImage());

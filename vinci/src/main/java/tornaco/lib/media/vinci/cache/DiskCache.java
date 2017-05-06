@@ -1,9 +1,9 @@
 package tornaco.lib.media.vinci.cache;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.AtomicFile;
 
 import com.google.common.io.Files;
 
@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import lombok.Getter;
+import tornaco.lib.media.vinci.Enforcer;
 import tornaco.lib.media.vinci.ErrorReporter;
+import tornaco.lib.media.vinci.utils.BitmapUtils;
+import tornaco.lib.media.vinci.utils.Closer;
 import tornaco.lib.media.vinci.utils.Logger;
 
 /**
@@ -42,24 +45,31 @@ public class DiskCache implements Cache<String, Bitmap> {
         if (!targetFile.exists()) {
             return null;
         }
-        return BitmapFactory.decodeFile(targetPath);
+        return BitmapUtils.decodeFileLocked(targetPath, null);
     }
 
     @NonNull
     @Override
     public Bitmap put(@NonNull String key, @NonNull Bitmap value) {
-        Logger.dbg("put for key %s", key);
+        Enforcer.enforceWorkThread();
+        Logger.d("put diskcache for key %s", key);
         String targetPath = getPathFromKey(key);
         File targetFile = new File(targetPath);
         if (targetFile.exists() && !targetFile.delete()) {
-            Logger.dbg("Error!!! Target file exist and can not be delete");
+            Logger.d("Error!!! Target file exist and can not be delete");
             return value;
         }
+        AtomicFile atomicFile;
+        OutputStream os = null;
         try {
-            OutputStream os = Files.asByteSink(targetFile).openBufferedStream();
+            Files.createParentDirs(targetFile);
+            atomicFile = new AtomicFile(targetFile);
+            os = atomicFile.startWrite();
             value.compress(Bitmap.CompressFormat.PNG, 100, os);
         } catch (IOException ignored) {
-            Logger.dbg("IOError!!! %s", ignored.getMessage());
+            Logger.d("IOError!!! %s", ignored.getMessage());
+        } finally {
+            Closer.closeQuietly(os);
         }
         return value;
     }

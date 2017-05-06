@@ -13,6 +13,6 @@ import tornaco.lib.media.vinci.Enforcer;
 public class HashCodeCacheKeyPolicy implements CacheKeyPolicy {
     @Override
     public String createCacheKey(@NonNull String sourceUrl) {
-        return String.valueOf(Enforcer.enforceNonNull(sourceUrl).hashCode());
+        return Integer.toHexString(Enforcer.enforceNonNull(sourceUrl).hashCode());
     }
 }

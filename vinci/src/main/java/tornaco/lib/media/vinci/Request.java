@@ -1,6 +1,7 @@
 package tornaco.lib.media.vinci;
 
 import android.content.Context;
+import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -16,6 +18,7 @@ import tornaco.lib.media.vinci.display.ImageConsumer;
 import tornaco.lib.media.vinci.display.ImageViewImageConsumer;
 import tornaco.lib.media.vinci.effect.Animator;
 import tornaco.lib.media.vinci.effect.EffectProcessor;
+import tornaco.lib.media.vinci.effect.ResourceAnimator;
 import tornaco.lib.media.vinci.loader.Loader;
 import tornaco.lib.media.vinci.loader.RequestExecutor;
 
@@ -40,6 +43,8 @@ public final class Request {
 
     private Context context;
 
+    private Executor earlyExecutor;
+
     private
     @DrawableRes
     int placeHolderRes;
@@ -60,12 +65,18 @@ public final class Request {
     }
 
     public void into(@NonNull ImageConsumer imageConsumer) {
-        Enforcer.enforce(!this.imageConsumers.contains(Enforcer.enforceNonNull(imageConsumer)), "Duplicate consumer.");
+        Enforcer.enforce(!this.imageConsumers.contains(Enforcer.enforceNonNull(imageConsumer)),
+                "Duplicate consumer.");
 
         this.imageConsumers.add(imageConsumer);
 
         // Let's to to work.
-        new RequestExecutor(this).execute();
+        earlyExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                new RequestExecutor(Request.this).execute();
+            }
+        });
     }
 
     public Request placeHolder(@DrawableRes int drawableRes) {
@@ -88,6 +99,11 @@ public final class Request {
         return this;
     }
 
+    public Request animation(@AnimRes int animRes) {
+        this.animator = new ResourceAnimator(animRes, context);
+        return this;
+    }
+
     public Request loader(@NonNull Loader loader) {
         Enforcer.enforce(!loaders.contains(loader), "Duplicate loader is not allowed.");
         this.loaders.add(Enforcer.enforceNonNull(loader));
@@ -100,5 +116,18 @@ public final class Request {
             }
         });
         return this;
+    }
+
+    public Request earlyExecutor(Executor executor) {
+        this.earlyExecutor = executor;
+        return this;
+    }
+
+    public String imageConsumerId() {
+        String id = "IMAGE_CONSUMER@";
+        for (ImageConsumer c : imageConsumers) {
+            id = id + c.identify();
+        }
+        return id;
     }
 }

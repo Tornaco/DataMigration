@@ -7,7 +7,12 @@ package tornaco.lib.media.vinci.utils;
  */
 
 public class Logger {
-    public static void dbg(String message, Object... args) {
-        org.newstand.logger.Logger.d(message, args);
+
+    public static void d(String message, Object... args) {
+        android.util.Log.d("Vinci", String.format(message, args));
+    }
+
+    public static String getStackTraceString(Throwable throwable) {
+        return android.util.Log.getStackTraceString(throwable);
     }
 }

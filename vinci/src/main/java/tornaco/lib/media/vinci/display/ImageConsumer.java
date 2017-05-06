@@ -13,6 +13,10 @@ import tornaco.lib.media.vinci.effect.Animator;
  * All right reserved.
  */
 
-public interface ImageConsumer extends Consumer<Bitmap> {
-    void applyAnimator(@Nullable Animator animator);
+public abstract class ImageConsumer implements Consumer<Bitmap> {
+    public abstract void applyAnimator(@Nullable Animator animator);
+
+    public String identify() {
+        return Integer.toHexString(hashCode());
+    }
 }

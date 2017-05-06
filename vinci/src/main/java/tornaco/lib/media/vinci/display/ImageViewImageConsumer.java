@@ -13,7 +13,7 @@ import tornaco.lib.media.vinci.effect.Animator;
  * All right reserved.
  */
 
-public class ImageViewImageConsumer implements ImageConsumer {
+public class ImageViewImageConsumer extends ImageConsumer {
 
     private ImageView imageView;
 
@@ -34,7 +34,17 @@ public class ImageViewImageConsumer implements ImageConsumer {
     }
 
     @Override
-    public void applyAnimator(Animator animator) {
-        imageView.startAnimation(animator.getAnimation());
+    public void applyAnimator(final Animator animator) {
+        imageView.post(new Runnable() {
+            @Override
+            public void run() {
+                imageView.startAnimation(animator.getAnimation());
+            }
+        });
+    }
+
+    @Override
+    public String identify() {
+        return "IMAGE_VIEW@" + imageView.hashCode();
     }
 }

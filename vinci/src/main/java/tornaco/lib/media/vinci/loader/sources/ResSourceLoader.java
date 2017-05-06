@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import tornaco.lib.media.vinci.utils.BitmapUtils;
-import tornaco.lib.media.vinci.utils.Logger;
 
 /**
  * Created by Nick on 2017/5/5 14:39
@@ -23,6 +22,8 @@ public abstract class ResSourceLoader implements SourceLoader {
                 source.getContext().getPackageName());
         return getBitmapFromId(source.getContext(), resId);
     }
+
+    protected abstract String sourceUrlPrefix();
 
     protected Bitmap getBitmapFromId(Context context, int id) {
         return BitmapUtils.getBitmap(context, id);

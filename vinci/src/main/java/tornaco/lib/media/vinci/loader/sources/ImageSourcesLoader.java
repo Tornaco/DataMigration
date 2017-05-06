@@ -11,7 +11,6 @@ import java.util.Set;
 import tornaco.lib.media.vinci.Enforcer;
 import tornaco.lib.media.vinci.loader.Loader;
 import tornaco.lib.media.vinci.loader.Priority;
-import tornaco.lib.media.vinci.utils.Logger;
 
 /**
  * Created by Nick on 2017/5/5 14:32
@@ -26,6 +25,7 @@ public class ImageSourcesLoader implements Loader {
     static {
         register(new DrawableSourceLoader());
         register(new MediaStoreSourceLoader());
+        register(new FileSourceLoader());
     }
 
     public static void register(SourceLoader loader) {
@@ -37,8 +37,7 @@ public class ImageSourcesLoader implements Loader {
 
     private static SourceLoader getLoaderFromSource(String sourceUrl) {
         for (SourceLoader sourceLoader : LOADERS) {
-            Logger.dbg("Check %s", sourceLoader);
-            if (sourceUrl.startsWith(sourceLoader.sourceUrlPrefix())) {
+            if (sourceLoader.canHandle(sourceUrl)) {
                 return sourceLoader;
             }
         }
@@ -55,8 +54,6 @@ public class ImageSourcesLoader implements Loader {
     @Override
     public Bitmap load(@NonNull String sourceUrl) {
         SourceLoader sourceLoader = getLoaderFromSource(sourceUrl);
-
-        Logger.dbg("match loader %s", sourceLoader);
 
         if (sourceLoader == null) return null;// FIXME Log.
 
