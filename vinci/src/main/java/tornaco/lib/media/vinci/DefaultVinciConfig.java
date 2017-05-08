@@ -16,7 +16,8 @@ import tornaco.lib.media.vinci.policy.HeadlessCacheKeyPolicy;
 public class DefaultVinciConfig extends VinciConfig {
 
     public DefaultVinciConfig(Context context) {
-        super(new File(context.getCacheDir() + File.separator + "disk_cache"),
+        super(false, false,
+                new File(context.getCacheDir() + File.separator + "disk_cache"),
                 (int) (Runtime.getRuntime().maxMemory() / 8),
                 new HashCodeCacheKeyPolicy(), new HeadlessCacheKeyPolicy());
     }

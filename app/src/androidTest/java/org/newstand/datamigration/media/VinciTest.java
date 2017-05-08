@@ -76,4 +76,36 @@ public class VinciTest {
 
         Sleeper.sleepQuietly(Interval.Minutes.getIntervalMills());
     }
+
+    @Test
+    public void pauseTest() {
+        for (int i = 0; i < 20; i++) {
+            Vinci.load(InstrumentationRegistry.getTargetContext(), "drawable://ic_help")
+                    .into(new ImageConsumer() {
+                        @Override
+                        public void applyAnimator(@Nullable Animator animator) {
+
+                        }
+
+                        @Override
+                        public void accept(Bitmap bitmap) {
+
+                        }
+                    });
+        }
+
+        Vinci.pause();
+
+        Sleeper.sleepQuietly(Interval.Seconds.getIntervalMills() * 10);
+
+        try {
+            Vinci.pause();
+        } catch (Throwable expected) {
+            Logger.d(expected);
+        }
+
+        Vinci.cancelAllRequests();
+
+        Vinci.resume();
+    }
 }

@@ -8,7 +8,10 @@ import android.support.annotation.NonNull;
 
 import com.google.common.collect.Maps;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 
@@ -18,6 +21,7 @@ import tornaco.lib.media.vinci.display.ImageConsumer;
 import tornaco.lib.media.vinci.loader.FutureTaskManager;
 import tornaco.lib.media.vinci.loader.OnFutureTaskCommitEvent;
 import tornaco.lib.media.vinci.loader.OnFutureTaskDoneEvent;
+import tornaco.lib.media.vinci.policy.StateTracker;
 import tornaco.lib.media.vinci.utils.Logger;
 
 /**
@@ -26,7 +30,7 @@ import tornaco.lib.media.vinci.utils.Logger;
  * All right reserved.
  */
 
-public class Vinci implements Executor {
+public class Vinci implements Executor, StateTracker {
 
     private static Vinci sOnlyOne;
 
@@ -36,6 +40,11 @@ public class Vinci implements Executor {
     private Map<String, FutureTask<Bitmap>> consumerTaskMap;
 
     private Handler mWorkThreadHandler;
+
+    @Getter
+    private VinciState vinciState = VinciState.RUNNING;
+
+    private CountDownLatch mLatch;
 
     /**
      * @return Single instance of {@link Vinci}.
@@ -49,6 +58,14 @@ public class Vinci implements Executor {
     private static Vinci enforcedGet() {
         Enforcer.enforce(sOnlyOne != null, "Please config Vinci first!");
         return sOnlyOne;
+    }
+
+    private static void enforceRunning() {
+        Enforcer.enforce(enforcedGet().getVinciState() == VinciState.RUNNING, "Vinci Not running.");
+    }
+
+    private static void enforcePaused() {
+        Enforcer.enforce(enforcedGet().getVinciState() == VinciState.PAUSED, "Vinci is running.");
     }
 
     private Vinci(VinciConfig config) {
@@ -107,10 +124,12 @@ public class Vinci implements Executor {
     @NonNull
     static Request load(Context context,
                         @NonNull String sourceUri) {
+        enforceRunning();
         return RequestFactory
                 .newRequest(context.getApplicationContext(),
                         Enforcer.enforceNonNull(sourceUri))
-                .earlyExecutor(enforcedGet());
+                .earlyExecutor(enforcedGet())
+                .director(enforcedGet());
     }
 
     public static boolean cancel(@NonNull String sourceUrl) {
@@ -119,6 +138,22 @@ public class Vinci implements Executor {
 
     public static boolean cancel(@NonNull ImageConsumer consumer) {
         return cancelByConsumerId(Enforcer.enforceNonNull(consumer).identify());
+    }
+
+    public static void cancelAllRequests() {
+        if (isRunning()) pause();
+
+        Collection<FutureTask<Bitmap>> tasks = new ArrayList<>(enforcedGet().getSourceUrlTaskMap().values().size());
+        tasks.addAll(enforcedGet().getSourceUrlTaskMap().values());
+
+        for (FutureTask f : tasks) {
+            f.cancel(true);
+        }
+
+        tasks.clear();
+
+        enforcedGet().getSourceUrlTaskMap().clear();
+        resume();
     }
 
     private static boolean cancelByConsumerId(@NonNull String consumerId) {
@@ -153,8 +188,44 @@ public class Vinci implements Executor {
         return false;
     }
 
+    public static void pause() {
+        enforceRunning();
+        enforcedGet().setVinciState(VinciState.PAUSED);
+    }
+
+    public static boolean isRunning() {
+        return enforcedGet().getVinciState() == VinciState.RUNNING;
+    }
+
+    public static void resume() {
+        enforcePaused();
+        enforcedGet().setVinciState(VinciState.RUNNING);
+    }
+
+    private void setVinciState(VinciState vinciState) {
+        this.vinciState = vinciState;
+        if (vinciState == VinciState.PAUSED) {
+            mLatch = new CountDownLatch(1);
+        } else {
+            mLatch.countDown();
+        }
+    }
+
     @Override
     public void execute(@NonNull Runnable command) {
         mWorkThreadHandler.post(command);
+    }
+
+    @Override
+    public void readyToGo() {
+        while (!isRunning()) {
+            if (mLatch != null && mLatch.getCount() > 0) {
+                try {
+                    mLatch.await();
+                } catch (InterruptedException ignored) {
+
+                }
+            }
+        }
     }
 }

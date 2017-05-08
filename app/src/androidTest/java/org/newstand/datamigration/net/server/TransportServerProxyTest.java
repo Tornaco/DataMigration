@@ -40,7 +40,7 @@ public class TransportServerProxyTest {
                 }, new Consumer<TransportServer>() {
                     @Override
                     public void accept(@NonNull TransportServer transportServer) {
-                        Logger.d("accept %s", transportServer);
+                        Logger.d("applyImage %s", transportServer);
                     }
                 });
     }

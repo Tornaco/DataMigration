@@ -16,6 +16,7 @@ import tornaco.lib.media.vinci.policy.CacheKeyPolicy;
 @Builder
 @ToString
 public class VinciConfig {
+    private boolean enableDiskCache, enableMemoryCache;
     private File diskCacheDir;
     private int memCachePoolSize;
     private CacheKeyPolicy diskCacheKeyPolicy, memoryCacheKeyPolicy;

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import tornaco.lib.media.vinci.common.Consumer;
+import tornaco.lib.media.vinci.policy.StateTracker;
 
 /**
  * Created by Nick on 2017/5/5 13:58
@@ -19,14 +20,20 @@ class RequestTask implements Callable<Bitmap> {
     private String sourceUrl;
     private Consumer<LoadResult> resultConsumer;
 
-    RequestTask(List<Loader> loaders, String sourceUrl, Consumer<LoadResult> resultConsumer) {
+    private StateTracker stateTracker;
+
+    RequestTask(List<Loader> loaders, String sourceUrl,
+                Consumer<LoadResult> resultConsumer, StateTracker stateTracker) {
         this.loaders = loaders;
         this.sourceUrl = sourceUrl;
         this.resultConsumer = resultConsumer;
+        this.stateTracker = stateTracker;
     }
 
     @Override
     public Bitmap call() throws Exception {
+        stateTracker.readyToGo();// Wait util we can run.
+
         for (Loader loader : loaders) {
             Bitmap res = loader.load(sourceUrl);
             if (res != null) {

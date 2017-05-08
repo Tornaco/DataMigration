@@ -17,30 +17,45 @@ import tornaco.lib.media.vinci.loader.sources.ImageSourcesLoader;
  * All right reserved.
  */
 
-public class RequestFactory {
+class RequestFactory {
 
-    private static MemoryCacheLoader sMemCacheLoader;
-    private static DiskCacheLoader sDiskCacheLoader;
+    private MemoryCacheLoader memCacheLoader;
+    private DiskCacheLoader mDiskCacheLoader;
 
-    private static DiskCacheLoader getDiskCacheLoader() {
-        return sDiskCacheLoader;
+    private boolean enableDiskCache, enableMemoryCache;
+
+    private static RequestFactory sFactory;
+
+
+    private RequestFactory(VinciConfig config) {
+        mDiskCacheLoader = new DiskCacheLoader(config.getDiskCacheDir(), config.getDiskCacheKeyPolicy());
+        memCacheLoader = new MemoryCacheLoader(config.getMemCachePoolSize(), config.getMemoryCacheKeyPolicy());
+        enableDiskCache = config.isEnableDiskCache();
+        enableMemoryCache = config.isEnableMemoryCache();
     }
 
-    private static MemoryCacheLoader getMemCacheLoader() {
-        return sMemCacheLoader;
+    private static RequestFactory getFactory() {
+        return sFactory;
+    }
+
+    private DiskCacheLoader getDiskCacheLoader() {
+        return mDiskCacheLoader;
+    }
+
+    private MemoryCacheLoader getMemCacheLoader() {
+        return memCacheLoader;
     }
 
     static Request newRequest(Context context, final String sourceUrl) {
         List<ImageConsumer> initial = Lists.newArrayList();
         Request r = new Request(context, sourceUrl, initial);
-        r.loader(getMemCacheLoader());
-        r.loader(getDiskCacheLoader());
+        if (getFactory().enableMemoryCache) r.loader(getFactory().getMemCacheLoader());
+        if (getFactory().enableDiskCache) r.loader(getFactory().getDiskCacheLoader());
         r.loader(new ImageSourcesLoader(context));
         return r;
     }
 
     public static void init(VinciConfig config) {
-        sDiskCacheLoader = new DiskCacheLoader(config.getDiskCacheDir(), config.getDiskCacheKeyPolicy());
-        sMemCacheLoader = new MemoryCacheLoader(config.getMemCachePoolSize(), config.getMemoryCacheKeyPolicy());
+        sFactory = new RequestFactory(config);
     }
 }

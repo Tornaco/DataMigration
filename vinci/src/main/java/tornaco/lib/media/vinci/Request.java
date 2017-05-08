@@ -18,9 +18,11 @@ import tornaco.lib.media.vinci.display.ImageConsumer;
 import tornaco.lib.media.vinci.display.ImageViewImageConsumer;
 import tornaco.lib.media.vinci.effect.Animator;
 import tornaco.lib.media.vinci.effect.EffectProcessor;
+import tornaco.lib.media.vinci.effect.FadeInViewAnimator;
 import tornaco.lib.media.vinci.effect.ResourceAnimator;
 import tornaco.lib.media.vinci.loader.Loader;
 import tornaco.lib.media.vinci.loader.RequestExecutor;
+import tornaco.lib.media.vinci.policy.StateTracker;
 
 /**
  * Created by Nick on 2017/5/5 11:17
@@ -44,6 +46,8 @@ public final class Request {
     private Context context;
 
     private Executor earlyExecutor;
+
+    private StateTracker stateTracker;
 
     private
     @DrawableRes
@@ -69,6 +73,8 @@ public final class Request {
                 "Duplicate consumer.");
 
         this.imageConsumers.add(imageConsumer);
+
+        if (animator == null) animator(new FadeInViewAnimator());
 
         // Let's to to work.
         earlyExecutor.execute(new Runnable() {
@@ -118,8 +124,13 @@ public final class Request {
         return this;
     }
 
-    public Request earlyExecutor(Executor executor) {
+    Request earlyExecutor(Executor executor) {
         this.earlyExecutor = executor;
+        return this;
+    }
+
+    Request director(StateTracker stateTracker) {
+        this.stateTracker = stateTracker;
         return this;
     }
 

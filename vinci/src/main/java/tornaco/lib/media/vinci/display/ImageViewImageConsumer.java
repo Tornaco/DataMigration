@@ -27,6 +27,8 @@ public class ImageViewImageConsumer extends ImageConsumer {
             imageView.post(new Runnable() {
                 @Override
                 public void run() {
+                    imageView.setImageBitmap(null);
+                    imageView.setImageResource(0);
                     imageView.setImageDrawable(new BitmapDrawable(imageView.getResources(), image));
                 }
             });

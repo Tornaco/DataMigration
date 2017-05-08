@@ -1,6 +1,7 @@
 package tornaco.lib.media.vinci.loader;
 
 import android.graphics.Bitmap;
+import android.view.animation.Animation;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -36,6 +37,7 @@ public class RequestExecutor {
     }
 
     private void executeInternal(ExecutorService service) {
+
         final List<Loader> loaders = r.getLoaders();
         String sourceUrl = r.getSourceUrl();
 
@@ -45,12 +47,13 @@ public class RequestExecutor {
             Bitmap holder = FastSmallMemoryCache.get().get(String.valueOf(ph));
             if (holder == null) {
                 holder = BitmapUtils.getBitmap(r.getContext(), ph);
-                if (holder != null) {
-                    FastSmallMemoryCache.get().put(String.valueOf(ph), holder);
+            }
+            if (holder != null) {
+                FastSmallMemoryCache.get().put(String.valueOf(ph), holder);
 
-                    for (Consumer<Bitmap> consumer : r.getImageConsumers()) {
-                        consumer.accept(holder);
-                    }
+                for (Consumer<Bitmap> consumer : r.getImageConsumers()) {
+                    Logger.d("Applying place holder %s", consumer);
+                    consumer.accept(holder);
                 }
             }
         }
@@ -68,14 +71,17 @@ public class RequestExecutor {
                                 new OnLoadCompleteEvent(loadResult.loader, r.getSourceUrl(), loadResult.res);
                         LoaderEventProvider.getInstance().publish(onLoadCompleteEvent);
 
-                        RequestExecutor.this.accept(loadResult.res);
-
                         FutureRequestTask fft = requestTaskHolder.getHost();
+
                         if (fft != null) {
+                            Logger.d("applyImage is cancel: %s", fft.isCancelled());
+                            if (!fft.isCancelled()) {
+                                RequestExecutor.this.applyImage(loadResult.res);
+                            }
                             FutureTaskManager.getInstance().publish(new OnFutureTaskDoneEvent(r.getSourceUrl(), fft, r.imageConsumerId()));
                         }
                     }
-                }));
+                }, r.getStateTracker()));
 
         FutureTaskManager.getInstance().publish(new OnFutureTaskCommitEvent(fr, r.getSourceUrl(), r.imageConsumerId()));
 
@@ -92,7 +98,7 @@ public class RequestExecutor {
         executeInternal(service);
     }
 
-    public void accept(Bitmap bitmap) {
+    private void applyImage(Bitmap bitmap) {
 
         if (bitmap != null) {
             EffectProcessor effectProcessor = r.getEffectProcessor();
@@ -112,14 +118,31 @@ public class RequestExecutor {
             }
         }
 
-        Logger.d("Before applying image size %s", r.getImageConsumers().size());
-
-        for (ImageConsumer consumer : r.getImageConsumers()) {
+        for (final ImageConsumer consumer : r.getImageConsumers()) {
 
             Logger.d("Now applying image to %s", consumer);
             try {
-                consumer.applyAnimator(r.getAnimator());
-                consumer.accept(bitmap);
+                if (r.getAnimator() != null) {
+                    final Bitmap finalBitmap = bitmap;
+                    r.getAnimator().getAnimation().setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            consumer.accept(finalBitmap);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            // Nothing.
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                            // Nothing.
+                        }
+                    });
+                } else {
+                    consumer.accept(bitmap);
+                }
             } catch (Throwable e) {
                 Logger.d("Error apply %s", Logger.getStackTraceString(e));
                 ErrorReporter.reThrow(e);

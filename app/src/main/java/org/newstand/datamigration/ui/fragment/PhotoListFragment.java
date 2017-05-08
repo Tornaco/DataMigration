@@ -34,7 +34,6 @@ public class PhotoListFragment extends DataListViewerFragment {
                 Vinci.load(getContext(), photoRecord.getPath())
                         .placeHolder(R.mipmap.ic_photo_avatar)
                         .error(R.mipmap.ic_photo_avatar)
-                        .animation(R.anim.grow_fade_in)
                         .into(holder.getCheckableImageView());
 
                 super.onBindViewHolder(holder, record);
