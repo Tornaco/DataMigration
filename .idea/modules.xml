@@ -4,9 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DataMigration.iml" filepath="$PROJECT_DIR$/DataMigration.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/checkableimageview/checkableimageview.iml" filepath="$PROJECT_DIR$/checkableimageview/checkableimageview.iml" />
       <module fileurl="file://$PROJECT_DIR$/eventbus/eventbus.iml" filepath="$PROJECT_DIR$/eventbus/eventbus.iml" />
-      <module fileurl="file://$PROJECT_DIR$/filepicker/filepicker.iml" filepath="$PROJECT_DIR$/filepicker/filepicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/interface-adapter-annotation/interface-adapter-annotation.iml" filepath="$PROJECT_DIR$/interface-adapter-annotation/interface-adapter-annotation.iml" />
       <module fileurl="file://$PROJECT_DIR$/interface-adapter-generator/interface-adapter-generator.iml" filepath="$PROJECT_DIR$/interface-adapter-generator/interface-adapter-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/logger/logger.iml" filepath="$PROJECT_DIR$/logger/logger.iml" />

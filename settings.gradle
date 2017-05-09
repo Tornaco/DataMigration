@@ -1,1 +1,1 @@
-include ':app', ':vcard-android', ':eventbus', ':progress-activity', ':tiles', ':statemachine', ':wfdhook', ':mediahook', ':filepicker', ':checkableimageview', ':logger', ':roottools', ':interface-adapter-generator', ':interface-adapter-annotation', ':materialicons', ':vinci'
+include ':app', ':vcard-android', ':eventbus', ':progress-activity', ':tiles', ':statemachine', ':wfdhook', ':mediahook', ':logger', ':roottools', ':interface-adapter-generator', ':interface-adapter-annotation', ':materialicons', ':vinci'
