@@ -28,3 +28,14 @@ Just send your data to another device, support all category of data listed in ba
 Receive data from Sender and import to your device automaticlly!!!
 
 ----------
+
+### ART~
+
+![1](art/Screenshots/1.png)
+![1](art/Screenshots/2.png)
+![1](art/Screenshots/3.png)
+![1](art/Screenshots/4.png)
+![1](art/Screenshots/5.png)
+![1](art/Screenshots/6.png)
+![1](art/Screenshots/7.png)
+![1](art/Screenshots/8.png)
