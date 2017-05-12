@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <org.newstand.datamigration.ui.widget.CheckableImageView
+        <tornaco.lib.widget.CheckableImageView
             android:id="@+id/checkable_img_view"
             android:layout_width="@dimen/thumbnail_size"
             android:layout_height="@dimen/thumbnail_size"
