@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.bugsnag.android.Bugsnag;
 import com.squareup.otto.Subscribe;
 import com.wandoujia.ads.sdk.Ads;
 import com.wandoujia.ads.sdk.events.AdNoAdsFoundEvent;
@@ -25,8 +24,6 @@ import org.newstand.logger.Logger;
 import org.newstand.logger.Settings;
 
 import lombok.Getter;
-import tornaco.lib.media.vinci.DefaultVinciConfig;
-import tornaco.lib.media.vinci.Vinci;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 10:35
@@ -57,15 +54,12 @@ public class DataMigrationApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Bugsnag.init(this);
-
         SettingsProvider.init(this);
 
         Logger.config(Settings.builder()
                 .tag(getClass().getSimpleName())
                 .logLevel(SettingsProvider.isDebugEnabled() ? Logger.LogLevel.ALL : Logger.LogLevel.WARN)
                 .logAdapter(new OnDeviceLogAdapter())
-                .bugReportEnabled(SettingsProvider.isBugReportEnabled())
                 .build());
 
         DonateQRPathRetriever.loadAndCache(this);
@@ -90,8 +84,6 @@ public class DataMigrationApp extends Application {
         Ads.bus.register(this);
 
         ThemeManager.init(this);
-
-        Vinci.config(new DefaultVinciConfig(this));
     }
 
     private void startCore() {
