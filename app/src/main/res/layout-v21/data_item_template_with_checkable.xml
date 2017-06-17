@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/list_item_margin"
     android:background="@color/card"
-    android:elevation="1dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:minHeight="@dimen/common_item_min_height"
+    android:elevation="@dimen/list_item_elevation"
     android:paddingEnd="?android:attr/scrollbarSize"
     android:paddingStart="@dimen/activity_horizontal_margin">
 
@@ -20,7 +20,7 @@
         android:layout_marginStart="0dip" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/activity_horizontal_margin_small"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"

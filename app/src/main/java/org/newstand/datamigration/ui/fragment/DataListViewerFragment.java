@@ -230,7 +230,8 @@ public abstract class DataListViewerFragment extends TransitionSafeFragment {
         super.onDestroy();
         ArrayList<DataRecord> dataRecords = (ArrayList<DataRecord>) getAdapter().getDataRecords();
         DataCategory category = getDataType();
-        Event event = Event.builder().arg1(category.ordinal()).obj(dataRecords).eventType(IntentEvents.EVENT_ON_CATEGORY_OF_DATA_SELECT_COMPLETE).build();
+        Event event = Event.builder().arg1(category.ordinal()).obj(dataRecords)
+                .eventType(IntentEvents.EVENT_ON_CATEGORY_OF_DATA_SELECT_COMPLETE).build();
         EventBus.from(getContext()).publish(event);
     }
 

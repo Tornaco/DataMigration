@@ -53,7 +53,7 @@ public class AppListFragment extends DataListViewerFragment {
                 holder.getLineTwoTextView().setText(summary);
                 Drawable icon = appRecord.getIcon();
                 holder.getCheckableImageView().setImageDrawable(icon == null
-                        ? ContextCompat.getDrawable(getContext(), R.mipmap.ic_app_avatar)
+                        ? ContextCompat.getDrawable(getContext(), R.mipmap.ic_ext_avatar)
                         : icon);
                 super.onBindViewHolder(holder, record);
             }

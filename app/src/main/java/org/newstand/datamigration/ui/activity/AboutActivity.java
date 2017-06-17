@@ -9,12 +9,8 @@ import android.view.MenuItem;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.sync.SharedExecutor;
-import org.newstand.datamigration.ui.tiles.BugReportTile;
 import org.newstand.datamigration.ui.tiles.CheckForUpdateTile;
-import org.newstand.datamigration.ui.tiles.DonateTile;
 import org.newstand.datamigration.ui.tiles.LicenceTile;
-import org.newstand.datamigration.ui.tiles.MailTile;
-import org.newstand.datamigration.ui.tiles.ThanksTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.utils.SeLinuxEnabler;
 import org.newstand.datamigration.utils.SeLinuxState;

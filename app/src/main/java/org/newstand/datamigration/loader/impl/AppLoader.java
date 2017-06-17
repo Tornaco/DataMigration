@@ -52,7 +52,6 @@ public class AppLoader extends BaseLoader {
             appRecord.setDisplayName(packageInfo.applicationInfo.loadLabel(pm).toString());
             appRecord.setPkgName(packageInfo.packageName);
             appRecord.setPath(packageInfo.applicationInfo.publicSourceDir);
-            appRecord.setIcon(ApkUtil.loadIconByPkgName(getContext(), appRecord.getPkgName()));
 
             boolean isSystemApp = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
             if (isSystemApp) {
@@ -108,7 +107,6 @@ public class AppLoader extends BaseLoader {
                             return;
                         }
                         Drawable icon = ApkUtil.loadIconByFilePath(getContext(), record.getPath());
-                        record.setIcon(icon);
                         record.setVersionName(ApkUtil.loadVersionByFilePath(getContext(), record.getPath()));
                         record.setPkgName(packageName);
                         record.setSize(Files.asByteSource(new File(record.getPath())).size());
@@ -131,7 +129,6 @@ public class AppLoader extends BaseLoader {
                     if (jsonFile.exists()) try {
                         AppRecord jsonRecord = AppRecord.fromJson(org.newstand.datamigration.utils.Files.readString(jsonPath));
 
-                        record.setIcon(jsonRecord.getIcon());
                         record.setVersionName(jsonRecord.getVersionName());
                         record.setPkgName(jsonRecord.getPkgName());
                         record.setSize(0);

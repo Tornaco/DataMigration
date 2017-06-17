@@ -23,6 +23,6 @@
     <color name="list_item_text_color">@color/text</color>
     <color name="list_item_text_color_light">@color/default_text_color_light</color>
     <color name="list_item_divider_color">#4c212121</color>
-    <color name="list_item_divider_color_light">#34fafafa</color>
+    <color name="list_item_divider_color_light">#4c212121</color>
     <color name="grid_list_item_text_color">#b3212121</color>
 </resources>

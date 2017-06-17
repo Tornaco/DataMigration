@@ -11,8 +11,6 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.policy.MinAdPresentTimesPolicy;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
-import org.newstand.datamigration.ui.tiles.BugReportTile;
-import org.newstand.datamigration.ui.tiles.DonateTile;
 import org.newstand.datamigration.ui.tiles.MailTile;
 import org.newstand.datamigration.ui.tiles.RaterTile;
 import org.newstand.datamigration.ui.tiles.ShowAdTile;
@@ -80,11 +78,8 @@ public class ComeInActivity extends TransitionSafeActivity {
             Category involve = new ThemedCategory();
             involve.titleRes = R.string.tile_category_in;
 
-            involve.addTile(new BugReportTile(getActivity()));
             involve.addTile(new MailTile(getActivity()));
             involve.addTile(new ThanksTile(getActivity()));
-            DonateTile donateTile = new DonateTile(getContext());
-            involve.addTile(donateTile);
             involve.addTile(new RaterTile(getContext()));
 
             if (SettingsProvider.getAdPresentTimes() >= MinAdPresentTimesPolicy.getMinAdPresentTimes()) {

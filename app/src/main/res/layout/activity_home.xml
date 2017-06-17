@@ -76,6 +76,7 @@
 
                 <TextView
                     android:id="@android:id/text1"
+                    style="@style/BottomSummaryText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/divider"
@@ -85,9 +86,7 @@
                     android:paddingEnd="@dimen/activity_vertical_margin"
                     android:paddingStart="@dimen/activity_vertical_margin"
                     android:paddingTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/backup_intro"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="@color/primary_text" />
+                    android:text="@string/backup_intro" />
 
                 <View
                     android:id="@+id/divider2"
@@ -121,7 +120,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="@string/title_backup_history_noop" />
+                        android:text="@string/title_backup_history_noop"
+                        android:visibility="gone" />
                 </RelativeLayout>
 
 
@@ -195,6 +195,7 @@
 
                 <TextView
                     android:id="@android:id/text1"
+                    style="@style/BottomSummaryText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/divider21"
@@ -204,9 +205,7 @@
                     android:paddingEnd="@dimen/activity_vertical_margin"
                     android:paddingStart="@dimen/activity_vertical_margin"
                     android:paddingTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/transport_intro"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="@color/primary_text" />
+                    android:text="@string/transport_intro" />
 
                 <View
                     android:id="@+id/divider22"
@@ -241,7 +240,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="@string/title_receive_history_noop" />
+                        android:text="@string/title_receive_history_noop"
+                        android:visibility="gone" />
                 </RelativeLayout>
 
             </RelativeLayout>

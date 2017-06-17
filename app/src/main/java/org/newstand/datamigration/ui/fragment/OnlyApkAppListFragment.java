@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.AppRecord;
@@ -33,11 +32,6 @@ public class OnlyApkAppListFragment extends DataListViewerFragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     CommonListAdapter onCreateAdapter() {
         return new CommonListAdapter(getContext()) {
             @Override
@@ -49,9 +43,16 @@ public class OnlyApkAppListFragment extends DataListViewerFragment {
                 holder.getLineTwoTextView().setText(summary);
                 Drawable icon = appRecord.getIcon();
                 holder.getCheckableImageView().setImageDrawable(icon == null
-                        ? ContextCompat.getDrawable(getContext(), R.mipmap.ic_app_avatar)
+                        ? ContextCompat.getDrawable(getContext(), R.mipmap.ic_ext_avatar)
                         : icon);
                 super.onBindViewHolder(holder, record);
+            }
+
+            @Override
+            protected void onCheckStateChanged(boolean checked, int position) {
+                super.onCheckStateChanged(checked, position);
+                AppRecord r = (AppRecord) getDataRecords().get(position);
+                r.setHandleApk(checked);
             }
         };
     }

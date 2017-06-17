@@ -29,17 +29,17 @@
             <org.newstand.datamigration.ui.widget.ProgressWheel
                 android:id="@+id/progress_view"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="160dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 app:pwBarColor="@color/dark"
-                app:pwBarLength="12dp"
-                app:pwBarWidth="12dp"
+                app:pwBarLength="6dp"
+                app:pwBarWidth="8dp"
                 app:pwRimColor="@color/divider"
                 app:pwRimWidth="1dp"
                 app:pwSpinSpeed="3dp"
                 app:pwTextColor="@color/dark"
-                app:pwTextSize="48sp" />
+                app:pwTextSize="36sp" />
 
         </RelativeLayout>
 

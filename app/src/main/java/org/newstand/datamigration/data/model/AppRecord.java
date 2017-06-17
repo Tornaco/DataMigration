@@ -32,6 +32,7 @@ public class AppRecord extends FileBasedRecord implements Parcelable {
 
     private boolean handleApk, handleData;
 
+    @Deprecated
     private transient Drawable icon;
 
     public String toJson() {

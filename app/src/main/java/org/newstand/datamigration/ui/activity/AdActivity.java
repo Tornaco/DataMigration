@@ -4,14 +4,10 @@ import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.wandoujia.ads.sdk.Ads;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.secure.AdsManager;
 import org.newstand.datamigration.utils.EmojiUtils;
 
 import io.reactivex.functions.Consumer;
@@ -40,12 +36,7 @@ public class AdActivity extends TransitionSafeActivity {
     }
 
     private void loadAds() {
-        final ViewGroup container = (ViewGroup) findViewById(R.id.ad_container);
-        View bannerView = Ads.createBannerView(AdActivity.this, AdsManager.Ali.banner());
-        container.addView(bannerView, new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
+
     }
 
     private void requestPerms() {

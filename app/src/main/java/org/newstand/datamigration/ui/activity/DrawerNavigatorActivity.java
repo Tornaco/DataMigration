@@ -19,6 +19,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Producer;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
 import org.newstand.datamigration.ui.FragmentController;
 import org.newstand.datamigration.ui.fragment.BackupRestoreNavigatorFragment;
@@ -47,6 +48,9 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         setContentView(R.layout.activity_drawer_navigator);
         handler = new Handler();
         requestPerms();
+        if (!SettingsProvider.isUserNoticed()) {
+            startActivity(new Intent(this, AppIntroActivity.class));
+        }
     }
 
     private void requestPerms() {

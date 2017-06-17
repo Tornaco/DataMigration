@@ -1,6 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
@@ -27,16 +27,13 @@ public class PhotoListFragment extends DataListViewerFragment {
     CommonListAdapter onCreateAdapter() {
         return new CommonListAdapter(getContext()) {
             @Override
-            public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
+            public void onBindViewHolder(final CommonListViewHolder holder, DataRecord record) {
                 PhotoRecord photoRecord = (PhotoRecord) record;
                 holder.getLineTwoTextView().setText(Files.formatSize(photoRecord.getSize()));
 
-                Picasso.with(getContext())
+                Glide.with(getContext())
                         .load(photoRecord.getPath())
-                        .centerCrop()
-                        .placeholder(R.mipmap.ic_photo_avatar)
                         .error(R.mipmap.ic_photo_avatar)
-                        .skipMemoryCache()
                         .into(holder.getCheckableImageView());
 
                 super.onBindViewHolder(holder, record);

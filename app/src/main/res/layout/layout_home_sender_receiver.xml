@@ -63,6 +63,7 @@
 
                 <TextView
                     android:id="@android:id/text1"
+                    style="@style/BottomSummaryText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/divider21"
@@ -72,10 +73,7 @@
                     android:paddingEnd="@dimen/activity_vertical_margin"
                     android:paddingStart="@dimen/activity_vertical_margin"
                     android:paddingTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/transport_intro"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="@color/primary_text"
-                    android:textSize="@dimen/text_size_medium" />
+                    android:text="@string/transport_intro" />
 
                 <View
                     android:id="@+id/divider22"
@@ -85,13 +83,15 @@
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:background="@color/divider" />
+                    android:background="@color/divider"
+                    android:visibility="gone" />
 
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/divider22">
+                    android:layout_below="@+id/divider22"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="@dimen/text_drawable_size"

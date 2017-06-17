@@ -176,14 +176,16 @@ public class SettingsActivity extends TransitionSafeActivity {
 
             view.addTile(new ThemeColorTile(getActivity()));
 
-            Category strategy = new ThemedCategory();
-            strategy.titleRes = R.string.tile_category_strategy;
+            Category dev = new ThemedCategory();
+            dev.titleRes = R.string.tile_category_dev;
 
-            InstallDataTile installDataTile = new InstallDataTile(getContext());
             DevTile devTile = new DevTile(getContext());
-            strategy.addTile(installDataTile);
-            strategy.addTile(new AutoInstallTile(getContext()));
-            strategy.addTile(devTile);
+            dev.addTile(devTile);
+
+            Category app = new ThemedCategory();
+            app.titleRes = R.string.tile_category_app;
+            app.addTile(new InstallDataTile(getContext()));
+            app.addTile(new AutoInstallTile(getContext()));
 
             Category secure = new ThemedCategory();
             secure.titleRes = R.string.title_secure;
@@ -197,9 +199,10 @@ public class SettingsActivity extends TransitionSafeActivity {
             if (SettingsProvider.isDebugEnabled()) {
                 categories.add(view);
             }
-            categories.add(strategy);
-            categories.add(storage);
             categories.add(secure);
+            categories.add(app);
+            categories.add(storage);
+            categories.add(dev);
 
             super.onCreateDashCategories(categories);
         }

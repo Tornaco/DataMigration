@@ -445,7 +445,7 @@ public class SettingsProvider extends Observable {
     }
 
     public static boolean isShowAdEnabled() {
-        return sMe.readBoolean(KEY_SHOW_AD, true);
+        return sMe.readBoolean(KEY_SHOW_AD, false);
     }
 
     public static void setShowAdEnabled(boolean enabled) {

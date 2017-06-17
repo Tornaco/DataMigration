@@ -1,8 +1,9 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.content.Context;
 import android.text.TextUtils;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
@@ -22,6 +23,11 @@ import org.newstand.datamigration.utils.Files;
 public class MusicListFragment extends DataListViewerFragment {
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
     DataCategory getDataType() {
         return DataCategory.Music;
     }
@@ -29,8 +35,9 @@ public class MusicListFragment extends DataListViewerFragment {
     @Override
     CommonListAdapter onCreateAdapter() {
         return new CommonListAdapter(getContext()) {
+
             @Override
-            public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
+            public void onBindViewHolder(final CommonListViewHolder holder, DataRecord record) {
                 MusicRecord musicRecord = (MusicRecord) record;
                 String artist = musicRecord.getArtist();
                 if (TextUtils.isEmpty(artist)) {
@@ -39,13 +46,12 @@ public class MusicListFragment extends DataListViewerFragment {
                     holder.getLineTwoTextView().setText(artist);
                 }
 
-                Picasso.with(getContext())
+                Glide.with(getContext())
                         .load(musicRecord.getArtUri())
                         .centerCrop()
-                        .placeholder(R.mipmap.ic_music_avatar)
                         .error(R.mipmap.ic_music_avatar)
-                        .skipMemoryCache()
                         .into(holder.getCheckableImageView());
+
 
                 super.onBindViewHolder(holder, record);
             }

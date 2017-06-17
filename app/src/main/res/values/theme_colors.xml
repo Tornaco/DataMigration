@@ -40,7 +40,7 @@
     <color name="divider">#BDBDBD</color>
 
     <color name="window_background">#ECECEC</color>
-    <color name="card">#FAFAFA</color>
+    <color name="card">#FFF</color>
     <color name="title">#212121</color>
     <color name="title_accent">@color/accent</color>
     <color name="card_header">@color/primary</color>

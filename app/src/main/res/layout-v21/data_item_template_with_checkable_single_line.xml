@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/list_item_margin"
     android:background="@color/card"
-    android:elevation="1dp"
+    android:elevation="@dimen/list_item_elevation"
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:minHeight="@dimen/common_item_min_height"
