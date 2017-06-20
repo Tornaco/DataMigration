@@ -20,7 +20,6 @@ public class HelpViewHolder extends RecyclerView.ViewHolder {
     ImageView feedImageView;
     TextView feedText;
     TextView userNameView;
-    ImageButton moreBtn;
 
     public HelpViewHolder(View itemView) {
         super(itemView);
@@ -28,7 +27,6 @@ public class HelpViewHolder extends RecyclerView.ViewHolder {
         feedImageView = (ImageView) itemView.findViewById(R.id.feed_img);
         feedText = (TextView) itemView.findViewById(R.id.feed_text);
         userNameView = (TextView) itemView.findViewById(R.id.user_profile_name);
-        moreBtn = (ImageButton) itemView.findViewById(R.id.button_more);
     }
 
 }
