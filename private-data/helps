@@ -1,33 +1,17 @@
 [
-{
-"answer":"不格式化外部存储的话",
-"asker":"Fince",
-"askerAvatar":"https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile2.jpg",
-"date":1492755782711,
-"question":"刷机双清之后数据还在吗？"
-},
+    {
+	    "answer":{"imageUrls":["https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile2.jpg","https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile2.jpg"],"text":"This is content text."},
+	    "asker":"Tom",
+		"askerAvatar":"https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile3.jpg",
+		"date":1497950703397,
+		"question":"How to use help?"
+    },
 
-{
-"answer":"理论上Android4.1以上均可，未做全面测试",
-"asker":"无名kyc",
-"askerAvatar":"https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile3.jpg",
-"date":1492755782711,
-"question":"数据可以跨平台使用吗？"
-},
-
-{
-"answer":"已解决",
-"asker":"Weirdo123",
-"askerAvatar":"https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile4.jpg",
-"date":1492755782711,
-"question":"suda 7.1闪退？"
-},
-
-{
-"answer":"需要设置本应用为默认短信应用",
-"asker":"A",
-"askerAvatar":"https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile5.jpg",
-"date":1492755782711,
-"question":"短信无法恢复?"
-}
+    {
+	    "answer":{"imageUrls":["https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile2.jpg","https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile2.jpg"],"text":"This is content text."},
+	    "asker":"Tom",
+		"askerAvatar":"https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile3.jpg",
+		"date":1497950703397,
+		"question":"How to use help?"
+    }
 ]
