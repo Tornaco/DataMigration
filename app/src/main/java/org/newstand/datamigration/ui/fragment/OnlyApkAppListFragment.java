@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.Menu;
@@ -24,6 +25,11 @@ public class OnlyApkAppListFragment extends DataListViewerFragment {
     @Override
     DataCategory getDataType() {
         return DataCategory.App;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     @Override
@@ -53,6 +59,17 @@ public class OnlyApkAppListFragment extends DataListViewerFragment {
                 super.onCheckStateChanged(checked, position);
                 AppRecord r = (AppRecord) getDataRecords().get(position);
                 r.setHandleApk(checked);
+            }
+
+            @Override
+            public void selectAll(boolean select) {
+                synchronized (dataRecords) {
+                    for (DataRecord c : dataRecords) {
+                        AppRecord ar = (AppRecord) c;
+                        ar.setHandleApk(select);
+                    }
+                }
+                super.selectAll(select);
             }
         };
     }

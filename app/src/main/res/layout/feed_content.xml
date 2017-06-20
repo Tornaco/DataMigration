@@ -15,6 +15,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/feed_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,43 +25,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <tornaco.lib.widget.CheckableImageView
-            android:id="@+id/checkable_img_view"
-            android:layout_width="@dimen/thumbnail_size"
-            android:layout_height="@dimen/thumbnail_size"
-            android:layout_margin="@dimen/activity_horizontal_margin_small"
-            android:scaleType="centerCrop" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_profile_img"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            app:civ_border_color="@color/primary_light"
+            app:civ_border_width="2dp" />
 
         <TextView
-            android:id="@android:id/title"
-            style="@style/ListItemMainText"
+            android:id="@+id/user_profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:layout_toEndOf="@+id/checkable_img_view"
-            android:layout_toRightOf="@+id/checkable_img_view"
-            android:text="@string/app_intro" />
+            android:layout_toEndOf="@+id/user_profile_img"
+            android:layout_toRightOf="@+id/user_profile_img"
+            android:padding="3dp"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
+        <ImageButton
+            android:id="@+id/button_more"
+            android:layout_width="@dimen/action_btn_size"
+            android:layout_height="@dimen/action_btn_size"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/btn_feed_action"
+            android:src="@drawable/ic_more_grey" />
     </RelativeLayout>
 
     <TextView
-        android:id="@android:id/text1"
-        style="@style/ListItemSecondaryText"
+        android:id="@+id/feed_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:text="@string/large_text" />
+        android:padding="6dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <FrameLayout
         android:id="@+id/img_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/extra_img"
+            android:id="@+id/feed_img"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:scaleType="centerCrop" />

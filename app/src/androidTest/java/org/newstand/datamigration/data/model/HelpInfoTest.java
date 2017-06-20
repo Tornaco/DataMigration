@@ -19,10 +19,17 @@ public class HelpInfoTest {
 
         ArrayList<HelpInfo> helpInfos = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
+            Answer answer = new Answer();
+            answer.setText("This is content text.");
+            answer.setImageUrls(new String[]{
+                    "www.abc.com",
+                    "www.dew.com",
+                    "www.sdf.com",
+            });
             HelpInfo info = new HelpInfo();
             info.setDate(System.currentTimeMillis());
-            info.setAnswer("A");
+            info.setAnswer(answer);
             info.setAsker("A");
             info.setQuestion("Q");
             info.setAskerAvatar("A");

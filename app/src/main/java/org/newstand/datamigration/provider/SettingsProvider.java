@@ -42,6 +42,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_DEF_SMS_APP = "key_def_sms_app";
     private static final String KEY_BACKUP_INTERVAL = "key_backup_interval";
     private static final String KEY_USER_NOTICED = "key_user_noticed";
+    private static final String KEY_APP_INTRO_NOTICED = "key_app_intro_noticed";
     private static final String KEY_DONATE_QR_PATH = "key_donate_qr_path";
     private static final String KEY_LAST_UPDATE_CHECK_TIME = "key_last_update_check_time";
     private static final String KEY_TIPS_NOTICED_PREFIX = "key_tips_noticed_";
@@ -340,6 +341,14 @@ public class SettingsProvider extends Observable {
 
     public static void setUserNoticed(boolean noticed) {
         sMe.writeBoolean(KEY_USER_NOTICED, noticed);
+    }
+
+    public static boolean isAppIntroNoticed() {
+        return sMe.readBoolean(KEY_APP_INTRO_NOTICED, false);
+    }
+
+    public static void setAppIntroNoticed(boolean noticed) {
+        sMe.writeBoolean(KEY_APP_INTRO_NOTICED, noticed);
     }
 
     public static String getHelpMdFilePath() {

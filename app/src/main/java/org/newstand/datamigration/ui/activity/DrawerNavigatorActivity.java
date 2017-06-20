@@ -48,7 +48,7 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         setContentView(R.layout.activity_drawer_navigator);
         handler = new Handler();
         requestPerms();
-        if (!SettingsProvider.isUserNoticed()) {
+        if (!SettingsProvider.isAppIntroNoticed()) {
             startActivity(new Intent(this, AppIntroActivity.class));
         }
     }

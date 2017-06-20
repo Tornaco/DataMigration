@@ -10,6 +10,7 @@ import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.provider.SettingsProvider;
 
 /**
  * Created by Nick@NewStand.org on 2017/5/3 16:01
@@ -64,6 +65,7 @@ public class AppIntroActivity extends AppIntro {
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
         // Do something when users tap on Skip button.
+        SettingsProvider.setAppIntroNoticed(true);
         finish();
     }
 
@@ -71,6 +73,7 @@ public class AppIntroActivity extends AppIntro {
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
         // Do something when users tap on Done button.
+        SettingsProvider.setAppIntroNoticed(true);
         finish();
     }
 

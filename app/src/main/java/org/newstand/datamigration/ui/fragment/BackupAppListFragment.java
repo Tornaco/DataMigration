@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,11 @@ import org.newstand.datamigration.utils.Files;
  */
 
 public class BackupAppListFragment extends AppListFragment {
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
     @Override
     CommonListAdapter onCreateAdapter() {

@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import org.newstand.logger.Logger;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/6 11:23
@@ -18,7 +19,9 @@ import java.util.concurrent.CountDownLatch;
 class PackageInstallReceiver extends BroadcastReceiver {
 
     private CountDownLatch latch = new CountDownLatch(1);
-    ;
+
+    private static final long MAX_INSTALL_TIME_MINUTES = 6;
+
     private String packageName;
 
     public PackageInstallReceiver(String packageName) {
@@ -39,11 +42,10 @@ class PackageInstallReceiver extends BroadcastReceiver {
         context.unregisterReceiver(this);
     }
 
-    public void waitUtilInstalled() {
+    public boolean waitUtilInstalled() {
         while (true) {
             try {
-                latch.await();
-                break;
+                return latch.await(MAX_INSTALL_TIME_MINUTES, TimeUnit.MINUTES);
             } catch (InterruptedException ignored) {
 
             }

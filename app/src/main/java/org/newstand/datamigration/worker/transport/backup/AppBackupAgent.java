@@ -137,9 +137,15 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
                 installAppWithIntent(restoreSettings);
             }
 
-            installReceiver.waitUtilInstalled();
-            Sleeper.sleepQuietly(1000); // Sleep for 1s to let user dismiss the install page...Maybe there is a better way?
-            installReceiver.unRegister(getContext());
+            try {
+                if (!installReceiver.waitUtilInstalled()) {
+                    Logger.e("Timeout waiting for apk installer");
+                    return new ApkInstallFailException();
+                }
+            } finally {
+                installReceiver.unRegister(getContext());
+            }
+            Sleeper.sleepQuietly(2000); // Sleep for 1s to let user dismiss the install page...Maybe there is a better way?
         }
 
         boolean installData = restoreSettings.isInstallData();

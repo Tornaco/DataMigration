@@ -2,6 +2,7 @@ package org.newstand.datamigration.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import lombok.Getter;
  * All right reserved.
  */
 
-public class HelpListAdapter extends RecyclerView.Adapter<CommonListViewHolder> {
+public class HelpListAdapter extends RecyclerView.Adapter<HelpViewHolder> {
 
     @Getter
     private final List<HelpInfo> helpInfos;
@@ -50,9 +51,9 @@ public class HelpListAdapter extends RecyclerView.Adapter<CommonListViewHolder> 
     }
 
     @Override
-    public CommonListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.data_item_template_with_checkable, parent, false);
-        final CommonListViewHolder holder = new CommonListViewHolder(view);
+    public HelpViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_item, parent, false);
+        final HelpViewHolder holder = new HelpViewHolder(view);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,21 +63,27 @@ public class HelpListAdapter extends RecyclerView.Adapter<CommonListViewHolder> 
         return holder;
     }
 
-    protected void onItemClick(CommonListViewHolder holder) {
+    protected void onItemClick(HelpViewHolder holder) {
     }
 
     @Override
-    public void onBindViewHolder(CommonListViewHolder holder, final int position) {
+    public void onBindViewHolder(HelpViewHolder holder, final int position) {
         HelpInfo helpInfo = getHelpInfos().get(position);
         onBindViewHolder(holder, helpInfo);
     }
 
-    protected void onBindViewHolder(CommonListViewHolder holder, final HelpInfo helpInfo) {
-        holder.getLineOneTextView().setText(helpInfo.getQuestion());
-        holder.getLineTwoTextView().setText(helpInfo.getAnswer());
+    protected void onBindViewHolder(HelpViewHolder holder, final HelpInfo helpInfo) {
+        holder.getUserNameView().setText(helpInfo.getQuestion());
+        holder.getFeedText().setText(helpInfo.getAnswer().getText());
+        holder.getFeedText().setAutoLinkMask(Linkify.ALL);
         Glide.with(getContext()).load(helpInfo.getAskerAvatar())
                 .error(R.mipmap.ic_help_avatar)
-                .into(holder.getCheckableImageView());
+                .into(holder.getUserProfileView());
+        if (helpInfo.getAnswer().getImageUrls() != null && helpInfo.getAnswer().getImageUrls().length > 0) {
+            Glide.with(getContext()).load(helpInfo.getAnswer().getImageUrls()[0])
+                    .error(R.mipmap.ic_help_avatar)
+                    .into(holder.getFeedImageView());
+        }
     }
 
     @Override

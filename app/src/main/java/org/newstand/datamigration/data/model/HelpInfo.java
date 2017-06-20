@@ -15,7 +15,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class HelpInfo {
-    private String question, answer, asker, askerAvatar;
+    private String question, asker, askerAvatar;
+    private Answer answer;
     private long date;
 
 

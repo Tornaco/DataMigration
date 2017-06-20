@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -27,6 +28,11 @@ public class AppListFragment extends DataListViewerFragment {
     @Override
     DataCategory getDataType() {
         return DataCategory.App;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     @Override
