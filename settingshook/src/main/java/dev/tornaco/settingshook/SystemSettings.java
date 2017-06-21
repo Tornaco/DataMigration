@@ -33,15 +33,15 @@ public enum SystemSettings {
     System(new SettingsItem[]{
             new SettingsItem(Settings.System.VIBRATE_ON, "VIBRATE_ON"),
             new SettingsItem(Settings.System.VOLUME_ALARM, "VOLUME_ALARM"),
-            new SettingsItem(Settings.System.VOLUME_RING, "VIBRATE_ON"),
-            new SettingsItem(Settings.System.VOLUME_MUSIC, "VIBRATE_ON"),
-            new SettingsItem(Settings.System.VOLUME_NOTIFICATION, "VIBRATE_ON"),
-            new SettingsItem(Settings.System.VOLUME_SYSTEM, "VIBRATE_ON"),
+            new SettingsItem(Settings.System.VOLUME_RING, "VOLUME_RING"),
+            new SettingsItem(Settings.System.VOLUME_MUSIC, "VOLUME_MUSIC"),
+            new SettingsItem(Settings.System.VOLUME_NOTIFICATION, "VOLUME_NOTIFICATION"),
+            new SettingsItem(Settings.System.VOLUME_SYSTEM, "VOLUME_SYSTEM"),
     });
 
-    public SettingsItem[] keys;
+    public SettingsItem[] definations;
 
-    SystemSettings(SettingsItem[] keys) {
-        this.keys = keys;
+    SystemSettings(SettingsItem[] definations) {
+        this.definations = definations;
     }
 }

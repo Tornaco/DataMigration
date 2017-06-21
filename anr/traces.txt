@@ -1,7 +1,7 @@
 
 ----- pid 17902 at 2017-04-19 10:35:07 -----
 Cmd line: org.newstand.datamigration
-Build fingerprint: 'ZUK/ham/Z1:7.1.1/NOF27B/84d63009b3:userdebug/release-keys'
+Build fingerprint: 'ZUK/ham/Z1:7.1.1/NOF27B/84d63009b3:userdebug/release-definations'
 ABI: 'arm'
 Build type: optimized
 Zygote loaded classes=4379 post zygote classes=1653
@@ -919,7 +919,7 @@ DALVIK THREADS (39):
 
 ----- pid 937 at 2017-04-19 10:35:07 -----
 Cmd line: system_server
-Build fingerprint: 'ZUK/ham/Z1:7.1.1/NOF27B/84d63009b3:userdebug/release-keys'
+Build fingerprint: 'ZUK/ham/Z1:7.1.1/NOF27B/84d63009b3:userdebug/release-definations'
 ABI: 'arm'
 Build type: optimized
 Zygote loaded classes=4379 post zygote classes=4013
@@ -3282,7 +3282,7 @@ DALVIK THREADS (113):
 
 ----- pid 4587 at 2017-04-19 10:35:07 -----
 Cmd line: org.cyanogenmod.audiofx
-Build fingerprint: 'ZUK/ham/Z1:7.1.1/NOF27B/84d63009b3:userdebug/release-keys'
+Build fingerprint: 'ZUK/ham/Z1:7.1.1/NOF27B/84d63009b3:userdebug/release-definations'
 ABI: 'arm'
 Build type: optimized
 Zygote loaded classes=4379 post zygote classes=47
@@ -3621,7 +3621,7 @@ DALVIK THREADS (12):
 
 ----- pid 3279 at 2017-04-19 10:35:07 -----
 Cmd line: com.android.phone
-Build fingerprint: 'ZUK/ham/Z1:7.1.1/NOF27B/84d63009b3:userdebug/release-keys'
+Build fingerprint: 'ZUK/ham/Z1:7.1.1/NOF27B/84d63009b3:userdebug/release-definations'
 ABI: 'arm'
 Build type: optimized
 Zygote loaded classes=4379 post zygote classes=643
@@ -4537,7 +4537,7 @@ DALVIK THREADS (43):
 
 ----- pid 2913 at 2017-04-19 10:35:08 -----
 Cmd line: com.android.systemui
-Build fingerprint: 'ZUK/ham/Z1:7.1.1/NOF27B/84d63009b3:userdebug/release-keys'
+Build fingerprint: 'ZUK/ham/Z1:7.1.1/NOF27B/84d63009b3:userdebug/release-definations'
 ABI: 'arm'
 Build type: optimized
 Zygote loaded classes=4379 post zygote classes=1935

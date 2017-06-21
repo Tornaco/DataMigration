@@ -47,7 +47,7 @@ public class SystemSettingsLoader extends BaseLoader {
             Collections.consumeRemaining(SystemSettings.values(), new Consumer<SystemSettings>() {
                 @Override
                 public void accept(@NonNull final SystemSettings systemSettings) {
-                    Collections.consumeRemaining(SystemSettings.Global.keys, new Consumer<SettingsItem>() {
+                    Collections.consumeRemaining(systemSettings.definations, new Consumer<SettingsItem>() {
                         @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
                         @Override
                         public void accept(@NonNull SettingsItem item) {
@@ -71,6 +71,7 @@ public class SystemSettingsLoader extends BaseLoader {
         String command = String.format("settings get %s %s", namespace, key);
         Result result = RootManager.getInstance().runCommand(command);
         String value = result.getMessage();
+        Logger.d("getFromRoot, cmd:%s, value:%s", command, value);
         if (!(value.trim().equals("null"))) {
             return value;
         }
