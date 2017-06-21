@@ -41,7 +41,11 @@ public class HelpListAdapter extends RecyclerView.Adapter<HelpViewHolder> {
     public void update(Collection<HelpInfo> src) {
         synchronized (helpInfos) {
             helpInfos.clear();
-            helpInfos.addAll(src);
+            for (HelpInfo i : src) {
+                if (i != null) {
+                    helpInfos.add(i);
+                }
+            }
         }
         onUpdate();
     }
@@ -80,9 +84,12 @@ public class HelpListAdapter extends RecyclerView.Adapter<HelpViewHolder> {
                 .error(R.mipmap.ic_help_avatar)
                 .into(holder.getUserProfileView());
         if (helpInfo.getAnswer().getImageUrls() != null && helpInfo.getAnswer().getImageUrls().length > 0) {
+            holder.getFeedImageView().setVisibility(View.VISIBLE);
             Glide.with(getContext()).load(helpInfo.getAnswer().getImageUrls()[0])
                     .error(R.mipmap.ic_help_avatar)
                     .into(holder.getFeedImageView());
+        } else {
+            holder.getFeedImageView().setVisibility(View.GONE);
         }
     }
 

@@ -1,9 +1,18 @@
 [
     {
-	    "answer":{"imageUrls":[],"text":"帮助信息会阶段性更新，使用时遇到任何问题，请先来这里看看有没有相关解决方案。"},
+	    "answer":{"imageUrls":["https://raw.githubusercontent.com/Tornaco/DataMigration_Server/master/images/test/androidify.jpg"],"text":"帮助信息会阶段性更新，使用时遇到任何问题，请先来这里看看有没有相关解决方案。"},
 	    "asker":"Tom",
 		"askerAvatar":"https://raw.githubusercontent.com/Tornaco/DataMigration/master/private-data/profile3.jpg",
 		"date":1497950703397,
 		"question":"关于帮助页面"
     },
+
+	{
+	    "answer":{"imageUrls":["https://raw.githubusercontent.com/Tornaco/DataMigration_Server/master/images/test/extra_rules.png"],"text":"需要填写绝对路径，请参考下图示范。"},
+	    "asker":"Tom",
+		"askerAvatar":"https://raw.githubusercontent.com/Tornaco/DataMigration_Server/master/images/test/kuan.png",
+		"date":1497950703397,
+		"question":"如何制定附加数据规则的目录？"
+    }
+    
 ]
