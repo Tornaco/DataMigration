@@ -12,7 +12,6 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ import org.newstand.datamigration.data.model.CategoryRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
@@ -185,6 +185,12 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
             public void accept(@NonNull final DataCategory category) {
+                if (!SettingsProvider.isLoadEnabledForCategory(category)) {
+                    if (loadingLatch != null && loadingLatch.getCount() > 0) {
+                        loadingLatch.countDown();
+                    }
+                    return;
+                }
                 SharedExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -194,8 +200,9 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
 
                         Collection<DataRecord> records = cache.get(category);
 
-                        if (loadingLatch != null && loadingLatch.getCount() > 0)
+                        if (loadingLatch != null && loadingLatch.getCount() > 0) {
                             loadingLatch.countDown();
+                        }
 
                         if (isAlive() && !Collections.isNullOrEmpty(records)) {
 
@@ -248,17 +255,17 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
 
     private void buildFabIntro() {
         if (isAlive()) new MaterialIntroView.Builder(getActivity())
-                    .enableDotAnimation(true)
-                    .setFocusGravity(FocusGravity.CENTER)
-                    .setFocusType(Focus.MINIMUM)
-                    .enableFadeAnimation(true)
-                    .performClick(false)
-                    .setInfoText(getString(getFabIntro()))
-                    .setShape(ShapeType.CIRCLE)
-                    .setTarget(fab)
-                    // Always show when in dev mode.
-                    .setUsageId("intro_category_viewer_" + getClass().getName())
-                    .show();
+                .enableDotAnimation(true)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .enableFadeAnimation(true)
+                .performClick(false)
+                .setInfoText(getString(getFabIntro()))
+                .setShape(ShapeType.CIRCLE)
+                .setTarget(fab)
+                // Always show when in dev mode.
+                .setUsageId("intro_category_viewer_" + getClass().getName())
+                .show();
     }
 
     protected

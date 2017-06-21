@@ -186,6 +186,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.activity.LoaderConfigCategorySettingsActivity"
+            android:label="@string/action_set_categories_to_load"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".ui.activity.ExtraRulesViewerActivity"
             android:label="@string/action_extra_data_rules_viewer"
             android:screenOrientation="portrait"

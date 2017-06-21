@@ -28,6 +28,7 @@ import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.tiles.AdsTile;
 import org.newstand.datamigration.ui.tiles.BackupTile;
+import org.newstand.datamigration.ui.tiles.CategoriesToLoadTile;
 import org.newstand.datamigration.ui.tiles.RestoreTile;
 import org.newstand.datamigration.ui.tiles.RulesTile;
 import org.newstand.datamigration.ui.tiles.SchedulerTile;
@@ -83,10 +84,14 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
         actions.addTile(new BackupTile(getActivity()));
         actions.addTile(new RestoreTile(getActivity()));
 
-        actions.addTile(new SchedulerTile(getActivity()));
-        actions.addTile(new RulesTile(getActivity()));
+        Category actions2 = new ThemedCategory();
+        actions.titleRes = R.string.title_card_actions2;
+        actions2.addTile(new CategoriesToLoadTile(getActivity()));
+        actions2.addTile(new SchedulerTile(getActivity()));
+        actions2.addTile(new RulesTile(getActivity()));
 
         categories.add(actions);
+        categories.add(actions2);
 
         if (SettingsProvider.isShowAdEnabled()) {
             Category adc = new ThemedCategory();

@@ -54,6 +54,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_DATA_MIGRATION_ROOT_DIR = "key_data_migration_root_dir";
     private static final String KEY_SHOW_AD = "key_show_ad";
     private static final String KEY_AD_PRESENT_TIMES = "key_ad_present_times";
+    private static final String KEY_LOADER_CONFIG_CATEGORY_ENABLED_PREFIX = "loader_config_should_load_";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -467,5 +468,13 @@ public class SettingsProvider extends Observable {
 
     public static void increaseAdPresentTimes() {
         sMe.writeString(KEY_AD_PRESENT_TIMES, String.valueOf(getAdPresentTimes() + 1));
+    }
+
+    public static boolean isLoadEnabledForCategory(DataCategory category) {
+        return sMe.readBoolean(KEY_LOADER_CONFIG_CATEGORY_ENABLED_PREFIX + category.name(), true);
+    }
+
+    public static void setLoadEnabledForCategory(DataCategory category, boolean value) {
+        sMe.writeBoolean(KEY_LOADER_CONFIG_CATEGORY_ENABLED_PREFIX + category.name(), value);
     }
 }
