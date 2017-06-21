@@ -38,7 +38,7 @@ public class WifiBackupAgent implements BackupAgent<WifiBackupSettings, WifiRest
         String destPath = backupSettings.getDestPath();
         Files.createParentDirs(new File(destPath));
 
-        Gson gson = new Gson();// FIXME Should we use single instance?
+        Gson gson = new Gson();
         String callStr = gson.toJson(backupSettings.getRecord());
         boolean ok = org.newstand.datamigration.utils.Files.writeString(callStr, destPath);
         if (!ok) return new WriteFailError();

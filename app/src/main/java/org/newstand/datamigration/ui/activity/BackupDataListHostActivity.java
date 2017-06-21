@@ -13,6 +13,7 @@ import org.newstand.datamigration.ui.fragment.MusicListFragment;
 import org.newstand.datamigration.ui.fragment.OnlyApkAppListFragment;
 import org.newstand.datamigration.ui.fragment.PhotoListFragment;
 import org.newstand.datamigration.ui.fragment.SmsListFragment;
+import org.newstand.datamigration.ui.fragment.SystemSettingsListFragment;
 import org.newstand.datamigration.ui.fragment.VideoListFragment;
 import org.newstand.datamigration.ui.fragment.WifiListFragment;
 
@@ -46,6 +47,8 @@ public class BackupDataListHostActivity extends DataListHostActivity {
                 return new WifiListFragment();
             case CustomFile:
                 return new CustomFileListFragment();
+            case SystemSettings:
+                return new SystemSettingsListFragment();
             default:
                 throw new UnsupportedOperationException("UnSupported category " + category);
         }

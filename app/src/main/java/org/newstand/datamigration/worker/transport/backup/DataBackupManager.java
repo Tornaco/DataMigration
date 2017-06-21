@@ -18,6 +18,7 @@ import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.data.model.SMSRecord;
+import org.newstand.datamigration.data.model.SettingsRecord;
 import org.newstand.datamigration.data.model.WifiRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.policy.ExtraDataRule;
@@ -219,11 +220,19 @@ public class DataBackupManager {
                         + mixedName(record.getDisplayName())
                         + WifiBackupSettings.SUBFIX);
                 return wifiBackupSettings;
+            case SystemSettings:
+                SystemSettingsBackupSettings systemSettingsBackupSettings = new SystemSettingsBackupSettings();
+                systemSettingsBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
+                        + File.separator
+                        + record.getDisplayName()
+                        + SystemSettingsBackupSettings.SUBFIX);
+                systemSettingsBackupSettings.setRecord((SettingsRecord) record);
+                return systemSettingsBackupSettings;
         }
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
     }
 
-    public String mixedName(String from) {
+    private String mixedName(String from) {
         return String.valueOf(from.hashCode());
     }
 
@@ -279,6 +288,10 @@ public class DataBackupManager {
                 WifiRestoreSettings wifiRestoreSettings = new WifiRestoreSettings();
                 wifiRestoreSettings.setRecord((WifiRecord) record);
                 return wifiRestoreSettings;
+            case SystemSettings:
+                SystemSettingsRestoreSettings systemSettingsRestoreSettings = new SystemSettingsRestoreSettings();
+                systemSettingsRestoreSettings.setRecord((SettingsRecord) record);
+                return systemSettingsRestoreSettings;
 
         }
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
@@ -304,6 +317,8 @@ public class DataBackupManager {
                 return new SMSBackupAgent();
             case Wifi:
                 return new WifiBackupAgent();
+            case SystemSettings:
+                return new SystemSettingsBackupAgent();
         }
         throw new IllegalArgumentException("Unknown for:" + category.name());
     }
@@ -318,10 +333,10 @@ public class DataBackupManager {
 
         boolean canceled;
 
-        public BackupWorker(TransportListener listener,
-                            Collection<DataRecord> dataRecords,
-                            final DataCategory dataCategory,
-                            AbortSignal abortSignal) {
+        BackupWorker(TransportListener listener,
+                     Collection<DataRecord> dataRecords,
+                     final DataCategory dataCategory,
+                     AbortSignal abortSignal) {
             this.listener = listener;
             this.dataRecords = dataRecords;
             this.dataCategory = dataCategory;
@@ -396,10 +411,10 @@ public class DataBackupManager {
 
         boolean canceled;
 
-        public RestoreWorker(TransportListener listener,
-                             Collection<DataRecord> dataRecords,
-                             final DataCategory dataCategory,
-                             AbortSignal signal) {
+        RestoreWorker(TransportListener listener,
+                      Collection<DataRecord> dataRecords,
+                      final DataCategory dataCategory,
+                      AbortSignal signal) {
             this.listener = listener;
             this.dataRecords = dataRecords;
             this.dataCategory = dataCategory;
