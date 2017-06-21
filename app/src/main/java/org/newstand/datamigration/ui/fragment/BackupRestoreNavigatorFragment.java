@@ -85,7 +85,7 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
         actions.addTile(new RestoreTile(getActivity()));
 
         Category actions2 = new ThemedCategory();
-        actions.titleRes = R.string.title_card_actions2;
+        actions2.titleRes = R.string.title_card_actions2;
         actions2.addTile(new CategoriesToLoadTile(getActivity()));
         actions2.addTile(new SchedulerTile(getActivity()));
         actions2.addTile(new RulesTile(getActivity()));
