@@ -8,7 +8,7 @@
     },
 
 	{
-	    "answer":{"imageUrls":[],"text":"需要填写绝对路径，例如优酷的路径可以填写：/sdcard/youku"。},
+	    "answer":{"imageUrls":[],"text":"需要填写绝对路径，例如优酷的路径可以填写：/sdcard/youku"},
 	    "asker":"Tom",
 		"askerAvatar":"https://raw.githubusercontent.com/Tornaco/DataMigration_Server/master/images/test/kuan.png",
 		"date":1497950703397,
