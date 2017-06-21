@@ -89,7 +89,7 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        // recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         adapter = onCreateAdapter();
         recyclerView.setAdapter(adapter);
 

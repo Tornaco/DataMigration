@@ -111,9 +111,9 @@ public class ContainerView extends ViewGroup {
 
             int row = cursor / mNumColumns;
 
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                child.setDividerVisibility(false);
-//            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                child.setDividerVisibility(false);
+            }
 
             if (row == mNumRows - 1) {
                 child.setDividerVisibility(false);
