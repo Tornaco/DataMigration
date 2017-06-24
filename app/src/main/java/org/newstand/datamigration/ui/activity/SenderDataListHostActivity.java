@@ -8,7 +8,7 @@ import org.newstand.datamigration.ui.fragment.CallListFragment;
 import org.newstand.datamigration.ui.fragment.ContactListFragment;
 import org.newstand.datamigration.ui.fragment.CustomFileListFragment;
 import org.newstand.datamigration.ui.fragment.MusicListFragment;
-import org.newstand.datamigration.ui.fragment.OnlyApkAppListFragment;
+import org.newstand.datamigration.ui.fragment.AppOnlyApkListFragment;
 import org.newstand.datamigration.ui.fragment.PhotoListFragment;
 import org.newstand.datamigration.ui.fragment.SmsListFragment;
 import org.newstand.datamigration.ui.fragment.SystemSettingsListFragment;
@@ -34,7 +34,8 @@ public class SenderDataListHostActivity extends DataListHostActivity {
             case Video:
                 return new VideoListFragment();
             case App:
-                return new OnlyApkAppListFragment();
+            case SystemApp:
+                return new AppOnlyApkListFragment();
             case Sms:
                 return new SmsListFragment();
             case CallLog:

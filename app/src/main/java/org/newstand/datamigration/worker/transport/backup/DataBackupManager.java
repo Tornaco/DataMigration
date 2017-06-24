@@ -154,6 +154,7 @@ public class DataBackupManager {
             case CustomFile:
                 return getFileBackupSettings(dataCategory, record);
             case App:
+            case SystemApp:
                 AppBackupSettings appBackupSettings = new AppBackupSettings();
                 appBackupSettings.setAppRecord((AppRecord) record);
                 appBackupSettings.setDestApkPath(
@@ -257,6 +258,7 @@ public class DataBackupManager {
                         + File.separator + record.getDisplayName());
                 return fileRestoreSettings;
             case App:
+            case SystemApp:
                 AppRestoreSettings appRestoreSettings = new AppRestoreSettings();
                 appRestoreSettings.setSourceApkPath(((FileBasedRecord) record).getPath());
                 appRestoreSettings.setSourceDataPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
@@ -312,6 +314,7 @@ public class DataBackupManager {
             case Contact:
                 return new ContactBackupAgent();
             case App:
+            case SystemApp:
                 return new AppBackupAgent();
             case Sms:
                 return new SMSBackupAgent();

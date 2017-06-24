@@ -196,9 +196,7 @@ public class SettingsActivity extends TransitionSafeActivity {
 
             storage.addTile(new StorageLocationTile(getActivity()));
 
-            if (SettingsProvider.isDebugEnabled()) {
-                categories.add(view);
-            }
+            categories.add(view);
             categories.add(secure);
             categories.add(app);
             categories.add(storage);

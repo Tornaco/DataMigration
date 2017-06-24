@@ -45,7 +45,14 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawer_navigator);
+        switch (getThemeColor()) {
+            case White:
+                setContentView(R.layout.activity_drawer_navigator_dark);
+                break;
+            default:
+                setContentView(R.layout.activity_drawer_navigator);
+                break;
+        }
         handler = new Handler();
         requestPerms();
         if (!SettingsProvider.isAppIntroNoticed()) {
@@ -190,7 +197,14 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.help, menu);
+        switch (getThemeColor()) {
+            case White:
+                getMenuInflater().inflate(R.menu.help_dark, menu);
+                break;
+            default:
+                getMenuInflater().inflate(R.menu.help, menu);
+                break;
+        }
         return true;
     }
 

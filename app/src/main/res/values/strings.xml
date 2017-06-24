@@ -41,6 +41,7 @@
     <string name="category_sms">短信</string>
     <string name="category_photo">照片</string>
     <string name="category_app">应用</string>
+    <string name="category_system_app">系统应用(实验)</string>
     <string name="category_alarm">闹钟</string>
     <string name="category_wifi">WLAN</string>
     <string name="category_call">通话记录</string>

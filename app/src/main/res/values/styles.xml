@@ -26,6 +26,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppTheme.AppBarOverlay.Dark" parent="ThemeOverlay.AppCompat.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay.Dark" parent="ThemeOverlay.AppCompat" />
+
     <style name="BottomSummaryText" parent="@style/TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/third_text</item>
         <item name="android:textAllCaps">false</item>

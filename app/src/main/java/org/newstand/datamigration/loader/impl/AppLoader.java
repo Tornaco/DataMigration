@@ -39,7 +39,7 @@ public class AppLoader extends BaseLoader {
     public Collection<DataRecord> loadFromAndroid(LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = new ArrayList<>();
         PackageManager pm = getContext().getPackageManager();
-        List<PackageInfo> packages = null;
+        List<PackageInfo> packages;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             packages = pm.getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES);
         } else {
@@ -55,8 +55,12 @@ public class AppLoader extends BaseLoader {
 
             boolean isSystemApp = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
 
-            if (isSystemApp) {
-                // continue;
+            if (ignoreSystemApp() && isSystemApp) {
+                continue;
+            }
+
+            if (!isSystemApp && ignoreUserApp()) {
+                continue;
             }
 
             try {
@@ -74,13 +78,25 @@ public class AppLoader extends BaseLoader {
         return records;
     }
 
+    protected boolean ignoreSystemApp() {
+        return true;
+    }
+
+    protected boolean ignoreUserApp() {
+        return false;
+    }
+
+    protected DataCategory getDateCategory() {
+        return DataCategory.App;
+    }
+
     @Override
     public Collection<DataRecord> loadFromSession(LoaderSource source, Session session, LoaderFilter<DataRecord> filter) {
         final Collection<DataRecord> records = new ArrayList<>();
         String dir =
                 source.getParent() == LoaderSource.Parent.Received ?
-                        SettingsProvider.getReceivedDirByCategory(DataCategory.App, session)
-                        : SettingsProvider.getBackupDirByCategory(DataCategory.App, session);
+                        SettingsProvider.getReceivedDirByCategory(getDateCategory(), session)
+                        : SettingsProvider.getBackupDirByCategory(getDateCategory(), session);
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override

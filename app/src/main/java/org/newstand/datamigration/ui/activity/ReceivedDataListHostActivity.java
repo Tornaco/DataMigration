@@ -34,6 +34,7 @@ public class ReceivedDataListHostActivity extends DataListHostActivity {
             case Video:
                 return new VideoListFragment();
             case App:
+            case SystemApp:
                 return new BackupAppListFragment();
             case Sms:
                 return new SmsListFragment();

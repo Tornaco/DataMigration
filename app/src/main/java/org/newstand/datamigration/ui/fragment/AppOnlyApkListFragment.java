@@ -20,7 +20,7 @@ import org.newstand.datamigration.utils.Files;
  * All right reserved.
  */
 
-public class OnlyApkAppListFragment extends DataListViewerFragment {
+public class AppOnlyApkListFragment extends DataListViewerFragment {
 
     @Override
     DataCategory getDataType() {

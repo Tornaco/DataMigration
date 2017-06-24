@@ -13,6 +13,7 @@ import org.newstand.datamigration.loader.impl.CustomFileLoader;
 import org.newstand.datamigration.loader.impl.MusicLoader;
 import org.newstand.datamigration.loader.impl.PhotoLoader;
 import org.newstand.datamigration.loader.impl.SMSLoader;
+import org.newstand.datamigration.loader.impl.SystemAppLoader;
 import org.newstand.datamigration.loader.impl.SystemSettingsLoader;
 import org.newstand.datamigration.loader.impl.VideoLoader;
 import org.newstand.datamigration.loader.impl.WifiLoader;
@@ -169,6 +170,24 @@ public enum DataCategory implements LoaderGetter, ResBinder {
         @Override
         public int iconRes() {
             return R.drawable.ic_movie;
+        }
+    },
+
+    SystemApp {
+        @NonNull
+        @Override
+        public DataLoader getLoader() {
+            return new SystemAppLoader();
+        }
+
+        @Override
+        public int nameRes() {
+            return R.string.category_system_app;
+        }
+
+        @Override
+        public int iconRes() {
+            return R.drawable.ic_app;
         }
     },
 

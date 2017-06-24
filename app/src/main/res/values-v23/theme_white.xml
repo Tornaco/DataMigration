@@ -3,9 +3,9 @@
 
     <style name="AppTheme.White" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/grey</item>
-        <item name="colorPrimaryDark">@color/grey_dark</item>
-        <item name="colorAccent">@color/grey</item>
+        <item name="colorPrimary">#9E9E9E</item>
+        <item name="colorPrimaryDark">#616161</item>
+        <item name="colorAccent">#607D8B</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
