@@ -11,6 +11,7 @@
     <string name="backup_intro_and">和</string>
     <string name="backup_intro">支持联系人，短信，通话记录，多媒体，无线局域网等数据备份与应用（数据）的本地备份。\n\n需要你授予取联系人，电话，短信，文件读写等权限。</string>
     <string name="transport_intro">你现在可以在两台设备之间，快速互相传输文件。\n\n需要你授予位置信息权限。\n</string>
+    <string name="ftp_intro">文件传输协议FTP使得主机间可以共享文件。FTP客户机可以给服务器发出命令来下载文件，上传文件，创建或改变服务器上的目录。\n\n需要你授予文件读写权限。\n</string>
 
     <string name="title_activity_navigator">@string/app_name</string>
 
@@ -160,8 +161,11 @@
     <string name="title_transport_share">把[数据迁移]分享给别人</string>
     <string name="title_transport_share_tips">为了安全起见，Android禁止直接分享APK文件，因此我们把APK文件命名为JPEG文件，待对方收到该文件后，修改后缀名为APK即可安装使用</string>
 
+    <string name="title_transport_ftp">FTP文件服务</string>
+
     <string name="title_start">开始</string>
     <string name="title_card_actions">接下来你可以</string>
+    <string name="title_card_coming_soon">敬请期待</string>
     <string name="title_card_actions2">或者</string>
     <string name="title_card_ad">或者，欣赏广告放松下</string>
 

@@ -23,6 +23,7 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
 import org.newstand.datamigration.ui.FragmentController;
 import org.newstand.datamigration.ui.fragment.BackupRestoreNavigatorFragment;
+import org.newstand.datamigration.ui.fragment.FTPServerNavigatorFragment;
 import org.newstand.datamigration.ui.fragment.SenderReceiverNavigatorFragment;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
 
     private static final int INDEX_BACKUP_RESTORE = 0;
     private static final int INDEX_SENDER_RECEIVER = 1;
+    private static final int INDEX_FTP_SERVER = 2;
 
     @Getter
     private FragmentController cardController;
@@ -116,7 +118,8 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         final List<? extends Fragment> cards =
                 ImmutableList.of(
                         BackupRestoreNavigatorFragment.create(),
-                        SenderReceiverNavigatorFragment.create());
+                        SenderReceiverNavigatorFragment.create(),
+                        FTPServerNavigatorFragment.create());
         cardController = new FragmentController(getSupportFragmentManager(), cards, R.id.container);
         cardController.setDefaultIndex(INDEX_BACKUP_RESTORE);
         cardController.setCurrent(INDEX_BACKUP_RESTORE);
@@ -150,6 +153,10 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
                 break;
             case R.id.nav_sender_receiver:
                 getCardController().setCurrent(INDEX_SENDER_RECEIVER);
+                updateTitle();
+                break;
+            case R.id.nav_ftp:
+                getCardController().setCurrent(INDEX_FTP_SERVER);
                 updateTitle();
                 break;
             case R.id.nav_settings:
