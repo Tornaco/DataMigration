@@ -20,6 +20,17 @@ public enum ThemeColor implements ThemeResBinder {
             return R.color.primary;
         }
     },
+    White {
+        @Override
+        public int nameRes() {
+            return R.string.name_white;
+        }
+
+        @Override
+        public int colorRes() {
+            return R.color.grey;
+        }
+    },
     Teal {
         @Override
         public int nameRes() {

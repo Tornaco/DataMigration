@@ -20,7 +20,7 @@ class PackageInstallReceiver extends BroadcastReceiver {
 
     private CountDownLatch latch = new CountDownLatch(1);
 
-    private static final long MAX_INSTALL_TIME_MINUTES = 6;
+    private static final long MAX_INSTALL_TIME_MINUTES = 2;
 
     private String packageName;
 

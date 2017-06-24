@@ -471,6 +471,13 @@ public class SettingsProvider extends Observable {
     }
 
     public static boolean isLoadEnabledForCategory(DataCategory category) {
+        switch (category) {
+            case SystemSettings:
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    return false;
+                }
+                break;
+        }
         return sMe.readBoolean(KEY_LOADER_CONFIG_CATEGORY_ENABLED_PREFIX + category.name(), true);
     }
 

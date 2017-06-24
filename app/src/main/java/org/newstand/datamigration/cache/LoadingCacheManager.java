@@ -13,6 +13,7 @@ import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.DataLoaderManager;
 import org.newstand.datamigration.loader.LoaderSource;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.logger.Logger;
@@ -107,6 +108,12 @@ public abstract class LoadingCacheManager {
                     .build(new CacheLoader<DataCategory, Collection<DataRecord>>() {
                         @Override
                         public Collection<DataRecord> load(@NonNull DataCategory key) throws Exception {
+                            // Workaround to avoid sup loading.
+                            if (!SettingsProvider.isLoadEnabledForCategory(key)) {
+                                return new ArrayList<>();
+                            }
+
+                            Logger.d("CacheLoader, loading for:%s", key);
                             DataLoaderManager manager = DataLoaderManager.from(c);
                             return manager.load(LoaderSource.builder().parent(Android)
                                     .session(Session.create()).build(), key);
