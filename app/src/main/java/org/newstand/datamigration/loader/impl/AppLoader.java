@@ -54,8 +54,9 @@ public class AppLoader extends BaseLoader {
             appRecord.setPath(packageInfo.applicationInfo.publicSourceDir);
 
             boolean isSystemApp = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
+
             if (isSystemApp) {
-                continue;
+                // continue;
             }
 
             try {
