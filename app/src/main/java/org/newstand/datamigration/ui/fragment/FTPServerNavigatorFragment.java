@@ -18,6 +18,7 @@ import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.tiles.AdsTile;
+import org.newstand.datamigration.ui.tiles.FTPTestTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.IntroDialog;
@@ -63,6 +64,8 @@ public class FTPServerNavigatorFragment extends DashboardFragment implements Pro
 
         Category actions = new ThemedCategory();
         actions.titleRes = R.string.title_card_coming_soon;
+
+        actions.addTile(new FTPTestTile(getContext()));
 
         categories.add(actions);
 
@@ -116,7 +119,11 @@ public class FTPServerNavigatorFragment extends DashboardFragment implements Pro
     private void requestPerms() {
         RxPermissions rxPermissions = new RxPermissions(getActivity());
         rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WAKE_LOCK)
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean granted) throws Exception {

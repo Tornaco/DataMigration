@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/eventbus" />
+            <option value="$PROJECT_DIR$/ftpserver" />
             <option value="$PROJECT_DIR$/interface-adapter-annotation" />
             <option value="$PROJECT_DIR$/interface-adapter-generator" />
             <option value="$PROJECT_DIR$/materialicons" />

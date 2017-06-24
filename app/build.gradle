@@ -32,6 +32,15 @@ android {
             path "CMakeLists.txt"
         }
     }
+
+    packagingOptions {
+        // required due to jars
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/BCKEY.SF'
+        exclude 'META-INF/BCKEY.DSA'
+    }
 }
 
 dependencies {
@@ -81,4 +90,5 @@ dependencies {
     compile 'com.github.apl-devs:appintro:v4.2.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile project(':settingshook')
+    compile project(':ftpserver')
 }
