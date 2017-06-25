@@ -11,7 +11,9 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.policy.MinAdPresentTimesPolicy;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
+import org.newstand.datamigration.ui.tiles.CoworkTile;
 import org.newstand.datamigration.ui.tiles.MailTile;
+import org.newstand.datamigration.ui.tiles.QQGroupTile;
 import org.newstand.datamigration.ui.tiles.RaterTile;
 import org.newstand.datamigration.ui.tiles.ShowAdTile;
 import org.newstand.datamigration.ui.tiles.ThanksTile;
@@ -79,6 +81,8 @@ public class ComeInActivity extends TransitionSafeActivity {
             involve.titleRes = R.string.tile_category_in;
 
             involve.addTile(new MailTile(getActivity()));
+            involve.addTile(new QQGroupTile(getActivity()));
+            involve.addTile(new CoworkTile(getActivity()));
             involve.addTile(new ThanksTile(getActivity()));
             involve.addTile(new RaterTile(getContext()));
 

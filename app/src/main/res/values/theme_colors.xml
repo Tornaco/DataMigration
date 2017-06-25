@@ -7,6 +7,7 @@
     <color name="white">#fafafa</color>
     <color name="grey">#9e9e9e</color>
     <color name="grey_dark">#616161</color>
+    <color name="grey_light">#DADADA</color>
     <color name="purple">#9C27B0</color>
     <color name="indigo">#3F51B5</color>
     <color name="green">#4CAF50</color>
@@ -50,7 +51,7 @@
     <color name="dividerLight">#DADADA</color>
 
     <string name="name_teal">TEAL</string>
-    <string name="name_white">浅白</string>
+    <string name="name_white">白</string>
     <string name="name_red">姨妈红</string>
     <string name="name_coolapk">酷安绿</string>
     <string name="name_purple">基佬紫</string>
