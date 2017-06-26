@@ -18,7 +18,9 @@ import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.tiles.AdsTile;
-import org.newstand.datamigration.ui.tiles.FTPTestTile;
+import org.newstand.datamigration.ui.tiles.FTPControlTile;
+import org.newstand.datamigration.ui.tiles.FTPPWDTile;
+import org.newstand.datamigration.ui.tiles.FTPUserNameTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.IntroDialog;
@@ -63,9 +65,11 @@ public class FTPServerNavigatorFragment extends DashboardFragment implements Pro
         super.onCreateDashCategories(categories);
 
         Category actions = new ThemedCategory();
-        actions.titleRes = R.string.title_card_coming_soon;
+        actions.titleRes = R.string.title_card_actions;
 
-        actions.addTile(new FTPTestTile(getContext()));
+        actions.addTile(new FTPControlTile(getContext()));
+        actions.addTile(new FTPUserNameTile(getContext()));
+        actions.addTile(new FTPPWDTile(getContext()));
 
         categories.add(actions);
 

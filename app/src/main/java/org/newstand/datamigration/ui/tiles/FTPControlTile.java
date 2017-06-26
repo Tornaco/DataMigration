@@ -2,7 +2,6 @@ package org.newstand.datamigration.ui.tiles;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.widget.RelativeLayout;
 
@@ -21,11 +20,9 @@ import dev.nick.tiles.tile.SwitchTileView;
  * All right reserved.
  */
 
-public class FTPTestTile extends ThemedTile {
+public class FTPControlTile extends ThemedTile {
 
-    private Handler mHandler = new Handler();
-
-    public FTPTestTile(@NonNull Context context) {
+    public FTPControlTile(@NonNull Context context) {
         super(context, null);
     }
 
@@ -33,7 +30,7 @@ public class FTPTestTile extends ThemedTile {
     void onInitView(final Context context) {
 
         this.iconRes = R.drawable.ic_ftp;
-        this.titleRes = R.string.title_transport_ftp;
+        this.titleRes = R.string.title_transport_ftp_control;
 
         if (FsService.isRunning()) {
             InetAddress address = FsService.getLocalInetAddress();

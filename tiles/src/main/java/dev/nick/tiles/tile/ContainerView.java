@@ -111,14 +111,14 @@ public class ContainerView extends ViewGroup {
 
             int row = cursor / mNumColumns;
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                child.setDividerVisibility(false);
-            }
-
             if (row == mNumRows - 1) {
                 child.setDividerVisibility(false);
             } else {
                 child.setDividerVisibility(true);
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                child.setDividerVisibility(false);
             }
 
             // Push the item to the next row if it can't fit on this one

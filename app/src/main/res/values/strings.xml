@@ -162,6 +162,8 @@
     <string name="title_transport_share_tips">为了安全起见，Android禁止直接分享APK文件，因此我们把APK文件命名为JPEG文件，待对方收到该文件后，修改后缀名为APK即可安装使用</string>
 
     <string name="title_transport_ftp">FTP文件服务</string>
+    <string name="title_transport_ftp_control">开关FTP文件服务</string>
+    <string name="title_ftp_solution_provider">Solution provided by Swiftp</string>
 
     <string name="title_start">开始</string>
     <string name="title_card_actions">接下来你可以</string>
