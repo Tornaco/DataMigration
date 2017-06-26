@@ -82,15 +82,18 @@ public class ComeInActivity extends TransitionSafeActivity {
 
             involve.addTile(new MailTile(getActivity()));
             involve.addTile(new QQGroupTile(getActivity()));
-            involve.addTile(new CoworkTile(getActivity()));
             involve.addTile(new ThanksTile(getActivity()));
             involve.addTile(new RaterTile(getContext()));
+
+            Category involve2 = new ThemedCategory();
+            involve2.addTile(new CoworkTile(getContext()));
 
             if (SettingsProvider.getAdPresentTimes() >= MinAdPresentTimesPolicy.getMinAdPresentTimes()) {
                 involve.addTile(new ShowAdTile(getContext()));
             }
 
             categories.add(involve);
+            categories.add(involve2);
 
             super.onCreateDashCategories(categories);
         }

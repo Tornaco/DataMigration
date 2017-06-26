@@ -18,6 +18,7 @@ import org.newstand.datamigration.utils.OnDeviceLogAdapter;
 import org.newstand.logger.Logger;
 import org.newstand.logger.Settings;
 
+import be.ppareit.swiftp.App;
 import lombok.Getter;
 
 /**
@@ -77,6 +78,9 @@ public class DataMigrationApp extends Application {
         registerActivityLifecycleCallbacks(topActivityObserver);
 
         ThemeManager.init(this);
+
+        // Swiftp
+        App.INSTANCE.onCreate(this);
     }
 
     private void startCore() {

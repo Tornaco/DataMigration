@@ -19,15 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    packagingOptions {
-        // required due to jars
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/BCKEY.SF'
-        exclude 'META-INF/BCKEY.DSA'
-    }
 }
 
 dependencies {
@@ -38,7 +29,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
 
-    compile 'org.apache.ftpserver:ftpserver-core:1.0.6'
-    compile 'org.apache.sshd:sshd-core:0.13.0'
     compile 'com.github.Tornaco:Logger:1.1'
 }

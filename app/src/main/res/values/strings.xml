@@ -204,7 +204,7 @@
     <string name="title_cowork">参与开发</string>
     <string name="summary_feedback">请将详细的错误描述发送至%1$s</string>
     <string name="summary_qq_group">QQ群号码：%1$s</string>
-    <string name="summary_cowork">本软件完全开源，且免费无利益，如果你是开发者，或者擅长翻译，UX设计，测试等，均可参与开发~</string>
+    <string name="summary_cowork">本软件业余时间开发，完全开源，且免费无利益，如果你是开发者，或者擅长翻译，UX设计，测试等，均可参与开发，有兴趣可以邮件～</string>
     <string name="title_rate">评分</string>
     <string name="summary_rate">顶起来，让更多人知道这款软件</string>
 
