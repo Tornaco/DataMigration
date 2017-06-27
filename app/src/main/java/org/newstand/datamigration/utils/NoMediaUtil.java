@@ -23,8 +23,11 @@ public class NoMediaUtil {
 
     public static void createNoMediaFile(String dir) {
         String filePath = dir + File.separator + ".nomedia";
-        Logger.d("Create nomedia file to:%s", filePath);
         File file = new File(filePath);
+        if (file.exists()) {
+            return;
+        }
+        Logger.d("Create nomedia file to:%s", filePath);
         try {
             com.google.common.io.Files.createParentDirs(file);
         } catch (IOException e) {

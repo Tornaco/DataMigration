@@ -16,7 +16,7 @@ import static org.newstand.datamigration.utils.RootTools2.commandWait;
  * All right reserved.
  */
 
-public class Zipper {
+public class SevenZipper {
 
     private static boolean execTarCommand(String command) {
         Command tarCmd = new Command(0, false, command);
@@ -29,14 +29,13 @@ public class Zipper {
 
         int exitCode = tarCmd.getExitCode();
 
-        Logger.d("chown exit code %s", exitCode);
+        Logger.d("7Z exit code %s", exitCode);
 
         return exitCode == 0;
     }
 
-
-    public static boolean compressTar(String to, String from) {
-        String command = String.format("tar -zcvf %s %s", to, from);
+    public static boolean compressTar(String from, String to) {
+        String command = String.format("7z -y a %s %s", to, from);
         try {
             com.google.common.io.Files.createParentDirs(new File(to));
         } catch (IOException e) {
@@ -48,7 +47,7 @@ public class Zipper {
     }
 
     public static boolean deCompressTar(String file) {
-        String command = String.format("tar -zxvf %s", file);
+        String command = String.format("7z -y x %s", file);
         Logger.d("Decompressing with command %s", command);
         return execTarCommand(command);
     }

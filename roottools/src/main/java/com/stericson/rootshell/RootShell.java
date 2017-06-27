@@ -43,7 +43,7 @@ public class RootShell {
     // # Public Variables #
     // --------------------
 
-    public static boolean debugMode = false;
+    public static boolean debugMode = true;
 
     public static final String version = "RootShell v1.4";
 
@@ -60,9 +60,9 @@ public class RootShell {
     /**
      * Setting this will change the default command timeout.
      * <p/>
-     * The default is 20000ms
+     * The default is +8
      */
-    public static int defaultCommandTimeout = 20000;
+    public static int defaultCommandTimeout = Integer.MAX_VALUE;
 
     public static enum LogLevel {
         VERBOSE,

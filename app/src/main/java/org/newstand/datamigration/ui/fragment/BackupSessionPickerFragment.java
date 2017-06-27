@@ -30,6 +30,7 @@ import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.utils.Files;
 import org.newstand.datamigration.utils.MediaScannerClient;
 import org.newstand.datamigration.utils.RootTarUtil;
+import org.newstand.datamigration.utils.SevenZipper;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
@@ -192,9 +193,9 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                 boolean res = RootTarUtil.compressTar(dest.getPath(), dir.getPath());
 
                 if (!res) {
-                    dest = new File(SettingsProvider.getCompressedRootDir() + File.separator + session.getName() + ".zip");
-                    Logger.w("Trying using zip util to compress to:%s", dest.getPath());
-                    res = zipWithNoRoot(dir, dest);
+                    dest = new File(SettingsProvider.getCompressedRootDir() + File.separator + session.getName() + ".7z");
+                    Logger.w("Trying using 7z to compress to:%s", dest.getPath());
+                    res = SevenZipper.compressTar(dir.getPath(), dest.getPath());
                 }
 
                 // Scan.
@@ -257,7 +258,7 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
     private void showHowToUseCompressedTips() {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.action_compressed_how_to_use)
-                .setMessage(R.string.message_compressed_how_to_use) //TODO Keep align with SettingsProvider.
+                .setMessage(getString(R.string.message_compressed_how_to_use, SettingsProvider.getBackupRootDir()))
                 .setCancelable(false)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
