@@ -1,5 +1,7 @@
 package org.newstand.datamigration.utils;
 
+import android.os.Process;
+
 import com.stericson.rootools.RootTools;
 import com.stericson.rootshell.execution.Command;
 
@@ -35,6 +37,9 @@ public class SevenZipper {
     }
 
     public static boolean compressTar(String from, String to) {
+        // Make it in background p.
+        Process.setThreadPriority(Process.THREAD_PRIORITY_LOWEST);
+
         String command = String.format("7z -y a %s %s", to, from);
         try {
             com.google.common.io.Files.createParentDirs(new File(to));
@@ -47,6 +52,8 @@ public class SevenZipper {
     }
 
     public static boolean deCompressTar(String file) {
+        // Make it in background p.
+        Process.setThreadPriority(Process.THREAD_PRIORITY_LOWEST);
         String command = String.format("7z -y x %s", file);
         Logger.d("Decompressing with command %s", command);
         return execTarCommand(command);

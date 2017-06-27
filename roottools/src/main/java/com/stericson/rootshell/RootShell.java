@@ -45,7 +45,7 @@ public class RootShell {
 
     public static boolean debugMode = true;
 
-    public static final String version = "RootShell v1.4";
+    public static final String version = "DataMig-RS-1.4";
 
     /**
      * Setting this to false will disable the handler that is used
