@@ -53,6 +53,11 @@ public class AppLoader extends BaseLoader {
             appRecord.setPkgName(packageInfo.packageName);
             appRecord.setPath(packageInfo.applicationInfo.publicSourceDir);
 
+            // Ignore our self.
+            if (getContext().getPackageName().equals(appRecord.getPkgName())) {
+                continue;
+            }
+
             boolean isSystemApp = (packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
 
             if (ignoreSystemApp() && isSystemApp) {

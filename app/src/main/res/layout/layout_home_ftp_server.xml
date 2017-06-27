@@ -105,17 +105,6 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:orientation="vertical" />
-
-        <TextView
-            style="@style/ActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/dashboard_container"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/activity_vertical_margin_large"
-            android:text="@string/title_ftp_solution_provider"
-            android:textAllCaps="true" />
-
     </RelativeLayout>
 
 

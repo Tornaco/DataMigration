@@ -22,8 +22,14 @@
     <string name="action_user_actions">日志</string>
     <string name="action_disable_selinux">禁用SeLinux</string>
     <string name="action_remove">删除</string>
-    <string name="action_rename">修改名称</string>
+    <string name="action_rename">修改备注</string>
+    <string name="action_compress">压缩</string>
+    <string name="action_compressing">正在进行压缩，请不要退出!</string>
+    <string name="action_compressed_how_to_use">如何使用？</string>
+    <string name="message_compressed_how_to_use">压缩包里包含了此备份的完整数据，使用时需要将其解压到[存储主目录/Backup/文件夹下]即可被识别为一次备份～</string>
     <string name="action_renamed_to">已经修改名称为 %1$s</string>
+    <string name="action_compressed_to">压缩文件已经保存到[%1$s]路径下</string>
+    <string name="action_compress_fail">无法对该文件夹进行压缩</string>
     <string name="action_rename_fail">无法修改名称</string>
     <string name="action_select_all">全部选择</string>
     <string name="action_clear_selection">清除选择</string>

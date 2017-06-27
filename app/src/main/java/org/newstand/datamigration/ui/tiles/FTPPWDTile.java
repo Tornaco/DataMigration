@@ -19,7 +19,7 @@ public class FTPPWDTile extends ThemedTile {
         super(context, null);
         this.titleRes = R.string.password_label;
         this.summary = FsSettings.getPassWord();
-        this.iconRes = R.drawable.ic_secure;
+        this.iconRes = R.drawable.ic_info;
     }
 
     @Override

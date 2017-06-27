@@ -74,7 +74,8 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListViewHold
     protected void onBindViewHolder(SessionListViewHolder holder, final Session r) {
         holder.getImageView().setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.ic_bk_session));
         holder.getLineOneTextView().setText(r.getName());
-        holder.getLineTwoTextView().setText(getContext().getString(R.string.title_backup_at, FuzzyDateTimeFormatter.getTimeAgo(getContext(), new Date(r.getDate()))));
+        holder.getLineTwoTextView().setText(getContext().getString(R.string.title_backup_at,
+                FuzzyDateTimeFormatter.getTimeAgo(getContext(), new Date(r.getDate()))));
     }
 
     @Override

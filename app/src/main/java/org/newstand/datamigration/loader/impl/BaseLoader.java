@@ -57,14 +57,14 @@ public abstract class BaseLoader implements DataLoader<DataRecord>, PermissionRe
         setContext(context);
     }
 
-    protected Cursor createCursor(@NonNull Uri uri,
-                                  @Nullable String[] projection, @Nullable String selection,
-                                  @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+    Cursor createCursor(@NonNull Uri uri,
+                        @Nullable String[] projection, @Nullable String selection,
+                        @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         ContentResolver cr = getContext().getContentResolver();
         return cr.query(uri, projection, selection, selectionArgs, sortOrder);
     }
 
-    protected void consumeCursor(Cursor cursor, Consumer<Cursor> cursorConsumer) {
+    void consumeCursor(Cursor cursor, Consumer<Cursor> cursorConsumer) {
         if (cursor != null && cursor.getCount() > 0) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor
                     .moveToNext()) {
@@ -76,7 +76,7 @@ public abstract class BaseLoader implements DataLoader<DataRecord>, PermissionRe
         }
     }
 
-    protected <T> List<T> newList() {
+    <T> List<T> newList() {
         return new ArrayList<>();
     }
 }

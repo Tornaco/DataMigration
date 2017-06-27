@@ -14,6 +14,7 @@ import org.newstand.datamigration.secure.DonateQRPathRetriever;
 import org.newstand.datamigration.service.DummSmsServiceProxy;
 import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.service.schedule.SchedulerServiceProxy;
+import org.newstand.datamigration.utils.NoMediaUtil;
 import org.newstand.datamigration.utils.OnDeviceLogAdapter;
 import org.newstand.logger.Logger;
 import org.newstand.logger.Settings;
@@ -81,6 +82,8 @@ public class DataMigrationApp extends Application {
 
         // Swiftp
         App.INSTANCE.onCreate(this);
+
+        NoMediaUtil.createNoMediaFileAsync(SettingsProvider.getDataMigrationRootDir());
     }
 
     private void startCore() {

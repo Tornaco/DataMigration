@@ -85,15 +85,15 @@ public class SettingsProvider extends Observable {
         sMe = new SettingsProvider(context);
     }
 
-    public boolean readBoolean(String key, boolean defValue) {
+    private boolean readBoolean(String key, boolean defValue) {
         return mSharedPreferences.getBoolean(key, defValue);
     }
 
-    public boolean readBoolean(String key, @BoolRes int defValue) {
+    private boolean readBoolean(String key, @BoolRes int defValue) {
         return mSharedPreferences.getBoolean(key, mRes.getBoolean(defValue));
     }
 
-    public void writeBoolean(String key, boolean value) {
+    private void writeBoolean(String key, boolean value) {
         mSharedPreferences.edit().putBoolean(key, value).apply();
         setChanged();
         notifyObservers();
@@ -115,7 +115,7 @@ public class SettingsProvider extends Observable {
 
     private static final String COMMON_ROOT_DIR = Environment.getExternalStorageDirectory().getPath()
             + File.separator
-            + ".DataMigration";
+            + "DataMigration";
 
     private static final String DEF_HELP_FILE_ASSETS_PATH = "help/Def_Help.md";
 
@@ -129,6 +129,12 @@ public class SettingsProvider extends Observable {
         return getDataMigrationRootDir()
                 + File.separator
                 + "Received";
+    }
+
+    public static String getCompressedRootDir() {
+        return getDataMigrationRootDir()
+                + File.separator
+                + "Compressed";
     }
 
     private static String getCommonRootDir() {
@@ -423,7 +429,7 @@ public class SettingsProvider extends Observable {
     }
 
     public static boolean isInstallDataEnabled() {
-        return sMe.readBoolean(KEY_INSTALL_DATA, false);
+        return sMe.readBoolean(KEY_INSTALL_DATA, true);
     }
 
     public static ThemeColor getThemeColor() {

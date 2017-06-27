@@ -91,4 +91,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile project(':settingshook')
     compile project(':ftpserver')
+
+    // Zip
+    compile 'org.zeroturnaround:zt-zip:1.11'
 }

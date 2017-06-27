@@ -1,14 +1,13 @@
 package org.newstand.datamigration.utils;
 
+import com.chrisplus.rootmanager.RootManager;
+import com.chrisplus.rootmanager.container.Result;
 import com.stericson.rootools.RootTools;
-import com.stericson.rootshell.execution.Command;
 
 import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;
-
-import static org.newstand.datamigration.utils.RootTools2.commandWait;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/20 15:04
@@ -16,22 +15,24 @@ import static org.newstand.datamigration.utils.RootTools2.commandWait;
  * All right reserved.
  */
 
-public class Zipper {
+public class RootTarUtil {
 
-    private static boolean execTarCommand(String command) {
-        Command tarCmd = new Command(0, false, command);
-        try {
-            RootTools.getShell(false).add(tarCmd);
-            commandWait(com.stericson.rootshell.execution.Shell.startShell(), tarCmd);
-        } catch (Throwable e) {
-            Logger.e(e, "Fail exec command");
+    public static boolean execTarCommand(String command) {
+        if (!RootManager.getInstance().obtainPermission()) {
+            Logger.w("execTarCommand, Fail to obtain root permission");
+            return false;
         }
 
-        int exitCode = tarCmd.getExitCode();
+        if (!RootTools.checkUtil("tar")) {
+            Logger.w("execTarCommand, Fail to check util tar");
+            return false;
+        }
 
-        Logger.d("chown exit code %s", exitCode);
+        Result result = RootManager.getInstance().runCommand(command);
 
-        return exitCode == 0;
+        Logger.d("Result message %s, ok %s", result.getMessage(), result.getResult());
+
+        return result.getStatusCode() == 0;
     }
 
 

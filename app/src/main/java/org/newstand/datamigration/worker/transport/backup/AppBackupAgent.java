@@ -15,9 +15,9 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.utils.MiscUtils;
+import org.newstand.datamigration.utils.RootTarUtil;
 import org.newstand.datamigration.utils.RootTools2;
 import org.newstand.datamigration.utils.SeLinuxContextChanger;
-import org.newstand.datamigration.utils.Zipper;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -87,7 +87,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
 
             Logger.d("Saving data from %s, to %s", appDataDir, destination);
 
-            boolean cr = Zipper.compressTar(destination, appDataDir);
+            boolean cr = RootTarUtil.compressTar(destination, appDataDir);
 
             Logger.d("Saving data res %s", cr);
 
@@ -109,7 +109,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
                                     + Files.getNameWithoutExtension(s)
                                     + ".tar.gz";
 
-                            boolean b = Zipper.compressTar(destExtraPath, extraDir.getPath());
+                            boolean b = RootTarUtil.compressTar(destExtraPath, extraDir.getPath());
                             Logger.d("Saving extra data res %s", b);
                             if (!b) {
                                 res[0] = new CompressErr();
@@ -128,6 +128,12 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         Logger.d("restore with settings %s", restoreSettings);
 
         if (restoreSettings.isInstallApp()) {
+
+            // Prevent our app killed by installer.
+            if (getContext().getPackageName().equals(restoreSettings.getAppRecord().getPkgName())) {
+                return new OperationNotAllowedErr();
+            }
+
             PackageInstallReceiver installReceiver = new PackageInstallReceiver(restoreSettings.getAppRecord().getPkgName());
             installReceiver.register(getContext());
 
@@ -200,7 +206,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
 
         Logger.d("Install data from %s, to %s", dataFromPath, dataToPath);
 
-        boolean res = Zipper.deCompressTar(dataFromPath);
+        boolean res = RootTarUtil.deCompressTar(dataFromPath);
 
         Logger.d("Install data res %s", res);
 
@@ -233,7 +239,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
             Collections.consumeRemaining(sunFiles, new Consumer<File>() {
                 @Override
                 public void accept(@NonNull File file) {
-                    boolean b = Zipper.deCompressTar(file.getPath());
+                    boolean b = RootTarUtil.deCompressTar(file.getPath());
                     Logger.d("Decompress extra files, res %s", b);
                     res[0] = new DeCompressErr();
                 }

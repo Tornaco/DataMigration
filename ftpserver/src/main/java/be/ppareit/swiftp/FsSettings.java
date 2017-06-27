@@ -49,6 +49,11 @@ public class FsSettings {
         return sp.getBoolean("allow_anonymous", false);
     }
 
+    public static void setAllowAnoymous(boolean allow){
+        final SharedPreferences sp = getSharedPreferences();
+        sp.edit().putBoolean("allow_anonymous", allow).apply();
+    }
+
     public static File getChrootDir() {
         final SharedPreferences sp = getSharedPreferences();
         String dirName = sp.getString("chrootDir", "");
@@ -98,6 +103,11 @@ public class FsSettings {
     public static boolean shouldTakeFullWakeLock() {
         final SharedPreferences sp = getSharedPreferences();
         return sp.getBoolean("stayAwake", false);
+    }
+
+    public static void setTakeFillWakeLock(boolean take) {
+        final SharedPreferences sp = getSharedPreferences();
+        sp.edit().putBoolean("stayAwake", take).apply();
     }
 
     public static Set<String> getAutoConnectList() {

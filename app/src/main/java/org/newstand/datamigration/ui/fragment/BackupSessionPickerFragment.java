@@ -1,12 +1,13 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +28,12 @@ import org.newstand.datamigration.ui.adapter.SessionListAdapter;
 import org.newstand.datamigration.ui.adapter.SessionListViewHolder;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.utils.Files;
+import org.newstand.datamigration.utils.MediaScannerClient;
+import org.newstand.datamigration.utils.RootTarUtil;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
+import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
 import java.util.Collection;
@@ -153,6 +157,9 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                                     case R.id.action_rename:
                                         onRequestRename(holder.getAdapterPosition());
                                         break;
+                                    case R.id.action_compress:
+                                        onRequestCompress(holder.getAdapterPosition());
+                                        break;
                                 }
                                 return true;
                             }
@@ -163,6 +170,101 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                 });
             }
         };
+    }
+
+    private void onRequestCompress(int adapterPosition) {
+        final Session session = getAdapter().getSessionList().get(adapterPosition);
+
+
+        final ProgressDialog progressDialog = showCompressDialog();
+
+        SharedExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                File dir = new File(SettingsProvider.getBackupSessionDir(session));
+
+                File dest = new File(SettingsProvider.getCompressedRootDir() + File.separator + session.getName() + ".tar.gz");
+
+                if (dest.exists() && !dest.delete()) {
+                    Logger.w("Fail delete exists file: %s", dest.getPath());
+                }
+                boolean res = RootTarUtil.compressTar(dest.getPath(), dir.getPath());
+
+                if (!res) {
+                    dest = new File(SettingsProvider.getCompressedRootDir() + File.separator + session.getName() + ".zip");
+                    Logger.w("Trying using zip util to compress to:%s", dest.getPath());
+                    res = zipWithNoRoot(dir, dest);
+                }
+
+                // Scan.
+                if (res) try {
+                    MediaScannerClient.scanSync(getContext(), dest.getPath());
+                } catch (InterruptedException ignored) {
+
+                }
+
+                final File finalDest = dest;
+                final boolean finalRes = res;
+                SharedExecutor.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        showCompressResult(finalDest.getPath(), finalRes);
+                    }
+                });
+            }
+        });
+    }
+
+    private boolean zipWithNoRoot(File rootDir, File zip) {
+        try {
+            ZipUtil.pack(rootDir, zip);
+        } catch (Throwable e) {
+            Logger.e(e, "Fail pack");
+            return false;
+        }
+        return true;
+    }
+
+    private ProgressDialog showCompressDialog() {
+        ProgressDialog p = new ProgressDialog(getActivity());
+        p.setIndeterminate(true);
+        p.setTitle(R.string.action_compress);
+        p.setMessage(getString(R.string.action_compressing));
+        p.setCancelable(false);
+        p.show();
+        return p;
+    }
+
+    private void showCompressResult(String dest, boolean ok) {
+        if (ok) {
+            Snackbar.make(getRecyclerView(), getString(R.string.action_compressed_to, dest), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.action_compressed_how_to_use, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showHowToUseCompressedTips();
+                        }
+                    })
+                    .show();
+        } else {
+            Snackbar.make(getRecyclerView(), getString(R.string.action_compress_fail), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, null)
+                    .show();
+        }
+    }
+
+    private void showHowToUseCompressedTips() {
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.action_compressed_how_to_use)
+                .setMessage(R.string.message_compressed_how_to_use) //TODO Keep align with SettingsProvider.
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Ignored.
+                    }
+                }).create().show();
     }
 
     private void onRequestRename(int position) {
@@ -178,7 +280,7 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
     }
 
     private void showRemoveResult(final Session session, boolean removed) {
-        Snackbar.make(getRootView(), removed ?
+        Snackbar.make(getRecyclerView(), removed ?
                 getString(R.string.title_removed, session.getName())
                 : getString(R.string.title_remove_failed, session.getName()), Snackbar.LENGTH_LONG)
                 .setAction(R.string.title_remove_z, new View.OnClickListener() {
@@ -285,7 +387,7 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
     }
 
     private void showRenameResult(Session session, boolean res) {
-        Snackbar.make(getRootView(), res ?
+        Snackbar.make(getRecyclerView(), res ?
                 getString(R.string.action_renamed_to, session.getName())
                 : getString(R.string.action_rename_fail), Snackbar.LENGTH_LONG)
                 .setAction(android.R.string.ok, new View.OnClickListener() {

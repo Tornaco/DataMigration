@@ -64,7 +64,7 @@ public class RootTools2 {
         }
     }
 
-    private static void commandWait(Shell shell, Command cmd) throws Exception {
+    static void commandWait(Shell shell, Command cmd) throws Exception {
 
         while (!cmd.isFinished()) {
 

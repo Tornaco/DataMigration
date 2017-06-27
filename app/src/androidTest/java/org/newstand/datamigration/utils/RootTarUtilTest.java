@@ -15,14 +15,14 @@ import java.io.File;
  * All right reserved.
  */
 @RunWith(AndroidJUnit4.class)
-public class ZipperTest {
+public class RootTarUtilTest {
     @Test
     public void exec() throws Exception {
-        Assert.assertTrue(Zipper.execTarCommand("tar"));
+        Assert.assertTrue(RootTarUtil.execTarCommand("tar"));
 
         String to = Environment.getExternalStorageDirectory().getPath() + File.separator + "Test.tar.gz";
 
-        Assert.assertTrue(Zipper.deCompressTar(to));
+        Assert.assertTrue(RootTarUtil.deCompressTar(to));
 
     }
 

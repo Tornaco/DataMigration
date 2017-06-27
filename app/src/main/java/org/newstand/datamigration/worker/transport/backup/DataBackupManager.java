@@ -26,6 +26,7 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.ExtraDataRulesRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.utils.MediaScannerClient;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.Stats;
 import org.newstand.datamigration.worker.transport.TransportListener;
@@ -400,6 +401,12 @@ public class DataBackupManager {
                 Logger.e(e, "Fail to write session info, WTF???");
             }
 
+            // Scan.
+            try {
+                MediaScannerClient.scanSync(context, SettingsProvider.getBackupSessionDir(session));
+            } catch (InterruptedException ignored) {
+
+            }
             listener.onComplete();
         }
     }
