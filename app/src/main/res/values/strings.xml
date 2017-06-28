@@ -24,7 +24,7 @@
     <string name="action_remove">删除</string>
     <string name="action_rename">修改备注</string>
     <string name="action_compress">压缩(实验)</string>
-    <string name="action_details">详细信息</string>
+    <string name="action_details">系统信息</string>
     <string name="action_compressed">压缩完成</string>
     <string name="action_compressing">正在进行压缩，文件较多，请耐心等待</string>
     <string name="action_compress_background">后台</string>
