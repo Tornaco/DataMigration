@@ -103,7 +103,7 @@
     <string name="title_backup_export">导出数据</string>
     <string name="title_backup_exporting">正在导出数据</string>
     <string name="title_backup_export_complete">导出数据完成</string>
-    <string name="title_restore">数据还原</string>
+    <string name="title_restore">查看本地备份</string>
     <string name="title_restore_picker">选择数据</string>
     <string name="title_restore_import">导入数据</string>
     <string name="title_restore_importing">正在导入数据</string>

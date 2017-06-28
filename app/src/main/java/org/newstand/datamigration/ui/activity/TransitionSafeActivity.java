@@ -112,6 +112,8 @@ public class TransitionSafeActivity extends AppCompatActivity {
                 return R.style.AppTheme_CoolApk;
             case CoolDark:
                 return R.style.AppTheme_CoolDark;
+            case Amber:
+                return R.style.AppTheme_Amber;
             case Pink:
                 return R.style.AppTheme_Pink;
             case Teal:
@@ -134,6 +136,8 @@ public class TransitionSafeActivity extends AppCompatActivity {
         switch (color) {
             case CoolApk:
                 return R.style.AppTheme_CoolApk_NoActionBar;
+            case Amber:
+                return R.style.AppTheme_Amber_NoActionBar;
             case CoolDark:
                 return R.style.AppTheme_CoolDark_NoActionBar;
             case Pink:

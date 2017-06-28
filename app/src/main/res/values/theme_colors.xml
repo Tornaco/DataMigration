@@ -28,6 +28,8 @@
     <color name="pink_dark">#C2185B</color>
     <color name="dark">#363636</color>
     <color name="dark_dark">#292929</color>
+    <color name="amber">#FFC107</color>
+    <color name="amber_dark">#FFA000</color>
 
     <!-- Default theme-->
     <color name="primary">#3F51B5</color>
@@ -57,5 +59,6 @@
     <string name="name_purple">基佬紫</string>
     <string name="name_pink">萌粉</string>
     <string name="name_dark">酷黑</string>
+    <string name="name_amber">AMBER</string>
     <string name="name_def">默认</string>
 </resources>

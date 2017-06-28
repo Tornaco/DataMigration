@@ -101,16 +101,14 @@
         <item name="android:textColor">@color/list_item_text_color_light</item>
     </style>
 
-    <style name="ErrDialog" parent="Theme.AppCompat.Dialog">
-        <item name="android:textColor">@color/red</item>
-    </style>
+    <style name="ErrDialog" parent="Theme.AppCompat.Light.Dialog" />
 
     <!-- You can also inherit from NNF_BaseTheme.Light -->
     <style name="FilePickerTheme" parent="NNF_BaseTheme.Light">
         <!-- Set these to match your theme -->
-        <item name="colorPrimary">#9E9E9E</item>
-        <item name="colorPrimaryDark">#616161</item>
-        <item name="colorAccent">#607D8B</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/grey</item>
+        <item name="colorAccent">@color/grey_dark</item>
 
         <!-- Setting a divider is entirely optional -->
         <item name="nnf_list_item_divider">@null</item>
@@ -123,9 +121,9 @@
     </style>
 
     <style name="FilePickerAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorPrimary">#9E9E9E</item>
-        <item name="colorPrimaryDark">#616161</item>
-        <item name="colorAccent">#607D8B</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/grey</item>
+        <item name="colorAccent">@color/grey_dark</item>
     </style>
 
 </resources>

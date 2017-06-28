@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sys_id">ID: %1$s</string>
+    <string name="sys_display">Display: %1$s</string>
+    <string name="sys_product">Product: %1$s</string>
+    <string name="sys_device">Device: %1$s</string>
+    <string name="sys_board">Board: %1$s</string>
+    <string name="sys_manufacturer">Manufacturer: %1$s</string>
+    <string name="sys_band">Band: %1$s</string>
+    <string name="sys_model">Model: %1$s</string>
+    <string name="sys_bootloader">Bootloader: %1$s</string>
+    <string name="sys_hw">Hardware: %1$s</string>
+    <string name="sys_sdk_int">Sdk: %1$s</string>
+    <string name="sys_rel">Release: %1$s</string>
+
+    <string name="sys_info_not_found">在此次备份里未找到对应的系统信息</string>
+</resources>

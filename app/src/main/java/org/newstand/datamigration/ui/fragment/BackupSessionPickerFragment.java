@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.ActionListener;
 import org.newstand.datamigration.data.model.SystemInfo;
@@ -184,7 +186,29 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
             Logger.i("System info:%s", systemInfo);
         }
 
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.action_details)
+                .titleColorAttr(R.attr.colorPrimary)
+                .content(systemInfo == null ? getStringSafety(R.string.sys_info_not_found)
+                        : buildSystemInfo(systemInfo))
+                .positiveText(android.R.string.ok)
+                .positiveColorAttr(R.attr.colorPrimary)
+                .build()
+                .show();
+    }
 
+    private String buildSystemInfo(SystemInfo systemInfo) {
+        return getString(R.string.sys_id, systemInfo.getId()) + "\n" +
+                getString(R.string.sys_display, systemInfo.getDisplay()) + "\n" +
+                getString(R.string.sys_band, systemInfo.getBrand()) + "\n" +
+                getString(R.string.sys_board, systemInfo.getBoard()) + "\n" +
+                getString(R.string.sys_bootloader, systemInfo.getBootloader()) + "\n" +
+                getString(R.string.sys_device, systemInfo.getDevice()) + "\n" +
+                getString(R.string.sys_hw, systemInfo.getHardware()) + "\n" +
+                getString(R.string.sys_model, systemInfo.getModel()) + "\n" +
+                getString(R.string.sys_manufacturer, systemInfo.getManufacturer()) + "\n" +
+                getString(R.string.sys_sdk_int, systemInfo.getSdk()) + "\n" +
+                getString(R.string.sys_rel, systemInfo.getRel());
     }
 
     private void onRequestCompress(int adapterPosition) {

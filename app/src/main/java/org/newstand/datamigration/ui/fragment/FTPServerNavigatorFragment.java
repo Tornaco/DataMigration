@@ -26,7 +26,6 @@ import org.newstand.datamigration.ui.tiles.FTPRootDirTile;
 import org.newstand.datamigration.ui.tiles.FTPUserNameTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.ErrDialog;
-import org.newstand.datamigration.ui.widget.IntroDialog;
 import org.newstand.datamigration.utils.EmojiUtils;
 
 import java.util.List;
@@ -114,19 +113,7 @@ public class FTPServerNavigatorFragment extends DashboardFragment implements Pro
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // Show intro dialog
-        IntroDialog.attach(getContext(), new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                getActivity().finish();
-            }
-        }, new Runnable() {
-            @Override
-            public void run() {
-                // Ask for perms
-                requestPerms();
-            }
-        });
+        requestPerms();
     }
 
     private void requestPerms() {

@@ -20,7 +20,8 @@ public class ErrDialog {
         attach(context, Logger.getStackTraceString(throwable), listener);
     }
 
-    public static void attach(Context context, String errMsg, @Nullable final DialogInterface.OnDismissListener listener) {
+    public static void attach(Context context, String errMsg,
+                              @Nullable final DialogInterface.OnDismissListener listener) {
         AlertDialog alertDialog = new AlertDialog.Builder(context, R.style.ErrDialog)
                 .setTitle(R.string.title_err)
                 .setMessage(errMsg)

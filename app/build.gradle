@@ -94,4 +94,8 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile project(':settingshook')
     compile project(':ftpserver')
+
+    // https://github.com/afollestad/material-dialogs
+    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
+    compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
 }

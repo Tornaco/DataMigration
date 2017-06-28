@@ -96,5 +96,16 @@ public enum ThemeColor implements ThemeResBinder {
         public int colorRes() {
             return R.color.dark;
         }
+    },
+    Amber {
+        @Override
+        public int nameRes() {
+            return R.string.name_amber;
+        }
+
+        @Override
+        public int colorRes() {
+            return R.color.amber;
+        }
     };
 }

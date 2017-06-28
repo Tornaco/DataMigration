@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme.Amber">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/amber</item>
+        <item name="colorPrimaryDark">@color/amber_dark</item>
+        <item name="colorAccent">@color/amber</item>
+    </style>
+
+    <style name="AppTheme.Amber.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>

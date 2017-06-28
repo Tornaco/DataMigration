@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Builder;
 
 /**
@@ -14,6 +15,7 @@ import lombok.experimental.Builder;
  */
 @Builder
 @Getter
+@ToString
 public class SystemInfo {
 
     private String id, display, product, device, board, manufacturer, brand, model, bootloader, hardware, sdk, rel;
