@@ -79,6 +79,15 @@ public class AppListFragment extends DataListViewerFragment {
             }
 
             @Override
+            public void onCheckableImageClick(CommonListViewHolder holder) {
+                final AppRecord appRecord = (AppRecord) getDataRecords().get(holder.getAdapterPosition());
+                appRecord.setHandleApk(true);
+                appRecord.setHandleData(true);
+                onCheckStateChanged(true, holder.getAdapterPosition());
+                onUpdate();
+            }
+
+            @Override
             public void selectAll(boolean select) {
                 synchronized (dataRecords) {
                     for (DataRecord c : dataRecords) {

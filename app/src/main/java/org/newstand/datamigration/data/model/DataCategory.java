@@ -22,6 +22,8 @@ import org.newstand.datamigration.utils.Collections;
 
 import java.util.Arrays;
 
+import lombok.Getter;
+
 /**
  * Created by Nick@NewStand.org on 2017/3/7 11:15
  * E-Mail: NewStand@163.com
@@ -173,7 +175,7 @@ public enum DataCategory implements LoaderGetter, ResBinder {
         }
     },
 
-    SystemApp {
+    SystemApp(false) {
         @NonNull
         @Override
         public DataLoader getLoader() {
@@ -209,7 +211,7 @@ public enum DataCategory implements LoaderGetter, ResBinder {
         }
     },
 
-    CustomFile {
+    CustomFile(false) {
         @NonNull
         @Override
         public DataLoader getLoader() {
@@ -227,7 +229,7 @@ public enum DataCategory implements LoaderGetter, ResBinder {
         }
     },
 
-    SystemSettings {
+    SystemSettings(false) {
         @NonNull
         @Override
         public DataLoader getLoader() {
@@ -245,6 +247,16 @@ public enum DataCategory implements LoaderGetter, ResBinder {
         }
     };
 
+    @Getter
+    private boolean stableFeature;
+
+    DataCategory() {
+        this(true);
+    }
+
+    DataCategory(boolean stableFeature) {
+        this.stableFeature = stableFeature;
+    }
 
     public static void consumeAll(@NonNull Consumer<DataCategory> consumer) {
         Collections.consumeRemaining(Arrays.asList(values()), consumer);

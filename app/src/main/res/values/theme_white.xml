@@ -5,7 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/grey_light</item>
-        <item name="colorAccent">#607D8B</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="colorAccent">@color/grey_dark</item>
     </style>
 
     <style name="AppTheme.White.NoActionBar">

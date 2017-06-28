@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">数据迁移</string>
     <string name="app_intro">数据备份以及迁移助手</string>
     <string name="card_intro">点击卡片可以展开菜单</string>
@@ -23,8 +23,10 @@
     <string name="action_disable_selinux">禁用SeLinux</string>
     <string name="action_remove">删除</string>
     <string name="action_rename">修改备注</string>
-    <string name="action_compress">压缩</string>
+    <string name="action_compress">压缩(实验)</string>
+    <string name="action_compressed">压缩完成</string>
     <string name="action_compressing">正在进行压缩，文件较多，请耐心等待</string>
+    <string name="action_compress_background">后台</string>
     <string name="action_compressed_how_to_use">如何使用？</string>
     <string name="message_compressed_how_to_use">压缩包里包含了此备份的完整数据，使用时需要将其解压到 [%1$s] 文件夹下即可被识别为一次备份～</string>
     <string name="action_renamed_to">已经修改名称为 %1$s</string>
@@ -57,6 +59,7 @@
 
     <string name="title_apk">安装包</string>
     <string name="title_data">数据</string>
+    <string name="title_data_apk">下列全部</string>
 
     <string name="summary_sms_template_rec">来自&#160;%1$s \t%2$s</string>
     <string name="summary_sms_template_send">发给&#160;%1$s \t%2$s</string>

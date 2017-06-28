@@ -74,6 +74,12 @@ public class CommonListAdapter extends RecyclerView.Adapter<CommonListViewHolder
                 onItemClick(holder);
             }
         });
+       holder.getCheckableImageView().setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               onCheckableImageClick(holder);
+           }
+       });
         return holder;
     }
 
@@ -86,6 +92,10 @@ public class CommonListAdapter extends RecyclerView.Adapter<CommonListViewHolder
     protected void onItemClick(CommonListViewHolder holder) {
         holder.getCheckableImageView().setChecked(!holder.getCheckableImageView().isChecked());
         onCheckStateChanged(holder.getCheckableImageView().isChecked(), holder.getAdapterPosition());
+    }
+
+    public void onCheckableImageClick(CommonListViewHolder holder) {
+        onItemClick(holder);
     }
 
     protected void onCheckStateChanged(boolean checked, int position) {

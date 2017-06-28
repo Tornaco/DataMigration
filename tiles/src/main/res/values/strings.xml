@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">Tiles</string>
     <!-- Switch On/Off  -->
     <string name="switch_on_text">On</string>

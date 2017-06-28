@@ -374,6 +374,7 @@
             </intent-filter>
         </receiver>
         <service android:name=".service.MediaPlayerService" />
+        <service android:name=".service.DataCompressService"/>
     </application>
 
 </manifest>

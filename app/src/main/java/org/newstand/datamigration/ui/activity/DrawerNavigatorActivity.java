@@ -108,10 +108,10 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         toggle.syncState();
 
         NavigationView navigationView = findView(R.id.nav_view);
+        navigationView.getMenu().findItem(R.id.nav_ftp).setVisible(SettingsProvider.isDebugEnabled());
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.setCheckedItem(R.id.nav_backup_restore);
-
     }
 
     protected void setupFragment() {

@@ -15,10 +15,15 @@ import org.newstand.datamigration.data.model.AppRecord;
 
 public class ApkDataPickerDialog {
 
-    public static void attach(Context context, final AppRecord appRecord, DialogInterface.OnDismissListener onDismissListener) {
+    public static void attach(Context context,
+                              final AppRecord appRecord,
+                              DialogInterface.OnDismissListener onDismissListener) {
         new AlertDialog.Builder(context)
-                .setMultiChoiceItems(R.array.apk_data_selections, new boolean[]{appRecord.isHandleApk(),
-                                appRecord.isHandleData()},
+                .setMultiChoiceItems(R.array.apk_data_selections,
+                        new boolean[]{
+                                appRecord.isHandleApk(),
+                                appRecord.isHandleData(),
+                        },
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog,
@@ -26,7 +31,10 @@ public class ApkDataPickerDialog {
                                                 boolean isChecked) {
                                 if (which == 0) { // Apk index is 0.
                                     appRecord.setHandleApk(isChecked);
+                                } else if (which == 1) {
+                                    appRecord.setHandleData(isChecked);
                                 } else {
+                                    appRecord.setHandleApk(isChecked);
                                     appRecord.setHandleData(isChecked);
                                 }
                             }

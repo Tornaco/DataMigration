@@ -18,19 +18,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.common.ActionListener;
 import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.loader.SessionLoader;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.BKSessionRepoService;
+import org.newstand.datamigration.service.DataCompressServiceProxy;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.SessionListAdapter;
 import org.newstand.datamigration.ui.adapter.SessionListViewHolder;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.utils.Files;
-import org.newstand.datamigration.utils.MediaScannerClient;
-import org.newstand.datamigration.utils.RootTarUtil;
-import org.newstand.datamigration.utils.SevenZipper;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
@@ -175,8 +174,6 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
 
     private void onRequestCompress(int adapterPosition) {
         final Session session = getAdapter().getSessionList().get(adapterPosition);
-
-
         final ProgressDialog progressDialog = showCompressDialog();
 
         SharedExecutor.execute(new Runnable() {
@@ -185,36 +182,24 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
 
                 File dir = new File(SettingsProvider.getBackupSessionDir(session));
 
-                File dest = new File(SettingsProvider.getCompressedRootDir() + File.separator + session.getName() + ".tar.gz");
+                final File dest = new File(SettingsProvider.getCompressedRootDir() + File.separator + session.getName() + ".7z");
 
-                if (dest.exists() && !dest.delete()) {
-                    Logger.w("Fail delete exists file: %s", dest.getPath());
-                }
-                boolean res = RootTarUtil.compressTar(dest.getPath(), dir.getPath());
-
-                if (!res) {
-                    dest = new File(SettingsProvider.getCompressedRootDir() + File.separator + session.getName() + ".7z");
-                    Logger.w("Trying using 7z to compress to:%s", dest.getPath());
-                    res = SevenZipper.compressTar(dir.getPath(), dest.getPath());
-                }
-
-                // Scan.
-                if (res) try {
-                    MediaScannerClient.scanSync(getContext(), dest.getPath());
-                    MediaScannerClient.scanSync(getContext(), dest.getParent());
-                } catch (InterruptedException ignored) {
-
-                }
-
-                final File finalDest = dest;
-                final boolean finalRes = res;
-                SharedExecutor.runOnUIThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressDialog.dismiss();
-                        showCompressResult(finalDest.getPath(), finalRes);
-                    }
-                });
+                new DataCompressServiceProxy(getContext())
+                        .compressAsync(dir.getPath(), dest.getPath(), new ActionListener<Boolean>() {
+                            @Override
+                            public void onAction(@Nullable final Boolean aBoolean) {
+                                if (isAlive())
+                                    SharedExecutor.runOnUIThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (isAlive()) {
+                                                progressDialog.dismiss();
+                                                showCompressResult(dest.getPath(), aBoolean != null && aBoolean);
+                                            }
+                                        }
+                                    });
+                            }
+                        });
             }
         });
     }
@@ -235,6 +220,13 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
         p.setTitle(R.string.action_compress);
         p.setMessage(getString(R.string.action_compressing));
         p.setCancelable(false);
+//        p.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.action_compress_background),
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // Empty.
+//                    }
+//                });
         p.show();
         return p;
     }

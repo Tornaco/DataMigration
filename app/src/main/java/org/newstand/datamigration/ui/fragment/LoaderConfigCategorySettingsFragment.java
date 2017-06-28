@@ -1,11 +1,7 @@
 package org.newstand.datamigration.ui.fragment;
 
-import android.support.annotation.NonNull;
-
-import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.ui.tiles.LoaderConfigCategoryTile;
-import org.newstand.datamigration.utils.Collections;
 
 import java.util.List;
 
@@ -23,16 +19,26 @@ public class LoaderConfigCategorySettingsFragment extends DashboardFragment {
     protected void onCreateDashCategories(final List<Category> categories) {
         super.onCreateDashCategories(categories);
 
-        final Category pending = new Category();
+        Category priv = new Category();
+        priv.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Contact));
+        priv.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.CallLog));
+        priv.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Sms));
+        priv.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Alarm));
 
-        Collections.consumeRemaining(DataCategory.values(), new Consumer<DataCategory>() {
-            @Override
-            public void accept(@NonNull DataCategory category) {
-                LoaderConfigCategoryTile configCategoryTile = new LoaderConfigCategoryTile(getContext(), category);
-                pending.addTile(configCategoryTile);
-            }
-        });
+        Category mm = new Category();
+        mm.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Music));
+        mm.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Video));
+        mm.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Photo));
 
-        categories.add(pending);
+        Category conf = new Category();
+        conf.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Wifi));
+        conf.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.App));
+        conf.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.SystemApp));
+        conf.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.SystemSettings));
+        conf.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.CustomFile));
+
+        categories.add(priv);
+        categories.add(mm);
+        categories.add(conf);
     }
 }

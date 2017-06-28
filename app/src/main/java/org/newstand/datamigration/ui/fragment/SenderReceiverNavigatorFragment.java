@@ -91,10 +91,13 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
 
         actions.addTile(new SendTile(getActivity()));
         actions.addTile(new ReceiveTile(getActivity()));
-        actions.addTile(new ReceivedViewerTile(getActivity()));
-        actions.addTile(new ShareTile(getActivity()));
+
+        Category actions2 = new ThemedCategory();
+        actions2.addTile(new ReceivedViewerTile(getActivity()));
+        actions2.addTile(new ShareTile(getActivity()));
 
         categories.add(actions);
+        categories.add(actions2);
 
         if (SettingsProvider.isShowAdEnabled()) {
             Category adc = new ThemedCategory();
