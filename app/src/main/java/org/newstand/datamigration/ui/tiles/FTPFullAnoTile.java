@@ -19,7 +19,7 @@ public class FTPFullAnoTile extends ThemedTile {
     public FTPFullAnoTile(@NonNull Context context) {
         super(context, null);
         this.titleRes = R.string.anonymous_label;
-        this.iconRes = R.drawable.ic_settings;
+        this.iconRes = R.drawable.ic_accessible;
     }
 
     @Override

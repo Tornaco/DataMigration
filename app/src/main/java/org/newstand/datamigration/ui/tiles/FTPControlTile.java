@@ -29,7 +29,7 @@ public class FTPControlTile extends ThemedTile {
     @Override
     void onInitView(final Context context) {
 
-        this.iconRes = R.drawable.ic_ftp;
+        this.iconRes = R.drawable.ic_play_arrow;
         this.titleRes = R.string.title_transport_ftp_control;
 
         if (FsService.isRunning()) {

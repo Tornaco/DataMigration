@@ -19,6 +19,7 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.data.model.SMSRecord;
 import org.newstand.datamigration.data.model.SettingsRecord;
+import org.newstand.datamigration.data.model.SystemInfo;
 import org.newstand.datamigration.data.model.WifiRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.policy.ExtraDataRule;
@@ -391,14 +392,26 @@ public class DataBackupManager {
             });
 
             // Write the session info.
-            String infoFilePath = SettingsProvider.getBackupSessionInfoPath(session);
-            Gson gson = new Gson();
-            String jsonStr = gson.toJson(session);
+
             try {
+                String infoFilePath = SettingsProvider.getBackupSessionInfoPath(session);
+                Gson gson = new Gson();
+                String jsonStr = gson.toJson(session);
                 Files.asCharSink(new File(infoFilePath), Charset.defaultCharset()).write(jsonStr);
                 Logger.v("Session info has been written to %s", infoFilePath);
-            } catch (IOException e) {
-                Logger.e(e, "Fail to write session info, WTF???");
+            } catch (Exception e) {
+                Logger.e(e, "Fail to write session info, WTF");
+            }
+
+            // Write SystemInfo.
+
+            try {
+                String systemInfo = SystemInfo.fromSystem().toJson();
+                String infoFilePath = SettingsProvider.getBackupSystemInfoPath(session);
+                Files.asCharSink(new File(infoFilePath), Charset.defaultCharset()).write(systemInfo);
+                Logger.v("System info has been written to %s", infoFilePath);
+            } catch (Exception e) {
+                Logger.e(e, "Fail to write session info, WTF");
             }
 
             // Scan.

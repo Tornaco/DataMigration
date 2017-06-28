@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
+import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.ui.tiles.LoaderConfigCategoryTile;
 
@@ -14,6 +15,10 @@ import dev.nick.tiles.tile.DashboardFragment;
 
 public class LoaderConfigCategorySettingsFragment extends DashboardFragment {
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.layout_loader_configure;
+    }
 
     @Override
     protected void onCreateDashCategories(final List<Category> categories) {

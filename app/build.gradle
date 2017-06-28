@@ -10,8 +10,8 @@ android {
         targetSdkVersion 25
         // Enabling multidex support.
         multiDexEnabled true
-        versionCode 303
-        versionName "3.0.3"
+        versionCode 304
+        versionName "3.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -94,7 +94,4 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile project(':settingshook')
     compile project(':ftpserver')
-
-    // Zip
-    compile 'org.zeroturnaround:zt-zip:1.11'
 }

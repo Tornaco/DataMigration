@@ -62,6 +62,7 @@ public class SettingsProvider extends Observable {
     private static final String BACKUP_EXTRA_DATA_DIR_NAME = "extra_data";
     private static final String BACKUP_APK_DIR_NAME = "apk";
     private static final String BACKUP_SESSION_INFO_FILE_NAME = "session.info";
+    private static final String BACKUP_SYSTEM_INFO_FILE_NAME = "system.info";
 
     private static final String LICENSE_ROOT_DIR = "license";
 
@@ -148,6 +149,11 @@ public class SettingsProvider extends Observable {
     // .DM/Backup/XXXX-XX/session.info
     public static String getBackupSessionInfoPath(Session session) {
         return getBackupSessionDir(session) + File.separator + BACKUP_SESSION_INFO_FILE_NAME;
+    }
+
+    // .DM/Backup/XXXX-XX/system.info
+    public static String getBackupSystemInfoPath(Session session) {
+        return getBackupSessionDir(session) + File.separator + BACKUP_SYSTEM_INFO_FILE_NAME;
     }
 
     public static String getBackupSessionInfoFileName() {

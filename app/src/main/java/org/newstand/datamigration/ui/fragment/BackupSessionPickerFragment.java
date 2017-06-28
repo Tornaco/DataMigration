@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.ActionListener;
+import org.newstand.datamigration.data.model.SystemInfo;
 import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.loader.SessionLoader;
@@ -33,7 +34,6 @@ import org.newstand.datamigration.utils.Files;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
-import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
 import java.util.Collection;
@@ -160,6 +160,9 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                                     case R.id.action_compress:
                                         onRequestCompress(holder.getAdapterPosition());
                                         break;
+                                    case R.id.action_details:
+                                        onRequestDetails(holder.getAdapterPosition());
+                                        break;
                                 }
                                 return true;
                             }
@@ -170,6 +173,18 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                 });
             }
         };
+    }
+
+    private void onRequestDetails(int position) {
+        final Session session = getAdapter().getSessionList().get(position);
+        String infoJson = Files.readString(SettingsProvider.getBackupSystemInfoPath(session));
+        SystemInfo systemInfo = null;
+        if (!TextUtils.isEmpty(infoJson)) {
+            systemInfo = SystemInfo.fromJson(infoJson);
+            Logger.i("System info:%s", systemInfo);
+        }
+
+
     }
 
     private void onRequestCompress(int adapterPosition) {
@@ -202,16 +217,6 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
                         });
             }
         });
-    }
-
-    private boolean zipWithNoRoot(File rootDir, File zip) {
-        try {
-            ZipUtil.pack(rootDir, zip);
-        } catch (Throwable e) {
-            Logger.e(e, "Fail pack");
-            return false;
-        }
-        return true;
     }
 
     private ProgressDialog showCompressDialog() {

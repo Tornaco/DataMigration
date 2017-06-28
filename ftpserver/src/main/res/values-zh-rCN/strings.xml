@@ -34,7 +34,8 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
     <string name="show_password_label">显示密码</string>
     <string name="advanced_settings_label">高级设置...</string>
     <string name="port_number_label">端口号</string>
-    <string name="chroot_label">设为根目录</string>
+    <string name="chroot_label">设置根目录</string>
+    <string name="anonymous_label">允许匿名登录</string>
     <string name="accept_wifi_label">接受 Wi-Fi 连接</string>
     <string name="wakelock_label">保持设备唤醒（最大 CPU 频率）</string>
     <string name="extra_label">其他</string>

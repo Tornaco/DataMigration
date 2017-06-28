@@ -19,7 +19,7 @@ public class FTPFullWakeLockTile extends ThemedTile {
     public FTPFullWakeLockTile(@NonNull Context context) {
         super(context, null);
         this.titleRes = R.string.wakelock_label;
-        this.iconRes = R.drawable.ic_settings;
+        this.iconRes = R.drawable.ic_power;
     }
 
     @Override
