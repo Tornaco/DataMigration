@@ -10,13 +10,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/activity_horizontal_margin"
         android:clickable="true"
         android:padding="2dp"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="3dp"
-        app:cardMaxElevation="3dp"
+        app:cardBackgroundColor="?attr/colorAccent"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="5dp"
+        app:cardMaxElevation="6dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="false"
         app:contentPadding="3dp">
@@ -24,22 +23,23 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin">
+            android:layout_margin="@dimen/activity_vertical_margin_huge">
 
             <org.newstand.datamigration.ui.widget.ProgressWheel
                 android:id="@+id/progress_view"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                app:pwBarColor="@color/dark"
-                app:pwBarLength="6dp"
-                app:pwBarWidth="8dp"
-                app:pwRimColor="@color/divider"
+                app:pwBarColor="@color/white"
+                app:pwBarLength="3dp"
+                app:pwBarWidth="4dp"
+                app:pwRimColor="@color/white"
                 app:pwRimWidth="1dp"
-                app:pwSpinSpeed="3dp"
-                app:pwTextColor="@color/dark"
-                app:pwTextSize="36sp" />
+                app:pwSpinSpeed="2dp"
+                app:pwTextColor="@color/white"
+                app:pwTextSize="72sp"
+                app:pwTypeface="fonts/GOTHICB.ttf" />
 
         </RelativeLayout>
 
@@ -53,13 +53,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_margin="@dimen/activity_horizontal_margin_small"
         android:clickable="true"
         android:padding="2dp"
         app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="3dp"
-        app:cardMaxElevation="3dp"
+        app:cardCornerRadius="1dp"
+        app:cardElevation="1dp"
+        app:cardMaxElevation="2dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="false"
         app:contentPadding="3dp">

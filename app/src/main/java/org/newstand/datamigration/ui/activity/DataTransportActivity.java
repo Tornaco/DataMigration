@@ -3,8 +3,10 @@ package org.newstand.datamigration.ui.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.provider.ThemeColor;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/10 9:30
@@ -14,11 +16,12 @@ import org.newstand.datamigration.R;
 
 public class DataTransportActivity extends TransitionSafeActivity {
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_with_container_template);
+        setContentView(R.layout.activity_with_container_with_appbar_template);
+        Toolbar toolbar = findView(R.id.toolbar);
+        setSupportActionBar(toolbar);
         showHomeAsUp();
     }
 
@@ -36,4 +39,11 @@ public class DataTransportActivity extends TransitionSafeActivity {
     protected boolean needSmoothHook() {
         return true;
     }
+
+    @Override
+    protected void onApplyTheme(ThemeColor color) {
+        int themeRes = getAppThemeNoActionBar(color);
+        setTheme(themeRes);
+    }
+
 }
