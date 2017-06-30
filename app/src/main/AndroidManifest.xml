@@ -24,7 +24,6 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-
     <application
         android:name=".DataMigrationApp"
         android:allowBackup="true"
@@ -32,7 +31,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
             android:value="60f3f20bc06ef7b326523f6c7844e4bb" />
@@ -43,10 +41,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.DrawerNavigatorActivity"
             android:label="@string/app_name"
@@ -54,11 +52,12 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <!--Themed Activity-->
+        <!-- Themed Activity -->
         <activity
             android:name=".ui.activity.NavigatorActivityDefault"
             android:enabled="true"
@@ -68,10 +67,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.NavigatorActivityRed"
             android:enabled="false"
@@ -81,10 +80,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.NavigatorActivityTeal"
             android:enabled="false"
@@ -94,10 +93,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.NavigatorActivityWhite"
             android:enabled="false"
@@ -107,10 +106,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.NavigatorActivityCoolDark"
             android:enabled="false"
@@ -120,10 +119,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.NavigatorActivityPink"
             android:enabled="false"
@@ -133,10 +132,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.NavigatorActivityAmber"
             android:enabled="false"
@@ -146,10 +145,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.NavigatorActivityCoolApk"
             android:enabled="false"
@@ -159,10 +158,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.NavigatorActivityPurple"
             android:enabled="false"
@@ -172,12 +171,17 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.AndroidCategoryViewerActivity"
+            android:label="@string/title_backup"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.activity.AndroidCategoryViewerActivity2"
             android:label="@string/title_backup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -197,12 +201,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.activity.BackupSessionPickerActivity2"
+            android:label="@string/title_restore"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".ui.activity.ReceivedSessionPickerActivity"
             android:label="@string/title_transport_received_viewer"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupCategoryViewerActivity"
+            android:label="@string/title_restore"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.activity.BackupCategoryViewerActivity2"
             android:label="@string/title_restore"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -296,13 +310,13 @@
         <activity
             android:name=".ui.activity.AdActivity"
             android:label="@string/title_show_ads" />
-
         <activity
             android:name="com.nononsenseapps.filepicker.FilePickerActivity"
             android:label="@string/app_name"
             android:theme="@style/FilePickerTheme">
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -372,7 +386,6 @@
         <service
             android:name=".service.schedule.SchedulerServiceV21"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
         <service
             android:name=".service.schedule.SchedulerService"
             android:exported="false">
@@ -386,8 +399,20 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <service android:name=".service.MediaPlayerService" />
-        <service android:name=".service.DataCompressService"/>
+        <service android:name=".service.DataCompressService" />
+
+        <activity
+            android:name=".ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

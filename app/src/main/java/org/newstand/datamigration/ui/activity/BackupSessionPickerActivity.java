@@ -20,6 +20,7 @@ public class BackupSessionPickerActivity extends TransitionSafeActivity implemen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         showHomeAsUp();
         setTitle(getTitle());
         setContentView(R.layout.activity_with_container_template);

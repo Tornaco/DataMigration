@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.ui.activity.BackupSessionPickerActivity;
+import org.newstand.datamigration.ui.activity.BackupSessionPickerActivity2;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.StaticColorQuickTileView;
 
@@ -32,7 +32,7 @@ public class RestoreTile extends ThemedTile {
             public void onClick(View v) {
                 super.onClick(v);
                 TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getContext();
-                transitionSafeActivity.transitionTo(new Intent(getContext(), BackupSessionPickerActivity.class));
+                transitionSafeActivity.transitionTo(new Intent(getContext(), BackupSessionPickerActivity2.class));
             }
         };
     }

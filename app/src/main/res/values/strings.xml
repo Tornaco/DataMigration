@@ -272,4 +272,5 @@
     <string name="title_dir_name">文件目录</string>
     <string name="title_not_set">尚未指定</string>
     <string name="title_dir_divider">多个目录使用英文逗号隔开</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
 </resources>
