@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme.BlueGrey">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/blue_grey</item>
+        <item name="colorPrimaryDark">@color/blue_grey_dark</item>
+        <item name="colorAccent">@color/blue_grey</item>
+    </style>
+
+    <style name="AppTheme.BlueGrey.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>

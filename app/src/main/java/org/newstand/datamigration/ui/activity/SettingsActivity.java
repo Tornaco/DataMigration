@@ -25,6 +25,7 @@ import org.newstand.datamigration.ui.tiles.AutoInstallTile;
 import org.newstand.datamigration.ui.tiles.DevTile;
 import org.newstand.datamigration.ui.tiles.EncryptTile;
 import org.newstand.datamigration.ui.tiles.InstallDataTile;
+import org.newstand.datamigration.ui.tiles.InstallerTimeoutTile;
 import org.newstand.datamigration.ui.tiles.StorageLocationTile;
 import org.newstand.datamigration.ui.tiles.ThemeColorTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
@@ -186,6 +187,7 @@ public class SettingsActivity extends TransitionSafeActivity {
             app.titleRes = R.string.tile_category_app;
             app.addTile(new InstallDataTile(getContext()));
             app.addTile(new AutoInstallTile(getContext()));
+            app.addTile(new InstallerTimeoutTile(getContext()));
 
             Category secure = new ThemedCategory();
             secure.titleRes = R.string.title_secure;

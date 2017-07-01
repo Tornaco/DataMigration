@@ -13,7 +13,6 @@
     <color name="green">#4CAF50</color>
     <color name="red">#F44336</color>
     <color name="orange">#FF5722</color>
-    <color name="brown">#795548</color>
     <color name="teal">#009688</color>
     <color name="blue">#03A9F4</color>
     <color name="purple_dark">#7B1FA2</color>
@@ -21,7 +20,6 @@
     <color name="green_dark">#388E3C</color>
     <color name="red_dark">#D32F2F</color>
     <color name="orange_dark">#F57C00</color>
-    <color name="brown_dark">#5D4037</color>
     <color name="teal_dark">#00796B</color>
     <color name="blue_dark">#303F9F</color>
     <color name="pink">#FF4081</color>
@@ -30,6 +28,10 @@
     <color name="dark_dark">#292929</color>
     <color name="amber">#FFC107</color>
     <color name="amber_dark">#FFA000</color>
+    <color name="brown">#795548</color>
+    <color name="brown_dark">#5D4037</color>
+    <color name="blue_grey">#607D8B</color>
+    <color name="blue_grey_dark">#455A64</color>
 
     <!-- Default theme-->
     <color name="primary">#3F51B5</color>
@@ -55,10 +57,12 @@
     <string name="name_teal">TEAL</string>
     <string name="name_white">白</string>
     <string name="name_red">姨妈红</string>
-    <string name="name_coolapk">酷安绿</string>
+    <string name="name_coolapk">原谅绿</string>
     <string name="name_purple">基佬紫</string>
     <string name="name_pink">萌粉</string>
     <string name="name_dark">酷黑</string>
     <string name="name_amber">AMBER</string>
-    <string name="name_def">默认</string>
+    <string name="name_brown">熊毛棕</string>
+    <string name="name_blue_grey">低调蓝灰</string>
+    <string name="name_def">默认-深蓝</string>
 </resources>

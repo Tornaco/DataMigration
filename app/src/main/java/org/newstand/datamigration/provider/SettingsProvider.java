@@ -55,6 +55,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_SHOW_AD = "key_show_ad";
     private static final String KEY_AD_PRESENT_TIMES = "key_ad_present_times";
     private static final String KEY_LOADER_CONFIG_CATEGORY_ENABLED_PREFIX = "loader_config_should_load_";
+    private static final String KEY_APP_INSTALLER_TIMEOUT = "app_installer_timeout";
 
     private static final String APP_DATA_DIR = "data/data";
 
@@ -472,6 +473,14 @@ public class SettingsProvider extends Observable {
 
     public static void setShowAdEnabled(boolean enabled) {
         sMe.writeBoolean(KEY_SHOW_AD, enabled);
+    }
+
+    public static InstallerTimeout getAppInstallerTimeout() {
+        return InstallerTimeout.valueOf(sMe.readString(KEY_APP_INSTALLER_TIMEOUT, InstallerTimeout.Long.name()));
+    }
+
+    public static void setAppInstallerTimeout(InstallerTimeout timeout) {
+        sMe.writeString(KEY_APP_INSTALLER_TIMEOUT, String.valueOf(timeout));
     }
 
     public static int getAdPresentTimes() {

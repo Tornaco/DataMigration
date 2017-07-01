@@ -19,7 +19,16 @@ public class DataTransportActivity extends TransitionSafeActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_with_container_with_appbar_template);
+        switch (getThemeColor()) {
+            case White:
+                setContentView(R.layout.activity_with_container_with_appbar_dark_template);
+
+                break;
+            default:
+                setContentView(R.layout.activity_with_container_with_appbar_template);
+
+                break;
+        }
         Toolbar toolbar = findView(R.id.toolbar);
         setSupportActionBar(toolbar);
         showHomeAsUp();

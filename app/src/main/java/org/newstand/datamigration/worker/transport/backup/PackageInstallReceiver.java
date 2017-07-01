@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.logger.Logger;
 
 import java.util.concurrent.CountDownLatch;
@@ -19,8 +20,6 @@ import java.util.concurrent.TimeUnit;
 class PackageInstallReceiver extends BroadcastReceiver {
 
     private CountDownLatch latch = new CountDownLatch(1);
-
-    private static final long MAX_INSTALL_TIME_MINUTES = 2;
 
     private String packageName;
 
@@ -45,7 +44,8 @@ class PackageInstallReceiver extends BroadcastReceiver {
     public boolean waitUtilInstalled() {
         while (true) {
             try {
-                return latch.await(MAX_INSTALL_TIME_MINUTES, TimeUnit.MINUTES);
+                return latch.await(SettingsProvider.getAppInstallerTimeout().timeMills,
+                        TimeUnit.MILLISECONDS);
             } catch (InterruptedException ignored) {
 
             }

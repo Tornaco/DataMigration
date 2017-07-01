@@ -7,7 +7,6 @@ import android.view.View;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.ui.activity.AndroidCategoryViewerActivity;
-import org.newstand.datamigration.ui.activity.AndroidCategoryViewerActivity2;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.StaticColorQuickTileView;
 
@@ -33,7 +32,7 @@ public class BackupTile extends ThemedTile {
             public void onClick(View v) {
                 super.onClick(v);
                 TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getContext();
-                transitionSafeActivity.transitionTo(new Intent(getContext(), AndroidCategoryViewerActivity2.class));
+                transitionSafeActivity.transitionTo(new Intent(getContext(), AndroidCategoryViewerActivity.class));
             }
         };
     }

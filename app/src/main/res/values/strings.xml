@@ -160,6 +160,8 @@
     <string name="tile_dev_mode">调试模式</string>
     <string name="summary_dev_mode">你可以查看程序日志，开启一些调试功能，也可能会引入一些未知问题，仅限开发者调试使用</string>
     <string name="tile_auto_install">静默安装</string>
+    <string name="tile_install_timeout">应用安装超时</string>
+    <string name="summery_install_timeout">当应用安装时间超过%1$s毫秒时，认为该应用安装失败，通常是因为用户在安装界面选择了取消。</string>
     <string name="summaty_auto_install">尝试静默安装应用程序，需要你的设备拥有root权限，并且允许给本应用；如果静默安装失败，会尝试传统安装方式安装。</string>
     <string name="title_encrypt">加密</string>
     <string name="summary_encrypt">对通话记录，短信进行加密。注意，这可能会导致备份的数据失去兼容性</string>

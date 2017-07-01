@@ -12,6 +12,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -55,12 +56,20 @@ import dev.nick.eventbus.annotation.Events;
 import dev.nick.eventbus.annotation.ReceiverMethod;
 import lombok.Getter;
 
+// With CollapsingToolbarLayout.
 public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scrollable_with_recycler);
+        switch (getThemeColor()) {
+            case White:
+                setContentView(R.layout.scrollable_with_recycler_dark);
+                break;
+            default:
+                setContentView(R.layout.scrollable_with_recycler);
+                break;
+        }
 
         Toolbar toolbar = findView(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -121,6 +130,9 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
     @Getter
     private RecyclerView recyclerView;
+
+    @Getter
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Getter
     private CommonListAdapter adapter;
@@ -246,6 +258,8 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
     }
 
     private void setupView() {
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getIntArray(R.array.polluted_waves));
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         recyclerView.setHasFixedSize(true);
@@ -261,6 +275,13 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
             }
         });
         showFab(false);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                startLoadingChecked();
+            }
+        });
     }
 
     private void buildFabIntro() {
@@ -325,6 +346,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
     }
 
     private void waitForAllLoader() {
+        swipeRefreshLayout.setRefreshing(true);
         loadingLatch = new CountDownLatch(DataCategory.values().length);
         new Thread(new Runnable() {
             @Override
@@ -336,6 +358,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                swipeRefreshLayout.setRefreshing(false);
                                 java.util.Collections.sort(mokes, new Comparator<DataRecord>() {
                                     @Override
                                     public int compare(DataRecord r1, DataRecord r2) {
