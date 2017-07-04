@@ -98,4 +98,6 @@ dependencies {
     // https://github.com/afollestad/material-dialogs
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
+
+    compile 'xyz.sahildave:searchviewlayout:0.6'
 }

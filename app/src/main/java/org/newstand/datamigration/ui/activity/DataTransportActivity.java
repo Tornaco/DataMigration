@@ -21,11 +21,11 @@ public class DataTransportActivity extends TransitionSafeActivity {
         super.onCreate(savedInstanceState);
         switch (getThemeColor()) {
             case White:
-                setContentView(R.layout.activity_with_container_with_appbar_dark_template);
+                setContentView(R.layout.activity_data_transporter_dark);
 
                 break;
             default:
-                setContentView(R.layout.activity_with_container_with_appbar_template);
+                setContentView(R.layout.activity_data_transporter);
 
                 break;
         }
