@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.provider.ThemeColor;
 import org.newstand.datamigration.ui.fragment.DataListViewerFragment;
 import org.newstand.logger.Logger;
 
@@ -35,27 +33,14 @@ public class DataListHostActivity extends TransitionSafeActivity implements Data
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        switch (getThemeColor()) {
-            case White:
-                setContentView(R.layout.activity_data_list_host);
-
-                break;
-            default:
-                setContentView(R.layout.activity_data_list_host);
-
-                break;
-        }
-        Toolbar toolbar = findView(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_with_container_template);
         showHomeAsUp();
-
-        resolveIntent();
     }
 
     @Override
-    protected void onApplyTheme(ThemeColor color) {
-        int themeRes = getAppThemeNoActionBar(color);
-        setTheme(themeRes);
+    protected void onStart() {
+        super.onStart();
+        resolveIntent();
     }
 
     @Override
