@@ -12,6 +12,7 @@ import com.google.common.io.Files;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.data.model.DataRecordComparator;
 import org.newstand.datamigration.data.model.MusicRecord;
 import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.loader.LoaderSource;
@@ -22,6 +23,7 @@ import org.newstand.datamigration.worker.transport.Session;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 12:51
@@ -36,7 +38,7 @@ public class MusicLoader extends BaseLoader {
     @Override
     public Collection<DataRecord> loadFromAndroid(final LoaderFilter<DataRecord> filter) {
 
-        final Collection<DataRecord> records = new ArrayList<>();
+        final List<DataRecord> records = new ArrayList<>();
 
         consumeCursor(createCursor(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER), new Consumer<Cursor>() {
@@ -47,12 +49,13 @@ public class MusicLoader extends BaseLoader {
                     records.add(record);
             }
         });
+        java.util.Collections.sort(records, new DataRecordComparator());
         return records;
     }
 
     @Override
     public Collection<DataRecord> loadFromSession(LoaderSource source, Session session, LoaderFilter<DataRecord> filter) {
-        final Collection<DataRecord> records = new ArrayList<>();
+        final List<DataRecord> records = new ArrayList<>();
         String dir =
                 source.getParent() == LoaderSource.Parent.Received ?
                         SettingsProvider.getReceivedDirByCategory(DataCategory.Music, session)
@@ -75,7 +78,7 @@ public class MusicLoader extends BaseLoader {
                 records.add(record);
             }
         });
-
+        java.util.Collections.sort(records, new DataRecordComparator());
         return records;
     }
 

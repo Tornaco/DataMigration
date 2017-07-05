@@ -13,6 +13,7 @@ import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.data.model.DataRecordComparator;
 import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
@@ -22,6 +23,7 @@ import org.newstand.datamigration.worker.transport.Session;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -35,7 +37,7 @@ public class ContactLoader extends BaseLoader {
     @Override
     public Collection<DataRecord> loadFromAndroid(final LoaderFilter<DataRecord> filter) {
 
-        final Collection<DataRecord> records = new ArrayList<>();
+        final List<DataRecord> records = new ArrayList<>();
 
         consumeCursor(createCursor(ContactsContract.Contacts.CONTENT_URI, null, null, null, null), new Consumer<Cursor>() {
             @Override
@@ -46,12 +48,14 @@ public class ContactLoader extends BaseLoader {
             }
         });
 
+        java.util.Collections.sort(records, new DataRecordComparator());
+
         return records;
     }
 
     @Override
     public Collection<DataRecord> loadFromSession(LoaderSource source, Session session, LoaderFilter<DataRecord> filter) {
-        final Collection<DataRecord> records = new ArrayList<>();
+        final List<DataRecord> records = new ArrayList<>();
         String dir = source.getParent() == LoaderSource.Parent.Received ?
                 SettingsProvider.getReceivedDirByCategory(DataCategory.Contact, session)
                 : SettingsProvider.getBackupDirByCategory(DataCategory.Contact, session);
@@ -65,6 +69,8 @@ public class ContactLoader extends BaseLoader {
                 records.add(record);
             }
         });
+
+        java.util.Collections.sort(records, new DataRecordComparator());
 
         return records;
     }
