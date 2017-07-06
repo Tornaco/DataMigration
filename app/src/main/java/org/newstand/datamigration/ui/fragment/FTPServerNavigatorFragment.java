@@ -26,6 +26,7 @@ import org.newstand.datamigration.ui.tiles.FTPRootDirTile;
 import org.newstand.datamigration.ui.tiles.FTPUserNameTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.ErrDialog;
+import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.utils.EmojiUtils;
 
 import java.util.List;
@@ -137,12 +138,7 @@ public class FTPServerNavigatorFragment extends DashboardFragment implements Pro
 
 
     private void onPermissionNotGrant() {
-        ErrDialog.attach(getContext(), new IllegalStateException("Permission denied"), new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                getActivity().finish();
-            }
-        });
+        PermissionMissingDialog.attach(getActivity());
     }
 
 

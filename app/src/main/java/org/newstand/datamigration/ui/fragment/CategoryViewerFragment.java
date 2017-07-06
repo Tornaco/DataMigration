@@ -33,6 +33,7 @@ import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.ErrDialog;
+import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.logger.Logger;
 
@@ -153,13 +154,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
     }
 
     private void onPermissionNotGrant() {
-        ErrDialog.attach(getActivity(), new IllegalStateException("Permission denied!!!"),
-                new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        getActivity().finish();
-                    }
-                });
+        PermissionMissingDialog.attach(getActivity());
     }
 
     private LoadingCacheManager getCacheManager(LoaderSource.Parent parent) {

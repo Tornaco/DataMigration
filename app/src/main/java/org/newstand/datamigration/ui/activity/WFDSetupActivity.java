@@ -34,6 +34,7 @@ import org.newstand.datamigration.ui.adapter.P2PListViewHolder;
 import org.newstand.datamigration.ui.widget.AlertDialogCompat;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
+import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.ui.widget.ProgressDialogCompat;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.logger.Logger;
@@ -129,12 +130,7 @@ public class WFDSetupActivity extends TransitionSafeActivity implements Discover
     }
 
     private void onPermissionNotGrant() {
-        ErrDialog.attach(WFDSetupActivity.this, new IllegalStateException("Permission denied!!!"), new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                finishWithAfterTransition();
-            }
-        });
+        PermissionMissingDialog.attach(this);
     }
 
     @Override

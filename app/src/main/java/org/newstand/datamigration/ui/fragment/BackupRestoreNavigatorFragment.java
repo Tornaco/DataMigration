@@ -35,6 +35,7 @@ import org.newstand.datamigration.ui.tiles.SchedulerTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.IntroDialog;
+import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.ui.widget.VersionInfoDialog;
 import org.newstand.datamigration.utils.EmojiUtils;
 import org.newstand.datamigration.worker.transport.Session;
@@ -196,12 +197,7 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
     }
 
     private void onPermissionNotGrant() {
-        ErrDialog.attach(getContext(), new IllegalStateException("Permission denied"), new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                getActivity().finish();
-            }
-        });
+        PermissionMissingDialog.attach(getActivity());
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

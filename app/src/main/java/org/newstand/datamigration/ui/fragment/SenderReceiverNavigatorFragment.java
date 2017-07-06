@@ -39,6 +39,7 @@ import org.newstand.datamigration.ui.tiles.SendTile;
 import org.newstand.datamigration.ui.tiles.ShareTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.ErrDialog;
+import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.ui.widget.VersionInfoDialog;
 import org.newstand.datamigration.utils.EmojiUtils;
 import org.newstand.datamigration.utils.Files;
@@ -219,12 +220,7 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
     }
 
     private void onPermissionNotGrant() {
-        ErrDialog.attach(getContext(), new IllegalStateException("Permission denied"), new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                getActivity().finish();
-            }
-        });
+        PermissionMissingDialog.attach(getActivity());
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
