@@ -45,6 +45,7 @@
                         android:layout_centerVertical="true"
                         android:padding="@dimen/activity_horizontal_margin"
                         android:text="@string/title_backup_restore"
+                        android:textColor="?colorAccent"
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textStyle="normal" />
@@ -95,7 +96,7 @@
 
                     <Button
                         android:id="@+id/button"
-                        style="@style/ActionButton"
+                        style="@style/ActionButton.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

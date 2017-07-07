@@ -43,6 +43,9 @@
         <item name="android:textColor">?colorAccent</item>
     </style>
 
+    <style name="ActionButton.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
 
     <style name="CardCommon" parent="CardView.Light">
         <item name="android:clickable">true</item>

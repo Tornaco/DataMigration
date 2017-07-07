@@ -13,6 +13,7 @@ import org.newstand.datamigration.repo.ReceivedSessionRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.SessionComparator;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -90,7 +91,7 @@ public abstract class SessionLoader {
                             }
                         });
                     }
-                    java.util.Collections.reverse(res);
+                    java.util.Collections.sort(res, new SessionComparator());
                     loaderListener.onComplete(res);
                 } catch (Throwable throwable) {
                     loaderListener.onErr(throwable);
@@ -130,7 +131,7 @@ public abstract class SessionLoader {
                             res.add(Session.from(session));
                         }
                     });
-                    java.util.Collections.reverse(res);
+                    java.util.Collections.sort(res, new SessionComparator());
                     loaderListener.onComplete(res);
                 } catch (Throwable throwable) {
                     loaderListener.onErr(throwable);
