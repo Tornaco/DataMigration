@@ -3,6 +3,7 @@ package org.newstand.datamigration.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Keep;
 import android.support.v4.app.Fragment;
 
 import com.google.common.base.Preconditions;
@@ -62,6 +63,7 @@ public class BackupCategoryViewerActivity extends CategoryViewerActivity {
     }
 
     @ReceiverMethod
+    @Keep
     @Events(IntentEvents.EVENT_TRANSPORT_COMPLETE)
     @CallInMainThread
     public void onTransportComplete(Event event) {

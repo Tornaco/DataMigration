@@ -11,9 +11,7 @@ import android.content.Context;
 public class MediaProviderHook {
 
     public static byte[] getCompressedAlbumArt(Context context, String path) {
-
         return null;
-
     }
 
 }

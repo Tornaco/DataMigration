@@ -196,10 +196,8 @@ double MP3::parse_mp3_frames(std::ifstream &file) {
             if (file.get(c)) {
                 bitrate = ((((uint8_t) c) & 0xF0) >> 4);
                 bitrates.push_back(bitrate_lookup(id, layer, bitrate));
-            }
-            else break;
-        }
-        else match = 0;
+            } else break;
+        } else match = 0;
     }
 
     for (i = 0; i < (int) bitrates.size(); i++)

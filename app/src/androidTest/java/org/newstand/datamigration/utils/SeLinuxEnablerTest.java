@@ -3,7 +3,6 @@ package org.newstand.datamigration.utils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.newstand.logger.Logger;
-import org.newstand.logger.Settings;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/18 18:26

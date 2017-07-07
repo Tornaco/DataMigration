@@ -128,7 +128,7 @@ public class DataExportManageFragment extends DataTransportManageFragment {
     @Override
     protected Session onCreateSession() {
         return Session.from(getString(R.string.title_backup_default_name)
-                + "@"
+                + "-"
                 + DateUtils.formatForFileName(System.currentTimeMillis()));
     }
 

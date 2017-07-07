@@ -3,7 +3,6 @@ package org.newstand.datamigration.utils;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.Root;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.chrisplus.rootmanager.RootManager;

@@ -38,6 +38,13 @@ public class PhotoListFragment extends DataListViewerFragment {
 
                 super.onBindViewHolder(holder, record);
             }
+
+            @Override
+            protected boolean onItemLongClick(CommonListViewHolder holder) {
+                // Show details.
+
+                return true;
+            }
         };
     }
 }

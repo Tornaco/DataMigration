@@ -33,7 +33,6 @@ import org.newstand.datamigration.ui.tiles.RestoreTile;
 import org.newstand.datamigration.ui.tiles.RulesTile;
 import org.newstand.datamigration.ui.tiles.SchedulerTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
-import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.IntroDialog;
 import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.ui.widget.VersionInfoDialog;
@@ -193,7 +192,6 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
     }
 
     private void onPermissionGrant() {
-        queryShowHistory();
     }
 
     private void onPermissionNotGrant() {
@@ -215,12 +213,6 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
                             FuzzyDateTimeFormatter.getTimeAgo(getContext(),
                                     new Date(last.getDate())));
                 }
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tv1.setText(intro);
-                    }
-                });
             }
         });
     }

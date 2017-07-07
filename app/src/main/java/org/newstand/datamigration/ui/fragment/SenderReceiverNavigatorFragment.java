@@ -38,7 +38,6 @@ import org.newstand.datamigration.ui.tiles.ReceivedViewerTile;
 import org.newstand.datamigration.ui.tiles.SendTile;
 import org.newstand.datamigration.ui.tiles.ShareTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
-import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.ui.widget.VersionInfoDialog;
 import org.newstand.datamigration.utils.EmojiUtils;
@@ -190,7 +189,6 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
     }
 
     private void onPermissionGrant() {
-        queryShowHistory();
     }
 
     private void buildCardIntros() {
@@ -236,12 +234,6 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
                 } else {
                     intro = getString(R.string.title_receive_history_size, String.valueOf(size));
                 }
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tv2.setText(intro);
-                    }
-                });
             }
         });
     }

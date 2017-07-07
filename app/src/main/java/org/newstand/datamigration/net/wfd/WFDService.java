@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
+import android.support.annotation.Keep;
 
 import com.google.common.base.Preconditions;
 
@@ -285,6 +286,7 @@ class WFDService extends WFDManager {
     }
 
     @ReceiverMethod
+    @Keep
     @Events(WFDEvents.WIFI_P2P_DISCOVERY_STARTED)
     public void onP2PDiscoveryStart() {
         if (discoveryListener != null) discoveryListener.onP2PDiscoveryStart();
@@ -292,6 +294,7 @@ class WFDService extends WFDManager {
     }
 
     @ReceiverMethod
+    @Keep
     @Events(WFDEvents.WIFI_P2P_DISCOVERY_STOPED)
     public void onP2PDiscoveryStop() {
         if (discoveryListener != null) discoveryListener.onP2PDiscoveryStop();
@@ -300,12 +303,14 @@ class WFDService extends WFDManager {
 
     @ReceiverMethod
     @Events(WFDEvents.WIFI_P2P_STATE_CHANGED_ACTION)
+    @Keep
     public void onWifiP2PStateChanged(Event event) {
         int state = event.getArg1();
         Logger.d("onWifiP2PStateChanged %d", state);
     }
 
     @ReceiverMethod
+    @Keep
     @Events(WFDEvents.WIFI_P2P_PEERS_CHANGED_ACTION)
     public void onWifiP2PPeersChanged() {
         Logger.d("onWifiP2PPeersChanged");
@@ -313,6 +318,7 @@ class WFDService extends WFDManager {
     }
 
     @ReceiverMethod
+    @Keep
     @Events(WFDEvents.WIFI_P2P_CONNECTION_CHANGED_ACTION)
     public void onWifiP2PConnectionChanged(Event event) {
         NetworkInfo networkInfo = event.getData().getParcelable(WFDEvents.KEY_NETWORK_INFO);
@@ -328,6 +334,7 @@ class WFDService extends WFDManager {
     }
 
     @ReceiverMethod
+    @Keep
     @Events(WFDEvents.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION)
     public void onWifiP2PThisDeviceChanged() {
         Logger.d("onWifiP2PThisDeviceChanged");

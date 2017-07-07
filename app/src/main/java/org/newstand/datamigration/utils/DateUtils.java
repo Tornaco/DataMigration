@@ -24,11 +24,11 @@ public class DateUtils {
     public static String formatForFileName(long l) {
         String time;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            SimpleDateFormat format = new SimpleDateFormat("MM-dd-HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("MM-dd-HH-mm-ss");
             Date d1 = new Date(l);
             time = format.format(d1);
         } else {
-            java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("MM-dd-HH:mm:ss");
+            java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("MM-dd-HH-mm-ss");
             Date d1 = new Date(l);
             time = format.format(d1);
         }

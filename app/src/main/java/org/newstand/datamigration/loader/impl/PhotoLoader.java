@@ -15,9 +15,9 @@ import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.logger.Logger;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -63,6 +63,11 @@ public class PhotoLoader extends BaseLoader {
                 PhotoRecord record = new PhotoRecord();
                 record.setDisplayName(file.getName());
                 record.setPath(file.getAbsolutePath());
+                try {
+                    record.setSize(Files.asByteSource(file).size());
+                } catch (IOException ignored) {
+
+                }
                 records.add(record);
             }
         });

@@ -23,16 +23,39 @@
 -verbose
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
+# Keep Annotations
+-keepattributes *Annotation*
+
 -keep public class * extends android.app.Activity
+-keep public class * extends android.support.v4.app.Fragment
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
--keep public class com.android.vending.licensing.ILicensingService
--keep public class com.google.common.*
 
+# @Keep
+# http://tools.android.com/tech-docs/support-annotations
+-dontskipnonpubliclibraryclassmembers
+-printconfiguration
+-keep,allowobfuscation @interface android.support.annotation.Keep
+
+-keep @android.support.annotation.Keep class *
+-keepclassmembers class * {
+    @android.support.annotation.Keep *;
+}
+
+# Supports
+-keep class android.support.** { *; }
+-keep interface android.support.** { *; }
+
+# keep setters in Views so that animations can still work.
+# see http://proguard.sourceforge.net/manual/examples.html#beans
+-keepclassmembers public class * extends android.view.View {
+   void set*(***);
+   *** get*();
+}
 
 -keepclasseswithmembernames class * {
     native <methods>;
@@ -59,6 +82,22 @@
   public static final android.os.Parcelable$Creator *;
 }
 
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+-keep class **.R$* {
+ *;
+}
+-keepclassmembers class * {
+    void *(**On*Event);
+}
+
+# Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
   **[] $VALUES;
@@ -126,4 +165,16 @@
 -dontwarn com.google.common.**
 
 # WFDHook
+-keep class org.newstand.lib.wfdhook.** {*;}
 -dontwarn org.newstand.lib.wfdhook.**
+
+# EventBus
+-keep class dev.nick.eventbus.** {*;}
+-keep public interface dev.nick.eventbus.** {*;}
+-keep public @interface dev.nick.eventbus.** {*;}
+
+
+# Date models
+-keep class org.newstand.datamigration.data.** {*;}
+-keep public enum org.newstand.datamigration.data.** {*;}
+-keep public interface org.newstand.datamigration.data.** {*;}

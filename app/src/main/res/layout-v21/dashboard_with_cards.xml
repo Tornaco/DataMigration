@@ -13,8 +13,7 @@
      limitations under the License.
 -->
 
-<ScrollView
-    android:id="@+id/dashboard"
+<ScrollView android:id="@+id/dashboard"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,6 +31,6 @@
         android:paddingEnd="@dimen/dashboard_padding_end"
         android:paddingStart="@dimen/dashboard_padding_start"
         android:paddingTop="@dimen/dashboard_padding_top"
-        tools:ignore="RtlCompat"/>
+        tools:ignore="RtlCompat" />
 
 </ScrollView>

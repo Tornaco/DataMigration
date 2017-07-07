@@ -15,3 +15,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+
+# EventBus
+-keep class dev.nick.eventbus.** {*;}
+-keep public interface dev.nick.eventbus.** {*;}
+-keep public @interface dev.nick.eventbus.** {*;}

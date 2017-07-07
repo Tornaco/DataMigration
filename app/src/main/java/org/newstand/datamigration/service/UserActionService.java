@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
@@ -61,6 +62,7 @@ public class UserActionService extends Service {
     }
 
     @ReceiverMethod
+    @Keep
     @Events(IntentEvents.EVENT_ON_USER_ACTION)
     @WorkerThread
     public void handleUserAction(Event e) {

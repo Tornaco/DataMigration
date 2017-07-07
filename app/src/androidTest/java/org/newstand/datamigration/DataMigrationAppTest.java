@@ -1,12 +1,9 @@
 package org.newstand.datamigration;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/16 11:13

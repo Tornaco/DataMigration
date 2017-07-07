@@ -23,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -98,4 +98,5 @@ dependencies {
     // https://github.com/afollestad/material-dialogs
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
+
 }

@@ -45,14 +45,14 @@ public class VersionRetriever {
                             listener.onError(e);
                             return;
                         }
-                        final String currentVersion = BuildConfig.VERSION_NAME;
+                        final int currentVersion = BuildConfig.VERSION_CODE;
                         if (result != null) {
                             try {
                                 VersionInfo versionInfo = VersionInfo.fromJson(result);
                                 VersionCheckResult versionCheckResult = new VersionCheckResult();
                                 versionCheckResult.setHasLater(
                                         !SettingsProvider.isTipsNoticed("checkForUpdate-" + versionInfo.getVersionName())
-                                                && !currentVersion.equals(versionInfo.getVersionName()));
+                                                && currentVersion < versionInfo.getVersionCode());
                                 versionCheckResult.setVersionInfo(versionInfo);
                                 listener.onComplete(versionCheckResult);
                             } catch (Exception e1) {

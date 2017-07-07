@@ -84,33 +84,22 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
                     android:background="@color/divider"
-                    android:visibility="gone" />
-
+                    android:visibility="visible" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/divider22"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
-                    <ImageView
-                        android:layout_width="@dimen/text_drawable_size"
-                        android:layout_height="@dimen/text_drawable_size"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@android:id/text2"
-                        android:tint="@color/third_text"
-                        app:srcCompat="@drawable/ic_clock" />
-
-
-                    <TextView
-                        android:id="@android:id/text2"
-                        style="@style/BottomSummaryText"
+                    <Button
+                        android:id="@+id/button"
+                        style="@style/ActionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="@string/title_receive_history_noop" />
+                        android:text="@string/learn_more" />
                 </RelativeLayout>
 
             </RelativeLayout>

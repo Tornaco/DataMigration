@@ -7,7 +7,6 @@ import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.loader.DataLoaderManager;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.logger.Logger;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/6 14:21

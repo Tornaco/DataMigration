@@ -6,8 +6,6 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Nick@NewStand.org on 2017/4/26 10:31
  * E-Mail: NewStand@163.com

@@ -13,7 +13,6 @@ public class PermissionMissingDialog {
                 .title(R.string.permission_missing)
                 .titleColorAttr(R.attr.colorAccent)
                 .content(R.string.permission_missing_message)
-                .autoDismiss(false)
                 .cancelable(false)
                 .positiveColorAttr(R.attr.colorAccent)
                 .positiveText(android.R.string.ok)

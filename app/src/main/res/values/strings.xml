@@ -9,7 +9,7 @@
     <string name="fab_intro_category_send">当你完成数据选择时，点击此处即可开始进行传输</string>
     <string name="backup_intro_actions">此卡片包括</string>
     <string name="backup_intro_and">和</string>
-    <string name="backup_intro">支持联系人，短信，通话记录，多媒体，无线局域网等数据备份与应用（数据）的本地备份。\n\n需要你授予取联系人，电话，短信，文件读写等权限。</string>
+    <string name="backup_intro">支持联系人，短信，通话记录，多媒体，无线局域网等数据备份与应用（数据）的本地备份。\n\n需要你授予联系人，电话，短信，文件读写等权限。</string>
     <string name="transport_intro">你现在可以在两台设备之间，快速互相传输文件。\n\n需要你授予位置信息权限。\n</string>
     <string name="ftp_intro">文件传输协议FTP使得主机间可以共享文件。FTP客户机可以给服务器发出命令来下载文件，上传文件，创建或改变服务器上的目录。\n\n需要你授予文件读写权限，并确保连接到了无线网络。\n\n相关技术来自@Pieter的Swiftp项目。</string>
 
@@ -17,6 +17,8 @@
 
     <string name="yes">Y</string>
     <string name="no">N</string>
+
+    <string name="learn_more">了解更多</string>
 
 
     <string name="permission_missing">权限缺失</string>
@@ -206,7 +208,7 @@
     <string name="summary_check_for_update_current_version">当前版本%1$s</string>
     <string name="title_check_for_update_no_remind">该版本不再提醒</string>
 
-    <string name="phone_num_unknown">未知号码</string>
+    <string name="phone_num_unknown">号码未知或暂不可用</string>
 
     <string name="selinux_state">SeLinux状态</string>
     <string name="title_secure">安全</string>

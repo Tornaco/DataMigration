@@ -116,7 +116,7 @@ public class ScheduledTaskCreatorFragment extends DashboardFragment {
                 if (id < 0) {
                     BackupActionSettings actionSettings = BackupActionSettings.builder()
                             .session(Session.from(getString(R.string.title_settings_session_def)
-                                    + "@"
+                                    + "-"
                                     + DateUtils.formatForFileName(System.currentTimeMillis())))
                             .dataCategories(new ArrayList<DataCategory>(DataCategory.values().length))
                             .build();

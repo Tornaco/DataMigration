@@ -45,7 +45,7 @@ public class DataReceiverActivity extends DataTransportActivity implements Produ
     @Override
     public LoaderSource onRequestLoaderSource() {
         return LoaderSource.builder().session(Session.from(getString(R.string.title_received_default_name)
-                + "@" + DateUtils.formatForFileName(System.currentTimeMillis())))
+                + "-" + DateUtils.formatForFileName(System.currentTimeMillis())))
                 .parent(LoaderSource.Parent.Android).build();
     }
 }

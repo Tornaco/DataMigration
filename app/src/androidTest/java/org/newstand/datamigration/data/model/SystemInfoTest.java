@@ -3,8 +3,6 @@ package org.newstand.datamigration.data.model;
 import org.junit.Test;
 import org.newstand.logger.Logger;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Nick on 2017/6/28 18:31
  */

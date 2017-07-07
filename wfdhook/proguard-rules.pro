@@ -15,3 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# WFDHook
+-keep class org.newstand.lib.wfdhook.** {*;}
+-dontwarn org.newstand.lib.wfdhook.**

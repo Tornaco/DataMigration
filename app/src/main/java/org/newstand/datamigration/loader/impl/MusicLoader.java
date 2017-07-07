@@ -21,6 +21,7 @@ import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -67,6 +68,11 @@ public class MusicLoader extends BaseLoader {
                 MusicRecord record = new MusicRecord();
                 record.setDisplayName(file.getName());
                 record.setPath(file.getAbsolutePath());
+                try {
+                    record.setSize(Files.asByteSource(file).size());
+                } catch (IOException ignored) {
+
+                }
 
 //                try {
 //                    TrackUtils.extractArt(record.getPath(), SettingsProvider.getLogDir()

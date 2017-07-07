@@ -19,12 +19,12 @@ public class VersionRetrieverTest {
 
         VersionRetriever.hasLaterVersionAsync(InstrumentationRegistry.getTargetContext(),
                 new ActionListener2Adapter<VersionCheckResult, Throwable>() {
-            @Override
-            public void onComplete(VersionCheckResult versionCheckResult) {
-                super.onComplete(versionCheckResult);
-                Logger.d("hasLaterVersionAsync %s", versionCheckResult);
-            }
-        });
+                    @Override
+                    public void onComplete(VersionCheckResult versionCheckResult) {
+                        super.onComplete(versionCheckResult);
+                        Logger.d("hasLaterVersionAsync %s", versionCheckResult);
+                    }
+                });
 
         Sleeper.sleepQuietly(Interval.Minutes.getIntervalMills());
     }

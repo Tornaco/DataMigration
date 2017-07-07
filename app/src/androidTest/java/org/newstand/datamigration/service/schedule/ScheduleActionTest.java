@@ -24,6 +24,6 @@ public class ScheduleActionTest {
                         .dataCategories(ImmutableList.of(DataCategory.CallLog, DataCategory.Contact, DataCategory.Sms)).build())
                 .build();
 
-       scheduleAction.execute(InstrumentationRegistry.getTargetContext());
+        scheduleAction.execute(InstrumentationRegistry.getTargetContext());
     }
 }

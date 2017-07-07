@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.logger.Logger;
-import org.newstand.logger.Settings;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;

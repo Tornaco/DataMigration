@@ -207,38 +207,38 @@ public class DataSenderProxyTest {
         final Session session = Session.create();
         DataReceiverProxy.receive(InstrumentationRegistry.getTargetContext(), mServer,
                 new TransportListenerAdapter() {
-            @Override
-            public void onPieceSuccess(DataRecord record) {
-                super.onPieceSuccess(record);
-                Logger.d("receive onPieceSuccess %s %s", record, getStats());
-            }
+                    @Override
+                    public void onPieceSuccess(DataRecord record) {
+                        super.onPieceSuccess(record);
+                        Logger.d("receive onPieceSuccess %s %s", record, getStats());
+                    }
 
-            @Override
-            public void onPieceFail(DataRecord record, Throwable err) {
-                super.onPieceFail(record, err);
-                Logger.d("receive onPieceFail %s %s", record, getStats());
-            }
+                    @Override
+                    public void onPieceFail(DataRecord record, Throwable err) {
+                        super.onPieceFail(record, err);
+                        Logger.d("receive onPieceFail %s %s", record, getStats());
+                    }
 
-            @Override
-            public void onPieceStart(DataRecord record) {
-                super.onPieceStart(record);
-                Logger.d("receive onPieceStart %s", record);
-            }
+                    @Override
+                    public void onPieceStart(DataRecord record) {
+                        super.onPieceStart(record);
+                        Logger.d("receive onPieceStart %s", record);
+                    }
 
-            @Override
-            public void onComplete() {
-                super.onComplete();
-                Logger.d("receive onComplete~~");
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        Logger.d("receive onComplete~~");
 
-                ReceivedSessionRepoService.get().insert(InstrumentationRegistry.getTargetContext(), session);
-            }
+                        ReceivedSessionRepoService.get().insert(InstrumentationRegistry.getTargetContext(), session);
+                    }
 
-            @Override
-            public void onAbort(Throwable err) {
-                super.onAbort(err);
-                Logger.d("receive onAbort %s", Logger.getStackTraceString(err));
-            }
-        }, session);
+                    @Override
+                    public void onAbort(Throwable err) {
+                        super.onAbort(err);
+                        Logger.d("receive onAbort %s", Logger.getStackTraceString(err));
+                    }
+                }, session);
     }
 
     private void dump() {

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -391,6 +392,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
 
     @SuppressWarnings("unchecked")
     @ReceiverMethod
+    @Keep
     @Events(IntentEvents.EVENT_ON_CATEGORY_OF_DATA_SELECT_COMPLETE)
     public void updateSelectionCount(Event event) {
         List<DataRecord> dataRecords = (List<DataRecord>) event.getObj();
