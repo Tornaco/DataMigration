@@ -46,6 +46,7 @@ public class MusicViewerDialog {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             playerService = IMusicPlayerService.Stub.asInterface(service);
+            fab.show();
         }
 
         @Override

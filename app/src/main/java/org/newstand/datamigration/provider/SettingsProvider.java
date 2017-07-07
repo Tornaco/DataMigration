@@ -139,6 +139,18 @@ public class SettingsProvider extends Observable {
                 + "Compressed";
     }
 
+    public static String getCacheRootDir() {
+        return getDataMigrationRootDir()
+                + File.separator
+                + "Cache";
+    }
+
+    public static String getAppIconCacheRootDir() {
+        return getCacheRootDir()
+                + File.separator
+                + "AppIcons";
+    }
+
     private static String getCommonRootDir() {
         return COMMON_ROOT_DIR;
     }

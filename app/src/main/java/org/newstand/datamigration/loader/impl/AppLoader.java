@@ -3,6 +3,7 @@ package org.newstand.datamigration.loader.impl;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -18,12 +19,15 @@ import org.newstand.datamigration.loader.LoaderFilter;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.ApkUtil;
+import org.newstand.datamigration.utils.BitmapUtils;
+import org.newstand.datamigration.utils.Closer;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -74,6 +78,28 @@ public class AppLoader extends BaseLoader {
                 appRecord.setSize(size);
             } catch (IOException e) {
                 Logger.e("Failed to query size for:%s", appRecord);
+            }
+
+            Bitmap bitmap = null;
+            OutputStream os = null;
+            try {
+                Drawable icon = ApkUtil.loadIconByPkgName(getContext(), packageInfo.packageName);
+                bitmap = BitmapUtils.getBitmap(getContext(), icon);
+                String iconUrl = SettingsProvider.getAppIconCacheRootDir() + File.separator + appRecord.getPkgName();
+                appRecord.setIconUrl(iconUrl);
+                File iconFile = new File(iconUrl);
+                Files.createParentDirs(iconFile);
+                if (!iconFile.exists() && bitmap != null) {
+                    os = Files.asByteSink(iconFile).openStream();
+                    if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)) {
+
+                    }
+                }
+            } catch (IOException e) {
+                Logger.e(e, "Fail compress bitmap");
+            } finally {
+                if (bitmap != null) bitmap.recycle();
+                Closer.closeQuietly(os);
             }
 
             appRecord.setVersionName(packageInfo.versionName);
@@ -131,7 +157,6 @@ public class AppLoader extends BaseLoader {
                             Logger.w("Ignore app while package name is null %s", file.getPath());
                             return;
                         }
-                        Drawable icon = ApkUtil.loadIconByFilePath(getContext(), record.getPath());
                         record.setVersionName(ApkUtil.loadVersionByFilePath(getContext(), record.getPath()));
                         record.setPkgName(packageName);
                         record.setSize(Files.asByteSource(new File(record.getPath())).size());
@@ -141,6 +166,28 @@ public class AppLoader extends BaseLoader {
 
                         record.setHandleApk(false);
                         record.setHandleData(false);
+
+                        Bitmap bitmap = null;
+                        OutputStream os = null;
+                        try {
+                            Drawable icon = ApkUtil.loadIconByFilePath(getContext(), record.getPath());
+                            bitmap = BitmapUtils.getBitmap(getContext(), icon);
+                            String iconUrl = SettingsProvider.getAppIconCacheRootDir() + File.separator + record.getPkgName();
+                            record.setIconUrl(iconUrl);
+                            File iconFile = new File(iconUrl);
+                            Files.createParentDirs(iconFile);
+                            if (!iconFile.exists() && bitmap != null) {
+                                os = Files.asByteSink(iconFile).openStream();
+                                if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)) {
+
+                                }
+                            }
+                        } catch (IOException e) {
+                            Logger.e(e, "Fail compress bitmap");
+                        } finally {
+                            if (bitmap != null) bitmap.recycle();
+                            Closer.closeQuietly(os);
+                        }
 
                         records.add(record);
                     } catch (Throwable e) {
@@ -160,6 +207,9 @@ public class AppLoader extends BaseLoader {
                         record.setDisplayName(jsonRecord.getDisplayName());
                         record.setHandleApk(false);
                         record.setHandleData(false);
+
+                        String iconUrl = SettingsProvider.getAppIconCacheRootDir() + File.separator + record.getPkgName();
+                        record.setIconUrl(iconUrl);
 
                         records.add(record);
                     } catch (Throwable e) {

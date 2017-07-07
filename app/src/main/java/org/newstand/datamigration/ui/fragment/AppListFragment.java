@@ -2,11 +2,11 @@ package org.newstand.datamigration.ui.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.bumptech.glide.Glide;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.AppRecord;
@@ -16,6 +16,8 @@ import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.ApkDataPickerDialog;
 import org.newstand.datamigration.utils.Files;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -57,10 +59,12 @@ public class AppListFragment extends DataListViewerFragment {
                         getStringSafety(appRecord.isHandleApk() ? R.string.yes : R.string.no),
                         getStringSafety(appRecord.isHandleData() ? R.string.yes : R.string.no));
                 holder.getLineTwoTextView().setText(summary);
-                Drawable icon = appRecord.getIcon();
-                holder.getCheckableImageView().setImageDrawable(icon == null
-                        ? ContextCompat.getDrawable(getContext(), R.mipmap.ic_ext_avatar)
-                        : icon);
+                Glide.with(AppListFragment.this)
+                        .load(appRecord.getIconUrl())
+                        .crossFade()
+                        .bitmapTransform(new CropCircleTransformation(getContext()))
+                        .error(R.mipmap.ic_ext_avatar)
+                        .into(holder.getCheckableImageView());
                 super.onBindViewHolder(holder, record);
             }
 

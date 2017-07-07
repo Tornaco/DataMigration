@@ -14,6 +14,8 @@ import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.MusicViewerDialog;
 import org.newstand.datamigration.utils.Files;
 
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -50,6 +52,8 @@ public class MusicListFragment extends DataListViewerFragment {
                 Glide.with(getContext())
                         .load(musicRecord.getArtUri())
                         .centerCrop()
+                        .crossFade()
+                        .bitmapTransform(new CropCircleTransformation(getContext()))
                         .error(R.mipmap.ic_music_avatar)
                         .into(holder.getCheckableImageView());
 

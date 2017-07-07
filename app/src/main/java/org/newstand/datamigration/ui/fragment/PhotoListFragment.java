@@ -11,6 +11,8 @@ import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.ImageViewerDialog;
 import org.newstand.datamigration.utils.Files;
 
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
  * E-Mail: NewStand@163.com
@@ -34,6 +36,8 @@ public class PhotoListFragment extends DataListViewerFragment {
 
                 Glide.with(getContext())
                         .load(photoRecord.getPath())
+                        .crossFade()
+                        .bitmapTransform(new CropCircleTransformation(getContext()))
                         .error(R.drawable.aio_image_default)
                         .into(holder.getCheckableImageView());
 

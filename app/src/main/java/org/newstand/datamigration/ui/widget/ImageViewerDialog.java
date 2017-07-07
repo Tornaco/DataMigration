@@ -34,8 +34,8 @@ public class ImageViewerDialog {
         materialDialog.show();
         Glide.with(context).load(path)
                 .asBitmap()
+                .crossFade()
                 .error(R.drawable.ic_media_empty)
-                .animate(R.anim.fade_in)
                 .into(imageView);
         textView.setText(context.getString(R.string.details_images_path, path));
     }

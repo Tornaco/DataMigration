@@ -1,6 +1,12 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.content.ContentUris;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
+
+import com.bumptech.glide.Glide;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.ContactRecord;
@@ -8,6 +14,8 @@ import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -29,8 +37,19 @@ public class ContactListFragment extends DataListViewerFragment {
             public void onBindViewHolder(final CommonListViewHolder holder, DataRecord record) {
                 ContactRecord contactRecord = (ContactRecord) record;
                 holder.getLineTwoTextView().setText(buildSummary(contactRecord));
-                holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(),
-                        R.mipmap.ic_contacts_avatar));
+                String id = contactRecord.getId();
+                if (!TextUtils.isEmpty(id)) {
+                    Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
+                            Long.parseLong(id));
+                    Glide.with(ContactListFragment.this).load(uri)
+                            .crossFade()
+                            .bitmapTransform(new CropCircleTransformation(getContext()))
+                            .error(R.mipmap.ic_contacts_avatar)
+                            .into(holder.getCheckableImageView());
+                } else {
+                    holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(),
+                            R.mipmap.ic_contacts_avatar));
+                }
                 super.onBindViewHolder(holder, record);
             }
         };

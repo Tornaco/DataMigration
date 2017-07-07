@@ -34,6 +34,7 @@ public class AppRecord extends FileBasedRecord implements Parcelable {
 
     @Deprecated
     private transient Drawable icon;
+    private transient String iconUrl;
 
     public String toJson() {
         return new Gson().toJson(this);

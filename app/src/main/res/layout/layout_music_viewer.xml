@@ -55,7 +55,6 @@
         android:layout_below="@+id/divider"
         android:padding="@dimen/activity_horizontal_margin"
         android:text="@string/details_images_path"
-        android:textAllCaps="true"
         android:textStyle="normal" />
 
 </RelativeLayout>
