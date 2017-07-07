@@ -17,12 +17,12 @@ import org.newstand.datamigration.R;
 
 public class ImageViewerDialog {
 
-    public static void attach(Context context, String path) {
+    public static void attach(Context context, String titleStr, String path) {
         View layout = LayoutInflater.from(context).inflate(R.layout.layout_image_viewer, null);
         ImageView imageView = (ImageView) layout.findViewById(R.id.image);
         TextView textView = (TextView) layout.findViewById(android.R.id.text1);
         MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                .title(R.string.category_photo)
+                .title(titleStr)
                 .titleColorAttr(R.attr.colorAccent)
                 .customView(layout, true)
                 .positiveColorAttr(R.attr.colorAccent)

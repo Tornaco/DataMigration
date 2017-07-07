@@ -17,8 +17,6 @@ import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.ApkDataPickerDialog;
 import org.newstand.datamigration.utils.Files;
 
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
-
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
  * E-Mail: NewStand@163.com
@@ -62,7 +60,6 @@ public class AppListFragment extends DataListViewerFragment {
                 Glide.with(AppListFragment.this)
                         .load(appRecord.getIconUrl())
                         .crossFade()
-                        .bitmapTransform(new CropCircleTransformation(getContext()))
                         .error(R.mipmap.ic_ext_avatar)
                         .into(holder.getCheckableImageView());
                 super.onBindViewHolder(holder, record);

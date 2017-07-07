@@ -164,6 +164,9 @@
 
 -dontwarn com.google.common.**
 
+# Repo
+-keep class org.newstand.datamigration.repo.** {*;}
+
 # WFDHook
 -keep class org.newstand.lib.wfdhook.** {*;}
 -dontwarn org.newstand.lib.wfdhook.**

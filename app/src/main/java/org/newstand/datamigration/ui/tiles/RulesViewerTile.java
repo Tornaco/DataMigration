@@ -7,13 +7,19 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.policy.ExtraDataRule;
+import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.ExtraDataRulesRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.activity.RulesCreatorActivity;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
+
+import java.io.File;
 
 import dev.nick.tiles.tile.QuickTile;
 import dev.nick.tiles.tile.SwitchTileView;
@@ -31,6 +37,8 @@ public class RulesViewerTile extends QuickTile {
 
         this.title = TextUtils.isEmpty(rule.getAlias()) ? rule.getPackageName() : rule.getAlias();
         this.iconRes = R.drawable.ic_settings_app;
+
+
         this.tileView = new SwitchTileView(getContext()) {
             @Override
             public void onClick(View v) {
@@ -57,6 +65,15 @@ public class RulesViewerTile extends QuickTile {
             protected void onBindActionView(RelativeLayout container) {
                 super.onBindActionView(container);
                 setChecked(rule.isEnabled());
+
+                // Load icon.
+                // Workaround: Do not work when fragment resumed.
+                String iconUrl = SettingsProvider.getAppIconCacheRootDir() + File.separator + rule.getPackageName();
+                Glide.with(RulesViewerTile.this.getContext().getApplicationContext())
+                        .load(iconUrl)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .crossFade().error(R.drawable.ic_settings_app).into(getImageView());
             }
         };
     }

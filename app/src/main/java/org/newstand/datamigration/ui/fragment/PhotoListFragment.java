@@ -54,6 +54,6 @@ public class PhotoListFragment extends DataListViewerFragment {
     }
 
     private void showDetailedImage(DataRecord record) {
-        ImageViewerDialog.attach(getActivity(), ((PhotoRecord) record).getPath());
+        ImageViewerDialog.attach(getActivity(), record.getDisplayName(), ((PhotoRecord) record).getPath());
     }
 }
