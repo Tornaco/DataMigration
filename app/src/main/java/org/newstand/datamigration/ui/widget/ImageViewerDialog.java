@@ -1,0 +1,42 @@
+package org.newstand.datamigration.ui.widget;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.Glide;
+
+import org.newstand.datamigration.R;
+
+/**
+ * Created by guohao4 on 2017/7/7.
+ */
+
+public class ImageViewerDialog {
+
+    public static void attach(Context context, String path) {
+        View layout = LayoutInflater.from(context).inflate(R.layout.layout_image_viewer, null);
+        ImageView imageView = (ImageView) layout.findViewById(R.id.image);
+        TextView textView = (TextView) layout.findViewById(android.R.id.text1);
+        MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+                .title(R.string.category_photo)
+                .titleColorAttr(R.attr.colorAccent)
+                .customView(layout, true)
+                .positiveColorAttr(R.attr.colorAccent)
+                .positiveText(android.R.string.ok)
+                .cancelable(true)
+                .autoDismiss(true)
+                .canceledOnTouchOutside(true)
+                .build();
+        materialDialog.show();
+        Glide.with(context).load(path)
+                .asBitmap()
+                .error(R.drawable.ic_media_empty)
+                .animate(R.anim.fade_in)
+                .into(imageView);
+        textView.setText(context.getString(R.string.details_images_path, path));
+    }
+}

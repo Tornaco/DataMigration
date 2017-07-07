@@ -11,6 +11,7 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.MusicRecord;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
+import org.newstand.datamigration.ui.widget.MusicViewerDialog;
 import org.newstand.datamigration.utils.Files;
 
 
@@ -54,6 +55,13 @@ public class MusicListFragment extends DataListViewerFragment {
 
 
                 super.onBindViewHolder(holder, record);
+            }
+
+            @Override
+            protected boolean onItemLongClick(CommonListViewHolder holder) {
+                MusicRecord musicRecord = (MusicRecord) getDataRecords().get(holder.getAdapterPosition());
+                new MusicViewerDialog(getActivity()).attach(musicRecord.getDisplayName(), musicRecord.getPath(), musicRecord.getArtUri());
+                return true;
             }
         };
     }

@@ -8,6 +8,7 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.PhotoRecord;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
+import org.newstand.datamigration.ui.widget.ImageViewerDialog;
 import org.newstand.datamigration.utils.Files;
 
 /**
@@ -33,7 +34,7 @@ public class PhotoListFragment extends DataListViewerFragment {
 
                 Glide.with(getContext())
                         .load(photoRecord.getPath())
-                        .error(R.mipmap.ic_photo_avatar)
+                        .error(R.drawable.aio_image_default)
                         .into(holder.getCheckableImageView());
 
                 super.onBindViewHolder(holder, record);
@@ -42,9 +43,13 @@ public class PhotoListFragment extends DataListViewerFragment {
             @Override
             protected boolean onItemLongClick(CommonListViewHolder holder) {
                 // Show details.
-
+                showDetailedImage(getDataRecords().get(holder.getAdapterPosition()));
                 return true;
             }
         };
+    }
+
+    private void showDetailedImage(DataRecord record) {
+        ImageViewerDialog.attach(getActivity(), ((PhotoRecord) record).getPath());
     }
 }

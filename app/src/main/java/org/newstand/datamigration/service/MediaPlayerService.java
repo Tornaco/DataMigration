@@ -222,6 +222,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     }
 
     private void next() {
+        if (tracks == null) return;
         int next = tracks.indexOf(mPlayer.getCurrent());
         switch (getPlayMode()) {
             case PlayMode.MODE_LIST:
@@ -240,6 +241,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     }
 
     private void previous() {
+        if (tracks == null) return;
         int next = tracks.indexOf(mPlayer.getCurrent());
         switch (getPlayMode()) {
             case PlayMode.MODE_LIST:
@@ -297,7 +299,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
             context.startService(getIntent(context));
         }
 
-        private static Intent getIntent(Context context) {
+        public static Intent getIntent(Context context) {
             Intent intent = new Intent();
             intent.setClass(context, MediaPlayerService.class);
             intent.setPackage(context.getPackageName());
