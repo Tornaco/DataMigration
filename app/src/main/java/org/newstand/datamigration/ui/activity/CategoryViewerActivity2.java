@@ -279,6 +279,14 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         });
     }
 
+    protected boolean isLoading() {
+        return loadingLatch != null && loadingLatch.getCount() > 0;
+    }
+
+    protected boolean isLoadingComplete() {
+        return loadingLatch != null && loadingLatch.getCount() == 0;
+    }
+
     private void setupView() {
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
         swipeRefreshLayout.setColorSchemeColors(getResources().getIntArray(R.array.polluted_waves));
@@ -369,6 +377,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
     private void waitForAllLoader() {
         swipeRefreshLayout.setRefreshing(true);
+        appBarLayout.setExpanded(false, true);
         loadingLatch = new CountDownLatch(DataCategory.values().length);
         new Thread(new Runnable() {
             @Override

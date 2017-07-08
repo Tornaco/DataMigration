@@ -54,6 +54,7 @@ public class AppLoader extends BaseLoader {
         for (PackageInfo packageInfo : packages) {
 
             AppRecord appRecord = new AppRecord();
+            // TODO Replace space with empty char.
             appRecord.setDisplayName(packageInfo.applicationInfo.loadLabel(pm).toString());
             appRecord.setPkgName(packageInfo.packageName);
             appRecord.setPath(packageInfo.applicationInfo.publicSourceDir);
@@ -137,6 +138,7 @@ public class AppLoader extends BaseLoader {
             public void accept(@NonNull File file) {
 
                 AppRecord record = new AppRecord();
+                // TODO Replace space with empty char.
                 record.setDisplayName(Files.getNameWithoutExtension(file.getPath()));
                 record.setPath(file.getPath() + File.separator + SettingsProvider.getBackupAppApkDirName()
                         + File.separator + record.getDisplayName() + AppRecord.APK_FILE_PREFIX);

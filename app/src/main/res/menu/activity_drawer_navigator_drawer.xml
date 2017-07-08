@@ -8,7 +8,7 @@
             android:title="@string/title_backup_restore" />
         <item
             android:id="@+id/nav_sender_receiver"
-            android:icon="@drawable/ic_send"
+            android:icon="@drawable/ic_transport"
             android:title="@string/title_transport_sender_receiver" />
         <item
             android:id="@+id/nav_ftp"

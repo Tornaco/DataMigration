@@ -13,6 +13,7 @@ import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.Sleeper;
+import org.newstand.datamigration.utils.BlackHole;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.utils.MiscUtils;
 import org.newstand.datamigration.utils.RootTarUtil;
@@ -21,6 +22,8 @@ import org.newstand.datamigration.utils.SeLinuxContextChanger;
 import org.newstand.logger.Logger;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -175,13 +178,35 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
             Logger.e("Fail to obtain root~");
             return false;
         }
-        Result installRes = RootManager.getInstance().installPackage(restoreSettings.getSourceApkPath());
+
+        String apkPath = restoreSettings.getSourceApkPath();
+        String tmpPath = SettingsProvider.getAppInstallerCacheRootDir()
+                + File.separator
+                + UUID.randomUUID().toString();
+        // Check if this path has any space.
+        if (apkPath.contains(" ")) {
+            Logger.w("This apk path contains invalid char, replacing...");
+            // Copy a tmp.
+            try {
+                Files.createParentDirs(new File(tmpPath));
+                Files.copy(new File(apkPath), new File(tmpPath));
+                apkPath = tmpPath;
+                Logger.d("Now using new apk path:%s", apkPath);
+            } catch (IOException e) {
+                Logger.e("Fail copy apk");
+            }
+        }
+
+        Result installRes = RootManager.getInstance().installPackage(apkPath);
         MiscUtils.printResult("InstallApk", installRes);
 
         if (!installRes.getResult()) {
             Logger.e("Fail to install app with root");
             return false;
         }
+
+        // Clean up.
+        BlackHole.eat(new File(tmpPath).exists() && new File(tmpPath).delete());
 
         return true;
     }

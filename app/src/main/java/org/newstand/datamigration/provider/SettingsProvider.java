@@ -151,6 +151,12 @@ public class SettingsProvider extends Observable {
                 + "AppIcons";
     }
 
+    public static String getAppInstallerCacheRootDir() {
+        return getCacheRootDir()
+                + File.separator
+                + "Installer";
+    }
+
     private static String getCommonRootDir() {
         return COMMON_ROOT_DIR;
     }

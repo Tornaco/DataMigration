@@ -45,14 +45,14 @@ public class BackupCategoryViewerActivity2 extends CategoryViewerActivity2 {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
                 Logger.d("AppBarLayout, onStateChanged:%s, size:%s", state, fileSize);
-                if (state == State.EXPANDED) {
-                    if (fileSize > 0) {
-                        getCollapsingToolbarLayout().setCollapsedTitleTextAppearance(R.style.CollapsedTitleExpanded);
+                if (state == State.EXPANDED || state == State.IDLE) {
+                    if (isLoadingComplete()) {
                         getCollapsingToolbarLayout().setTitle(getString(R.string.oc_storage,
                                 org.newstand.datamigration.utils.Files.formatSize(fileSize)));
+                    } else {
+                        getCollapsingToolbarLayout().setTitle(mSource.getSession().getName());
                     }
                 } else if (state == State.COLLAPSED) {
-                    getCollapsingToolbarLayout().setCollapsedTitleTextAppearance(R.style.CollapsedTitle);
                     getCollapsingToolbarLayout().setTitle(mSource.getSession().getName());
                 }
             }
