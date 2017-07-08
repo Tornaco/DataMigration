@@ -45,6 +45,7 @@
 
     <style name="ActionButton.Small">
         <item name="android:textSize">12sp</item>
+        <item name="android:minWidth">64dip</item>
     </style>
 
     <style name="CollapsedTitle" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title" />
@@ -58,6 +59,12 @@
         <item name="android:foreground">?selectableItemBackground</item>
         <item name="android:padding">2dp</item>
         <item name="cardBackgroundColor">@color/card</item>
+    </style>
+
+    <style name="CardTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textStyle">normal</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/secondary_text</item>
     </style>
 
     <!-- The list item main text style/color -->
