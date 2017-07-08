@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
+import com.github.paolorotolo.appintro.BuildConfig;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
@@ -38,12 +39,18 @@ public class AppIntroActivity extends AppIntro {
                 R.drawable.image_exchange,
                 getResources().getColor(R.color.primary)));
 
+        addSlide(AppIntroFragment.newInstance(getString(R.string.title_ftp),
+                getString(R.string.ftp_intro),
+                R.drawable.intro_ftp,
+                getResources().getColor(R.color.primary)));
+
         // OPTIONAL METHODS
         // Override bar/separator color.
         setBarColor(getResources().getColor(R.color.primary_dark));
 
         setDoneText(getString(R.string.action_done));
         setImageNextButton(ContextCompat.getDrawable(this, R.drawable.ic_arrow_forward));
+        setNextArrowColor(getResources().getColor(R.color.white));
 
         // Hide Skip/Done button.
         showSkipButton(false);
@@ -66,6 +73,7 @@ public class AppIntroActivity extends AppIntro {
         super.onSkipPressed(currentFragment);
         // Do something when users tap on Skip button.
         SettingsProvider.setAppIntroNoticed(true);
+        SettingsProvider.setAppIntroNoticed(BuildConfig.VERSION_NAME, true);
         finish();
     }
 
@@ -74,6 +82,7 @@ public class AppIntroActivity extends AppIntro {
         super.onDonePressed(currentFragment);
         // Do something when users tap on Done button.
         SettingsProvider.setAppIntroNoticed(true);
+        SettingsProvider.setAppIntroNoticed(BuildConfig.VERSION_NAME, true);
         finish();
     }
 

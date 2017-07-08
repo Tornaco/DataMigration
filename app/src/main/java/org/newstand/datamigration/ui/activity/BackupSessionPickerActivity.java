@@ -29,7 +29,7 @@ public class BackupSessionPickerActivity extends TransitionSafeActivity implemen
 
     @Override
     public void onSessionSelect(Session session) {
-        Intent intent = new Intent(this, BackupCategoryViewerActivity.class);
+        Intent intent = new Intent(this, BackupCategoryViewerActivity2.class);
         intent.putExtra(IntentEvents.KEY_SOURCE, LoaderSource.builder()
                 .parent(LoaderSource.Parent.Backup).session(session).build());
         transitionTo(intent);

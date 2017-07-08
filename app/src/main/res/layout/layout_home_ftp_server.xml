@@ -44,7 +44,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:padding="@dimen/activity_horizontal_margin"
-                        android:text="@string/title_transport_ftp"
+                        android:text="@string/title_ftp"
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textColor="?colorAccent"

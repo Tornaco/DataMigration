@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:clickable="true"
         android:padding="2dp"
-        app:cardBackgroundColor="?attr/colorAccent"
+        app:cardBackgroundColor="?attr/colorPrimary"
         app:cardCornerRadius="0dp"
         app:cardElevation="5dp"
         app:cardMaxElevation="6dp"
@@ -23,7 +23,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin_small">
+            android:layout_margin="@dimen/activity_vertical_margin_large">
 
             <org.newstand.datamigration.ui.widget.ProgressWheel
                 android:id="@+id/progress_view"
@@ -33,7 +33,7 @@
                 android:layout_centerVertical="true"
                 app:pwBarColor="@color/white"
                 app:pwBarLength="3dp"
-                app:pwBarWidth="4dp"
+                app:pwBarWidth="3dp"
                 app:pwRimColor="@color/white"
                 app:pwRimWidth="1dp"
                 app:pwSpinSpeed="2dp"

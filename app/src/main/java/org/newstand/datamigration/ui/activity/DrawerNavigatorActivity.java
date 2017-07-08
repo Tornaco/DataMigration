@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.github.paolorotolo.appintro.BuildConfig;
 import com.google.common.collect.ImmutableList;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -57,7 +58,7 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         }
         handler = new Handler();
         requestPerms();
-        if (!SettingsProvider.isAppIntroNoticed()) {
+        if (!SettingsProvider.isAppIntroNoticed(BuildConfig.VERSION_NAME)) {
             startActivity(new Intent(this, AppIntroActivity.class));
         }
     }

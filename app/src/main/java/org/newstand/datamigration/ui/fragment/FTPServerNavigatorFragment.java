@@ -1,7 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import org.newstand.datamigration.ui.tiles.FTPPWDTile;
 import org.newstand.datamigration.ui.tiles.FTPRootDirTile;
 import org.newstand.datamigration.ui.tiles.FTPUserNameTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
-import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.utils.EmojiUtils;
 
@@ -149,6 +147,6 @@ public class FTPServerNavigatorFragment extends DashboardFragment implements Pro
 
     @Override
     public Integer produce() {
-        return R.string.title_transport_ftp;
+        return R.string.title_ftp;
     }
 }

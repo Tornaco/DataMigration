@@ -10,5 +10,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:src="@drawable/photo_backup_help_card_header" />
+        android:src="@drawable/header" />
 </LinearLayout>

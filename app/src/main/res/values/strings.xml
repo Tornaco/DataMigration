@@ -51,6 +51,10 @@
     <string name="title_activity_category_viewer">CategoryViewerActivity</string>
     <string name="title_activity_test">Test</string>
 
+    <string name="category_mm">多媒体</string>
+    <string name="category_private">私有数据</string>
+    <string name="category_advanced">高级与实验性</string>
+
     <string name="category_music">音乐</string>
     <string name="category_video">视频</string>
     <string name="category_contact">联系人</string>
@@ -151,6 +155,8 @@
     <string name="empty_title">天哪</string>
     <string name="empty_summary">这里没有内容</string>
 
+    <string name="oc_storage">存储统计：%1$s</string>
+
     <string name="tile_category_storage">存储</string>
     <string name="tile_category_view">视觉（实验）</string>
     <string name="tile_category_about">关于</string>
@@ -181,13 +187,13 @@
     <string name="title_transport_share">把[数据迁移]分享给别人</string>
     <string name="title_transport_share_tips">为了安全起见，Android禁止直接分享APK文件，因此我们把APK文件命名为JPEG文件，待对方收到该文件后，修改后缀名为APK即可安装使用</string>
 
-    <string name="title_transport_ftp">FTP文件服务</string>
+    <string name="title_ftp">FTP文件服务</string>
     <string name="title_transport_ftp_control">开关FTP文件服务</string>
     <string name="title_ftp_solution_provider">Solution provided by Swiftp</string>
 
     <string name="title_start">开始</string>
     <string name="title_card_actions">接下来你可以</string>
-    <string name="title_card_coming_soon">敬请期待</string>
+    <string name="title_coming_soon">敬请期待</string>
     <string name="title_card_actions2">或者</string>
     <string name="title_card_ad">或者，欣赏广告放松下</string>
 

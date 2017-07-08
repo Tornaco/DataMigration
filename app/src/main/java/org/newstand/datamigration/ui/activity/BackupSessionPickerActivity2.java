@@ -135,7 +135,7 @@ public class BackupSessionPickerActivity2 extends TransitionSafeActivity impleme
                                     case R.id.action_compress:
                                         onRequestCompress(holder.getAdapterPosition());
                                         break;
-                                    case R.id.action_details:
+                                    case R.id.action_sys_details:
                                         onRequestDetails(holder.getAdapterPosition());
                                         break;
                                 }

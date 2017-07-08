@@ -25,17 +25,20 @@ public class LoaderConfigCategorySettingsFragment extends DashboardFragment {
         super.onCreateDashCategories(categories);
 
         Category priv = new Category();
+        priv.titleRes = R.string.category_private;
         priv.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Contact));
         priv.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.CallLog));
         priv.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Sms));
         priv.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Alarm));
 
         Category mm = new Category();
+        mm.titleRes = R.string.category_mm;
         mm.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Music));
         mm.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Video));
         mm.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Photo));
 
         Category conf = new Category();
+        conf.titleRes = R.string.category_advanced;
         conf.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.Wifi));
         conf.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.App));
         conf.addTile(new LoaderConfigCategoryTile(getContext(), DataCategory.SystemApp));

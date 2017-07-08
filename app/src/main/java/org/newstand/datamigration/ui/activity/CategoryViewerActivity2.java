@@ -3,13 +3,14 @@ package org.newstand.datamigration.ui.activity;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.google.common.io.Files;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.newstand.datamigration.R;
@@ -28,6 +30,7 @@ import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.CategoryRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
@@ -35,11 +38,12 @@ import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.fragment.CategoryViewerFragment;
-import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.logger.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -61,6 +65,11 @@ import lombok.Getter;
 // With CollapsingToolbarLayout.
 public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
+    @Getter
+    private AppBarLayout appBarLayout;
+    @Getter
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +81,9 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
                 setContentView(R.layout.scrollable_with_recycler);
                 break;
         }
+
+        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
         Toolbar toolbar = findView(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -146,6 +158,9 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
     private CountDownLatch loadingLatch;
 
+    @Getter
+    protected long fileSize = 0L;
+
     private EventReceiver selectionEventReceiver = new EventReceiver() {
         @Override
         public void onReceive(@NonNull Event event) {
@@ -204,6 +219,8 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
         Logger.i("startLoading from parent %s, cache %s", onRequestLoaderSource().getParent(), cache);
 
+        fileSize = 0L;
+
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
             public void accept(@NonNull final DataCategory category) {
@@ -234,6 +251,15 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
                             Collections.consumeRemaining(records, new Consumer<DataRecord>() {
                                 @Override
                                 public void accept(@NonNull DataRecord dataRecord) {
+                                    if (dataRecord instanceof FileBasedRecord) {
+                                        FileBasedRecord fileBasedRecord = (FileBasedRecord) dataRecord;
+                                        try {
+                                            long pieceSize = Files.asByteSource(new File(fileBasedRecord.getPath())).size();
+                                            fileSize += pieceSize;
+                                        } catch (IOException e) {
+                                            Logger.e(e, "Fail query file size");
+                                        }
+                                    }
                                     if (dataRecord.isChecked())
                                         sel[0]++;
                                 }
@@ -438,5 +464,6 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
     public interface LoaderSourceProvider {
         LoaderSource onRequestLoaderSource();
     }
+
 }
 

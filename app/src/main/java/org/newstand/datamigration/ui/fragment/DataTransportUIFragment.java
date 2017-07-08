@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.provider.ThemeColor;
 import org.newstand.datamigration.ui.widget.ProgressWheel;
 
 import lombok.Getter;
@@ -31,7 +32,16 @@ public abstract class DataTransportUIFragment extends StateBasedFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.data_transporter, container, false);
+        ThemeColor color = getThemeColor();
+        View root;
+        switch (color) {
+            case White:
+                root = inflater.inflate(R.layout.data_transporter_dark, container, false);
+                break;
+            default:
+                root = inflater.inflate(R.layout.data_transporter, container, false);
+                break;
+        }
         progressBar = (ProgressWheel) root.findViewById(R.id.progress_view);
         progressBar.setKeepScreenOn(true);
         consoleCardView = (CardView) root.findViewById(R.id.console_card);

@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/primary</item>
+        <item name="colorAccent">@color/accent</item>
         <item name="android:windowBackground">@color/window_background</item>
         <item name="dividerVertical">@color/transparent</item>
         <item name="dividerHorizontal">@color/transparent</item>
@@ -45,6 +45,12 @@
 
     <style name="ActionButton.Small">
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="CollapsedTitle" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+    <style name="CollapsedTitleExpanded" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:singleLine">false</item>
     </style>
 
     <style name="CardCommon" parent="CardView.Light">

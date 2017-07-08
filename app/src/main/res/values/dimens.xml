@@ -11,6 +11,7 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="thumbnail_size">42dp</dimen>
+    <dimen name="nav_header_avatar_size">64dp</dimen>
     <dimen name="common_item_min_height">72dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>

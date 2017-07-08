@@ -1,6 +1,7 @@
 package org.newstand.datamigration.ui.activity;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,7 @@ public class DataListHostActivity extends TransitionSafeActivity implements Data
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_container_template);
         showHomeAsUp();
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
 
     @Override

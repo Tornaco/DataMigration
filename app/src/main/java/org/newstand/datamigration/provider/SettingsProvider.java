@@ -373,8 +373,16 @@ public class SettingsProvider extends Observable {
         return sMe.readBoolean(KEY_APP_INTRO_NOTICED, false);
     }
 
+    public static boolean isAppIntroNoticed(String version) {
+        return isTipsNoticed(KEY_APP_INTRO_NOTICED + "-" + version);
+    }
+
     public static void setAppIntroNoticed(boolean noticed) {
         sMe.writeBoolean(KEY_APP_INTRO_NOTICED, noticed);
+    }
+
+    public static void setAppIntroNoticed(String version, boolean noticed) {
+        setTipsNoticed(KEY_APP_INTRO_NOTICED + "-" + version, noticed);
     }
 
     public static String getHelpMdFilePath() {

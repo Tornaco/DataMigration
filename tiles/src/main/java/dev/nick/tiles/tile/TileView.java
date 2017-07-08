@@ -105,7 +105,7 @@ public class TileView extends FrameLayout implements View.OnClickListener {
     }
 
     protected boolean useStaticTintColor() {
-        return false;
+        return true;
     }
 
     @Override
@@ -123,10 +123,5 @@ public class TileView extends FrameLayout implements View.OnClickListener {
         params.addRule(RelativeLayout.CENTER_HORIZONTAL);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         return params;
-    }
-
-    protected float dpToPx(int dp) {
-        Resources r = getResources();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
     }
 }
