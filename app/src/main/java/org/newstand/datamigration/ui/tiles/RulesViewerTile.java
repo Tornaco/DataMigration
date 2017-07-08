@@ -40,6 +40,12 @@ public class RulesViewerTile extends QuickTile {
 
 
         this.tileView = new SwitchTileView(getContext()) {
+
+            @Override
+            protected boolean useStaticTintColor() {
+                return false;
+            }
+
             @Override
             public void onClick(View v) {
                 TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getContext();

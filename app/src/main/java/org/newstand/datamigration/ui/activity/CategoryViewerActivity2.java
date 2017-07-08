@@ -370,6 +370,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
                 @Override
                 public void run() {
                     getAdapter().update(mokes);
+                    appBarLayout.setExpanded(true, true);
                 }
             });
         }
@@ -438,6 +439,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
             public void run() {
                 getAdapter().onUpdate();
                 showFab(getAdapter().hasSelection());
+                getAppBarLayout().setExpanded(true, true);
             }
         });
     }

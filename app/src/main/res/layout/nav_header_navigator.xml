@@ -17,7 +17,7 @@
         android:layout_width="@dimen/nav_header_avatar_size"
         android:layout_height="@dimen/nav_header_avatar_size"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/product_logo_avatar_circle_blue_color_36" />
+        app:srcCompat="@mipmap/ic_header_avatar" />
 
     <TextView
         android:layout_width="match_parent"

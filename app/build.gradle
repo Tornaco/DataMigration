@@ -10,8 +10,8 @@ android {
         targetSdkVersion 25
         // Enabling multidex support.
         multiDexEnabled true
-        versionCode 306
-        versionName "3.0.6"
+        versionCode 307
+        versionName "3.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
