@@ -42,9 +42,9 @@ public class RootToolsTest {
         Logger.w("Exist %s", RootTools.exists(qqDataDirPath, true));
         Logger.w("Exist %s", RootTools.exists(qqDataDirPath + "shared_prefs/1163397166_far.xml", false));
 
-        Logger.d("Copy %s", RootTools.copyFile(qqDataDirPath + "shared_prefs/1163397166_far.xml", SettingsProvider.getTestDir() + "/qq.xml", false, false));
+        Logger.d("copy %s", RootTools.copyFile(qqDataDirPath + "shared_prefs/1163397166_far.xml", SettingsProvider.getTestDir() + "/qq.xml", false, false));
 
-        // Copy back!
+        // copy back!
         RootTools.copyFile(SettingsProvider.getTestDir() + "/com.tencent.mobileqq", qqDataDirPath, false, false);
 
     }

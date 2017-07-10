@@ -7,6 +7,9 @@ package org.newstand.datamigration.worker.transport.backup;
  */
 
 public interface BackupAgent<B extends BackupSettings, R extends RestoreSettings> {
+
+    void listen(ProgressListener listener);
+
     Res backup(B backupSettings) throws Exception;
 
     Res restore(R restoreSettings) throws Exception;

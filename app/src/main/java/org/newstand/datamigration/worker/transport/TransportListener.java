@@ -21,6 +21,8 @@ public abstract class TransportListener {
 
     public abstract void onPieceStart(DataRecord record);
 
+    public abstract void onPieceUpdate(DataRecord record, TransportEvent transportEvent, float pieceProgress);
+
     public abstract void onPieceSuccess(DataRecord record);
 
     public abstract void onPieceFail(DataRecord record, Throwable err);

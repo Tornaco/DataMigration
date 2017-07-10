@@ -38,7 +38,7 @@ import static com.android.vcard.VCardConfig.VCARD_TYPE_V40_GENERIC;
  * All right reserved.
  */
 
-public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, ContactRestoreSettings>,
+public class ContactBackupAgent extends ProgressableBackupAgent<ContactBackupSettings, ContactRestoreSettings> implements
         ContextWireable, VCardEntryHandler {
     @Getter
     @Setter

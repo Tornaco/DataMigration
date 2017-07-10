@@ -32,7 +32,7 @@ import static org.newstand.datamigration.data.SmsContentProviderCompat.SENT_CONT
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-class SMSBackupAgent implements BackupAgent<SMSBackupSettings, SMSRestoreSettings>, ContextWireable {
+class SMSBackupAgent extends ProgressableBackupAgent<SMSBackupSettings, SMSRestoreSettings> implements ContextWireable {
 
     @Getter
     @Setter

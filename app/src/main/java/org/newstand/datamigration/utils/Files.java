@@ -22,7 +22,9 @@ import org.newstand.logger.Logger;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -33,6 +35,45 @@ import java.nio.charset.Charset;
  */
 
 public abstract class Files {
+
+    /**
+     * Interface definition for a callback to be invoked regularly as
+     * verification proceeds.
+     */
+    public interface ProgressListener {
+        /**
+         * Called periodically as the verification progresses.
+         *
+         * @param progress the approximate percentage of the
+         *                 verification that has been completed, ranging from 0
+         *                 to 100 (inclusive).
+         */
+        public void onProgress(float progress);
+    }
+
+
+    public static void copy(String spath, String dpath, ProgressListener listener) {
+        try {
+            FileInputStream fis = new FileInputStream(spath);
+            FileOutputStream fos = new FileOutputStream(dpath);
+            int totalByte = fis.available();
+            int read = 0;
+            int n = 0;
+            byte[] buffer = new byte[4096];
+            while ((n = fis.read(buffer)) != -1) {
+                fos.write(buffer, 0, n);
+                fos.flush();
+                read += n;
+                float per = (float) read / (float) totalByte;
+                listener.onProgress(per);
+            }
+
+            fos.close();
+            fis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static String formatSize(long fileSize) {
         String wellFormatSize = "";

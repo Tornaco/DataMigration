@@ -27,7 +27,7 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class WifiBackupAgent implements BackupAgent<WifiBackupSettings, WifiRestoreSettings>, ContextWireable {
+public class WifiBackupAgent extends ProgressableBackupAgent<WifiBackupSettings, WifiRestoreSettings> implements ContextWireable {
 
     @Getter
     @Setter

@@ -30,6 +30,7 @@ import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.utils.MediaScannerClient;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.Stats;
+import org.newstand.datamigration.worker.transport.TransportEvent;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
 import org.newstand.logger.Logger;
@@ -301,7 +302,7 @@ public class DataBackupManager {
         throw new IllegalArgumentException("Unknown for:" + dataCategory.name());
     }
 
-    private BackupAgent getAgentByCategory(DataCategory category) {
+    private BackupAgent onCreateAgentByCategory(DataCategory category) {
         switch (category) {
             case CallLog:
                 return new CallLogBackupAgent();
@@ -359,7 +360,7 @@ public class DataBackupManager {
         @Override
         @SuppressWarnings("unchecked")
         public void run() {
-            final BackupAgent backupAgent = getAgentByCategory(dataCategory);
+            final BackupAgent backupAgent = onCreateAgentByCategory(dataCategory);
             if (backupAgent instanceof ContextWireable) {
                 ContextWireable contextWireable = (ContextWireable) backupAgent;
                 contextWireable.wire(getContext());
@@ -367,13 +368,21 @@ public class DataBackupManager {
             listener.onStart();
             Collections.consumeRemaining(dataRecords, new Consumer<DataRecord>() {
                 @Override
-                public void accept(@NonNull DataRecord record) {
+                public void accept(@NonNull final DataRecord record) {
                     if (canceled) {
                         listener.onPieceFail(record, new AbortException());
                         status.onFail();
                         return;
                     }
                     listener.onPieceStart(record);
+
+                    backupAgent.listen(new ProgressListener() {
+                        @Override
+                        public void onProgress(TransportEvent event, float progress) {
+                            listener.onPieceUpdate(record, event, progress);
+                        }
+                    });
+
                     BackupSettings settings = getBackupSettingsByCategory(dataCategory, record);
                     try {
                         BackupAgent.Res res = backupAgent.backup(settings);
@@ -456,7 +465,7 @@ public class DataBackupManager {
         @Override
         @SuppressWarnings("unchecked")
         public void run() {
-            final BackupAgent backupAgent = getAgentByCategory(dataCategory);
+            final BackupAgent backupAgent = onCreateAgentByCategory(dataCategory);
             if (backupAgent instanceof ContextWireable) {
                 ContextWireable contextWireable = (ContextWireable) backupAgent;
                 contextWireable.wire(getContext());

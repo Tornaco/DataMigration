@@ -34,8 +34,7 @@ import lombok.Setter;
  * All right reserved.
  */
 
-class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSettings>,
-        ContextWireable {
+class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppRestoreSettings> implements ContextWireable {
 
     private FileBackupAgent fileBackupAgent;
     @Getter
@@ -186,7 +185,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         // Check if this path has any space.
         if (apkPath.contains(" ")) {
             Logger.w("This apk path contains invalid char, replacing...");
-            // Copy a tmp.
+            // copy a tmp.
             try {
                 Files.createParentDirs(new File(tmpPath));
                 Files.copy(new File(apkPath), new File(tmpPath));

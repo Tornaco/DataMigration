@@ -21,6 +21,9 @@
     <string name="learn_more">了解更多</string>
 
 
+    <string name="transport_event_description_copy">复制文件：</string>
+    <string name="transport_event_description_token_divider">"---"</string>
+
     <string name="permission_missing">权限缺失</string>
     <string name="permission_missing_message">看起来我们无法请求一些权限，你可以继续使用，但可能会因此导致一些功能异常</string>
 

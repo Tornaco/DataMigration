@@ -18,6 +18,11 @@ public class TransportListenerAdapter extends TransportListener {
     }
 
     @Override
+    public void onPieceUpdate(DataRecord record, TransportEvent transportEvent, float pieceProgress) {
+
+    }
+
+    @Override
     public void onPieceSuccess(DataRecord record) {
 
     }
