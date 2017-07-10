@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 
 import org.newstand.datamigration.utils.BlackHole;
 import org.newstand.datamigration.worker.transport.TransportEvent;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 
