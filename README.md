@@ -7,9 +7,9 @@
 
 简要步骤:
 1. 下载上述sdk.
-2. Go to <SDK location>/platforms/.
-3. Copy, paste and replace the downloaded hidden API file into this directory, e.g. android-25/android.jar.
-4. Build **DataMigration**.
+2. 进入 <SDK location>/platforms/。
+3. 用下载的版本的android.jar替换原来的jar, e.g. android-24/android.jar。
+4. 将本项目导入android studio编译或者使用gradle命令编译。
 
 ### 使用gradle命令编译:
 ```
