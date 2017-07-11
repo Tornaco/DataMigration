@@ -19,6 +19,7 @@ import org.newstand.datamigration.utils.MiscUtils;
 import org.newstand.datamigration.utils.RootTarUtil;
 import org.newstand.datamigration.utils.RootTools2;
 import org.newstand.datamigration.utils.SeLinuxContextChanger;
+import org.newstand.datamigration.worker.transport.TransportEvent;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -36,13 +37,11 @@ import lombok.Setter;
 
 class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppRestoreSettings> implements ContextWireable {
 
-    private FileBackupAgent fileBackupAgent;
     @Getter
     @Setter
     private Context context;
 
     AppBackupAgent() {
-        fileBackupAgent = new FileBackupAgent();
     }
 
     @Override
@@ -62,15 +61,14 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
             // Apk dest
             String destApkPath = backupSettings.getDestApkPath();
 
-            // Apk backup go~
-            FileBackupSettings apkSettings = new FileBackupSettings();
-            apkSettings.setSourcePath(apkPath);
-            apkSettings.setDestPath(destApkPath);
-            Res apkRes = fileBackupAgent.backup(apkSettings);
-
-            if (!Res.isOk(apkRes)) {
-                return apkRes;
-            }
+            // Publish progress.
+            org.newstand.datamigration.utils.Files.copy(apkPath, destApkPath,
+                    new org.newstand.datamigration.utils.Files.ProgressListener() {
+                        @Override
+                        public void onProgress(float progress) {
+                            getProgressListener().onProgress(TransportEvent.CopyApk, progress);
+                        }
+                    });
         }
 
         final Res[] res = {Res.OK};
@@ -89,6 +87,9 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
 
             Logger.d("Saving data from %s, to %s", appDataDir, destination);
 
+            // Publish progress.
+            getProgressListener().onProgress(TransportEvent.CopyData, 0);
+
             boolean cr = RootTarUtil.compressTar(destination, appDataDir);
 
             Logger.d("Saving data res %s", cr);
@@ -97,6 +98,9 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
                 res[0] = new CompressErr();
                 return res[0];
             }
+
+            // Publish progress.
+            getProgressListener().onProgress(TransportEvent.CopyData, 100);
 
             // ExtraData
             final String[] extraDataDirs = backupSettings.getExtraDirs();

@@ -7,6 +7,9 @@ import org.newstand.datamigration.worker.transport.TransportEvent;
  * verification proceeds.
  */
 public interface ProgressListener {
+
+    int NONE_PROGRESS = -1;
+
     /**
      * Called periodically as the verification progresses.
      *

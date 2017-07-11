@@ -21,7 +21,11 @@
     <string name="learn_more">了解更多</string>
 
 
-    <string name="transport_event_description_copy">复制文件：</string>
+    <string name="transport_event_description_copy_file">复制文件</string>
+    <string name="transport_event_description_copy_apk">复制APK</string>
+    <string name="transport_event_description_copy_data">复制应用数据</string>
+    <string name="transport_event_description_install_apk">安装应用</string>
+    <string name="transport_event_description_install_data">安装数据</string>
     <string name="transport_event_description_token_divider">"---"</string>
 
     <string name="permission_missing">权限缺失</string>

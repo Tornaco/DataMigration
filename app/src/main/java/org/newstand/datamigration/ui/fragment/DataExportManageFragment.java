@@ -164,7 +164,7 @@ public class DataExportManageFragment extends DataTransportManageFragment {
     private void showCurrentPieceProgressInUI(DataRecord record, TransportEvent transportEvent, float pieceProgress) {
         getConsoleSummaryView().setText(record.getDisplayName() +
                 getStringSafety(R.string.transport_event_description_token_divider)
-                + getStringSafety(transportEvent.getDescription()) + ((int) (pieceProgress * 100) + "%"));
+                + getStringSafety(transportEvent.getDescription()) + ((int) (pieceProgress) + "%"));
     }
 
     @Override

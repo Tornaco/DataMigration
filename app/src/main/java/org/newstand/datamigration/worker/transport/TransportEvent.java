@@ -11,7 +11,11 @@ import lombok.Getter;
  */
 
 public enum TransportEvent {
-    FileCopy(R.string.transport_event_description_copy);
+    FileCopy(R.string.transport_event_description_copy_file),
+    CopyApk(R.string.transport_event_description_copy_apk),
+    CopyData(R.string.transport_event_description_copy_data),
+    InstallApk(R.string.transport_event_description_install_apk),
+    InstallData(R.string.transport_event_description_install_data);
 
     @Getter
     private

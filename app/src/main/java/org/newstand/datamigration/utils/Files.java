@@ -52,27 +52,24 @@ public abstract class Files {
     }
 
 
-    public static void copy(String spath, String dpath, ProgressListener listener) {
-        try {
-            FileInputStream fis = new FileInputStream(spath);
-            FileOutputStream fos = new FileOutputStream(dpath);
-            int totalByte = fis.available();
-            int read = 0;
-            int n = 0;
-            byte[] buffer = new byte[4096];
-            while ((n = fis.read(buffer)) != -1) {
-                fos.write(buffer, 0, n);
-                fos.flush();
-                read += n;
-                float per = (float) read / (float) totalByte;
-                listener.onProgress(per);
+    public static void copy(String spath, String dpath, @Nullable ProgressListener listener) throws IOException {
+        FileInputStream fis = new FileInputStream(spath);
+        FileOutputStream fos = new FileOutputStream(dpath);
+        int totalByte = fis.available();
+        int read = 0;
+        int n;
+        byte[] buffer = new byte[4096];
+        while ((n = fis.read(buffer)) != -1) {
+            fos.write(buffer, 0, n);
+            fos.flush();
+            read += n;
+            float per = (float) read / (float) totalByte;
+            if (listener != null) {
+                listener.onProgress(per * 100);
             }
-
-            fos.close();
-            fis.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        Closer.closeQuietly(fis);
+        Closer.closeQuietly(fos);
     }
 
     public static String formatSize(long fileSize) {
