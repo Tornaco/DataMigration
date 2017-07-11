@@ -6,6 +6,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.newstand.datamigration.R;
@@ -25,7 +26,9 @@ public abstract class DataTransportUIFragment extends StateBasedFragment {
     @Getter
     private ProgressWheel progressBar;
     @Getter
-    private TextView consoleTitleView, consoleSummaryView, consoleDoneButton, consoleLoggerButton;
+    ProgressBar bottomProgressBar;
+    @Getter
+    private TextView consoleTitleView, consoleSummaryView;
     @Getter
     private CardView consoleCardView;
 
@@ -47,8 +50,7 @@ public abstract class DataTransportUIFragment extends StateBasedFragment {
         consoleCardView = (CardView) root.findViewById(R.id.console_card);
         consoleTitleView = (TextView) root.findViewById(android.R.id.title);
         consoleSummaryView = (TextView) root.findViewById(android.R.id.text1);
-        consoleDoneButton = (TextView) root.findViewById(R.id.button);
-        consoleLoggerButton = (TextView) root.findViewById(R.id.log);
+        bottomProgressBar = (ProgressBar) root.findViewById(R.id.progress_bar);
         return root;
     }
 }

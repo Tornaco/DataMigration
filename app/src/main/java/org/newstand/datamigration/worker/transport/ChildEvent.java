@@ -15,7 +15,8 @@ public enum ChildEvent {
     CopyApk(R.string.transport_event_description_copy_apk),
     CopyData(R.string.transport_event_description_copy_data),
     InstallApk(R.string.transport_event_description_install_apk),
-    InstallData(R.string.transport_event_description_install_data);
+    InstallData(R.string.transport_event_description_install_data),
+    InstallExtraData(R.string.transport_event_description_install_extra_data);
 
     @Getter
     private

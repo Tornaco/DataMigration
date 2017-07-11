@@ -55,7 +55,6 @@ class SMSBackupAgent extends ProgressableBackupAgent<SMSBackupSettings, SMSResto
         os.close();
         oos.close();
 
-
         // Encrypt
         boolean encrypt = SettingsProvider.isEncryptEnabled();
         String encrypted = SettingsProvider.getEncryptPath(destPath);
@@ -75,6 +74,12 @@ class SMSBackupAgent extends ProgressableBackupAgent<SMSBackupSettings, SMSResto
 
     @Override
     public Res restore(SMSRestoreSettings restoreSettings) throws Exception {
+        // Set us as Def Sms app
+        SmsContentProviderCompat.setAsDefaultSmsApp(getContext());
+        boolean isDefSmsApp = SmsContentProviderCompat.waitUtilBecomeDefSmsApp(getContext(), 10);// FIXME
+        if (!isDefSmsApp) {
+            Logger.e("Timeout waiting for DEF SMS APP setup, let it go?");
+        }
         SMSRecord smsRecord = restoreSettings.getSmsRecord();
         writeSMS(smsRecord);
         return Res.OK;

@@ -25,6 +25,7 @@ import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.transport.ChildEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
@@ -96,6 +97,12 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
         }
 
         @Override
+        public void onPieceUpdateMainThread(DataRecord record, ChildEvent childEvent, float pieceProgress) {
+            super.onPieceUpdateMainThread(record, childEvent, pieceProgress);
+            showCurrentPieceProgressInUI(record, childEvent, pieceProgress);
+        }
+
+        @Override
         public void onAbortMainThread(Throwable err) {
             super.onAbortMainThread(err);
             ErrDialog.attach(getActivity(), err,
@@ -115,7 +122,7 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     }
 
     private void showCurrentPieceInUI(DataRecord record) {
-        getConsoleSummaryView().setText(record.getDisplayName());
+        getConsoleTitleView().setText(record.getDisplayName());
     }
 
     public interface LoaderSourceProvider {
@@ -167,11 +174,6 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     @Override
     int getCompleteTitle() {
         return R.string.title_restore_receiving_complete;
-    }
-
-    @Override
-    void onDoneButtonClick() {
-        getActivity().finish();
     }
 
     @Override

@@ -8,21 +8,18 @@ import android.widget.TextView;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.cache.LoadingCacheManager;
-import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.datamigration.common.StartSignal;
 import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.repo.BKSessionRepoService;
-import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.utils.DateUtils;
-import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.ChildEvent;
+import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
@@ -31,7 +28,6 @@ import org.newstand.logger.Logger;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
 import cn.iwgang.simplifyspan.other.OnClickableSpanListener;
@@ -46,8 +42,6 @@ import cn.iwgang.simplifyspan.unit.SpecialTextUnit;
 
 public class DataExportManageFragment extends DataTransportManageFragment {
 
-    private CountDownLatch mTaskLatch;
-
     private TransportListener mExportListener = new TransportListenerMainThreadAdapter() {
         @Override
         public void onStartMainThread() {
@@ -57,7 +51,6 @@ public class DataExportManageFragment extends DataTransportManageFragment {
         @Override
         public void onCompleteMainThread() {
             super.onCompleteMainThread();
-            mTaskLatch.countDown();
         }
 
         @Override
@@ -94,40 +87,20 @@ public class DataExportManageFragment extends DataTransportManageFragment {
 
         final DataBackupManager dataBackupManager = DataBackupManager.from(getContext(), getSession());
 
-        mTaskLatch = Sleeper.waitingFor(DataCategory.values().length, new Runnable() {
-            @Override
-            public void run() {
-                enterState(STATE_TRANSPORT_END);
-            }
-        });
-
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
             public void accept(@NonNull DataCategory category) {
                 Collection<DataRecord> dataRecords = cache.checked(category);
                 if (Collections.isNullOrEmpty(dataRecords)) {
-                    mTaskLatch.countDown();// Release one!!!
                     return;
                 }
-
-                StartSignal startSignal = new StartSignal();
-                startSignal.setTag(category);
-                AbortSignal abortSignal = dataBackupManager.performBackupAsync(dataRecords, category, mExportListener, startSignal);
-
+                dataBackupManager.performBackup(mExportListener, dataRecords, category);
                 getStats().merge(mExportListener.getStats());
-
-                getAbortSignals().add(abortSignal);
-                getStartSignals().add(startSignal);
             }
         }, new Runnable() {
             @Override
             public void run() {
-                Collections.consumeRemaining(getStartSignals(), new Consumer<StartSignal>() {
-                    @Override
-                    public void accept(@NonNull StartSignal startSignal) {
-                        startSignal.start();
-                    }
-                });
+                enterState(STATE_TRANSPORT_END);
             }
         });
     }
@@ -149,23 +122,17 @@ public class DataExportManageFragment extends DataTransportManageFragment {
         return R.string.title_backup_export_complete;
     }
 
+    // FIXME Save session.
     @Override
-    void onDoneButtonClick() {
-        // Save session
+    public void onDestroy() {
+        super.onDestroy();
         BKSessionRepoService.get().insert(getContext(), getSession());
-        getActivity().finish();
     }
 
     private void showCurrentPieceInUI(DataRecord record) {
-        getConsoleSummaryView().setText(record.getDisplayName());
+        getConsoleTitleView().setText(record.getDisplayName());
     }
 
-
-    private void showCurrentPieceProgressInUI(DataRecord record, ChildEvent childEvent, float pieceProgress) {
-        getConsoleSummaryView().setText(record.getDisplayName() +
-                getStringSafety(R.string.transport_event_description_token_divider)
-                + getStringSafety(childEvent.getDescription()) + ((int) (pieceProgress) + "%"));
-    }
 
     @Override
     SimplifySpanBuild onCreateCompleteSummary() {

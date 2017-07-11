@@ -5,8 +5,6 @@ import android.support.annotation.WorkerThread;
 
 import com.google.common.io.Files;
 
-import org.newstand.datamigration.common.AbortSignal;
-import org.newstand.datamigration.common.StartSignal;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.Stats;
@@ -37,11 +35,6 @@ public abstract class DataTransportLogicFragment extends DataTransportUIFragment
     protected static final int STATE_TRANSPORT_START = 0x3;
     protected static final int STATE_TRANSPORT_END = 0x4;
     protected static final int STATE_TRANSPORT_PROGRESS_UPDATE = 0x5;
-
-    @Getter
-    private final Set<AbortSignal> abortSignals = new HashSet<>();
-    @Getter
-    private final Set<StartSignal> startSignals = new HashSet<>();
 
     @Getter
     @Setter

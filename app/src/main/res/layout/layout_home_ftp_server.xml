@@ -42,8 +42,8 @@
 
                     <ImageView
                         android:id="@+id/icon1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/thumbnail_size"
+                        android:layout_height="@dimen/thumbnail_size"
                         android:layout_centerVertical="true"
                         android:padding="@dimen/activity_horizontal_margin_marco"
                         android:tint="@color/grey"
@@ -97,7 +97,6 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
                     android:background="@color/divider"
-                    android:alpha="0"
                     android:visibility="visible" />
 
                 <RelativeLayout
@@ -113,8 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:visibility="gone"
-                        android:text="@string/learn_more" />
+                        android:text="@string/title_need_help" />
                 </RelativeLayout>
 
             </RelativeLayout>

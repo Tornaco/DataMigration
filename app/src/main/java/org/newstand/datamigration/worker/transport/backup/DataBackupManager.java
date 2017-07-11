@@ -89,14 +89,19 @@ public class DataBackupManager {
 
     public void performBackup(final Collection<DataRecord> dataRecords,
                               final DataCategory dataCategory) {
-        new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), new TransportListenerAdapter(), getSession()),
-                dataRecords, dataCategory, new AbortSignal()).run();
+        AbortSignal abortSignal = new AbortSignal();
+        BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), new TransportListenerAdapter(), getSession()),
+                dataRecords, dataCategory, abortSignal);
+        worker.run();
     }
 
     public void performBackup(TransportListener listener, final Collection<DataRecord> dataRecords,
                               final DataCategory dataCategory) {
-        new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), listener, getSession()),
-                dataRecords, dataCategory, new AbortSignal()).run();
+        AbortSignal abortSignal = new AbortSignal();
+        BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), listener, getSession()),
+                dataRecords, dataCategory, abortSignal);
+        listener.setStats(worker.status);
+        worker.run();
     }
 
     public AbortSignal performBackupAsync(final Collection<DataRecord> dataRecords,
@@ -127,6 +132,16 @@ public class DataBackupManager {
         return abortSignal;
     }
 
+    public void performRestore(final Collection<DataRecord> dataRecords,
+                               final DataCategory dataCategory,
+                               final TransportListener listener) {
+        final RestoreWorker worker = new RestoreWorker(EventRecorderTransportListenerProxy.delegate(
+                getContext(), listener, getSession()
+        ), dataRecords, dataCategory, new AbortSignal());
+        listener.setStats(worker.status);
+        worker.run();
+    }
+
     public AbortSignal performRestoreAsync(final Collection<DataRecord> dataRecords,
                                            final DataCategory dataCategory,
                                            final TransportListener listener) {
@@ -138,7 +153,9 @@ public class DataBackupManager {
                                            final TransportListener listener,
                                            final StartSignal startSignal) {
         AbortSignal abortSignal = new AbortSignal();
-        final RestoreWorker worker = new RestoreWorker(listener, dataRecords, dataCategory, abortSignal);
+        final RestoreWorker worker = new RestoreWorker(EventRecorderTransportListenerProxy.delegate(
+                getContext(), listener, getSession()
+        ), dataRecords, dataCategory, abortSignal);
         listener.setStats(worker.status);
         if (startSignal == null) {
             SharedExecutor.execute(worker);
@@ -400,12 +417,12 @@ public class DataBackupManager {
                     } catch (Exception e) {
                         listener.onPieceFail(record, e);
                         status.onFail();
+                        Logger.e(e, "onPieceFail");
                     }
                 }
             });
 
             // Write the session info.
-
             try {
                 String infoFilePath = SettingsProvider.getBackupSessionInfoPath(session);
                 Gson gson = new Gson();
@@ -477,13 +494,21 @@ public class DataBackupManager {
             listener.onStart();
             Collections.consumeRemaining(dataRecords, new Consumer<DataRecord>() {
                 @Override
-                public void accept(@NonNull DataRecord record) {
+                public void accept(@NonNull final DataRecord record) {
                     if (canceled) {
                         listener.onPieceFail(record, new AbortException());
                         status.onFail();
                         return;
                     }
                     listener.onPieceStart(record);
+
+                    backupAgent.listen(new ProgressListener() {
+                        @Override
+                        public void onProgress(ChildEvent event, float progress) {
+                            listener.onPieceUpdate(record, event, progress);
+                        }
+                    });
+
                     RestoreSettings settings = getRestoreSettingsByCategory(dataCategory, record);
                     try {
                         BackupAgent.Res res = backupAgent.restore(settings);
@@ -497,6 +522,7 @@ public class DataBackupManager {
                     } catch (Exception e) {
                         listener.onPieceFail(record, e);
                         status.onFail();
+                        Logger.e(e, "onPieceFail");
                     }
                 }
             });
@@ -590,14 +616,18 @@ public class DataBackupManager {
         @Override
         public void onPieceSuccess(DataRecord record) {
 
-            TransportEventRecord transportEventRecord = TransportEventRecord.builder()
-                    .category(record.category())
-                    .dataRecord(record)
-                    .success(true)
-                    .when(System.currentTimeMillis())
-                    .build();
+            try {
+                TransportEventRecord transportEventRecord = TransportEventRecord.builder()
+                        .category(record.category())
+                        .dataRecord(record)
+                        .success(true)
+                        .when(System.currentTimeMillis())
+                        .build();
 
-            TransportEventRecordRepoService.from(getSession()).insert(getContext(), transportEventRecord);
+                TransportEventRecordRepoService.from(getSession()).insert(getContext(), transportEventRecord);
+            } catch (Throwable e) {
+                Logger.e(e, "Fail insert event");
+            }
 
             listener.onPieceSuccess(record);
         }
@@ -605,16 +635,20 @@ public class DataBackupManager {
         @Override
         public void onPieceFail(DataRecord record, Throwable err) {
 
-            TransportEventRecord transportEventRecord = TransportEventRecord.builder()
-                    .category(record.category())
-                    .dataRecord(record)
-                    .success(false)
-                    .errMessage(err.getMessage())
-                    .errTrace(Logger.getStackTraceString(err))
-                    .when(System.currentTimeMillis())
-                    .build();
+            try {
+                TransportEventRecord transportEventRecord = TransportEventRecord.builder()
+                        .category(record.category())
+                        .dataRecord(record)
+                        .success(false)
+                        .errMessage(err.getMessage())
+                        .errTrace(Logger.getStackTraceString(err))
+                        .when(System.currentTimeMillis())
+                        .build();
 
-            TransportEventRecordRepoService.from(getSession()).insert(getContext(), transportEventRecord);
+                TransportEventRecordRepoService.from(getSession()).insert(getContext(), transportEventRecord);
+            } catch (Throwable e) {
+                Logger.e(e, "Fail insert event");
+            }
 
             listener.onPieceFail(record, err);
         }

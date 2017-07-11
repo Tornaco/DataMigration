@@ -12,6 +12,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -83,6 +84,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         }
 
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        appBarLayout.setExpanded(false, false);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
         Toolbar toolbar = findView(R.id.toolbar);
@@ -336,7 +338,18 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
     }
 
     private void onFabClick() {
-        onSubmit();
+        if (getAdapter().hasSelection()) {
+            onSubmit();
+        } else {
+            Snackbar.make(getRecyclerView(), R.string.title_need_selection, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    })
+                    .show();
+        }
     }
 
     private CommonListAdapter onCreateAdapter() {
@@ -370,7 +383,6 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
                 @Override
                 public void run() {
                     getAdapter().update(mokes);
-                    appBarLayout.setExpanded(true, true);
                 }
             });
         }
@@ -438,13 +450,17 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
             @Override
             public void run() {
                 getAdapter().onUpdate();
-                showFab(getAdapter().hasSelection());
-                getAppBarLayout().setExpanded(true, true);
+                boolean hasSelection = getAdapter().hasSelection();
+                showFab(hasSelection);
+                if (hasSelection) {
+                    getAppBarLayout().setExpanded(true, true);
+                }
             }
         });
     }
 
     private void showFab(boolean show) {
+        Logger.v("showFab:%s", show);
         if (show) {
             fab.show();
             buildFabIntro();

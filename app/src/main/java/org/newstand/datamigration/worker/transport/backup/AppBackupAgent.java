@@ -140,6 +140,11 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
                 return new OperationNotAllowedErr();
             }
 
+            Logger.d("Installing apk");
+
+            // Publish progress.
+            getProgressListener().onProgress(ChildEvent.InstallApk, 0);
+
             PackageInstallReceiver installReceiver = new PackageInstallReceiver(restoreSettings.getAppRecord().getPkgName());
             installReceiver.register(getContext());
 
@@ -157,7 +162,11 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
             } finally {
                 installReceiver.unRegister(getContext());
             }
+
             Sleeper.sleepQuietly(2000); // Sleep for 1s to let user dismiss the install page...Maybe there is a better way?
+
+            // Publish progress.
+            getProgressListener().onProgress(ChildEvent.InstallApk, 100);
         }
 
         boolean installData = restoreSettings.isInstallData();
@@ -165,10 +174,18 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
         Res res = Res.OK;
 
         if (installData) {
+
+            // Publish progress.
+            getProgressListener().onProgress(ChildEvent.InstallData, 0);
             res = installData(restoreSettings);
+            getProgressListener().onProgress(ChildEvent.InstallData, 100);
 
             if (res == Res.OK) {
+
+                // Publish progress.
+                getProgressListener().onProgress(ChildEvent.InstallExtraData, 0);
                 res = installExtraData(restoreSettings);
+                getProgressListener().onProgress(ChildEvent.InstallExtraData, 100);
             }
         }
 

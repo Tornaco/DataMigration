@@ -207,10 +207,10 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         switch (getThemeColor()) {
             case White:
-                getMenuInflater().inflate(R.menu.help_dark, menu);
+                getMenuInflater().inflate(R.menu.trend_dark, menu);
                 break;
             default:
-                getMenuInflater().inflate(R.menu.help, menu);
+                getMenuInflater().inflate(R.menu.trend, menu);
                 break;
         }
         return true;
@@ -218,7 +218,7 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_help) {
+        if (item.getItemId() == R.id.action_trend) {
             transitionTo(new Intent(this, HelpActivity.class));
         }
         return true;
@@ -228,5 +228,10 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         Fragment card = getCardController().getCurrent();
         @SuppressWarnings("unchecked") Producer<Integer> titleProducer = (Producer<Integer>) card;
         // setTitle(titleProducer.produce());
+    }
+
+    @Override
+    public boolean isMainActivity() {
+        return true;
     }
 }

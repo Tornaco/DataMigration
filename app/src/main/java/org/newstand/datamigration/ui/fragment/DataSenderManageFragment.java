@@ -21,6 +21,7 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.transport.ChildEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
@@ -83,8 +84,14 @@ public class DataSenderManageFragment extends DataTransportManageFragment
             super.onPieceStartMainThread(record);
             // Sub record is sending, we can cancel now~
             setCancelable(true);
-            updateConsoleDoneButtonOnStart();
             showCurrentPieceInUI(record);
+        }
+
+
+        @Override
+        public void onPieceUpdateMainThread(DataRecord record, ChildEvent childEvent, float pieceProgress) {
+            super.onPieceUpdateMainThread(record, childEvent, pieceProgress);
+            showCurrentPieceProgressInUI(record, childEvent, pieceProgress);
         }
 
         @Override
@@ -102,8 +109,9 @@ public class DataSenderManageFragment extends DataTransportManageFragment
     };
 
     private void showCurrentPieceInUI(DataRecord record) {
-        getConsoleSummaryView().setText(record.getDisplayName());
+        getConsoleTitleView().setText(record.getDisplayName());
     }
+
 
     public interface LoaderSourceProvider {
         LoaderSource onRequestLoaderSource();
@@ -148,7 +156,6 @@ public class DataSenderManageFragment extends DataTransportManageFragment
 
     private void send() {
         AbortSignal abortSignal = new AbortSignal();
-        getAbortSignals().add(abortSignal);
         DataSenderProxy.send(getActivity(), getClient(), mTransportListener, abortSignal);
     }
 
@@ -160,11 +167,6 @@ public class DataSenderManageFragment extends DataTransportManageFragment
     @Override
     int getCompleteTitle() {
         return R.string.title_restore_sending_complete;
-    }
-
-    @Override
-    void onDoneButtonClick() {
-        getActivity().finish();
     }
 
     @Override

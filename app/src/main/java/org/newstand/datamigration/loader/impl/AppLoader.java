@@ -92,14 +92,19 @@ public class AppLoader extends BaseLoader {
                 Files.createParentDirs(iconFile);
                 if (!iconFile.exists() && bitmap != null) {
                     os = Files.asByteSink(iconFile).openStream();
-                    if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)) {
-
+                    try {
+                        if (!bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)) {
+                            Logger.w("Fail compress bitmap");
+                        }
+                    } catch (Exception e) {
+                        Logger.e(e, "Fail compress bitmap");
                     }
                 }
             } catch (IOException e) {
                 Logger.e(e, "Fail compress bitmap");
             } finally {
-                if (bitmap != null) bitmap.recycle();
+                // Fix recycled bitmap can not be compressed issue.
+                // if (bitmap != null) bitmap.recycle();
                 Closer.closeQuietly(os);
             }
 

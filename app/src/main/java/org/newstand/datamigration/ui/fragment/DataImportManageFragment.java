@@ -5,17 +5,15 @@ import android.support.annotation.NonNull;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.cache.LoadingCacheManager;
-import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.datamigration.common.StartSignal;
 import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
-import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.transport.ChildEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
@@ -24,7 +22,6 @@ import org.newstand.logger.Logger;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
 
@@ -37,8 +34,6 @@ import cn.iwgang.simplifyspan.SimplifySpanBuild;
 // Importing delegate BK
 public class DataImportManageFragment extends DataTransportManageFragment {
 
-    private CountDownLatch mTaskLatch;
-
     private TransportListener mExportListener = new TransportListenerMainThreadAdapter() {
         @Override
         public void onStartMainThread() {
@@ -48,7 +43,6 @@ public class DataImportManageFragment extends DataTransportManageFragment {
         @Override
         public void onCompleteMainThread() {
             super.onCompleteMainThread();
-            mTaskLatch.countDown();
         }
 
         @Override
@@ -69,10 +63,17 @@ public class DataImportManageFragment extends DataTransportManageFragment {
             super.onPieceStartMainThread(record);
             showCurrentPieceInUI(record);
         }
+
+
+        @Override
+        public void onPieceUpdateMainThread(DataRecord record, ChildEvent childEvent, float pieceProgress) {
+            super.onPieceUpdateMainThread(record, childEvent, pieceProgress);
+            showCurrentPieceProgressInUI(record, childEvent, pieceProgress);
+        }
     };
 
     private void showCurrentPieceInUI(DataRecord record) {
-        getConsoleSummaryView().setText(record.getDisplayName());
+        getConsoleTitleView().setText(record.getDisplayName());
     }
 
     public interface LoaderSourceProvider {
@@ -113,54 +114,21 @@ public class DataImportManageFragment extends DataTransportManageFragment {
 
         final DataBackupManager dataBackupManager = DataBackupManager.from(getContext(), getSession());
 
-        mTaskLatch = Sleeper.waitingFor(DataCategory.values().length, new Runnable() {
-            @Override
-            public void run() {
-                enterState(STATE_TRANSPORT_END);
-            }
-        });
-
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
             public void accept(@NonNull DataCategory category) {
                 Collection<DataRecord> dataRecords = cache.checked(category);
                 if (Collections.isNullOrEmpty(dataRecords)) {
-                    mTaskLatch.countDown();// Release one!!!
                     return;
                 }
 
-                StartSignal startSignal = new StartSignal();
-                startSignal.setTag(category);
-                AbortSignal abortSignal = dataBackupManager.performRestoreAsync(dataRecords, category, mExportListener, startSignal);
-
+                dataBackupManager.performRestore(dataRecords, category, mExportListener);
                 getStats().merge(mExportListener.getStats());
-
-                getAbortSignals().add(abortSignal);
-                getStartSignals().add(startSignal);
             }
         }, new Runnable() {
             @Override
             public void run() {
-                Collections.consumeRemaining(getStartSignals(), new Consumer<StartSignal>() {
-                    @Override
-                    public void accept(@NonNull StartSignal startSignal) {
-
-                        DataCategory category = (DataCategory) startSignal.getTag();
-
-                        Logger.d("Tag of startSignal %s", startSignal.getTag());
-
-                        if (category == DataCategory.Sms) {
-                            // Set us as Def Sms app
-                            SmsContentProviderCompat.setAsDefaultSmsApp(getActivity());
-                            boolean isDefSmsApp = SmsContentProviderCompat.waitUtilBecomeDefSmsApp(getContext(), 10);// FIXME
-                            if (!isDefSmsApp) {
-                                Logger.e("Timeout waiting for DEF SMS APP setup, let it go~");
-                            }
-                        }
-
-                        startSignal.start();
-                    }
-                });
+                enterState(STATE_TRANSPORT_END);
             }
         });
     }
@@ -173,11 +141,6 @@ public class DataImportManageFragment extends DataTransportManageFragment {
     @Override
     int getCompleteTitle() {
         return R.string.title_restore_import_complete;
-    }
-
-    @Override
-    void onDoneButtonClick() {
-        getActivity().finish();
     }
 
     @Override

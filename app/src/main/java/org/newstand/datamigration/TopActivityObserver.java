@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
+import org.newstand.datamigration.utils.DefSmsChecker;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -30,7 +31,7 @@ class TopActivityObserver implements Application.ActivityLifecycleCallbacks, Clo
     private Consumer<Activity> onMainActivityStartConsumer;
 
     @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+    public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
         if (activity instanceof TransitionSafeActivity) {
             TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) activity;
             if (transitionSafeActivity.isMainActivity()) {
@@ -40,7 +41,7 @@ class TopActivityObserver implements Application.ActivityLifecycleCallbacks, Clo
     }
 
     @Override
-    public void onActivityStarted(Activity activity) {
+    public void onActivityStarted(final Activity activity) {
         topActivity = activity;
     }
 
