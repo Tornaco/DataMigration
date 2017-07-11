@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="def_checked_mark_background_color">@color/green</color>
+
     <!-- Standard Text Color -->
     <color name="default_text_color">@color/black</color>
     <color name="default_text_color_light">@color/white</color>
