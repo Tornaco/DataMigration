@@ -3,8 +3,7 @@ package org.newstand.datamigration.worker.transport.backup;
 import com.google.common.io.Files;
 
 import org.newstand.datamigration.utils.BlackHole;
-import org.newstand.datamigration.worker.transport.TransportEvent;
-import org.newstand.logger.Logger;
+import org.newstand.datamigration.worker.transport.ChildEvent;
 
 import java.io.File;
 
@@ -37,7 +36,7 @@ class FileBackupAgent extends ProgressableBackupAgent<FileBackupSettings, FileRe
                 new org.newstand.datamigration.utils.Files.ProgressListener() {
                     @Override
                     public void onProgress(float progress) {
-                        getProgressListener().onProgress(TransportEvent.FileCopy, progress);
+                        getProgressListener().onProgress(ChildEvent.FileCopy, progress);
                     }
                 });
         return Res.OK;

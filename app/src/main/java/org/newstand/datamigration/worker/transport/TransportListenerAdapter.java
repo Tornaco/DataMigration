@@ -18,7 +18,7 @@ public class TransportListenerAdapter extends TransportListener {
     }
 
     @Override
-    public void onPieceUpdate(DataRecord record, TransportEvent transportEvent, float pieceProgress) {
+    public void onPieceUpdate(DataRecord record, ChildEvent childEvent, float pieceProgress) {
 
     }
 

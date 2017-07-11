@@ -1,8 +1,5 @@
 package org.newstand.datamigration.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,34 +15,9 @@ import lombok.ToString;
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class CategoryRecord extends DataRecord implements Parcelable {
+public class CategoryRecord extends DataRecord {
     private DataCategory category;
     private String summary;
-
-    private CategoryRecord(Parcel in) {
-        super(in);
-        category = DataCategory.valueOf(DataCategory.class, in.readString());
-        summary = in.readString();
-    }
-
-    public static final Creator<CategoryRecord> CREATOR = new Creator<CategoryRecord>() {
-        @Override
-        public CategoryRecord createFromParcel(Parcel in) {
-            return new CategoryRecord(in);
-        }
-
-        @Override
-        public CategoryRecord[] newArray(int size) {
-            return new CategoryRecord[size];
-        }
-    };
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-        dest.writeString(category.name());
-        dest.writeString(summary);
-    }
 
     @Override
     public DataCategory category() {
@@ -58,9 +30,7 @@ public class CategoryRecord extends DataRecord implements Parcelable {
         if (o == null || getClass() != o.getClass()) return false;
 
         CategoryRecord that = (CategoryRecord) o;
-
         return category == that.category;
-
     }
 
     @Override

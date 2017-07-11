@@ -58,7 +58,7 @@ public class DataLoaderManager {
     @SuppressWarnings("unchecked")
     public Collection<DataRecord> load(@NonNull final LoaderSource loaderSource,
                                        @NonNull final DataCategory dataCategory) {
-        Logger.d("Loading data from:%s, for:%s", loaderSource, dataCategory);
+        Logger.d("Loading data delegate:%s, for:%s", loaderSource, dataCategory);
         try {
             return (Collection<DataRecord>) getLoader(dataCategory).load(loaderSource, null);
         } catch (Throwable throwable) {

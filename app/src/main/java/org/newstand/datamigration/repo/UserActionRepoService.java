@@ -33,7 +33,7 @@ public class UserActionRepoService extends GsonBasedRepoService<UserAction> {
     }
 
     @Override
-    protected boolean matchCase(UserAction old, UserAction now) {
+    protected boolean isSame(UserAction old, UserAction now) {
         return old.getFingerPrint() == now.getFingerPrint();
     }
 

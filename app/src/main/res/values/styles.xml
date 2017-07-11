@@ -119,7 +119,7 @@
 
     <style name="ErrDialog" parent="Theme.AppCompat.Light.Dialog" />
 
-    <!-- You can also inherit from NNF_BaseTheme.Light -->
+    <!-- You can also inherit delegate NNF_BaseTheme.Light -->
     <style name="FilePickerTheme" parent="NNF_BaseTheme.Light">
         <!-- Set these to match your theme -->
         <item name="colorPrimary">@color/white</item>

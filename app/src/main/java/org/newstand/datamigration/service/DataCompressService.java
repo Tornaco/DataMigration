@@ -117,7 +117,7 @@ public class DataCompressService extends Service implements DataCompresser {
 
         Notification notification;
 
-        // go from high to low android version adding extra options
+        // go delegate high to low android version adding extra options
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             nb.setVisibility(Notification.VISIBILITY_PUBLIC);
             nb.setCategory(Notification.CATEGORY_SERVICE);
@@ -171,7 +171,7 @@ public class DataCompressService extends Service implements DataCompresser {
 
         Notification notification;
 
-        // go from high to low android version adding extra options
+        // go delegate high to low android version adding extra options
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             nb.setVisibility(Notification.VISIBILITY_PUBLIC);
             nb.setCategory(Notification.CATEGORY_SERVICE);

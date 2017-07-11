@@ -22,7 +22,7 @@ import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.utils.DateUtils;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.datamigration.worker.transport.TransportEvent;
+import org.newstand.datamigration.worker.transport.ChildEvent;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
@@ -80,9 +80,9 @@ public class DataExportManageFragment extends DataTransportManageFragment {
         }
 
         @Override
-        public void onPieceUpdateMainThread(DataRecord record, TransportEvent transportEvent, float pieceProgress) {
-            super.onPieceUpdateMainThread(record, transportEvent, pieceProgress);
-            showCurrentPieceProgressInUI(record, transportEvent, pieceProgress);
+        public void onPieceUpdateMainThread(DataRecord record, ChildEvent childEvent, float pieceProgress) {
+            super.onPieceUpdateMainThread(record, childEvent, pieceProgress);
+            showCurrentPieceProgressInUI(record, childEvent, pieceProgress);
         }
     };
 
@@ -161,10 +161,10 @@ public class DataExportManageFragment extends DataTransportManageFragment {
     }
 
 
-    private void showCurrentPieceProgressInUI(DataRecord record, TransportEvent transportEvent, float pieceProgress) {
+    private void showCurrentPieceProgressInUI(DataRecord record, ChildEvent childEvent, float pieceProgress) {
         getConsoleSummaryView().setText(record.getDisplayName() +
                 getStringSafety(R.string.transport_event_description_token_divider)
-                + getStringSafety(transportEvent.getDescription()) + ((int) (pieceProgress) + "%"));
+                + getStringSafety(childEvent.getDescription()) + ((int) (pieceProgress) + "%"));
     }
 
     @Override

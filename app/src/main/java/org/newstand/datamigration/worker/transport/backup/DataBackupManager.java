@@ -11,6 +11,7 @@ import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.common.StartSignal;
+import org.newstand.datamigration.data.event.TransportEventRecord;
 import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.data.model.CallLogRecord;
 import org.newstand.datamigration.data.model.ContactRecord;
@@ -25,12 +26,13 @@ import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.policy.ExtraDataRule;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.ExtraDataRulesRepoService;
+import org.newstand.datamigration.repo.TransportEventRecordRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.utils.MediaScannerClient;
+import org.newstand.datamigration.worker.transport.ChildEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.Stats;
-import org.newstand.datamigration.worker.transport.TransportEvent;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
 import org.newstand.logger.Logger;
@@ -87,18 +89,19 @@ public class DataBackupManager {
 
     public void performBackup(final Collection<DataRecord> dataRecords,
                               final DataCategory dataCategory) {
-        new BackupWorker(new TransportListenerAdapter(), dataRecords, dataCategory, new AbortSignal()).run();
+        new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), new TransportListenerAdapter(), getSession()),
+                dataRecords, dataCategory, new AbortSignal()).run();
     }
 
     public void performBackup(TransportListener listener, final Collection<DataRecord> dataRecords,
                               final DataCategory dataCategory) {
-        new BackupWorker(listener, dataRecords, dataCategory, new AbortSignal()).run();
+        new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), listener, getSession()),
+                dataRecords, dataCategory, new AbortSignal()).run();
     }
 
     public AbortSignal performBackupAsync(final Collection<DataRecord> dataRecords,
                                           final DataCategory dataCategory,
                                           final TransportListener listener) {
-
         return performBackupAsync(dataRecords, dataCategory, listener, null);
     }
 
@@ -108,7 +111,8 @@ public class DataBackupManager {
                                           final StartSignal startSignal) {
 
         AbortSignal abortSignal = new AbortSignal();
-        final BackupWorker worker = new BackupWorker(listener, dataRecords, dataCategory, abortSignal);
+        final BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), listener, getSession()),
+                dataRecords, dataCategory, abortSignal);
         listener.setStats(worker.status);
         if (startSignal == null) {
             SharedExecutor.execute(worker);
@@ -378,7 +382,7 @@ public class DataBackupManager {
 
                     backupAgent.listen(new ProgressListener() {
                         @Override
-                        public void onProgress(TransportEvent event, float progress) {
+                        public void onProgress(ChildEvent event, float progress) {
                             listener.onPieceUpdate(record, event, progress);
                         }
                     });
@@ -537,6 +541,92 @@ public class DataBackupManager {
             fail += with.getFail();
 
             return this;
+        }
+    }
+
+    private static class EventRecorderTransportListenerProxy extends TransportListenerAdapter {
+        public static TransportListener delegate(Context context, TransportListener in, Session session) {
+            return new EventRecorderTransportListenerProxy(context, in, session);
+        }
+
+        @Getter
+        private Context context;
+
+        private TransportListener listener;
+        @Getter
+        private Session session;
+
+        EventRecorderTransportListenerProxy(Context context, TransportListener listener, Session session) {
+            this.context = context;
+            this.listener = listener;
+            this.session = session;
+        }
+
+        @Override
+        public Stats getStats() {
+            return listener.getStats();
+        }
+
+        @Override
+        public void setStats(Stats stats) {
+            listener.setStats(stats);
+        }
+
+        @Override
+        public void onStart() {
+            listener.onStart();
+        }
+
+        @Override
+        public void onPieceStart(DataRecord record) {
+            listener.onPieceStart(record);
+        }
+
+        @Override
+        public void onPieceUpdate(DataRecord record, ChildEvent childEvent, float pieceProgress) {
+            listener.onPieceUpdate(record, childEvent, pieceProgress);
+        }
+
+        @Override
+        public void onPieceSuccess(DataRecord record) {
+
+            TransportEventRecord transportEventRecord = TransportEventRecord.builder()
+                    .category(record.category())
+                    .dataRecord(record)
+                    .success(true)
+                    .when(System.currentTimeMillis())
+                    .build();
+
+            TransportEventRecordRepoService.from(getSession()).insert(getContext(), transportEventRecord);
+
+            listener.onPieceSuccess(record);
+        }
+
+        @Override
+        public void onPieceFail(DataRecord record, Throwable err) {
+
+            TransportEventRecord transportEventRecord = TransportEventRecord.builder()
+                    .category(record.category())
+                    .dataRecord(record)
+                    .success(false)
+                    .errMessage(err.getMessage())
+                    .errTrace(Logger.getStackTraceString(err))
+                    .when(System.currentTimeMillis())
+                    .build();
+
+            TransportEventRecordRepoService.from(getSession()).insert(getContext(), transportEventRecord);
+
+            listener.onPieceFail(record, err);
+        }
+
+        @Override
+        public void onComplete() {
+            listener.onComplete();
+        }
+
+        @Override
+        public void onAbort(Throwable err) {
+            listener.onAbort(err);
         }
     }
 }

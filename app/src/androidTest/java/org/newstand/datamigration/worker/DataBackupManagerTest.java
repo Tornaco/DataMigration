@@ -105,18 +105,18 @@ public class DataBackupManagerTest {
                                                 .loadAsync(loaderSource, DataCategory.Contact, new LoaderListener<DataRecord>() {
                                                     @Override
                                                     public void onStart() {
-                                                        Logger.d("Load from backup.prepareForTransporting");
+                                                        Logger.d("Load delegate backup.prepareForTransporting");
                                                     }
 
                                                     @Override
                                                     public void onComplete(Collection<DataRecord> collection) {
-                                                        Logger.d("Load from backup.onComplete:%s", collection);
+                                                        Logger.d("Load delegate backup.onComplete:%s", collection);
                                                         latch.countDown();
                                                     }
 
                                                     @Override
                                                     public void onErr(Throwable throwable) {
-                                                        Logger.d("Load from backup.err:" + Log.getStackTraceString(throwable));
+                                                        Logger.d("Load delegate backup.err:" + Log.getStackTraceString(throwable));
                                                     }
                                                 });
 

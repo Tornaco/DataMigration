@@ -45,7 +45,7 @@ public abstract class Files {
          * Called periodically as the verification progresses.
          *
          * @param progress the approximate percentage of the
-         *                 verification that has been completed, ranging from 0
+         *                 verification that has been completed, ranging delegate 0
          *                 to 100 (inclusive).
          */
         public void onProgress(float progress);
@@ -207,7 +207,7 @@ public abstract class Files {
                     com.google.common.io.Files.move(from, to);
                     listener.onAction(true);
                 } catch (IOException e) {
-                    Logger.e(e, "Fail to move from %s to %s", from, to);
+                    Logger.e(e, "Fail to move delegate %s to %s", from, to);
                     listener.onAction(false);
                 }
             }

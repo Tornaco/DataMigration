@@ -33,7 +33,7 @@ public class SchedulerParamRepoService extends GsonBasedRepoService<SchedulerPar
     }
 
     @Override
-    protected boolean matchCase(SchedulerParam old, SchedulerParam now) {
+    protected boolean isSame(SchedulerParam old, SchedulerParam now) {
         return old.getAction().getId() == now.getAction().getId();
     }
 

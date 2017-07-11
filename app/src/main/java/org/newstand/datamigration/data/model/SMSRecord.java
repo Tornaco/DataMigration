@@ -1,6 +1,5 @@
 package org.newstand.datamigration.data.model;
 
-import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
@@ -19,58 +18,16 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class SMSRecord extends FileBasedRecord implements Serializable, Parcelable {
+public class SMSRecord extends FileBasedRecord implements Serializable {
 
     public static final long serialVersionUID = 3172693911408082974L;
 
-    private String id;
     private String addr;
     private String msg;
     private String readState;
     private String time;
 
     private MsgBox msgBox;
-    private String path;
-
-    public static final Creator<SMSRecord> CREATOR = new Creator<SMSRecord>() {
-        @Override
-        public SMSRecord createFromParcel(Parcel in) {
-            return new SMSRecord(in);
-        }
-
-        @Override
-        public SMSRecord[] newArray(int size) {
-            return new SMSRecord[size];
-        }
-    };
-
-    private SMSRecord(Parcel in) {
-        super(in);
-        id = in.readString();
-        addr = in.readString();
-        msg = in.readString();
-        readState = in.readString();
-        time = in.readString();
-        msgBox = MsgBox.valueOf(in.readString());
-        path = in.readString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-        dest.writeString(id);
-        dest.writeString(addr);
-        dest.writeString(msg);
-        dest.writeString(readState);
-        dest.writeString(time);
-        dest.writeString(msgBox.name());
-        dest.writeString(path);
-    }
 
     @Override
     public DataCategory category() {

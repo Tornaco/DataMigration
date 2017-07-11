@@ -34,7 +34,7 @@ import cn.iwgang.simplifyspan.SimplifySpanBuild;
  * All right reserved.
  */
 
-// Importing from BK
+// Importing delegate BK
 public class DataImportManageFragment extends DataTransportManageFragment {
 
     private CountDownLatch mTaskLatch;

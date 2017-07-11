@@ -40,12 +40,12 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
     }
 
     @Override
-    public void onPieceUpdate(final DataRecord record, final TransportEvent transportEvent,
+    public void onPieceUpdate(final DataRecord record, final ChildEvent childEvent,
                               final float pieceProgress) {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                onPieceUpdateMainThread(record, transportEvent, pieceProgress);
+                onPieceUpdateMainThread(record, childEvent, pieceProgress);
             }
         });
     }
@@ -96,7 +96,7 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
     public void onPieceStartMainThread(DataRecord record) {
     }
 
-    public void onPieceUpdateMainThread(DataRecord record, TransportEvent transportEvent, float pieceProgress) {
+    public void onPieceUpdateMainThread(DataRecord record, ChildEvent childEvent, float pieceProgress) {
 
     }
 

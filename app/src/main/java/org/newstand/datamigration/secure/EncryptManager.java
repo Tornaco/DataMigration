@@ -113,7 +113,7 @@ public class EncryptManager {
         FileInputStream fileStream = new FileInputStream(filePath);
 
         // Creates an input stream which decrypts the data as
-        // it is read from it.
+        // it is read delegate it.
         InputStream inputStream = crypto.getCipherInputStream(
                 fileStream,
                 getEntity());

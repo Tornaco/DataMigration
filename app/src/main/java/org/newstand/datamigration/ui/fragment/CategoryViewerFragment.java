@@ -176,7 +176,7 @@ public class CategoryViewerFragment extends TransitionSafeFragment {
         LoaderSource.Parent parent = loaderSourceProvider.onRequestLoaderSource().getParent();
         final LoadingCacheManager cache = getCacheManager(parent);
 
-        Logger.i("startLoading from parent %s, cache %s", loaderSourceProvider.onRequestLoaderSource().getParent(), cache);
+        Logger.i("startLoading delegate parent %s, cache %s", loaderSourceProvider.onRequestLoaderSource().getParent(), cache);
 
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override

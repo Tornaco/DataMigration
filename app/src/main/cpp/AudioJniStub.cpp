@@ -49,7 +49,7 @@ Java_org_newstand_datamigration_utils_TrackUtils_extractArt(
         return;
     }
 
-    LOGD("Extract from %s to %s", source, to);
+    LOGD("Extract delegate %s to %s", source, to);
 
     MP3 mp3(source);
 

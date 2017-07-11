@@ -24,17 +24,17 @@ import lombok.Getter;
  * All right reserved.
  */
 
-public abstract class GsonBasedRepoService<T> implements RepoService<T> {
+abstract class GsonBasedRepoService<T> implements RepoService<T> {
 
     @Getter
     Gson gson = new Gson();
 
     @Getter
-    String filePath;
+    protected String filePath;
 
     public GsonBasedRepoService() {
         filePath = SettingsProvider.getCommonDataDir() + File.separator + dataFileName();
-        Logger.v("Init repo with path %s", filePath);
+        // Logger.v("Init repo service %s with path %s", getClass().getSimpleName(), filePath);
     }
 
     protected String dataFileName() {
@@ -48,7 +48,7 @@ public abstract class GsonBasedRepoService<T> implements RepoService<T> {
             Collections.consumeRemaining(all, new Consumer<T>() {
                 @Override
                 public void accept(@NonNull T c) {
-                    if (matchCase(t, c)) {
+                    if (isSame(t, c)) {
                         throw new IllegalArgumentException("Dup element:" + t);
                     }
                 }
@@ -69,7 +69,7 @@ public abstract class GsonBasedRepoService<T> implements RepoService<T> {
         int index = -1;
         for (int i = 0; i < all.size(); i++) {
             T e = all.get(i);
-            if (matchCase(e, t)) {
+            if (isSame(e, t)) {
                 index = i;
             }
         }
@@ -82,7 +82,7 @@ public abstract class GsonBasedRepoService<T> implements RepoService<T> {
         return Files.writeString(content, filePath);
     }
 
-    protected boolean matchCase(T old, T now) {
+    protected boolean isSame(T old, T now) {
         return false;
     }
 
@@ -92,7 +92,7 @@ public abstract class GsonBasedRepoService<T> implements RepoService<T> {
         int index = -1;
         for (int i = 0; i < all.size(); i++) {
             T e = all.get(i);
-            if (matchCase(e, t)) {
+            if (isSame(e, t)) {
                 index = i;
             }
         }

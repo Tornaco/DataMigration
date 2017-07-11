@@ -1,8 +1,6 @@
 package org.newstand.datamigration.data.model;
 
 import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,40 +17,10 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class ContactRecord extends FileBasedRecord implements Parcelable {
+public class ContactRecord extends FileBasedRecord {
     private String email;
     private String phoneNum;
     private Uri uri;
-
-    private ContactRecord(Parcel in) {
-        super(in);
-        email = in.readString();
-        phoneNum = in.readString();
-    }
-
-    public static final Creator<ContactRecord> CREATOR = new Creator<ContactRecord>() {
-        @Override
-        public ContactRecord createFromParcel(Parcel in) {
-            return new ContactRecord(in);
-        }
-
-        @Override
-        public ContactRecord[] newArray(int size) {
-            return new ContactRecord[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-        dest.writeString(email);
-        dest.writeString(phoneNum);
-    }
 
     @Override
     public DataCategory category() {

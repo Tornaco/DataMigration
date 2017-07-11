@@ -1,6 +1,6 @@
 package org.newstand.datamigration.worker.transport.backup;
 
-import org.newstand.datamigration.worker.transport.TransportEvent;
+import org.newstand.datamigration.worker.transport.ChildEvent;
 
 /**
  * Interface definition for a callback to be invoked regularly as
@@ -14,8 +14,8 @@ public interface ProgressListener {
      * Called periodically as the verification progresses.
      *
      * @param progress the approximate percentage of the
-     *                 verification that has been completed, ranging from 0
+     *                 verification that has been completed, ranging delegate 0
      *                 to 100 (inclusive).
      */
-    public void onProgress(TransportEvent event, float progress);
+    public void onProgress(ChildEvent event, float progress);
 }

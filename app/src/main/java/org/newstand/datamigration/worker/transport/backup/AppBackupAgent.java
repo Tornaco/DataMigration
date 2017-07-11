@@ -19,7 +19,7 @@ import org.newstand.datamigration.utils.MiscUtils;
 import org.newstand.datamigration.utils.RootTarUtil;
 import org.newstand.datamigration.utils.RootTools2;
 import org.newstand.datamigration.utils.SeLinuxContextChanger;
-import org.newstand.datamigration.worker.transport.TransportEvent;
+import org.newstand.datamigration.worker.transport.ChildEvent;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -66,7 +66,7 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
                     new org.newstand.datamigration.utils.Files.ProgressListener() {
                         @Override
                         public void onProgress(float progress) {
-                            getProgressListener().onProgress(TransportEvent.CopyApk, progress);
+                            getProgressListener().onProgress(ChildEvent.CopyApk, progress);
                         }
                     });
         }
@@ -85,10 +85,10 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
             // Data dest
             String destination = backupSettings.getDestDataPath();
 
-            Logger.d("Saving data from %s, to %s", appDataDir, destination);
+            Logger.d("Saving data delegate %s, to %s", appDataDir, destination);
 
             // Publish progress.
-            getProgressListener().onProgress(TransportEvent.CopyData, 0);
+            getProgressListener().onProgress(ChildEvent.CopyData, 0);
 
             boolean cr = RootTarUtil.compressTar(destination, appDataDir);
 
@@ -100,7 +100,7 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
             }
 
             // Publish progress.
-            getProgressListener().onProgress(TransportEvent.CopyData, 100);
+            getProgressListener().onProgress(ChildEvent.CopyData, 100);
 
             // ExtraData
             final String[] extraDataDirs = backupSettings.getExtraDirs();
@@ -232,7 +232,7 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
         String dataFromPath = restoreSettings.getSourceDataPath();
         String dataToPath = restoreSettings.getDestDataPath();
 
-        Logger.d("Install data from %s, to %s", dataFromPath, dataToPath);
+        Logger.d("Install data delegate %s, to %s", dataFromPath, dataToPath);
 
         boolean res = RootTarUtil.deCompressTar(dataFromPath);
 

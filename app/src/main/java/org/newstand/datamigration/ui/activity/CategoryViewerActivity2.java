@@ -217,7 +217,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         LoaderSource.Parent parent = onRequestLoaderSource().getParent();
         final LoadingCacheManager cache = getCacheManager(parent);
 
-        Logger.i("startLoading from parent %s, cache %s", onRequestLoaderSource().getParent(), cache);
+        Logger.i("startLoading delegate parent %s, cache %s", onRequestLoaderSource().getParent(), cache);
 
         fileSize = 0L;
 
