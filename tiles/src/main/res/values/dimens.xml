@@ -34,6 +34,9 @@
     <!-- Dashboard tile minimum height -->
     <dimen name="dashboard_tile_minimum_height">72dp</dimen>
 
+    <!-- Dashboard tile minimum height small -->
+    <dimen name="dashboard_tile_minimum_height_small">56dp</dimen>
+
     <!-- Dashboard image tile size -->
     <dimen name="dashboard_tile_image_size">28dp</dimen>
 
