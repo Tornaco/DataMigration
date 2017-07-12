@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Keep;
@@ -21,6 +22,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.google.common.io.Files;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -93,7 +97,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         EventBus.from(this).subscribe(selectionEventReceiver);
 
         setupView();
-        startLoadingChecked();
+        showRetention();
     }
 
     @Override
@@ -172,16 +176,58 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         }
     };
 
+    private void showRetention() {
+        boolean hasBasicPermission = true;
+
+        for (String perm : PERMISSIONS) {
+            boolean hasOne = ContextCompat.checkSelfPermission(getApplicationContext(), perm) == PackageManager.PERMISSION_GRANTED;
+            if (!hasOne) {
+                hasBasicPermission = false;
+                break;
+            }
+        }
+
+        if (!hasBasicPermission) {
+            new MaterialStyledDialog.Builder(this)
+                    .setTitle(R.string.permission_request)
+                    .setDescription(R.string.permission_request_message)
+                    .setHeaderDrawable(R.drawable.photo_backup_help_card_header)
+                    .withDarkerOverlay(false)
+                    .setCancelable(false)
+                    .setPositiveText(android.R.string.ok)
+                    .setNegativeText(android.R.string.cancel)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            startLoadingChecked();
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        } else {
+            startLoading();
+        }
+    }
+
+    static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.WRITE_CONTACTS,
+            Manifest.permission.READ_CALL_LOG,
+            Manifest.permission.WRITE_CALL_LOG,
+            Manifest.permission.READ_SMS
+    };
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void startLoadingChecked() {
         RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_CONTACTS,
-                Manifest.permission.WRITE_CONTACTS,
-                Manifest.permission.READ_CALL_LOG,
-                Manifest.permission.WRITE_CALL_LOG,
-                Manifest.permission.READ_SMS)
+        rxPermissions.request(PERMISSIONS)
                 .subscribe(new io.reactivex.functions.Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean granted) throws Exception {
@@ -302,7 +348,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                startLoadingChecked();
+                showRetention();
             }
         });
     }
@@ -476,7 +522,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         LoaderSource onRequestLoaderSource();
     }
 
-    enum LoaderState {
+    private enum LoaderState {
         IDLE, LOADING, LOADED
     }
 }

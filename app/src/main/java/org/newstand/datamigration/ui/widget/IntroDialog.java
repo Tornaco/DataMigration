@@ -24,40 +24,14 @@ public class IntroDialog {
             onOkRunnable.run();
             return;
         }
-//        AlertDialog alertDialog = new AlertDialog.Builder(context)
-//                .setTitle(R.string.title_user_notice)
-//                .setMessage(R.string.message_user_notice)
-//                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        listener.onCancel(dialog);
-//                    }
-//                })
-//                .setNeutralButton(R.string.title_never_remind,
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                SettingsProvider.setUserNoticed(true);
-//                                onOkRunnable.run();
-//                            }
-//                        })
-//                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        onOkRunnable.run();
-//                    }
-//                })
-//                .setCancelable(false)
-//                .create();
-//        alertDialog.show();
 
         new MaterialDialog.Builder(context)
                 .titleColorAttr(R.attr.colorPrimary)
                 .title(R.string.title_user_notice)
                 .content(R.string.message_user_notice)
-                .negativeColorAttr(R.attr.colorPrimary)
-                .positiveColorAttr(R.attr.colorPrimary)
-                .neutralColorAttr(R.attr.colorPrimary)
+                .negativeColorAttr(R.attr.colorAccent)
+                .positiveColorAttr(R.attr.colorAccent)
+                .neutralColorAttr(R.attr.colorAccent)
                 .negativeText(android.R.string.cancel)
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override

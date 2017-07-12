@@ -1,30 +1,18 @@
 package org.newstand.datamigration.ui.fragment;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
-
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.common.ActionListener2Adapter;
 import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.repo.BKSessionRepoService;
-import org.newstand.datamigration.secure.VersionCheckResult;
-import org.newstand.datamigration.secure.VersionInfo;
-import org.newstand.datamigration.secure.VersionRetriever;
-import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.tiles.AdsTile;
 import org.newstand.datamigration.ui.tiles.BackupTile;
@@ -34,19 +22,13 @@ import org.newstand.datamigration.ui.tiles.RulesTile;
 import org.newstand.datamigration.ui.tiles.SchedulerTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.IntroDialog;
-import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
-import org.newstand.datamigration.ui.widget.VersionInfoDialog;
 import org.newstand.datamigration.utils.EmojiUtils;
-import org.newstand.datamigration.worker.transport.Session;
 
-import java.util.Date;
 import java.util.List;
 
 import dev.nick.tiles.tile.Category;
 import dev.nick.tiles.tile.DashboardFragment;
-import io.reactivex.functions.Consumer;
 import lombok.Getter;
-import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/21 9:42
@@ -121,10 +103,6 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
                 }
             }
         });
-
-        if (SettingsProvider.shouldCheckForUpdateNow()) {
-            checkForUpdate();
-        }
     }
 
     @Override
@@ -139,80 +117,7 @@ public class BackupRestoreNavigatorFragment extends DashboardFragment implements
         }, new Runnable() {
             @Override
             public void run() {
-                // Ask for perms
-                requestPerms();
-            }
-        });
-    }
-
-    private void requestPerms() {
-        RxPermissions rxPermissions = new RxPermissions(getActivity());
-        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean granted) throws Exception {
-                        if (granted) {
-                            onPermissionGrant();
-                        } else {
-                            onPermissionNotGrant();
-                        }
-                    }
-                });
-    }
-
-
-    private void checkForUpdate() {
-        VersionRetriever.hasLaterVersionAsync(getContext(), new ActionListener2Adapter<VersionCheckResult, Throwable>() {
-            @Override
-            public void onComplete(VersionCheckResult versionCheckResult) {
-                super.onComplete(versionCheckResult);
-                if (versionCheckResult.isHasLater()) {
-                    showUpdateSnake(versionCheckResult.getVersionInfo());
-                    SettingsProvider.setLastUpdateCheckTime(System.currentTimeMillis());
-                }
-            }
-        });
-    }
-
-    private void showUpdateSnake(final VersionInfo info) {
-        Snackbar.make(findView(R.id.fab),
-                getString(R.string.title_new_update_available, info.getVersionName()),
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.action_look_up, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onRequestLookup(info);
-                    }
-                }).show();
-    }
-
-    private void onRequestLookup(VersionInfo info) {
-        VersionInfoDialog.attach(getContext(), info);
-    }
-
-    private void onPermissionGrant() {
-    }
-
-    private void onPermissionNotGrant() {
-        PermissionMissingDialog.attach(getActivity());
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void queryShowHistory() {
-        final TextView tv1 = findView(findView(R.id.card), android.R.id.text2);
-        SharedExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                Session last = BKSessionRepoService.get().findFirst(getContext());
-                final String intro;
-                if (last == null) {
-                    intro = getString(R.string.title_backup_history_noop);
-                } else {
-                    intro = getString(R.string.title_backup_history,
-                            FuzzyDateTimeFormatter.getTimeAgo(getContext(),
-                                    new Date(last.getDate())));
-                }
+                // Empty for now.
             }
         });
     }

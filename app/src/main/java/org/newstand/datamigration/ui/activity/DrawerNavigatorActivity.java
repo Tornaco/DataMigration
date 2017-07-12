@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
-import com.github.javiersantos.materialstyleddialogs.enums.Style;
 import com.github.paolorotolo.appintro.BuildConfig;
 import com.google.common.collect.ImmutableList;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -87,12 +86,12 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
     private void showRetention() {
         boolean hasBasicPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        if (SettingsProvider.isDebugEnabled() || !hasBasicPermission) {
+        if (!hasBasicPermission) {
             new MaterialStyledDialog.Builder(this)
                     .setTitle(R.string.permission_request)
                     .setDescription(R.string.permission_request_message)
                     .setHeaderDrawable(R.drawable.photo_backup_help_card_header)
-                    .withDarkerOverlay(true)
+                    .withDarkerOverlay(false)
                     .setCancelable(false)
                     .setPositiveText(android.R.string.ok)
                     .setNegativeText(android.R.string.cancel)

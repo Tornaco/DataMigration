@@ -1,6 +1,5 @@
 package org.newstand.datamigration.ui.fragment;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Producer;
@@ -24,14 +21,12 @@ import org.newstand.datamigration.ui.tiles.FTPPWDTile;
 import org.newstand.datamigration.ui.tiles.FTPRootDirTile;
 import org.newstand.datamigration.ui.tiles.FTPUserNameTile;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
-import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.utils.EmojiUtils;
 
 import java.util.List;
 
 import dev.nick.tiles.tile.Category;
 import dev.nick.tiles.tile.DashboardFragment;
-import io.reactivex.functions.Consumer;
 import lombok.Getter;
 
 /**
@@ -112,33 +107,7 @@ public class FTPServerNavigatorFragment extends DashboardFragment implements Pro
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        requestPerms();
     }
-
-    private void requestPerms() {
-        RxPermissions rxPermissions = new RxPermissions(getActivity());
-        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.CHANGE_WIFI_STATE,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.WAKE_LOCK)
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean granted) throws Exception {
-                        if (granted) {
-                        } else {
-                            onPermissionNotGrant();
-                        }
-                    }
-                });
-    }
-
-
-    private void onPermissionNotGrant() {
-        PermissionMissingDialog.attach(getActivity());
-    }
-
 
     protected void transitionTo(Intent intent) {
         TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
