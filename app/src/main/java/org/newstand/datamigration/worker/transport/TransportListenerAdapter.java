@@ -14,25 +14,30 @@ public class TransportListenerAdapter extends TransportListener {
     }
 
     @Override
-    public void onPieceStart(DataRecord record) {
+    public void onRecordStart(DataRecord record) {
     }
 
     @Override
-    public void onPieceUpdate(DataRecord record, ChildEvent childEvent, float pieceProgress) {
-
-    }
-
-    @Override
-    public void onPieceSuccess(DataRecord record) {
+    public void onRecordProgressUpdate(DataRecord record, RecordEvent recordEvent, float progress) {
 
     }
 
     @Override
-    public void onPieceFail(DataRecord record, Throwable err) {
+    public void onRecordSuccess(DataRecord record) {
+
+    }
+
+    @Override
+    public void onRecordFail(DataRecord record, Throwable err) {
     }
 
     @Override
     public void onComplete() {
+
+    }
+
+    @Override
+    public void onProgressUpdate(float progress) {
 
     }
 

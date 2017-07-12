@@ -1,6 +1,6 @@
 package org.newstand.datamigration.worker.transport.backup;
 
-import org.newstand.datamigration.worker.transport.ChildEvent;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 
 /**
  * Interface definition for a callback to be invoked regularly as
@@ -17,5 +17,5 @@ public interface ProgressListener {
      *                 verification that has been completed, ranging delegate 0
      *                 to 100 (inclusive).
      */
-    public void onProgress(ChildEvent event, float progress);
+    public void onProgress(RecordEvent event, float progress);
 }

@@ -30,9 +30,8 @@ import org.newstand.datamigration.repo.TransportEventRecordRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.utils.MediaScannerClient;
-import org.newstand.datamigration.worker.transport.ChildEvent;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.datamigration.worker.transport.Stats;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
 import org.newstand.logger.Logger;
@@ -47,8 +46,6 @@ import java.util.Observer;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/8 17:22
@@ -100,7 +97,6 @@ public class DataBackupManager {
         AbortSignal abortSignal = new AbortSignal();
         BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), listener, getSession()),
                 dataRecords, dataCategory, abortSignal);
-        listener.setStats(worker.status);
         worker.run();
     }
 
@@ -118,7 +114,6 @@ public class DataBackupManager {
         AbortSignal abortSignal = new AbortSignal();
         final BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), listener, getSession()),
                 dataRecords, dataCategory, abortSignal);
-        listener.setStats(worker.status);
         if (startSignal == null) {
             SharedExecutor.execute(worker);
         } else {
@@ -138,7 +133,6 @@ public class DataBackupManager {
         final RestoreWorker worker = new RestoreWorker(EventRecorderTransportListenerProxy.delegate(
                 getContext(), listener, getSession()
         ), dataRecords, dataCategory, new AbortSignal());
-        listener.setStats(worker.status);
         worker.run();
     }
 
@@ -156,7 +150,6 @@ public class DataBackupManager {
         final RestoreWorker worker = new RestoreWorker(EventRecorderTransportListenerProxy.delegate(
                 getContext(), listener, getSession()
         ), dataRecords, dataCategory, abortSignal);
-        listener.setStats(worker.status);
         if (startSignal == null) {
             SharedExecutor.execute(worker);
         } else {
@@ -241,8 +234,8 @@ public class DataBackupManager {
                 wifiBackupSettings.setDestPath(SettingsProvider.getBackupDirByCategory(dataCategory, session)
                         + File.separator
                         + "wpa_supplicant"
-                        + "@"
-                        + mixedName(record.getDisplayName())
+                        + "_"
+                        + record.getDisplayName()
                         + WifiBackupSettings.SUBFIX);
                 return wifiBackupSettings;
             case SystemSettings:
@@ -356,9 +349,12 @@ public class DataBackupManager {
         Collection<DataRecord> dataRecords;
         DataCategory dataCategory;
 
-        SimpleStats status;
-
         boolean canceled;
+
+        float total = 0;
+        float handled = 0;
+
+        int progressOpt = 0;
 
         BackupWorker(TransportListener listener,
                      Collection<DataRecord> dataRecords,
@@ -367,8 +363,6 @@ public class DataBackupManager {
             this.listener = listener;
             this.dataRecords = dataRecords;
             this.dataCategory = dataCategory;
-            this.status = new SimpleStats();
-            this.status.init(dataRecords.size());
             abortSignal.addObserver(new Observer() {
                 @Override
                 public void update(Observable o, Object arg) {
@@ -376,11 +370,15 @@ public class DataBackupManager {
                     Logger.w("BackupWorker canceled %s", dataCategory.name());
                 }
             });
+
+            // Progress init.
+            total = dataRecords.size();
         }
 
         @Override
         @SuppressWarnings("unchecked")
         public void run() {
+
             final BackupAgent backupAgent = onCreateAgentByCategory(dataCategory);
             if (backupAgent instanceof ContextWireable) {
                 ContextWireable contextWireable = (ContextWireable) backupAgent;
@@ -391,16 +389,15 @@ public class DataBackupManager {
                 @Override
                 public void accept(@NonNull final DataRecord record) {
                     if (canceled) {
-                        listener.onPieceFail(record, new AbortException());
-                        status.onFail();
+                        listener.onRecordFail(record, new AbortException());
                         return;
                     }
-                    listener.onPieceStart(record);
+                    listener.onRecordStart(record);
 
                     backupAgent.listen(new ProgressListener() {
                         @Override
-                        public void onProgress(ChildEvent event, float progress) {
-                            listener.onPieceUpdate(record, event, progress);
+                        public void onProgress(RecordEvent event, float progress) {
+                            listener.onRecordProgressUpdate(record, event, progress);
                         }
                     });
 
@@ -408,16 +405,21 @@ public class DataBackupManager {
                     try {
                         BackupAgent.Res res = backupAgent.backup(settings);
                         if (BackupAgent.Res.isOk(res)) {
-                            listener.onPieceSuccess(record);
-                            status.onSuccess();
+                            listener.onRecordSuccess(record);
                         } else {
-                            listener.onPieceFail(record, res);
-                            status.onFail();
+                            listener.onRecordFail(record, res);
                         }
                     } catch (Exception e) {
-                        listener.onPieceFail(record, e);
-                        status.onFail();
-                        Logger.e(e, "onPieceFail");
+                        listener.onRecordFail(record, e);
+                        Logger.e(e, "onRecordFail");
+                    } finally {
+                        // Publish progress.
+                        handled += 1;
+                        int pint = (int) ((handled / total) * 100);
+                        if (progressOpt != pint) {
+                            listener.onProgressUpdate(pint);
+                            progressOpt = pint;
+                        }
                     }
                 }
             });
@@ -460,9 +462,11 @@ public class DataBackupManager {
         Collection<DataRecord> dataRecords;
         DataCategory dataCategory;
 
-        SimpleStats status;
-
         boolean canceled;
+
+        float total = 0;
+        float handled = 0;
+        int progressOpt = 0;
 
         RestoreWorker(TransportListener listener,
                       Collection<DataRecord> dataRecords,
@@ -471,8 +475,6 @@ public class DataBackupManager {
             this.listener = listener;
             this.dataRecords = dataRecords;
             this.dataCategory = dataCategory;
-            this.status = new SimpleStats();
-            this.status.init(dataRecords.size());
 
             signal.addObserver(new Observer() {
                 @Override
@@ -481,6 +483,9 @@ public class DataBackupManager {
                     Logger.w("RestoreWorker canceled %s", dataCategory.name());
                 }
             });
+
+            // Progress init.
+            total = dataRecords.size();
         }
 
         @Override
@@ -496,16 +501,15 @@ public class DataBackupManager {
                 @Override
                 public void accept(@NonNull final DataRecord record) {
                     if (canceled) {
-                        listener.onPieceFail(record, new AbortException());
-                        status.onFail();
+                        listener.onRecordFail(record, new AbortException());
                         return;
                     }
-                    listener.onPieceStart(record);
+                    listener.onRecordStart(record);
 
                     backupAgent.listen(new ProgressListener() {
                         @Override
-                        public void onProgress(ChildEvent event, float progress) {
-                            listener.onPieceUpdate(record, event, progress);
+                        public void onProgress(RecordEvent event, float progress) {
+                            listener.onRecordProgressUpdate(record, event, progress);
                         }
                     });
 
@@ -513,60 +517,25 @@ public class DataBackupManager {
                     try {
                         BackupAgent.Res res = backupAgent.restore(settings);
                         if (BackupAgent.Res.isOk(res)) {
-                            listener.onPieceSuccess(record);
-                            status.onSuccess();
+                            listener.onRecordSuccess(record);
                         } else {
-                            listener.onPieceFail(record, res);
-                            status.onFail();
+                            listener.onRecordFail(record, res);
                         }
                     } catch (Exception e) {
-                        listener.onPieceFail(record, e);
-                        status.onFail();
-                        Logger.e(e, "onPieceFail");
+                        listener.onRecordFail(record, e);
+                        Logger.e(e, "onRecordFail");
+                    } finally {
+                        // Publish progress.
+                        handled += 1;
+                        int pint = (int) ((handled / total) * 100);
+                        if (progressOpt != pint) {
+                            listener.onProgressUpdate(progressOpt);
+                            progressOpt = pint;
+                        }
                     }
                 }
             });
             listener.onComplete();
-        }
-    }
-
-    @ToString
-    private class SimpleStats implements Stats {
-
-        @Setter(AccessLevel.PACKAGE)
-        @Getter
-        private int total, left, success, fail;
-
-        private void init(int size) {
-            total = left = size;
-            Logger.d("init status %s", toString());
-        }
-
-        private void onPiece() {
-            left--;
-        }
-
-        @Override
-        public void onSuccess() {
-            success++;
-            onPiece();
-        }
-
-        @Override
-        public void onFail() {
-            fail++;
-            onPiece();
-        }
-
-        @Override
-        public Stats merge(Stats with) {
-
-            total += with.getTotal();
-            left += with.getLeft();
-            success += with.getSuccess();
-            fail += with.getFail();
-
-            return this;
         }
     }
 
@@ -589,32 +558,28 @@ public class DataBackupManager {
         }
 
         @Override
-        public Stats getStats() {
-            return listener.getStats();
-        }
-
-        @Override
-        public void setStats(Stats stats) {
-            listener.setStats(stats);
-        }
-
-        @Override
         public void onStart() {
             listener.onStart();
         }
 
         @Override
-        public void onPieceStart(DataRecord record) {
-            listener.onPieceStart(record);
+        public void onRecordStart(DataRecord record) {
+            listener.onRecordStart(record);
         }
 
         @Override
-        public void onPieceUpdate(DataRecord record, ChildEvent childEvent, float pieceProgress) {
-            listener.onPieceUpdate(record, childEvent, pieceProgress);
+        public void onRecordProgressUpdate(DataRecord record, RecordEvent recordEvent, float progress) {
+            listener.onRecordProgressUpdate(record, recordEvent, progress);
         }
 
         @Override
-        public void onPieceSuccess(DataRecord record) {
+        public void onProgressUpdate(float progress) {
+            super.onProgressUpdate(progress);
+            listener.onProgressUpdate(progress);
+        }
+
+        @Override
+        public void onRecordSuccess(DataRecord record) {
 
             try {
                 TransportEventRecord transportEventRecord = TransportEventRecord.builder()
@@ -629,11 +594,11 @@ public class DataBackupManager {
                 Logger.e(e, "Fail insert event");
             }
 
-            listener.onPieceSuccess(record);
+            listener.onRecordSuccess(record);
         }
 
         @Override
-        public void onPieceFail(DataRecord record, Throwable err) {
+        public void onRecordFail(DataRecord record, Throwable err) {
 
             try {
                 TransportEventRecord transportEventRecord = TransportEventRecord.builder()
@@ -650,7 +615,7 @@ public class DataBackupManager {
                 Logger.e(e, "Fail insert event");
             }
 
-            listener.onPieceFail(record, err);
+            listener.onRecordFail(record, err);
         }
 
         @Override

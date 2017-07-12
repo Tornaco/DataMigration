@@ -9,7 +9,6 @@ import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.data.SmsContentProviderCompat;
-import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.net.protocol.DataSenderProxy;
@@ -20,14 +19,11 @@ import org.newstand.datamigration.net.server.TransportClientProxy;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
-import org.newstand.datamigration.utils.Collections;
-import org.newstand.datamigration.worker.transport.ChildEvent;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
 import org.newstand.logger.Logger;
-
-import java.util.List;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
 import lombok.Getter;
@@ -56,8 +52,6 @@ public class DataSenderManageFragment extends DataTransportManageFragment
         @Override
         public void onStartMainThread() {
             super.onStartMainThread();
-            // Merge two stats~
-            DataSenderManageFragment.this.getStats().merge(getStats());
         }
 
         @Override
@@ -67,31 +61,27 @@ public class DataSenderManageFragment extends DataTransportManageFragment
         }
 
         @Override
-        public void onPieceFailMainThread(DataRecord record, Throwable err) {
-            super.onPieceFailMainThread(record, err);
-            onProgressUpdate();
-            publishFailEventAsync(record, err);
+        public void onRecordFailMainThread(DataRecord record, Throwable err) {
+            super.onRecordFailMainThread(record, err);
         }
 
         @Override
-        public void onPieceSuccessMainThread(DataRecord record) {
-            super.onPieceSuccessMainThread(record);
-            onProgressUpdate();
+        public void onRecordSuccessMainThread(DataRecord record) {
+            super.onRecordSuccessMainThread(record);
         }
 
         @Override
-        public void onPieceStartMainThread(DataRecord record) {
-            super.onPieceStartMainThread(record);
+        public void onRecordStartMainThread(DataRecord record) {
+            super.onRecordStartMainThread(record);
             // Sub record is sending, we can cancel now~
             setCancelable(true);
-            showCurrentPieceInUI(record);
+            showCurrentRecordInUI(record);
         }
 
-
         @Override
-        public void onPieceUpdateMainThread(DataRecord record, ChildEvent childEvent, float pieceProgress) {
-            super.onPieceUpdateMainThread(record, childEvent, pieceProgress);
-            showCurrentPieceProgressInUI(record, childEvent, pieceProgress);
+        public void onRecordProgressUpdateMainThread(DataRecord record, RecordEvent recordEvent, float progress) {
+            super.onRecordProgressUpdateMainThread(record, recordEvent, progress);
+            showRecordProgressInUI(record, recordEvent, progress);
         }
 
         @Override
@@ -106,11 +96,13 @@ public class DataSenderManageFragment extends DataTransportManageFragment
                         }
                     });
         }
-    };
 
-    private void showCurrentPieceInUI(DataRecord record) {
-        getConsoleTitleView().setText(record.getDisplayName());
-    }
+        @Override
+        public void onProgressUpdateMainThread(float progress) {
+            super.onProgressUpdateMainThread(progress);
+            updateProgressWheel(progress);
+        }
+    };
 
 
     public interface LoaderSourceProvider {
@@ -171,34 +163,7 @@ public class DataSenderManageFragment extends DataTransportManageFragment
 
     @Override
     SimplifySpanBuild onCreateCompleteSummary() {
-        return buildTransportReport(getStats());
-    }
-
-    @Override
-    protected void onFailTextInSummaryClick() {
-        super.onFailTextInSummaryClick();
-        queryFailEventAsync(new Consumer<List<UserAction>>() {
-            @Override
-            public void accept(@NonNull final List<UserAction> userActions) {
-                if (userActions.size() == 0) {
-                    Logger.w("No user actions got~");
-                    return;
-                }
-                final StringBuilder message = new StringBuilder();
-                Collections.consumeRemaining(userActions, new Consumer<UserAction>() {
-                    @Override
-                    public void accept(@NonNull UserAction userAction) {
-                        message.append(userAction.getEventDescription());
-                    }
-                });
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ErrDialog.attach(getActivity(), message.toString(), null);
-                    }
-                });
-            }
-        });
+        return new SimplifySpanBuild();
     }
 
     @Override

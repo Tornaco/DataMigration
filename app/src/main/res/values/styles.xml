@@ -48,7 +48,10 @@
         <item name="android:minWidth">64dip</item>
     </style>
 
-    <style name="CollapsedTitle" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title" />
+    <style name="CollapsedTitle" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+    </style>
 
     <style name="CollapsedTitleExpanded" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
         <item name="android:singleLine">false</item>

@@ -160,31 +160,29 @@ public class DataSenderProxyTest {
             @Override
             public void onStart() {
                 super.onStart();
-                count.setData(getStats().getTotal());
             }
 
             @Override
-            public void onPieceSuccess(DataRecord record) {
-                super.onPieceSuccess(record);
-                Logger.d("send onPieceSuccess %s %s", record, getStats());
+            public void onRecordSuccess(DataRecord record) {
+                super.onRecordSuccess(record);
 
                 // Cancel?
-                if (isCancelable() && getStats().getLeft() <= count.getData() / 2) {
+                if (isCancelable()) {
                     Logger.w("*********************Aborting ~~~~~~~~~~~~~~~~~~");
                     abortSignal.abort();
                 }
             }
 
             @Override
-            public void onPieceFail(DataRecord record, Throwable err) {
-                super.onPieceFail(record, err);
-                Logger.d("send onPieceFail %s %s", record, getStats());
+            public void onRecordFail(DataRecord record, Throwable err) {
+                super.onRecordFail(record, err);
+                Logger.d("send onRecordFail %s", record);
             }
 
             @Override
-            public void onPieceStart(DataRecord record) {
-                super.onPieceStart(record);
-                Logger.d("send onPieceStart %s", record);
+            public void onRecordStart(DataRecord record) {
+                super.onRecordStart(record);
+                Logger.d("send onRecordStart %s", record);
             }
 
             @Override
@@ -208,21 +206,21 @@ public class DataSenderProxyTest {
         DataReceiverProxy.receive(InstrumentationRegistry.getTargetContext(), mServer,
                 new TransportListenerAdapter() {
                     @Override
-                    public void onPieceSuccess(DataRecord record) {
-                        super.onPieceSuccess(record);
-                        Logger.d("receive onPieceSuccess %s %s", record, getStats());
+                    public void onRecordSuccess(DataRecord record) {
+                        super.onRecordSuccess(record);
+                        Logger.d("receive onRecordSuccess %s %s", record);
                     }
 
                     @Override
-                    public void onPieceFail(DataRecord record, Throwable err) {
-                        super.onPieceFail(record, err);
-                        Logger.d("receive onPieceFail %s %s", record, getStats());
+                    public void onRecordFail(DataRecord record, Throwable err) {
+                        super.onRecordFail(record, err);
+                        Logger.d("receive onRecordFail %s %s", record);
                     }
 
                     @Override
-                    public void onPieceStart(DataRecord record) {
-                        super.onPieceStart(record);
-                        Logger.d("receive onPieceStart %s", record);
+                    public void onRecordStart(DataRecord record) {
+                        super.onRecordStart(record);
+                        Logger.d("receive onRecordStart %s", record);
                     }
 
                     @Override

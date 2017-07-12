@@ -37,7 +37,7 @@ public class Session implements Parcelable {
 
     public Session() {
         long startTimeMills = System.currentTimeMillis();
-        name = DateUtils.formatLong(startTimeMills);
+        name = DateUtils.formatForFileName(startTimeMills);
         date = startTimeMills;
     }
 

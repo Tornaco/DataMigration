@@ -19,7 +19,7 @@ import org.newstand.datamigration.utils.MiscUtils;
 import org.newstand.datamigration.utils.RootTarUtil;
 import org.newstand.datamigration.utils.RootTools2;
 import org.newstand.datamigration.utils.SeLinuxContextChanger;
-import org.newstand.datamigration.worker.transport.ChildEvent;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -66,7 +66,7 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
                     new org.newstand.datamigration.utils.Files.ProgressListener() {
                         @Override
                         public void onProgress(float progress) {
-                            getProgressListener().onProgress(ChildEvent.CopyApk, progress);
+                            getProgressListener().onProgress(RecordEvent.CopyApk, progress);
                         }
                     });
         }
@@ -88,7 +88,7 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
             Logger.d("Saving data delegate %s, to %s", appDataDir, destination);
 
             // Publish progress.
-            getProgressListener().onProgress(ChildEvent.CopyData, 0);
+            getProgressListener().onProgress(RecordEvent.CopyData, 0);
 
             boolean cr = RootTarUtil.compressTar(destination, appDataDir);
 
@@ -100,7 +100,7 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
             }
 
             // Publish progress.
-            getProgressListener().onProgress(ChildEvent.CopyData, 100);
+            getProgressListener().onProgress(RecordEvent.CopyData, 100);
 
             // ExtraData
             final String[] extraDataDirs = backupSettings.getExtraDirs();
@@ -143,7 +143,7 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
             Logger.d("Installing apk");
 
             // Publish progress.
-            getProgressListener().onProgress(ChildEvent.InstallApk, 0);
+            getProgressListener().onProgress(RecordEvent.InstallApk, 0);
 
             PackageInstallReceiver installReceiver = new PackageInstallReceiver(restoreSettings.getAppRecord().getPkgName());
             installReceiver.register(getContext());
@@ -166,7 +166,7 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
             Sleeper.sleepQuietly(2000); // Sleep for 1s to let user dismiss the install page...Maybe there is a better way?
 
             // Publish progress.
-            getProgressListener().onProgress(ChildEvent.InstallApk, 100);
+            getProgressListener().onProgress(RecordEvent.InstallApk, 100);
         }
 
         boolean installData = restoreSettings.isInstallData();
@@ -176,16 +176,16 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
         if (installData) {
 
             // Publish progress.
-            getProgressListener().onProgress(ChildEvent.InstallData, 0);
+            getProgressListener().onProgress(RecordEvent.InstallData, 0);
             res = installData(restoreSettings);
-            getProgressListener().onProgress(ChildEvent.InstallData, 100);
+            getProgressListener().onProgress(RecordEvent.InstallData, 100);
 
             if (res == Res.OK) {
 
                 // Publish progress.
-                getProgressListener().onProgress(ChildEvent.InstallExtraData, 0);
+                getProgressListener().onProgress(RecordEvent.InstallExtraData, 0);
                 res = installExtraData(restoreSettings);
-                getProgressListener().onProgress(ChildEvent.InstallExtraData, 100);
+                getProgressListener().onProgress(RecordEvent.InstallExtraData, 100);
             }
         }
 

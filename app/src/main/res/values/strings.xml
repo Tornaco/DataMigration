@@ -21,6 +21,9 @@
     <string name="title_need_help">需要帮助？</string>
 
 
+    <string name="transport_event_description_init">初始化</string>
+    <string name="transport_event_description_insert">插入</string>
+    <string name="transport_event_description_create_dir">创建文件夹</string>
     <string name="transport_event_description_copy_file">复制文件</string>
     <string name="transport_event_description_copy_apk">复制APK</string>
     <string name="transport_event_description_copy_data">复制应用数据</string>

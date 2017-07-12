@@ -3,6 +3,7 @@ package org.newstand.datamigration.worker.transport;
 import android.os.Handler;
 
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.logger.Logger;
 
 
 /**
@@ -30,42 +31,42 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
     }
 
     @Override
-    public final void onPieceStart(final DataRecord record) {
+    public final void onRecordStart(final DataRecord record) {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                onPieceStartMainThread(record);
+                onRecordStartMainThread(record);
             }
         });
     }
 
     @Override
-    public void onPieceUpdate(final DataRecord record, final ChildEvent childEvent,
-                              final float pieceProgress) {
+    public final void onRecordProgressUpdate(final DataRecord record, final RecordEvent recordEvent,
+                                       final float progress) {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                onPieceUpdateMainThread(record, childEvent, pieceProgress);
+                onRecordProgressUpdateMainThread(record, recordEvent, progress);
             }
         });
     }
 
     @Override
-    public final void onPieceSuccess(final DataRecord record) {
+    public final void onRecordSuccess(final DataRecord record) {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                onPieceSuccessMainThread(record);
+                onRecordSuccessMainThread(record);
             }
         });
     }
 
     @Override
-    public final void onPieceFail(final DataRecord record, final Throwable err) {
+    public final void onRecordFail(final DataRecord record, final Throwable err) {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                onPieceFailMainThread(record, err);
+                onRecordFailMainThread(record, err);
             }
         });
     }
@@ -76,6 +77,16 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
             @Override
             public void run() {
                 onCompleteMainThread();
+            }
+        });
+    }
+
+    @Override
+    public final void onProgressUpdate(final float progress) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                onProgressUpdateMainThread(progress);
             }
         });
     }
@@ -93,17 +104,20 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
     public void onStartMainThread() {
     }
 
-    public void onPieceStartMainThread(DataRecord record) {
+    public void onRecordStartMainThread(DataRecord record) {
     }
 
-    public void onPieceUpdateMainThread(DataRecord record, ChildEvent childEvent, float pieceProgress) {
+    public void onRecordProgressUpdateMainThread(DataRecord record, RecordEvent recordEvent, float progress) {
 
     }
 
-    public void onPieceSuccessMainThread(DataRecord record) {
+    public void onRecordSuccessMainThread(DataRecord record) {
     }
 
-    public void onPieceFailMainThread(DataRecord record, Throwable err) {
+    public void onRecordFailMainThread(DataRecord record, Throwable err) {
+    }
+
+    public void onProgressUpdateMainThread(float progress) {
     }
 
     public void onCompleteMainThread() {

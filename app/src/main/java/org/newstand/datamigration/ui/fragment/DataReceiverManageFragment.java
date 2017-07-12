@@ -11,7 +11,6 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.data.SmsContentProviderCompat;
-import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.net.protocol.DataReceiverProxy;
@@ -24,8 +23,7 @@ import org.newstand.datamigration.repo.ReceivedSessionRepoService;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
-import org.newstand.datamigration.utils.Collections;
-import org.newstand.datamigration.worker.transport.ChildEvent;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
@@ -33,7 +31,6 @@ import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
 
 import java.io.File;
-import java.util.List;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
 import cn.iwgang.simplifyspan.other.OnClickableSpanListener;
@@ -65,8 +62,6 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
         @Override
         public void onStartMainThread() {
             super.onStartMainThread();
-            // Merge two stats~
-            DataReceiverManageFragment.this.getStats().merge(getStats());
         }
 
         @Override
@@ -76,30 +71,27 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
         }
 
         @Override
-        public void onPieceFailMainThread(DataRecord record, Throwable err) {
-            super.onPieceFailMainThread(record, err);
-            onProgressUpdate();
-            publishFailEventAsync(record, err);
+        public void onRecordFailMainThread(DataRecord record, Throwable err) {
+            super.onRecordFailMainThread(record, err);
         }
 
         @Override
-        public void onPieceSuccessMainThread(DataRecord record) {
-            super.onPieceSuccessMainThread(record);
+        public void onRecordSuccessMainThread(DataRecord record) {
+            super.onRecordSuccessMainThread(record);
             // Because we will never receive the startService event, we show current ui here.
             showCurrentPieceInUI(record);
-            onProgressUpdate();
         }
 
         @Override
-        public void onPieceStartMainThread(DataRecord record) {
-            super.onPieceStartMainThread(record);
+        public void onRecordStartMainThread(DataRecord record) {
+            super.onRecordStartMainThread(record);
             showCurrentPieceInUI(record);
         }
 
         @Override
-        public void onPieceUpdateMainThread(DataRecord record, ChildEvent childEvent, float pieceProgress) {
-            super.onPieceUpdateMainThread(record, childEvent, pieceProgress);
-            showCurrentPieceProgressInUI(record, childEvent, pieceProgress);
+        public void onRecordProgressUpdateMainThread(DataRecord record, RecordEvent recordEvent, float progress) {
+            super.onRecordProgressUpdateMainThread(record, recordEvent, progress);
+            showRecordProgressInUI(record, recordEvent, progress);
         }
 
         @Override
@@ -113,6 +105,12 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
                             transitionSafeActivity.finish();
                         }
                     });
+        }
+
+        @Override
+        public void onProgressUpdateMainThread(float progress) {
+            super.onProgressUpdateMainThread(progress);
+            updateProgressWheel(progress);
         }
     };
 
@@ -178,7 +176,7 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
 
     @Override
     SimplifySpanBuild onCreateCompleteSummary() {
-        SimplifySpanBuild summary = buildTransportReport(getStats());
+        SimplifySpanBuild summary = new SimplifySpanBuild();
         summary.append("\n\n");
         summary.append(getStringSafety(R.string.action_remark_received));
         summary.append(new SpecialTextUnit(getSession().getName())
@@ -233,33 +231,6 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
         return !TextUtils.isEmpty(in) && (!currentName.equals(in.toString()))
                 && !in.toString().contains("Tmp_")
                 && !in.toString().contains(File.separator);
-    }
-
-    @Override
-    protected void onFailTextInSummaryClick() {
-        super.onFailTextInSummaryClick();
-        queryFailEventAsync(new Consumer<List<UserAction>>() {
-            @Override
-            public void accept(@NonNull final List<UserAction> userActions) {
-                if (userActions.size() == 0) {
-                    Logger.w("No user actions got~");
-                    return;
-                }
-                final StringBuilder message = new StringBuilder();
-                Collections.consumeRemaining(userActions, new Consumer<UserAction>() {
-                    @Override
-                    public void accept(@NonNull UserAction userAction) {
-                        message.append(userAction.getEventDescription());
-                    }
-                });
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ErrDialog.attach(getActivity(), message.toString(), null);
-                    }
-                });
-            }
-        });
     }
 
     @Override
