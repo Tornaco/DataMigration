@@ -393,7 +393,7 @@
                 <data android:scheme="mmsto" />
             </intent-filter>
         </activity>
-        <!-- Service that delivers messages from the phone "quick response" -->
+        <!-- Service that delivers messages delegate the phone "quick response" -->
         <service
             android:name=".service.DummySmsService"
             android:exported="true"

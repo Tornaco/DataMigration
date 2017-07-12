@@ -69,7 +69,7 @@ public class RootTools2 {
         while (!cmd.isFinished()) {
 
             RootTools.log(Constants.TAG, shell.getCommandQueuePositionString(cmd));
-            RootTools.log(Constants.TAG, "Processed " + cmd.totalOutputProcessed + " of " + cmd.totalOutput + " output from command.");
+            RootTools.log(Constants.TAG, "Processed " + cmd.totalOutputProcessed + " of " + cmd.totalOutput + " output delegate command.");
 
             synchronized (cmd) {
                 try {

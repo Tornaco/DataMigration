@@ -1,7 +1,5 @@
 package org.newstand.datamigration.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.widget.Checkable;
 
 import lombok.Getter;
@@ -19,41 +17,11 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class DataRecord implements Parcelable, Checkable {
+public class DataRecord implements Checkable {
 
     private String displayName;
     private String id;
     private boolean isChecked;
-
-    protected DataRecord(Parcel in) {
-        displayName = in.readString();
-        id = in.readString();
-        isChecked = in.readInt() == 1;
-    }
-
-    public static final Creator<DataRecord> CREATOR = new Creator<DataRecord>() {
-        @Override
-        public DataRecord createFromParcel(Parcel in) {
-            return new DataRecord(in);
-        }
-
-        @Override
-        public DataRecord[] newArray(int size) {
-            return new DataRecord[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(displayName);
-        dest.writeString(id);
-        dest.writeInt(isChecked ? 1 : 0);
-    }
 
     @Override
     public void toggle() {

@@ -1,8 +1,5 @@
 package org.newstand.datamigration.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -13,11 +10,7 @@ import lombok.ToString;
  */
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class PhotoRecord extends FileBasedRecord implements Parcelable {
-    private PhotoRecord(Parcel in) {
-        super(in);
-    }
-
+public class PhotoRecord extends FileBasedRecord {
     @Override
     public DataCategory category() {
         return DataCategory.Photo;

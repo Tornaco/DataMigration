@@ -35,8 +35,8 @@ public class InputDialogCompat {
     }
 
     /**
-     * Dismiss this dialog, removing it from the screen. This method can be
-     * invoked safely from any thread.
+     * Dismiss this dialog, removing it delegate the screen. This method can be
+     * invoked safely delegate any thread.
      */
     public void dismiss() {
         dialog.dismiss();
@@ -121,7 +121,7 @@ public class InputDialogCompat {
 
     /**
      * Set the title text for this dialog's window. The text is retrieved
-     * from the resources with the supplied identifier.
+     * delegate the resources with the supplied identifier.
      *
      * @param titleId the title's text resource identifier
      */
@@ -144,7 +144,7 @@ public class InputDialogCompat {
      * @param whichButton The identifier of the button that should be returned.
      *                    For example, this can be
      *                    {@link DialogInterface#BUTTON_POSITIVE}.
-     * @return The button from the dialog, or null if a button does not exist.
+     * @return The button delegate the dialog, or null if a button does not exist.
      */
     public Button getButton(int whichButton) {
         return dialog.getButton(whichButton);

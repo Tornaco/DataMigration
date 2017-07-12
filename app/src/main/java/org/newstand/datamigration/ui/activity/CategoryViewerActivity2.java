@@ -12,6 +12,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,7 +35,6 @@ import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
-import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.fragment.CategoryViewerFragment;
@@ -43,12 +43,10 @@ import org.newstand.datamigration.utils.Collections;
 import org.newstand.logger.Logger;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import co.mobiwise.materialintro.shape.Focus;
@@ -83,6 +81,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         }
 
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        appBarLayout.setExpanded(false, false);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
         Toolbar toolbar = findView(R.id.toolbar);
@@ -156,10 +155,10 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
     private final List<DataRecord> mokes = new ArrayList<>();
 
-    private CountDownLatch loadingLatch;
-
     @Getter
     protected long fileSize = 0L;
+
+    private LoaderState loaderState = LoaderState.IDLE;
 
     private EventReceiver selectionEventReceiver = new EventReceiver() {
         @Override
@@ -197,6 +196,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
     private void onPermissionNotGrant() {
         PermissionMissingDialog.attach(this);
+        startLoading();
     }
 
     private LoadingCacheManager getCacheManager(LoaderSource.Parent parent) {
@@ -213,11 +213,11 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
     }
 
     private void startLoading() {
-        waitForAllLoader();
+        onStartLoading();
         LoaderSource.Parent parent = onRequestLoaderSource().getParent();
         final LoadingCacheManager cache = getCacheManager(parent);
 
-        Logger.i("startLoading from parent %s, cache %s", onRequestLoaderSource().getParent(), cache);
+        Logger.i("startLoading delegate parent %s, cache %s", onRequestLoaderSource().getParent(), cache);
 
         fileSize = 0L;
 
@@ -225,66 +225,59 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
             @Override
             public void accept(@NonNull final DataCategory category) {
                 if (!SettingsProvider.isLoadEnabledForCategory(category)) {
-                    if (loadingLatch != null && loadingLatch.getCount() > 0) {
-                        loadingLatch.countDown();
-                    }
                     return;
                 }
-                SharedExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isDestroyedCompat()) return;
-                        cache.refresh(category);
-                        if (isDestroyedCompat()) return;
+                if (isDestroyedCompat()) return;
+                cache.refresh(category);
+                if (isDestroyedCompat()) return;
 
-                        Collection<DataRecord> records = cache.get(category);
+                Collection<DataRecord> records = cache.get(category);
 
-                        if (loadingLatch != null && loadingLatch.getCount() > 0) {
-                            loadingLatch.countDown();
-                        }
+                if (!isDestroyedCompat() && !Collections.isNullOrEmpty(records)) {
 
-                        if (!isDestroyedCompat() && !Collections.isNullOrEmpty(records)) {
+                    int total = records.size();
+                    final int[] sel = {0};
 
-                            int total = records.size();
-                            final int[] sel = {0};
-
-                            Collections.consumeRemaining(records, new Consumer<DataRecord>() {
-                                @Override
-                                public void accept(@NonNull DataRecord dataRecord) {
-                                    if (dataRecord instanceof FileBasedRecord) {
-                                        FileBasedRecord fileBasedRecord = (FileBasedRecord) dataRecord;
-                                        try {
-                                            long pieceSize = Files.asByteSource(new File(fileBasedRecord.getPath())).size();
-                                            fileSize += pieceSize;
-                                        } catch (IOException e) {
-                                            Logger.e(e, "Fail query file size");
-                                        }
-                                    }
-                                    if (dataRecord.isChecked())
-                                        sel[0]++;
+                    Collections.consumeRemaining(records, new Consumer<DataRecord>() {
+                        @Override
+                        public void accept(@NonNull DataRecord dataRecord) {
+                            if (dataRecord instanceof FileBasedRecord) {
+                                FileBasedRecord fileBasedRecord = (FileBasedRecord) dataRecord;
+                                if (fileBasedRecord.getPath() != null) try {
+                                    long pieceSize = Files.asByteSource(new File(fileBasedRecord.getPath())).size();
+                                    fileSize += pieceSize;
+                                } catch (Throwable e) {
+                                    Logger.e(e, "Fail query file size");
                                 }
-                            });
-
-                            CategoryRecord dr = new CategoryRecord();
-                            dr.setId(category.name());
-                            dr.setDisplayName(getString(category.nameRes()));
-                            dr.setCategory(category);
-                            dr.setSummary(buildSelectionSummary(total, sel[0]));
-                            mokes.remove(dr);
-                            mokes.add(dr);
+                            }
+                            if (dataRecord.isChecked())
+                                sel[0]++;
                         }
-                    }
-                });
+                    });
+
+                    CategoryRecord dr = new CategoryRecord();
+                    dr.setId(category.name());
+                    dr.setDisplayName(getString(category.nameRes()));
+                    dr.setCategory(category);
+                    dr.setSummary(buildSelectionSummary(total, sel[0]));
+                    mokes.remove(dr);
+                    mokes.add(dr);
+                }
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                postOnLoadComplete();
             }
         });
     }
 
     protected boolean isLoading() {
-        return loadingLatch != null && loadingLatch.getCount() > 0;
+        return loaderState == LoaderState.LOADING;
     }
 
     protected boolean isLoadingComplete() {
-        return loadingLatch != null && loadingLatch.getCount() == 0;
+        return loaderState == LoaderState.LOADED;
     }
 
     private void setupView() {
@@ -336,7 +329,18 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
     }
 
     private void onFabClick() {
-        onSubmit();
+        if (getAdapter().hasSelection()) {
+            onSubmit();
+        } else {
+            Snackbar.make(getRecyclerView(), R.string.title_need_selection, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    })
+                    .show();
+        }
     }
 
     private CommonListAdapter onCreateAdapter() {
@@ -370,43 +374,35 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
                 @Override
                 public void run() {
                     getAdapter().update(mokes);
-                    appBarLayout.setExpanded(true, true);
                 }
             });
         }
     }
 
-    private void waitForAllLoader() {
+    private void onStartLoading() {
+        loaderState = LoaderState.LOADING;
         swipeRefreshLayout.setRefreshing(true);
         appBarLayout.setExpanded(false, true);
-        loadingLatch = new CountDownLatch(DataCategory.values().length);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    loadingLatch.await();
+    }
 
-                    if (!isDestroyedCompat()) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                swipeRefreshLayout.setRefreshing(false);
-                                java.util.Collections.sort(mokes, new Comparator<DataRecord>() {
-                                    @Override
-                                    public int compare(DataRecord r1, DataRecord r2) {
-                                        if (r1 == null || r2 == null) return 1;
-                                        return r1.category().ordinal() < r2.category().ordinal() ? -1 : 1;
-                                    }
-                                });
-                                onLoadComplete();// FIXME Another m name?
-                            }
-                        });
-                    }
-                } catch (InterruptedException ignored) {
-
+    private void postOnLoadComplete() {
+        loaderState = LoaderState.LOADED;
+        if (!isDestroyedCompat()) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(false);
+                    java.util.Collections.sort(mokes, new Comparator<DataRecord>() {
+                        @Override
+                        public int compare(DataRecord r1, DataRecord r2) {
+                            if (r1 == null || r2 == null) return 1;
+                            return r1.category().ordinal() < r2.category().ordinal() ? -1 : 1;
+                        }
+                    });
+                    onLoadComplete();// FIXME Another m name?
                 }
-            }
-        }).start();
+            });
+        }
     }
 
     private void updateSelectionCount(final DataCategory category, List<DataRecord> dataRecords) {
@@ -438,13 +434,17 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
             @Override
             public void run() {
                 getAdapter().onUpdate();
-                showFab(getAdapter().hasSelection());
-                getAppBarLayout().setExpanded(true, true);
+                boolean hasSelection = getAdapter().hasSelection();
+                showFab(hasSelection);
+                if (hasSelection) {
+                    getAppBarLayout().setExpanded(true, true);
+                }
             }
         });
     }
 
     private void showFab(boolean show) {
+        Logger.v("showFab:%s", show);
         if (show) {
             fab.show();
             buildFabIntro();
@@ -476,5 +476,8 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         LoaderSource onRequestLoaderSource();
     }
 
+    enum LoaderState {
+        IDLE, LOADING, LOADED
+    }
 }
 

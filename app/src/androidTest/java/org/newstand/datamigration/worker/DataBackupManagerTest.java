@@ -14,6 +14,7 @@ import org.newstand.datamigration.loader.DataLoaderManager;
 import org.newstand.datamigration.loader.LoaderListener;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
 import org.newstand.datamigration.worker.transport.backup.ContactBackupAgent;
@@ -33,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 @RunWith(AndroidJUnit4.class)
 public class DataBackupManagerTest {
 
-    Session session = Session.create();
+    private Session session = Session.create();
 
     @Test
     public void testBackup() {
@@ -65,19 +66,30 @@ public class DataBackupManagerTest {
                                     }
 
                                     @Override
-                                    public void onPieceStart(DataRecord record) {
-                                        Logger.d("onPieceStart:" + record);
+                                    public void onRecordStart(DataRecord record) {
+                                        Logger.d("onRecordStart:" + record);
                                     }
 
                                     @Override
-                                    public void onPieceSuccess(DataRecord record) {
-                                        Logger.d("onPieceSuccess:" + record);
-                                        Logger.w(getStats().toString());
+                                    public void onRecordSuccess(DataRecord record) {
+                                        Logger.d("onRecordSuccess:" + record);
                                     }
 
                                     @Override
-                                    public void onPieceFail(DataRecord record, Throwable err) {
-                                        Logger.d("onPieceFail:" + record + err);
+                                    public void onRecordFail(DataRecord record, Throwable err) {
+                                        Logger.d("onRecordFail:" + record + err);
+                                    }
+
+                                    @Override
+                                    public void onProgressUpdate(float progress) {
+                                        super.onProgressUpdate(progress);
+                                        Logger.d("onProgressUpdate:" + progress);
+                                    }
+
+                                    @Override
+                                    public void onRecordProgressUpdate(DataRecord record, RecordEvent recordEvent, float progress) {
+                                        super.onRecordProgressUpdate(record, recordEvent, progress);
+                                        Logger.d("onRecordProgressUpdate:%s, %s", recordEvent, progress);
                                     }
 
                                     @Override
@@ -96,7 +108,6 @@ public class DataBackupManagerTest {
                                             Assert.fail();
                                         }
 
-
                                         // TEST LOAD FROM BACKUP
                                         LoaderSource loaderSource = LoaderSource.builder()
                                                 .parent(LoaderSource.Parent.Backup)
@@ -105,18 +116,18 @@ public class DataBackupManagerTest {
                                                 .loadAsync(loaderSource, DataCategory.Contact, new LoaderListener<DataRecord>() {
                                                     @Override
                                                     public void onStart() {
-                                                        Logger.d("Load from backup.prepareForTransporting");
+                                                        Logger.d("Load delegate backup.prepareForTransporting");
                                                     }
 
                                                     @Override
                                                     public void onComplete(Collection<DataRecord> collection) {
-                                                        Logger.d("Load from backup.onComplete:%s", collection);
+                                                        Logger.d("Load delegate backup.onComplete:%s", collection);
                                                         latch.countDown();
                                                     }
 
                                                     @Override
                                                     public void onErr(Throwable throwable) {
-                                                        Logger.d("Load from backup.err:" + Log.getStackTraceString(throwable));
+                                                        Logger.d("Load delegate backup.err:" + Log.getStackTraceString(throwable));
                                                     }
                                                 });
 
@@ -131,7 +142,7 @@ public class DataBackupManagerTest {
                 });
 
         try {
-            latch.await(30 * 1000, TimeUnit.MILLISECONDS);
+            latch.await(300 * 1000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             Assert.fail();
         }

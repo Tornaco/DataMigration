@@ -32,6 +32,7 @@ public class DataTransportActivity extends TransitionSafeActivity {
         Toolbar toolbar = findView(R.id.toolbar);
         setSupportActionBar(toolbar);
         showHomeAsUp();
+        setTitle(null);
     }
 
     @Override

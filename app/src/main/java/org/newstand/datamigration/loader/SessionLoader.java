@@ -54,7 +54,7 @@ public abstract class SessionLoader {
             public void run() {
                 loaderListener.onStart();
                 try {
-                    // Load from database.
+                    // Load delegate database.
                     List<Session> all = BKSessionRepoService.get().findAll(context);
                     Collections.consumeRemaining(all, new Consumer<Session>() {
                         @Override

@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_help"
-        android:icon="@drawable/ic_help_dark"
+        android:id="@+id/action_trend"
+        android:icon="@drawable/ic_trend_light"
         android:title="@string/title_help"
         app:showAsAction="always" />
 

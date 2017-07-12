@@ -31,7 +31,7 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class CallLogBackupAgent implements BackupAgent<CallLogBackupSettings, CallLogRestoreSettings>, ContextWireable {
+public class CallLogBackupAgent extends ProgressableBackupAgent<CallLogBackupSettings, CallLogRestoreSettings> implements ContextWireable {
 
     @Getter
     @Setter

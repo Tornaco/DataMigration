@@ -19,6 +19,7 @@ import org.newstand.datamigration.utils.MiscUtils;
 import org.newstand.datamigration.utils.RootTarUtil;
 import org.newstand.datamigration.utils.RootTools2;
 import org.newstand.datamigration.utils.SeLinuxContextChanger;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -34,16 +35,13 @@ import lombok.Setter;
  * All right reserved.
  */
 
-class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSettings>,
-        ContextWireable {
+class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppRestoreSettings> implements ContextWireable {
 
-    private FileBackupAgent fileBackupAgent;
     @Getter
     @Setter
     private Context context;
 
     AppBackupAgent() {
-        fileBackupAgent = new FileBackupAgent();
     }
 
     @Override
@@ -63,15 +61,14 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
             // Apk dest
             String destApkPath = backupSettings.getDestApkPath();
 
-            // Apk backup go~
-            FileBackupSettings apkSettings = new FileBackupSettings();
-            apkSettings.setSourcePath(apkPath);
-            apkSettings.setDestPath(destApkPath);
-            Res apkRes = fileBackupAgent.backup(apkSettings);
-
-            if (!Res.isOk(apkRes)) {
-                return apkRes;
-            }
+            // Publish progress.
+            org.newstand.datamigration.utils.Files.copy(apkPath, destApkPath,
+                    new org.newstand.datamigration.utils.Files.ProgressListener() {
+                        @Override
+                        public void onProgress(float progress) {
+                            getProgressListener().onProgress(RecordEvent.CopyApk, progress);
+                        }
+                    });
         }
 
         final Res[] res = {Res.OK};
@@ -88,7 +85,10 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
             // Data dest
             String destination = backupSettings.getDestDataPath();
 
-            Logger.d("Saving data from %s, to %s", appDataDir, destination);
+            Logger.d("Saving data delegate %s, to %s", appDataDir, destination);
+
+            // Publish progress.
+            getProgressListener().onProgress(RecordEvent.CopyData, 0);
 
             boolean cr = RootTarUtil.compressTar(destination, appDataDir);
 
@@ -98,6 +98,9 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
                 res[0] = new CompressErr();
                 return res[0];
             }
+
+            // Publish progress.
+            getProgressListener().onProgress(RecordEvent.CopyData, 100);
 
             // ExtraData
             final String[] extraDataDirs = backupSettings.getExtraDirs();
@@ -137,6 +140,11 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
                 return new OperationNotAllowedErr();
             }
 
+            Logger.d("Installing apk");
+
+            // Publish progress.
+            getProgressListener().onProgress(RecordEvent.InstallApk, 0);
+
             PackageInstallReceiver installReceiver = new PackageInstallReceiver(restoreSettings.getAppRecord().getPkgName());
             installReceiver.register(getContext());
 
@@ -154,7 +162,11 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
             } finally {
                 installReceiver.unRegister(getContext());
             }
+
             Sleeper.sleepQuietly(2000); // Sleep for 1s to let user dismiss the install page...Maybe there is a better way?
+
+            // Publish progress.
+            getProgressListener().onProgress(RecordEvent.InstallApk, 100);
         }
 
         boolean installData = restoreSettings.isInstallData();
@@ -162,10 +174,18 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         Res res = Res.OK;
 
         if (installData) {
+
+            // Publish progress.
+            getProgressListener().onProgress(RecordEvent.InstallData, 0);
             res = installData(restoreSettings);
+            getProgressListener().onProgress(RecordEvent.InstallData, 100);
 
             if (res == Res.OK) {
+
+                // Publish progress.
+                getProgressListener().onProgress(RecordEvent.InstallExtraData, 0);
                 res = installExtraData(restoreSettings);
+                getProgressListener().onProgress(RecordEvent.InstallExtraData, 100);
             }
         }
 
@@ -186,7 +206,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         // Check if this path has any space.
         if (apkPath.contains(" ")) {
             Logger.w("This apk path contains invalid char, replacing...");
-            // Copy a tmp.
+            // copy a tmp.
             try {
                 Files.createParentDirs(new File(tmpPath));
                 Files.copy(new File(apkPath), new File(tmpPath));
@@ -229,7 +249,7 @@ class AppBackupAgent implements BackupAgent<AppBackupSettings, AppRestoreSetting
         String dataFromPath = restoreSettings.getSourceDataPath();
         String dataToPath = restoreSettings.getDestDataPath();
 
-        Logger.d("Install data from %s, to %s", dataFromPath, dataToPath);
+        Logger.d("Install data delegate %s, to %s", dataFromPath, dataToPath);
 
         boolean res = RootTarUtil.deCompressTar(dataFromPath);
 

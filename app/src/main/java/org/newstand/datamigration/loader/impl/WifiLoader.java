@@ -40,7 +40,7 @@ import java.util.HashSet;
 
 public class WifiLoader extends BaseLoader {
 
-    // Class for capturing a network definition from the wifi supplicant config file
+    // Class for capturing a network definition delegate the wifi supplicant config file
     private static class Network {
         String ssid = "";  // equals() and hashCode() need these to be non-null
         String key_mgmt = "";

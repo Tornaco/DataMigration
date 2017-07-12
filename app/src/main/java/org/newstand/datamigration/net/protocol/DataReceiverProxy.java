@@ -21,17 +21,11 @@ import org.newstand.datamigration.net.ReceiveSettings;
 import org.newstand.datamigration.net.server.TransportServer;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.datamigration.worker.transport.Stats;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.logger.Logger;
 
 import java.io.IOException;
 import java.util.Set;
-
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/14 10:29
@@ -73,9 +67,6 @@ public class DataReceiverProxy {
             return;
         }
 
-        SimpleStats stats = new SimpleStats();
-        stats.init(overviewReceiver.getHeader().getFileCount());
-        listener.setStats(stats);
         listener.onStart();
 
         Set<DataCategory> dataCategories = overviewReceiver.getHeader().getDataCategories();
@@ -118,8 +109,7 @@ public class DataReceiverProxy {
                     DataRecord record = new DataRecord();
                     record.setDisplayName(fileNameHolder.getData());
                     if (res == IORES.OK) {
-                        listener.onPieceSuccess(record);
-                        stats.onSuccess();
+                        listener.onRecordSuccess(record);
 
                         // Check next plan~
                         NextPlanReceiver nextPlanReceiver = NextPlanReceiver.with(transportServer.getInputStream(),
@@ -136,8 +126,7 @@ public class DataReceiverProxy {
                         }
 
                     } else {
-                        listener.onPieceFail(record, new BadResError(res));
-                        stats.onFail();
+                        listener.onRecordFail(record, new BadResError(res));
                     }
                 } // End for
             } catch (IOException e) {
@@ -148,45 +137,5 @@ public class DataReceiverProxy {
         listener.onComplete();
 
         transportServer.stop();
-    }
-
-    @ToString
-    private static class SimpleStats implements Stats {
-
-        @Setter(AccessLevel.PACKAGE)
-        @Getter
-        private int total, left, success, fail;
-
-        private void init(int size) {
-            total = left = size;
-            Logger.d("init status %s", toString());
-        }
-
-        private void onPiece() {
-            left--;
-        }
-
-        @Override
-        public void onSuccess() {
-            success++;
-            onPiece();
-        }
-
-        @Override
-        public void onFail() {
-            fail++;
-            onPiece();
-        }
-
-        @Override
-        public Stats merge(Stats with) {
-
-            total += with.getTotal();
-            left += with.getLeft();
-            success += with.getSuccess();
-            fail += with.getFail();
-
-            return this;
-        }
     }
 }

@@ -21,6 +21,7 @@ import org.newstand.datamigration.common.ContextWireable;
 import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.utils.Closer;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -38,7 +39,7 @@ import static com.android.vcard.VCardConfig.VCARD_TYPE_V40_GENERIC;
  * All right reserved.
  */
 
-public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, ContactRestoreSettings>,
+public class ContactBackupAgent extends ProgressableBackupAgent<ContactBackupSettings, ContactRestoreSettings> implements
         ContextWireable, VCardEntryHandler {
     @Getter
     @Setter
@@ -48,6 +49,8 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
     public Res backup(final ContactBackupSettings backupSettings) throws Exception {
         Writer writer = null;
         try {
+            // Publish progress.
+            getProgressListener().onProgress(RecordEvent.Init, 0);
             Files.createParentDirs(new File(backupSettings.getDestPath()));
             writer = new FileWriter(backupSettings.getDestPath());
             VCardComposer cardComposer = new VCardComposer(context, VCARD_TYPE_V40_GENERIC);
@@ -57,11 +60,14 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
             }
             int count = cardComposer.getCount();
             Preconditions.checkState(count >= 1, "Expected at least 1 match but got " + count);
+            getProgressListener().onProgress(RecordEvent.CreateDir, 100);
 
+            getProgressListener().onProgress(RecordEvent.Insert, 0);
             while (!cardComposer.isAfterLast()) {
                 String entry = cardComposer.createOneEntry();
                 writer.write(entry);
             }
+            getProgressListener().onProgress(RecordEvent.Insert, 100);
 
             Collections.consumeRemaining(records, new Consumer<ContactRecord>() {
                 @Override
@@ -99,6 +105,7 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
         String sourcePath = restoreSettings.getSourcePath();
         InputStream inputStream = Files.asByteSource(new File(sourcePath)).openStream();
 
+        getProgressListener().onProgress(RecordEvent.Insert, 0);
         VCardParser vCardParser = new VCardParser_V40(VCardSourceDetector.PARSE_TYPE_UNKNOWN);
         VCardEntryConstructor vCardEntryConstructor = new VCardEntryConstructor(VCardSourceDetector.PARSE_TYPE_UNKNOWN);
         ContentResolver resolver = getContext().getContentResolver();
@@ -107,6 +114,7 @@ public class ContactBackupAgent implements BackupAgent<ContactBackupSettings, Co
         vCardEntryConstructor.addEntryHandler(this);
         vCardParser.addInterpreter(vCardEntryConstructor);
         vCardParser.parse(inputStream);
+        getProgressListener().onProgress(RecordEvent.Insert, 100);
 
         return Res.OK;
     }

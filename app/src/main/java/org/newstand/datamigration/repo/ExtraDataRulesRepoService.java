@@ -35,7 +35,7 @@ public class ExtraDataRulesRepoService extends GsonBasedRepoService<ExtraDataRul
     }
 
     @Override
-    protected boolean matchCase(ExtraDataRule old, ExtraDataRule now) {
+    protected boolean isSame(ExtraDataRule old, ExtraDataRule now) {
         return old.getPackageName().equals(now.getPackageName());
     }
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
 import android.net.Uri;
 import android.os.Build;
@@ -24,6 +25,7 @@ import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.logger.Logger;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/13 13:36
@@ -184,4 +186,5 @@ public class SmsContentProviderCompat {
         }
         return isMms;
     }
+
 }

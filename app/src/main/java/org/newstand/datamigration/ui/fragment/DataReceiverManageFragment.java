@@ -11,7 +11,6 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.data.SmsContentProviderCompat;
-import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.net.protocol.DataReceiverProxy;
@@ -24,15 +23,13 @@ import org.newstand.datamigration.repo.ReceivedSessionRepoService;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.ui.widget.InputDialogCompat;
-import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
 
 import java.io.File;
-import java.util.List;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
 import cn.iwgang.simplifyspan.other.OnClickableSpanListener;
@@ -60,62 +57,13 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
 
     private Producer<String> mHostProducer;
 
-    private TransportListener mTransportListener = new TransportListenerMainThreadAdapter() {
-        @Override
-        public void onStartMainThread() {
-            super.onStartMainThread();
-            // Merge two stats~
-            DataReceiverManageFragment.this.getStats().merge(getStats());
-        }
-
-        @Override
-        public void onCompleteMainThread() {
-            super.onCompleteMainThread();
-            enterState(STATE_TRANSPORT_END);
-        }
-
-        @Override
-        public void onPieceFailMainThread(DataRecord record, Throwable err) {
-            super.onPieceFailMainThread(record, err);
-            onProgressUpdate();
-            publishFailEventAsync(record, err);
-        }
-
-        @Override
-        public void onPieceSuccessMainThread(DataRecord record) {
-            super.onPieceSuccessMainThread(record);
-            // Because we will never receive the startService event, we show current ui here.
-            showCurrentPieceInUI(record);
-            onProgressUpdate();
-        }
-
-        @Override
-        public void onPieceStartMainThread(DataRecord record) {
-            super.onPieceStartMainThread(record);
-            showCurrentPieceInUI(record);
-        }
-
-        @Override
-        public void onAbortMainThread(Throwable err) {
-            super.onAbortMainThread(err);
-            ErrDialog.attach(getActivity(), err,
-                    new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
-                            transitionSafeActivity.finish();
-                        }
-                    });
-        }
-    };
-
     @Override
     public boolean isCancelable() {
         return isCancelable;
     }
 
     private void showCurrentPieceInUI(DataRecord record) {
-        getConsoleSummaryView().setText(record.getDisplayName());
+        getConsoleTitleView().setText(record.getDisplayName());
     }
 
     public interface LoaderSourceProvider {
@@ -156,7 +104,9 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     }
 
     private void receive() {
-        DataReceiverProxy.receive(getActivity(), getTransportServer(), mTransportListener, getSession());
+        DataReceiverProxy.receive(getActivity(), getTransportServer(),
+                new TransportListenerDelegate(onCreateTransportListener()), getSession());
+        enterState(STATE_TRANSPORT_END);
     }
 
     @Override
@@ -170,13 +120,8 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     }
 
     @Override
-    void onDoneButtonClick() {
-        getActivity().finish();
-    }
-
-    @Override
     SimplifySpanBuild onCreateCompleteSummary() {
-        SimplifySpanBuild summary = buildTransportReport(getStats());
+        SimplifySpanBuild summary = new SimplifySpanBuild();
         summary.append("\n\n");
         summary.append(getStringSafety(R.string.action_remark_received));
         summary.append(new SpecialTextUnit(getSession().getName())
@@ -234,33 +179,6 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     }
 
     @Override
-    protected void onFailTextInSummaryClick() {
-        super.onFailTextInSummaryClick();
-        queryFailEventAsync(new Consumer<List<UserAction>>() {
-            @Override
-            public void accept(@NonNull final List<UserAction> userActions) {
-                if (userActions.size() == 0) {
-                    Logger.w("No user actions got~");
-                    return;
-                }
-                final StringBuilder message = new StringBuilder();
-                Collections.consumeRemaining(userActions, new Consumer<UserAction>() {
-                    @Override
-                    public void accept(@NonNull UserAction userAction) {
-                        message.append(userAction.getEventDescription());
-                    }
-                });
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ErrDialog.attach(getActivity(), message.toString(), null);
-                    }
-                });
-            }
-        });
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         // Save session info.
@@ -300,4 +218,60 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
         receive();
     }
 
+    private class TransportListenerDelegate extends TransportListenerMainThreadAdapter {
+        TransportListenerMainThreadAdapter listener;
+
+        TransportListenerDelegate(TransportListenerMainThreadAdapter listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        public void onStartMainThread() {
+            listener.onStartMainThread();
+        }
+
+        @Override
+        public void onRecordStartMainThread(DataRecord record) {
+            listener.onRecordStartMainThread(record);
+        }
+
+        @Override
+        public void onRecordProgressUpdateMainThread(DataRecord record, RecordEvent recordEvent, float progress) {
+            listener.onRecordProgressUpdateMainThread(record, recordEvent, progress);
+        }
+
+        @Override
+        public void onRecordSuccessMainThread(DataRecord record) {
+            listener.onRecordSuccessMainThread(record);
+        }
+
+        @Override
+        public void onRecordFailMainThread(DataRecord record, Throwable err) {
+            listener.onRecordFailMainThread(record, err);
+        }
+
+        @Override
+        public void onProgressUpdateMainThread(float progress) {
+            listener.onProgressUpdateMainThread(progress);
+        }
+
+        @Override
+        public void onCompleteMainThread() {
+            listener.onCompleteMainThread();
+        }
+
+        @Override
+        public void onAbortMainThread(Throwable err) {
+            listener.onAbortMainThread(err);
+
+            ErrDialog.attach(getActivity(), err,
+                    new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
+                            transitionSafeActivity.finish();
+                        }
+                    });
+        }
+    }
 }

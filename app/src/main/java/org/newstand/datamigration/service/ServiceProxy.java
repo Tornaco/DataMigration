@@ -15,7 +15,7 @@ import org.newstand.logger.Logger;
 /**
  * ServiceProxy is a superclass for proxy objects which make a single call to a service. It handles
  * connecting to the service, running a task supplied by the subclass when the connection is ready,
- * and disconnecting from the service afterwards. ServiceProxy objects cannot be reused (trying to
+ * and disconnecting delegate the service afterwards. ServiceProxy objects cannot be reused (trying to
  * do so generates an {@link IllegalStateException}).
  * <p/>
  * Subclasses must override {@link #onConnected} to store the binder. Then, when the subclass wants
@@ -191,7 +191,7 @@ public abstract class ServiceProxy {
                     // include services that have already been stopped or unbound. This can
                     // happen if the user ended the activity that was using the service.
                     // This is harmless, but we've got to catch it.
-                    Logger.d("RuntimeException when trying to unbind from service");
+                    Logger.d("RuntimeException when trying to unbind delegate service");
                 }
             }
             mTaskCompleted = true;

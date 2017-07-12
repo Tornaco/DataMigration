@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <string name="app_name">数据迁移</string>
+    <string name="app_name">Migrate</string>
     <string name="app_intro">数据备份以及迁移助手</string>
     <string name="card_intro">点击卡片可以展开菜单</string>
     <string name="fab_intro_list">当你完成数据选择时，点击此处完成选择并返回汇总页</string>
@@ -18,8 +18,19 @@
     <string name="yes">Y</string>
     <string name="no">N</string>
 
-    <string name="learn_more">了解更多</string>
+    <string name="title_need_help">需要帮助？</string>
 
+
+    <string name="transport_event_description_init">初始化</string>
+    <string name="transport_event_description_insert">插入</string>
+    <string name="transport_event_description_create_dir">创建文件夹</string>
+    <string name="transport_event_description_copy_file">复制文件</string>
+    <string name="transport_event_description_copy_apk">复制APK</string>
+    <string name="transport_event_description_copy_data">复制应用数据</string>
+    <string name="transport_event_description_install_apk">安装应用</string>
+    <string name="transport_event_description_install_data">安装数据</string>
+    <string name="transport_event_description_install_extra_data">安装附加数据</string>
+    <string name="transport_event_description_token_divider">&#160;</string>
 
     <string name="permission_missing">权限缺失</string>
     <string name="permission_missing_message">看起来我们无法请求一些权限，你可以继续使用，但可能会因此导致一些功能异常</string>
@@ -42,6 +53,7 @@
     <string name="action_rename_fail">无法修改名称</string>
     <string name="action_select_all">全部选择</string>
     <string name="action_clear_selection">清除选择</string>
+    <string name="title_need_selection">请先选择要处理的数据</string>
     <string name="title_removed">已经删除：%1$s</string>
     <string name="title_remove_failed">无法删除：%1$s</string>
     <string name="title_remove_z">撤销</string>
@@ -288,5 +300,7 @@
     <string name="title_dir_name">文件目录</string>
     <string name="title_not_set">尚未指定</string>
     <string name="title_dir_divider">多个目录使用英文逗号隔开</string>
-    <string name="title_activity_scrolling">ScrollingActivity</string>
+
+    <string name="warn_def_sms_app_title">请修改设置</string>
+    <string name="warn_def_sms_app_message">检测到本应用是目前系统的默认短信应用，这很有可能是你在某次还原短信的时候，遇到了某种问题，导致我们没有指导你恢复系统默认短信应用的设置，现在请立即前往系统-设置-默认应用设置修改，不要将本应用设置成默认短信，否则你可能会无法接收到新的消息。</string>
 </resources>

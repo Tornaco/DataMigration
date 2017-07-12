@@ -1,37 +1,22 @@
 package org.newstand.datamigration.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
-import android.support.v4.content.ContextCompat;
-import android.view.View;
+import android.text.TextUtils;
 
-import org.newstand.datamigration.R;
-import org.newstand.datamigration.common.AbortSignal;
-import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;
-import org.newstand.datamigration.data.event.UserAction;
 import org.newstand.datamigration.data.model.DataRecord;
-import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.sync.SharedExecutor;
-import org.newstand.datamigration.ui.activity.LogViewerActivity;
 import org.newstand.datamigration.ui.widget.ViewAnimateUtils;
-import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.datamigration.worker.transport.Stats;
-import org.newstand.logger.Logger;
+import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
 
-import java.util.List;
+import java.io.File;
 
 import cn.iwgang.simplifyspan.SimplifySpanBuild;
-import cn.iwgang.simplifyspan.unit.SpecialTextUnit;
-import co.mobiwise.materialintro.shape.Focus;
-import co.mobiwise.materialintro.shape.FocusGravity;
-import co.mobiwise.materialintro.shape.ShapeType;
-import co.mobiwise.materialintro.view.MaterialIntroView;
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
 
@@ -41,6 +26,48 @@ import dev.nick.eventbus.EventBus;
  * All right reserved.
  */
 public abstract class DataTransportManageFragment extends DataTransportLogicFragment {
+
+    protected TransportListenerMainThreadAdapter onCreateTransportListener() {
+        return new TransportListenerMainThreadAdapter() {
+            @Override
+            public void onStartMainThread() {
+                super.onStartMainThread();
+            }
+
+            @Override
+            public void onCompleteMainThread() {
+                super.onCompleteMainThread();
+            }
+
+            @Override
+            public void onRecordFailMainThread(DataRecord record, Throwable err) {
+                super.onRecordFailMainThread(record, err);
+            }
+
+            @Override
+            public void onRecordSuccessMainThread(DataRecord record) {
+                super.onRecordSuccessMainThread(record);
+            }
+
+            @Override
+            public void onRecordStartMainThread(DataRecord record) {
+                super.onRecordStartMainThread(record);
+                showCurrentRecordInUI(record);
+            }
+
+            @Override
+            public void onRecordProgressUpdateMainThread(DataRecord record, RecordEvent recordEvent, float progress) {
+                super.onRecordProgressUpdateMainThread(record, recordEvent, progress);
+                showRecordProgressInUI(record, recordEvent, progress);
+            }
+
+            @Override
+            public void onProgressUpdateMainThread(float progress) {
+                super.onProgressUpdateMainThread(progress);
+                updateProgressWheel(progress);
+            }
+        };
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -63,7 +90,7 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
                 onTransportStart();
                 break;
             case STATE_TRANSPORT_PROGRESS_UPDATE:
-                onProgressUpdate();
+                updateProgressWheel((Float) obj);
                 break;
             case STATE_TRANSPORT_END:
                 broadcastCompleteEvent();
@@ -84,8 +111,7 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
 
     private void onTransportStart() {
         updateConsoleTitleViewOnStart();
-        updateConsoleDoneButtonOnStart();
-        hideConsoleLoggerButtonOnStart();
+        initProgressOnStart();
 
         // Start log tracker.
         SharedExecutor.execute(new Runnable() {
@@ -96,44 +122,28 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
         });
     }
 
-    private void hideConsoleLoggerButtonOnStart() {
-        getConsoleLoggerButton().setVisibility(View.INVISIBLE);
-    }
-
     protected void updateConsoleTitleViewOnStart() {
         getConsoleTitleView().setText(getStartTitle());
     }
 
-    protected void updateConsoleDoneButtonOnStart() {
-        getConsoleDoneButton().setText(android.R.string.cancel);
-        if (isCancelable()) {
-            getConsoleDoneButton().setVisibility(View.VISIBLE);
-            getConsoleDoneButton()
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Collections.consumeRemaining(getAbortSignals(),
-                                    new Consumer<AbortSignal>() {
-                                        @Override
-                                        public void accept(@NonNull AbortSignal abortSignal) {
-                                            Logger.i("Notifying abort signal to %s", abortSignal);
-                                            abortSignal.abort();
-                                        }
-                                    });
-                        }
-                    });
-        } else {
-            getConsoleDoneButton().setVisibility(View.INVISIBLE);
-        }
+    protected void initProgressOnStart() {
+        getProgressBar().setText(String.valueOf(0));
+        getProgressBar().setProgress(0);
     }
 
-    protected void onProgressUpdate() {
-        Stats stats = getStats();
-        float total = (float) stats.getTotal();
-        float ok = (float) stats.getTotal() - (float) stats.getLeft();
-        float progress = (ok / total);
-        getProgressBar().setText(String.valueOf((int) (progress * 100)));
-        getProgressBar().setProgress((int) (progress * 360));
+    protected void showCurrentRecordInUI(DataRecord record) {
+        getConsoleTitleView().setText(record.getDisplayName());
+    }
+
+    protected void showRecordProgressInUI(DataRecord record,
+                                          RecordEvent recordEvent, float pieceProgress) {
+        getConsoleSummaryView().setText(getStringSafety(recordEvent.getDescription()));
+        getBottomProgressBar().setProgress((int) pieceProgress);
+    }
+
+    protected void updateProgressWheel(float progress) {
+        getProgressBar().setText(String.valueOf((int) (progress)));
+        getProgressBar().setProgress((int) (progress / 100 * 360));
     }
 
     private void onComplete() {
@@ -146,9 +156,6 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
             }
         });
 
-        getConsoleDoneButton().setVisibility(View.VISIBLE);
-        getConsoleLoggerButton().setVisibility(View.VISIBLE);
-
         ViewAnimateUtils.alphaHide(getConsoleCardView(), new Runnable() {
             @Override
             public void run() {
@@ -156,19 +163,6 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
                 getProgressBar().setProgress(360);
 
                 getConsoleTitleView().setText(getCompleteTitle());
-                getConsoleDoneButton().setText(R.string.action_done);
-                getConsoleDoneButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onDoneButtonClick();
-                    }
-                });
-                getConsoleLoggerButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onLoggerButtonClick();
-                    }
-                });
 
                 updateCompleteSummary();
 
@@ -177,62 +171,13 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
         });
     }
 
-    protected void onLoggerButtonClick() {
-        Logger.d("onLoggerButtonClick, with logger %s", getLogFileName());
-        Intent intent = new Intent(getContext(), LogViewerActivity.class);
-        intent.putExtra(IntentEvents.KEY_LOG_PATH, getLogFileName());
-        startActivity(intent);
-    }
-
-    abstract void onDoneButtonClick();
-
     protected void updateCompleteSummary() {
         if (!isAlive()) return;
         SimplifySpanBuild summary = onCreateCompleteSummary();
         getConsoleSummaryView().setText(summary.build());
-        buildSummaryIntro();
-    }
-
-    private void buildSummaryIntro() {
-        new MaterialIntroView.Builder(getActivity())
-                .enableDotAnimation(true)
-                .setFocusGravity(FocusGravity.CENTER)
-                .setFocusType(Focus.MINIMUM)
-                .enableFadeAnimation(true)
-                .performClick(false)
-                .setInfoText(getString(getSummaryIntro()))
-                .setShape(ShapeType.CIRCLE)
-                .setTarget(getConsoleLoggerButton())
-                .setUsageId("intro_transport_management_logger" + getClass().getName())
-                .show();
-    }
-
-    private int getSummaryIntro() {
-        return R.string.title_transport_intro;
     }
 
     abstract SimplifySpanBuild onCreateCompleteSummary();
-
-    protected SimplifySpanBuild buildTransportReport(Stats stats) {
-        SimplifySpanBuild report = new SimplifySpanBuild();
-        if (!isAlive()) return report;
-        report.append(getString(R.string.title_transport_report_total, String.valueOf(stats.getTotal())));
-        report.append("\n");
-        report.append(new SpecialTextUnit(getString(R.string.title_transport_report_success,
-                String.valueOf(stats.getSuccess())), ContextCompat.getColor(getContext(), R.color.green_dark)));
-        report.append("\n");
-        report.append(new SpecialTextUnit(getString(R.string.title_transport_report_fail,
-                String.valueOf(stats.getFail())), ContextCompat.getColor(getContext(), R.color.red_dark)));
-        return report;
-    }
-
-    protected void onFailTextInSummaryClick() {
-        Logger.i("onFailTextInSummaryClick");
-    }
-
-    protected void onSuccessTextInSummaryClick() {
-        Logger.i("onSuccessTextInSummaryClick");
-    }
 
     protected void broadcastCompleteEvent() {
         EventBus.from(getContext()).publish(Event.builder()
@@ -240,42 +185,10 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
                 .obj(getSession()).build());
     }
 
-    protected void publishFailEvent(DataRecord handling, Throwable throwable) {
-        Session session = getSession();
-        UserActionServiceProxy.publishNewAction(
-                getContext(),
-                UserAction.builder()
-                        .eventTitle("Fail:" + handling.getDisplayName())
-                        .date(session.getDate())
-                        .fingerPrint(session.getDate())
-                        .eventDescription(Logger.getStackTraceString(throwable))
-                        .build());
-    }
-
-    protected void publishFailEventAsync(final Throwable throwable) {
-        publishFailEventAsync(null, throwable);
-    }
-
-    protected void publishFailEventAsync(final DataRecord handling, final Throwable throwable) {
-        SharedExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                publishFailEvent(handling, throwable);
-            }
-        });
-    }
-
-    protected List<UserAction> queryFailEvent() {
-        Session session = getSession();
-        return UserActionServiceProxy.getByFingerPrint(getContext(), session.getDate());
-    }
-
-    protected void queryFailEventAsync(final Consumer<List<UserAction>> consumer) {
-        SharedExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                consumer.accept(queryFailEvent());
-            }
-        });
+    protected boolean validateInput(String currentName, CharSequence in) {
+        return !TextUtils.isEmpty(in) && (!currentName.equals(in.toString()))
+                && !in.toString().contains(" ") // FIXME Tell user.
+                && !in.toString().contains("Tmp_")
+                && !in.toString().contains(File.separator);
     }
 }

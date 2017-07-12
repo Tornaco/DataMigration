@@ -462,7 +462,7 @@ public class SettingsProvider extends Observable {
     }
 
     public static boolean isInstallDataEnabled() {
-        return sMe.readBoolean(KEY_INSTALL_DATA, true);
+        return sMe.readBoolean(KEY_INSTALL_DATA, false);
     }
 
     public static ThemeColor getThemeColor() {

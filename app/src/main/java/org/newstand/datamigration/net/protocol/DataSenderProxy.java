@@ -21,7 +21,6 @@ import org.newstand.datamigration.net.server.TransportClient;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.datamigration.worker.transport.Stats;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.logger.Logger;
 
@@ -31,10 +30,8 @@ import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/10 13:14
@@ -103,11 +100,6 @@ public class DataSenderProxy {
             return;
         }
 
-        // Init stats
-        final SimpleStats stats = new SimpleStats();
-        stats.init(overviewHeader.getFileCount());
-        transportListener.setStats(stats);
-
         transportListener.onStart();
 
         for (DataCategory category : DataCategory.values()) {
@@ -127,16 +119,14 @@ public class DataSenderProxy {
 
                 for (DataRecord dataRecord : records) {
                     try {
-                        transportListener.onPieceStart(dataRecord);
+                        transportListener.onRecordStart(dataRecord);
                         int res = DataRecordSender.with(transportClient.getOutputStream(),
                                 transportClient.getInputStream())
                                 .send(dataRecord);
                         if (res == IORES.OK) {
-                            stats.onSuccess();
-                            transportListener.onPieceSuccess(dataRecord);
+                            transportListener.onRecordSuccess(dataRecord);
                         } else {
-                            transportListener.onPieceFail(dataRecord, new BadResError(res));
-                            stats.onFail();
+                            transportListener.onRecordFail(dataRecord, new BadResError(res));
                         }
 
                         // Send next plan, to cancel or continue?
@@ -149,8 +139,7 @@ public class DataSenderProxy {
                         }
 
                     } catch (IOException e) {
-                        transportListener.onPieceFail(dataRecord, e);
-                        stats.onFail();
+                        transportListener.onRecordFail(dataRecord, e);
                     }
                 } // End for.
 
@@ -169,45 +158,5 @@ public class DataSenderProxy {
 
         // Clean up Session
         org.newstand.datamigration.utils.Files.deleteDir(new File(SettingsProvider.getBackupSessionDir(session)));
-    }
-
-    @ToString
-    private static class SimpleStats implements Stats {
-
-        @Setter(AccessLevel.PACKAGE)
-        @Getter
-        private int total, left, success, fail;
-
-        private void init(int size) {
-            total = left = size;
-            Logger.d("init status %s", toString());
-        }
-
-        private void onPiece() {
-            left--;
-        }
-
-        @Override
-        public void onSuccess() {
-            success++;
-            onPiece();
-        }
-
-        @Override
-        public void onFail() {
-            fail++;
-            onPiece();
-        }
-
-        @Override
-        public Stats merge(Stats with) {
-
-            total += with.getTotal();
-            left += with.getLeft();
-            success += with.getSuccess();
-            fail += with.getFail();
-
-            return this;
-        }
     }
 }

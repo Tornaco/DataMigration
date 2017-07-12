@@ -48,7 +48,10 @@
         <item name="android:minWidth">64dip</item>
     </style>
 
-    <style name="CollapsedTitle" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title" />
+    <style name="CollapsedTitle" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+    </style>
 
     <style name="CollapsedTitleExpanded" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
         <item name="android:singleLine">false</item>
@@ -119,7 +122,7 @@
 
     <style name="ErrDialog" parent="Theme.AppCompat.Light.Dialog" />
 
-    <!-- You can also inherit from NNF_BaseTheme.Light -->
+    <!-- You can also inherit delegate NNF_BaseTheme.Light -->
     <style name="FilePickerTheme" parent="NNF_BaseTheme.Light">
         <!-- Set these to match your theme -->
         <item name="colorPrimary">@color/white</item>

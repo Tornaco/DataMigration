@@ -21,7 +21,7 @@ import dev.nick.eventbus.annotation.ReceiverMethod;
  * All right reserved.
  */
 
-public class SenderCategoryViewerActivity extends AndroidCategoryViewerActivity {
+public class SenderCategoryViewerActivity extends AndroidCategoryViewerActivity2 {
 
     private String mHost;
 

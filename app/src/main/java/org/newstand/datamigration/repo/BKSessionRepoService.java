@@ -29,7 +29,7 @@ public class BKSessionRepoService extends GsonBasedRepoService<Session> {
     }
 
     @Override
-    protected boolean matchCase(Session old, Session now) {
+    protected boolean isSame(Session old, Session now) {
         return old.getDate() == now.getDate();
     }
 

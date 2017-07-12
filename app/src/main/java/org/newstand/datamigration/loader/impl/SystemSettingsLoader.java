@@ -99,7 +99,7 @@ public class SystemSettingsLoader extends BaseLoader {
                     sr.setChecked(false);
                     out.add(sr);
                 } catch (Throwable e) {
-                    Logger.e(e, "Fail load from:" + file);
+                    Logger.e(e, "Fail load delegate:" + file);
                 }
             }
         });

@@ -1,8 +1,5 @@
 package org.newstand.datamigration.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,38 +14,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class FileBasedRecord extends DataRecord implements Parcelable {
-
+public class FileBasedRecord extends DataRecord {
     private long size;
     private String path;
-
-    FileBasedRecord(Parcel in) {
-        super(in);
-        size = in.readLong();
-        path = in.readString();
-    }
-
-    public static final Creator<FileBasedRecord> CREATOR = new Creator<FileBasedRecord>() {
-        @Override
-        public FileBasedRecord createFromParcel(Parcel in) {
-            return new FileBasedRecord(in);
-        }
-
-        @Override
-        public FileBasedRecord[] newArray(int size) {
-            return new FileBasedRecord[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-        dest.writeLong(size);
-        dest.writeString(path);
-    }
 }

@@ -3,6 +3,7 @@ package org.newstand.datamigration.worker.transport.backup;
 import com.google.common.io.Files;
 
 import org.newstand.datamigration.utils.BlackHole;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 
 import java.io.File;
 
@@ -12,7 +13,7 @@ import java.io.File;
  * All right reserved.
  */
 
-class FileBackupAgent implements BackupAgent<FileBackupSettings, FileRestoreSettings> {
+class FileBackupAgent extends ProgressableBackupAgent<FileBackupSettings, FileRestoreSettings> {
 
     @Override
     public Res backup(FileBackupSettings backupSettings) throws Exception {
@@ -31,7 +32,13 @@ class FileBackupAgent implements BackupAgent<FileBackupSettings, FileRestoreSett
     private Res copy(String from, String to) throws Exception {
         BlackHole.eat(new File(to).delete());
         Files.createParentDirs(new File(to));
-        Files.copy(new File(from), new File(to));
+        org.newstand.datamigration.utils.Files.copy(from, to,
+                new org.newstand.datamigration.utils.Files.ProgressListener() {
+                    @Override
+                    public void onProgress(float progress) {
+                        getProgressListener().onProgress(RecordEvent.FileCopy, progress);
+                    }
+                });
         return Res.OK;
     }
 }

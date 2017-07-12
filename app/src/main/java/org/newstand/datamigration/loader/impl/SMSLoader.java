@@ -89,6 +89,7 @@ public class SMSLoader extends BaseLoader {
         sms.setMsg(c.getString(c.getColumnIndexOrThrow("body")));
         sms.setTime(c.getString(c.getColumnIndexOrThrow("date")));
         sms.setReadState(c.getString(c.getColumnIndexOrThrow("read")));
+        sms.setDisplayName(sms.getMsg());
         return sms;
     }
 

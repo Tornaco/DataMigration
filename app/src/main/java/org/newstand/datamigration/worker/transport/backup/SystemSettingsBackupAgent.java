@@ -13,7 +13,7 @@ import org.newstand.logger.Logger;
  */
 
 public class SystemSettingsBackupAgent
-        implements BackupAgent<SystemSettingsBackupSettings, SystemSettingsRestoreSettings> {
+        extends ProgressableBackupAgent<SystemSettingsBackupSettings, SystemSettingsRestoreSettings> {
 
     @Override
     public Res backup(SystemSettingsBackupSettings backupSettings) throws Exception {

@@ -22,7 +22,9 @@ import org.newstand.logger.Logger;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -33,6 +35,42 @@ import java.nio.charset.Charset;
  */
 
 public abstract class Files {
+
+    /**
+     * Interface definition for a callback to be invoked regularly as
+     * verification proceeds.
+     */
+    public interface ProgressListener {
+        /**
+         * Called periodically as the verification progresses.
+         *
+         * @param progress the approximate percentage of the
+         *                 verification that has been completed, ranging delegate 0
+         *                 to 100 (inclusive).
+         */
+        public void onProgress(float progress);
+    }
+
+
+    public static void copy(String spath, String dpath, @Nullable ProgressListener listener) throws IOException {
+        FileInputStream fis = new FileInputStream(spath);
+        FileOutputStream fos = new FileOutputStream(dpath);
+        int totalByte = fis.available();
+        int read = 0;
+        int n;
+        byte[] buffer = new byte[4096];
+        while ((n = fis.read(buffer)) != -1) {
+            fos.write(buffer, 0, n);
+            fos.flush();
+            read += n;
+            float per = (float) read / (float) totalByte;
+            if (listener != null) {
+                listener.onProgress(per * 100);
+            }
+        }
+        Closer.closeQuietly(fis);
+        Closer.closeQuietly(fos);
+    }
 
     public static String formatSize(long fileSize) {
         String wellFormatSize = "";
@@ -169,7 +207,7 @@ public abstract class Files {
                     com.google.common.io.Files.move(from, to);
                     listener.onAction(true);
                 } catch (IOException e) {
-                    Logger.e(e, "Fail to move from %s to %s", from, to);
+                    Logger.e(e, "Fail to move delegate %s to %s", from, to);
                     listener.onAction(false);
                 }
             }

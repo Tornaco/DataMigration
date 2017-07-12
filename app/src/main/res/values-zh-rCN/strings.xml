@@ -1,0 +1,306 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">数据迁移</string>
+    <string name="app_intro">数据备份以及迁移助手</string>
+    <string name="card_intro">点击卡片可以展开菜单</string>
+    <string name="fab_intro_list">当你完成数据选择时，点击此处完成选择并返回汇总页</string>
+    <string name="fab_intro_category_backup">当你完成数据选择时，点击此处即可开始进行备份</string>
+    <string name="fab_intro_category_restore">当你完成数据选择时，点击此处即可开始进行还原</string>
+    <string name="fab_intro_category_received">当你完成数据选择时，点击此处即可将所选数据导入手机</string>
+    <string name="fab_intro_category_send">当你完成数据选择时，点击此处即可开始进行传输</string>
+    <string name="backup_intro_actions">此卡片包括</string>
+    <string name="backup_intro_and">和</string>
+    <string name="backup_intro">支持联系人，短信，通话记录，多媒体，无线局域网等数据备份与应用（数据）的本地备份。\n\n需要你授予联系人，电话，短信，文件读写等权限。</string>
+    <string name="transport_intro">你现在可以在两台设备之间，快速互相传输文件。\n\n需要你授予位置信息权限。\n</string>
+    <string name="ftp_intro">文件传输协议FTP使得主机间可以共享文件。FTP客户机可以给服务器发出命令来下载文件，上传文件，创建或改变服务器上的目录。\n\n需要你授予文件读写权限，并确保连接到了无线网络。\n\n相关技术来自@Pieter的Swiftp项目。</string>
+
+    <string name="title_activity_navigator">@string/app_name</string>
+
+    <string name="yes">是</string>
+    <string name="no">否</string>
+
+    <string name="title_need_help">需要帮助？</string>
+
+
+    <string name="transport_event_description_init">初始化</string>
+    <string name="transport_event_description_insert">插入</string>
+    <string name="transport_event_description_create_dir">创建文件夹</string>
+    <string name="transport_event_description_copy_file">复制文件</string>
+    <string name="transport_event_description_copy_apk">复制APK</string>
+    <string name="transport_event_description_copy_data">复制应用数据</string>
+    <string name="transport_event_description_install_apk">安装应用</string>
+    <string name="transport_event_description_install_data">安装数据</string>
+    <string name="transport_event_description_install_extra_data">安装附加数据</string>
+    <string name="transport_event_description_token_divider">&#160;</string>
+
+    <string name="permission_missing">权限缺失</string>
+    <string name="permission_missing_message">看起来我们无法请求一些权限，你可以继续使用，但可能会因此导致一些功能异常</string>
+
+    <string name="action_settings">设置</string>
+    <string name="action_user_actions">日志</string>
+    <string name="action_disable_selinux">禁用SeLinux</string>
+    <string name="action_remove">删除</string>
+    <string name="action_rename">修改备注</string>
+    <string name="action_compress">压缩(实验)</string>
+    <string name="action_details">系统信息</string>
+    <string name="action_compressed">压缩完成</string>
+    <string name="action_compressing">正在进行压缩，文件较多，请耐心等待</string>
+    <string name="action_compress_background">后台</string>
+    <string name="action_compressed_how_to_use">如何使用？</string>
+    <string name="message_compressed_how_to_use">压缩包里包含了此备份的完整数据，使用时需要将其解压到 [%1$s] 文件夹下即可被识别为一次备份～</string>
+    <string name="action_renamed_to">已经修改名称为 %1$s</string>
+    <string name="action_compressed_to">压缩文件已经保存到[%1$s]路径下</string>
+    <string name="action_compress_fail">无法对该文件夹进行压缩</string>
+    <string name="action_rename_fail">无法修改名称</string>
+    <string name="action_select_all">全部选择</string>
+    <string name="action_clear_selection">清除选择</string>
+    <string name="title_need_selection">请先选择要处理的数据</string>
+    <string name="title_removed">已经删除：%1$s</string>
+    <string name="title_remove_failed">无法删除：%1$s</string>
+    <string name="title_remove_z">撤销</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_category_viewer">CategoryViewerActivity</string>
+    <string name="title_activity_test">Test</string>
+
+    <string name="category_mm">多媒体</string>
+    <string name="category_private">私有数据</string>
+    <string name="category_advanced">高级与实验性</string>
+
+    <string name="category_music">音乐</string>
+    <string name="category_video">视频</string>
+    <string name="category_contact">联系人</string>
+    <string name="category_sms">短信</string>
+    <string name="category_photo">照片</string>
+    <string name="category_app">应用</string>
+    <string name="category_system_app">系统应用(实验)</string>
+    <string name="category_alarm">闹钟</string>
+    <string name="category_wifi">WLAN</string>
+    <string name="category_call">通话记录</string>
+    <string name="category_custom">自定义文件</string>
+    <string name="category_system_settings">系统设置(实验)</string>
+
+    <string name="title_apk">安装包</string>
+    <string name="title_data">数据</string>
+    <string name="title_data_apk">下列全部</string>
+
+    <string name="details_images_path">文件路径：%1$s</string>
+
+    <string name="summary_sms_template_rec">来自&#160;%1$s \t%2$s</string>
+    <string name="summary_sms_template_send">发给&#160;%1$s \t%2$s</string>
+    <string name="summary_sms_template_draft">草稿&#160;%1$s \t%2$s</string>
+
+    <string name="title_transport_report">报告：</string>
+    <string name="title_transport_report_total">共计：%1$s条</string>
+    <string name="title_transport_report_success">成功：%1$s条</string>
+    <string name="title_transport_report_fail">失败：%1$s条</string>
+    <string name="title_transport_intro">点击可以查看详细日志</string>
+
+    <string name="title_setup_wfd">寻找连接</string>
+    <string name="title_setup_wfd_sender">寻找连接-发送</string>
+    <string name="title_setup_wfd_receiver">寻找连接-接收</string>
+    <string name="title_setup_wfd_note">注意：</string>
+    <string name="title_restart_connector"><b><i>点此重新初始化连接器</i></b></string>
+    <string name="summary_setup_wfd_note_name">*\t\t你的设备昵称为&#160;</string>
+    <string name="summary_setup_wfd_note_item">*\t\t可用设备会出现在上面列表中</string>
+    <string name="summary_setup_wfd_note_click">*\t\t点击你想连接的设备即可进行连接并传输</string>
+    <string name="summary_setup_wfd_note_restart">*\t\t如果经过了很长时间仍然没有结果，你可以&#160;</string>
+    <string name="title_wfd_conn_fail">连接失败</string>
+    <string name="summary_wfd_conn_fail">当前无法与该设备建立连接，请稍候再试</string>
+
+    <string name="summary_wfd_conn">正在连接</string>
+    <string name="summary_wfd_requesting_conn_info">尝试获取连接信息</string>
+    <string name="summary_wfd_requesting_conn_res">等待反馈</string>
+    <string name="title_set_device_id">你的设备昵称</string>
+
+    <string name="title_err_wfd_device_not_support">看起来你的设备不支持WIFI-DIRECT技术，请尝试手动打开Wifi~~</string>
+    <string name="title_err_wfd_device_not_support_action">再试试</string>
+
+    <string name="title_err_wfd_device_not_found">未搜索到任何可用设备</string>
+    <string name="title_err_wfd_device_not_found_action">再试试</string>
+
+    <string name="title_category">类别</string>
+    <string name="title_more">更多</string>
+    <string name="title_others">其他</string>
+    <string name="title_backup_restore">备份与恢复</string>
+    <string name="title_backup">开始备份</string>
+    <string name="title_backup_export">导出数据</string>
+    <string name="title_backup_exporting">正在导出数据</string>
+    <string name="title_backup_export_complete">导出数据完成</string>
+    <string name="title_restore">查看本地备份</string>
+    <string name="title_restore_picker">选择数据</string>
+    <string name="title_restore_import">导入数据</string>
+    <string name="title_restore_importing">正在导入数据</string>
+    <string name="title_restore_import_complete">导入数据完成</string>
+    <string name="action_done">完成</string>
+    <string name="action_log">查看日志</string>
+    <string name="action_log_with_other_app">在其他应用打开</string>
+    <string name="action_preparing">正在准备…</string>
+    <string name="action_remark_backup">此次备份的备注为：</string>
+    <string name="action_remark_received">此次接收记录的备注为：</string>
+    <string name="action_remark_tips">，点击可进行修改。</string>
+    <string name="action_viewer_tips_received">你稍后可以在 主页-卡片-我接收到的文件 里查看或者导入你的设备。</string>
+    <string name="title_backup_at">%1$s</string>
+    <string name="title_backup_default_name">我的备份</string>
+    <string name="title_received_default_name">我收到的</string>
+    <string name="title_backup_invalid">无效备份</string>
+    <string name="title_backup_history">最近备份 %1$s</string>
+    <string name="title_backup_history_noop">无备份记录</string>
+    <string name="title_receive_history_noop">无接收记录</string>
+    <string name="title_receive_history_size">有%1$s条接收记录</string>
+    <string name="title_only_root_dir">目前只支持根目录文件</string>
+
+    <string name="title_restore_sending">正在发送数据</string>
+    <string name="title_restore_sending_complete">数据发送完毕</string>
+
+    <string name="title_restore_receiving">正在接收数据</string>
+    <string name="title_restore_receiving_complete">数据接收完毕</string>
+
+    <string name="summary_category_viewer">%1$s/%2$s</string>
+    <string name="summary_category_viewer_need_click">点击选择条目</string>
+    <string name="summary_app_template_short">版本号: %1$s\n文件大小: %2$s</string>
+    <string name="summary_app_template">版本号: %1$s\n文件大小: %2$s\n\n将会备份安装包: %3$s\n将会备份数据包: %4$s</string>
+    <string name="summary_app_template2">版本号: %1$s\n文件大小: %2$s\n\n包含安装包: %3$s\n包含数据包: %4$s\n包含附加数据包: %5$s\n\n将会还原安装包: %6$s\n将会还原数据包: %7$s</string>
+    <string name="unknown">未知</string>
+    <string name="enforcing">执行中</string>
+    <string name="permissive">许可</string>
+    <string name="empty_title">天哪</string>
+    <string name="empty_summary">这里没有内容</string>
+
+    <string name="oc_storage">存储统计：%1$s</string>
+
+    <string name="tile_category_storage">存储</string>
+    <string name="tile_category_view">视觉（实验）</string>
+    <string name="tile_category_about">关于</string>
+    <string name="tile_category_in">反馈与支持</string>
+    <string name="tile_category_strategy">策略</string>
+    <string name="tile_category_dev">高级</string>
+    <string name="tile_category_app">应用备份</string>
+    <string name="tile_title_auto_connect">自动连接</string>
+    <string name="tile_transition_animation">过场动画</string>
+    <string name="summary_transition_animation">开启更活泼的动画</string>
+    <string name="tile_theme_color">主色</string>
+    <string name="tips_theme_color">更改主题也会更改应用图标，请等待应用被重新启用</string>
+    <string name="tile_work_mode_root">备份/还原应用数据(实验)</string>
+    <string name="summary_work_mode_root">为具有root权限的设备备份/还原应用数据，稍后将会检查并申请root权限，请在收到申请提示后，选择允许。还原之前注意要先关闭正在运行的相关应用，否则可能造成应用的数据丢失</string>
+    <string name="tile_dev_mode">调试模式</string>
+    <string name="summary_dev_mode">你可以查看程序日志，开启一些调试功能，也可能会引入一些未知问题，仅限开发者调试使用</string>
+    <string name="tile_auto_install">静默安装</string>
+    <string name="tile_install_timeout">应用安装超时</string>
+    <string name="summery_install_timeout">当应用安装时间超过%1$s毫秒时，认为该应用安装失败，通常是因为用户在安装界面选择了取消。</string>
+    <string name="summaty_auto_install">尝试静默安装应用程序，需要你的设备拥有root权限，并且允许给本应用；如果静默安装失败，会尝试传统安装方式安装。</string>
+    <string name="title_encrypt">加密(实验)</string>
+    <string name="summary_encrypt">对通话记录，短信进行加密。注意，这可能会导致备份的数据失去兼容性</string>
+
+    <string name="title_transport_sender_receiver">无线快传</string>
+    <string name="title_transport_sender">发送数据给对方</string>
+    <string name="title_transport_receiver">从对方接收数据</string>
+    <string name="title_transport_received_viewer">查看接收到的数据记录</string>
+    <string name="title_transport_share">把[数据迁移]分享给别人</string>
+    <string name="title_transport_share_tips">为了安全起见，Android禁止直接分享APK文件，因此我们把APK文件命名为JPEG文件，待对方收到该文件后，修改后缀名为APK即可安装使用</string>
+
+    <string name="title_ftp">FTP文件服务</string>
+    <string name="title_transport_ftp_control">开关FTP文件服务</string>
+    <string name="title_ftp_solution_provider">Solution provided by Swiftp</string>
+
+    <string name="title_start">开始</string>
+    <string name="title_card_actions">接下来你可以</string>
+    <string name="title_coming_soon">敬请期待</string>
+    <string name="title_card_actions2">或者</string>
+    <string name="title_card_ad">或者，欣赏广告放松下</string>
+
+    <string name="title_user_notice">使用必读</string>
+    <string name="title_never_remind">我始终接受</string>
+    <string name="message_user_notice">请在法律允许的情况下使用本软件！本软件仅供学习交流与测试使用，不收费，不涉及任何商业行为，如果侵犯到您的权利，请邮件告知，由于使用不当或者任何原因造成的任何损失，请自行承担责任。另外，短信的恢复功能所恢复的短信内容不代表本软件立场，不具备任何法律效力！</string>
+    <string name="large_text">
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+    </string>
+
+    <string name="title_err">错误信息</string>
+    <string name="title_new_update_available">发现更新的版本：%1$s</string>
+    <string name="title_new_already_latest">当前已经是最新版本</string>
+    <string name="title_update_check_fail">检查更新时遇到了一个错误</string>
+    <string name="action_look_up">查看</string>
+    <string name="title_new_update_info">更新信息</string>
+    <string name="title_check_for_update">检查更新</string>
+    <string name="summary_check_for_update_current_version">当前版本%1$s</string>
+    <string name="title_check_for_update_no_remind">该版本不再提醒</string>
+
+    <string name="phone_num_unknown">号码未知或暂不可用</string>
+
+    <string name="selinux_state">SeLinux状态</string>
+    <string name="title_secure">安全</string>
+    <string name="summary_selinux_state">点击以禁用</string>
+
+
+    <string name="title_license">开放源代码许可</string>
+    <string name="title_donate">捐赠</string>
+    <string name="summary_donate">柴米油盐酱醋茶</string>
+
+    <string name="title_feedback">问题反馈</string>
+    <string name="title_qq_group">交流</string>
+    <string name="title_cowork">参与开发</string>
+    <string name="summary_feedback">请将详细的错误描述发送至%1$s</string>
+    <string name="summary_qq_group">QQ群号码：%1$s</string>
+    <string name="summary_cowork">本软件业余时间开发，完全开源，且免费无利益，如果你是开发者，或者擅长翻译，UX设计，测试等，均可参与开发，有兴趣可以邮件～</string>
+    <string name="title_rate">评分</string>
+    <string name="summary_rate">顶起来，让更多人知道这款软件</string>
+
+    <string name="title_bugreport">自动上传CRASH日志</string>
+    <string name="summary_bugreport">当应用发生严重问题时，自动上传日志文件(30K左右)，可以帮助我们更好的收集分析应用bug</string>
+
+    <string name="title_thanks">鸣谢</string>
+    <string name="summary_thanks">以下各位对本软件做了巨大贡献%1$s</string>
+
+    <string name="title_storage_location">数据文件路径</string>
+    <string name="warn_storage_location_empty">你设置了非空文件夹，将会尝试导入该文件下相关数据</string>
+    <string name="res_storage_location_move_fail">数据转移失败</string>
+    <string name="res_storage_location_move_ok">数据转移成功</string>
+    <string name="summary_storage_location">所备份与接收到的文件均放置在[%1$s]目录下，单纯的清除设备数据，并不会破坏备份与接收文件。因此当你清除设备数据后，你只需要重新下载本应用，安装即可无缝使用旧数据。\n\n%2$s现在你可以任意指定该目录，当你指定了新的（建议选用空的）目录后，之前的数据将会被转移到新目录下。\n\n%3$s如果你选择了非空文件夹，则会尝试使用该文件夹做为主存储目录。\n\n存储相关的修改在下次冷启动后生效。</string>
+
+    <string name="title_help">帮助</string>
+    <string name="title_help_noop">这家伙很懒，留下了一个空白的帮助页~</string>
+
+    <string name="action_scheduler_viewer">计划任务</string>
+    <string name="action_extra_data_rules_viewer">添加备份规则(实验)</string>
+    <string name="action_set_categories_to_load">指定加载的数据类型</string>
+    <string name="action_scheduler_creator">制定计划任务</string>
+    <string name="action_extra_data_rules_creator">制定附加规则</string>
+    <string name="action_scheduler_creator_saving">正在保存计划</string>
+    <string name="title_scheduler_pending">队列中</string>
+    <string name="title_scheduler_tips">新制定的计划稍后会显示在这里</string>
+    <string name="title_conditions">过滤条件</string>
+    <string name="title_condition_charge">仅充电时</string>
+    <string name="title_condition_idle">仅空闲时</string>
+    <string name="title_condition_persist">持久化</string>
+    <string name="summary_condition_persist">该任务在设备重启后是否依旧生效</string>
+    <string name="title_condition_network_type">网络要求</string>
+    <string name="title_condition_network_type_none">无</string>
+    <string name="title_condition_network_type_any">任意</string>
+    <string name="title_condition_network_type_unmetered">不按流量计费</string>
+    <string name="title_condition_network_type_mo_roaming">非漫游</string>
+    <string name="title_settings_categories">要备份的数据</string>
+    <string name="summary_settings_categories">尚未指定</string>
+    <string name="title_settings_session">备份备注</string>
+    <string name="title_settings_session_def">自动备份</string>
+    <string name="title_settings_time">计划开始时间</string>
+    <string name="summary_settings_time">尚未指定</string>
+    <string name="title_settings_repeat">重复</string>
+    <string name="summary_settings_repeat">计划会在每天的指定时间执行</string>
+    <string name="title_validation_select_data">请选择要备份的数据</string>
+    <string name="title_show_ads">欣赏精美广告%1$s</string>
+
+    <string name="category_rule_intro">关于</string>
+    <string name="title_my_rules">我的规则</string>
+    <string name="title_rule_intro">应用附加数据规则</string>
+    <string name="summary_rule_intro">附加数据是指备份某些应用数据的同时备份附加的某些目录，例如微信的聊天文件是存储在外部存储上的，你可以通过指定其规则来轻松对额外数据进行备份</string>
+    <string name="title_package_name">包</string>
+    <string name="title_dir_name">文件目录</string>
+    <string name="title_not_set">尚未指定</string>
+    <string name="title_dir_divider">多个目录使用英文逗号隔开</string>
+
+    <string name="warn_def_sms_app_title">请修改设置</string>
+    <string name="warn_def_sms_app_message">检测到本应用是目前系统的默认短信应用，这很有可能是你在某次还原短信的时候，遇到了某种问题，导致我们没有指导你恢复系统默认短信应用的设置，现在请立即前往系统-设置-默认应用设置修改，不要将本应用设置成默认短信，否则你可能会无法接收到新的消息。</string>
+</resources>

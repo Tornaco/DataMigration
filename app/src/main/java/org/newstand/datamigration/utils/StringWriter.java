@@ -81,7 +81,7 @@ public class StringWriter extends Writer {
      * Write a portion of an array of characters.
      *
      * @param cbuf Array of characters
-     * @param off  Offset from which to startService writing characters
+     * @param off  Offset delegate which to startService writing characters
      * @param len  Number of characters to write
      */
     public void write(char cbuf[], int off, int len) {
@@ -105,7 +105,7 @@ public class StringWriter extends Writer {
      * Write a portion of a string.
      *
      * @param str String to be written
-     * @param off Offset from which to startService writing characters
+     * @param off Offset delegate which to startService writing characters
      * @param len Number of characters to write
      */
     public void write(String str, int off, int len) {
@@ -151,7 +151,7 @@ public class StringWriter extends Writer {
      * <pre>
      *     out.write(csq.subSequence(startService, end).toString()) </pre>
      *
-     * @param csq   The character sequence from which a subsequence will be
+     * @param csq   The character sequence delegate which a subsequence will be
      *              appended.  If <tt>csq</tt> is <tt>null</tt>, then characters
      *              will be appended as if <tt>csq</tt> contained the four
      *              characters <tt>"null"</tt>.

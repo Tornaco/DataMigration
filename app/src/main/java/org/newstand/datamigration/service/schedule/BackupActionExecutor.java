@@ -48,9 +48,9 @@ public class BackupActionExecutor implements ActionExecutor<BackupActionSettings
                 DataBackupManager.from(context, settings.getSession())
                         .performBackup(new TransportListenerAdapter() {
                             @Override
-                            public void onPieceFail(DataRecord record, Throwable err) {
-                                super.onPieceFail(record, err);
-                                Logger.e(err, "onPieceFail in BackupActionExecutor %s", record);
+                            public void onRecordFail(DataRecord record, Throwable err) {
+                                super.onRecordFail(record, err);
+                                Logger.e(err, "onRecordFail in BackupActionExecutor %s", record);
                             }
                         }, DataLoaderManager.from(context).load((LoaderSource.builder()
                                 .parent(LoaderSource.Parent.Android).build()), dataCategory), dataCategory);
