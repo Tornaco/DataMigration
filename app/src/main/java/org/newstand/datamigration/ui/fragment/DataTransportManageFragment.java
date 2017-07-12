@@ -1,10 +1,12 @@
 package org.newstand.datamigration.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 import android.text.TextUtils;
+import android.view.View;
 
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataRecord;
@@ -27,6 +29,7 @@ import dev.nick.eventbus.EventBus;
  */
 public abstract class DataTransportManageFragment extends DataTransportLogicFragment {
 
+    @MainThread
     protected TransportListenerMainThreadAdapter onCreateTransportListener() {
         return new TransportListenerMainThreadAdapter() {
             @Override
@@ -111,6 +114,7 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
 
     private void onTransportStart() {
         updateConsoleTitleViewOnStart();
+        getFab().hide();
         initProgressOnStart();
 
         // Start log tracker.
@@ -129,6 +133,7 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
     protected void initProgressOnStart() {
         getProgressBar().setText(String.valueOf(0));
         getProgressBar().setProgress(0);
+        getBottomProgressBar().setVisibility(View.VISIBLE);
     }
 
     protected void showCurrentRecordInUI(DataRecord record) {
@@ -163,10 +168,10 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
                 getProgressBar().setProgress(360);
 
                 getConsoleTitleView().setText(getCompleteTitle());
-
                 updateCompleteSummary();
-
                 ViewAnimateUtils.alphaShow(getConsoleCardView());
+                getFab().show();
+                getBottomProgressBar().setVisibility(View.GONE);
             }
         });
     }

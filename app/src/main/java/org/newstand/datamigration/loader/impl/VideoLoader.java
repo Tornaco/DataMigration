@@ -96,9 +96,10 @@ public class VideoLoader extends BaseLoader {
 
         record.setId(String.valueOf(id));
         record.setPath(path);
-        record.setDisplayName(title);
+        record.setDisplayName(new File(path).getName()); // Fix file name.
         record.setSize(size);
         record.setChecked(false);
+        record.setDuration(duration);
 
         return record;
     }

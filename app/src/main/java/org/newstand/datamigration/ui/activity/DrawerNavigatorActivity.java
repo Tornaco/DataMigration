@@ -2,11 +2,13 @@ package org.newstand.datamigration.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.github.javiersantos.materialstyleddialogs.enums.Style;
 import com.github.paolorotolo.appintro.BuildConfig;
 import com.google.common.collect.ImmutableList;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -57,19 +63,15 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
                 break;
         }
         handler = new Handler();
-        requestPerms();
         if (!SettingsProvider.isAppIntroNoticed(BuildConfig.VERSION_NAME)) {
             startActivity(new Intent(this, AppIntroActivity.class));
         }
+        showRetention();
     }
 
     private void requestPerms() {
-        RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_NETWORK_STATE,
-                Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.READ_PHONE_STATE)
+        RxPermissions rxPermissions = new RxPermissions(DrawerNavigatorActivity.this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean granted) throws Exception {
@@ -80,6 +82,36 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
                         }
                     }
                 });
+    }
+
+    private void showRetention() {
+        boolean hasBasicPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        if (SettingsProvider.isDebugEnabled() || !hasBasicPermission) {
+            new MaterialStyledDialog.Builder(this)
+                    .setTitle(R.string.permission_request)
+                    .setDescription(R.string.permission_request_message)
+                    .setHeaderDrawable(R.drawable.photo_backup_help_card_header)
+                    .withDarkerOverlay(true)
+                    .setCancelable(false)
+                    .setPositiveText(android.R.string.ok)
+                    .setNegativeText(android.R.string.cancel)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            requestPerms();
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        } else {
+            onPermissionGrant();
+        }
     }
 
     private void onPermissionNotGrant() {

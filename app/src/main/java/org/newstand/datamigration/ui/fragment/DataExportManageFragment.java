@@ -16,6 +16,7 @@ import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.utils.DateUtils;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 
 import java.util.Collection;
@@ -41,6 +42,8 @@ public class DataExportManageFragment extends DataTransportManageFragment {
 
         final DataBackupManager dataBackupManager = DataBackupManager.from(getContext(), getSession());
 
+        final TransportListener listener = onCreateTransportListener();
+
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
             public void accept(@NonNull DataCategory category) {
@@ -48,7 +51,7 @@ public class DataExportManageFragment extends DataTransportManageFragment {
                 if (Collections.isNullOrEmpty(dataRecords)) {
                     return;
                 }
-                dataBackupManager.performBackup(onCreateTransportListener(), dataRecords, category);
+                dataBackupManager.performBackup(listener, dataRecords, category);
             }
         }, new Runnable() {
             @Override

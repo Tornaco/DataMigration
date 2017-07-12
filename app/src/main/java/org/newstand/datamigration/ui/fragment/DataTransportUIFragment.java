@@ -2,6 +2,7 @@ package org.newstand.datamigration.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,9 @@ public abstract class DataTransportUIFragment extends StateBasedFragment {
     @Getter
     private CardView consoleCardView;
 
+    @Getter
+    private FloatingActionButton fab;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,6 +55,8 @@ public abstract class DataTransportUIFragment extends StateBasedFragment {
         consoleTitleView = (TextView) root.findViewById(android.R.id.title);
         consoleSummaryView = (TextView) root.findViewById(android.R.id.text1);
         bottomProgressBar = (ProgressBar) root.findViewById(R.id.progress_bar);
+        fab = (FloatingActionButton) root.findViewById(R.id.fab);
+        fab.hide();
         return root;
     }
 }

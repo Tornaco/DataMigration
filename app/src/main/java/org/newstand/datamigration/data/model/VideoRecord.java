@@ -1,6 +1,8 @@
 package org.newstand.datamigration.data.model;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -11,6 +13,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class VideoRecord extends FileBasedRecord {
+
+    @Getter
+    @Setter
+    private long duration;
+
     @Override
     public DataCategory category() {
         return DataCategory.Video;

@@ -32,6 +32,9 @@
     <string name="transport_event_description_install_extra_data">安装附加数据</string>
     <string name="transport_event_description_token_divider">&#160;</string>
 
+
+    <string name="permission_request">需要权限</string>
+    <string name="permission_request_message">我们需要你授予文件读写权限来保证应用的基本运作。请在接下来的请求对话框选择允许。</string>
     <string name="permission_missing">权限缺失</string>
     <string name="permission_missing_message">看起来我们无法请求一些权限，你可以继续使用，但可能会因此导致一些功能异常</string>
 

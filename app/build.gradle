@@ -101,4 +101,7 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
 
+    // https://github.com/javiersantos/MaterialStyledDialogs
+    compile 'com.github.javiersantos:MaterialStyledDialogs:2.1'
+
 }
