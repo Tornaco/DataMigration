@@ -48,7 +48,7 @@ public class DataExportManageFragment extends DataTransportManageFragment {
                 if (Collections.isNullOrEmpty(dataRecords)) {
                     return;
                 }
-                dataBackupManager.performBackup(mExportListener, dataRecords, category);
+                dataBackupManager.performBackup(onCreateTransportListener(), dataRecords, category);
             }
         }, new Runnable() {
             @Override

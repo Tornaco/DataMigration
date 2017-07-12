@@ -73,7 +73,7 @@ public class DataImportManageFragment extends DataTransportManageFragment {
                     return;
                 }
 
-                dataBackupManager.performRestore(dataRecords, category, mExportListener);
+                dataBackupManager.performRestore(dataRecords, category, onCreateTransportListener());
             }
         }, new Runnable() {
             @Override

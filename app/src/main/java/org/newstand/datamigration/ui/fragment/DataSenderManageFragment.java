@@ -21,7 +21,6 @@ import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
 import org.newstand.logger.Logger;
 
@@ -46,64 +45,6 @@ public class DataSenderManageFragment extends DataTransportManageFragment
     TransportClient client;
 
     private Producer<String> mHostProducer;
-
-    private TransportListener mTransportListener = new TransportListenerMainThreadAdapter() {
-
-        @Override
-        public void onStartMainThread() {
-            super.onStartMainThread();
-        }
-
-        @Override
-        public void onCompleteMainThread() {
-            super.onCompleteMainThread();
-            enterState(STATE_TRANSPORT_END);
-        }
-
-        @Override
-        public void onRecordFailMainThread(DataRecord record, Throwable err) {
-            super.onRecordFailMainThread(record, err);
-        }
-
-        @Override
-        public void onRecordSuccessMainThread(DataRecord record) {
-            super.onRecordSuccessMainThread(record);
-        }
-
-        @Override
-        public void onRecordStartMainThread(DataRecord record) {
-            super.onRecordStartMainThread(record);
-            // Sub record is sending, we can cancel now~
-            setCancelable(true);
-            showCurrentRecordInUI(record);
-        }
-
-        @Override
-        public void onRecordProgressUpdateMainThread(DataRecord record, RecordEvent recordEvent, float progress) {
-            super.onRecordProgressUpdateMainThread(record, recordEvent, progress);
-            showRecordProgressInUI(record, recordEvent, progress);
-        }
-
-        @Override
-        public void onAbortMainThread(Throwable err) {
-            super.onAbortMainThread(err);
-            ErrDialog.attach(getActivity(), err,
-                    new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
-                            transitionSafeActivity.finish();
-                        }
-                    });
-        }
-
-        @Override
-        public void onProgressUpdateMainThread(float progress) {
-            super.onProgressUpdateMainThread(progress);
-            updateProgressWheel(progress);
-        }
-    };
-
 
     public interface LoaderSourceProvider {
         LoaderSource onRequestLoaderSource();
@@ -148,7 +89,9 @@ public class DataSenderManageFragment extends DataTransportManageFragment
 
     private void send() {
         AbortSignal abortSignal = new AbortSignal();
-        DataSenderProxy.send(getActivity(), getClient(), mTransportListener, abortSignal);
+        DataSenderProxy.send(getActivity(), getClient(),
+                new TransportListenerDelegate(onCreateTransportListener()), abortSignal);
+        enterState(STATE_TRANSPORT_END);
     }
 
     @Override
@@ -197,5 +140,62 @@ public class DataSenderManageFragment extends DataTransportManageFragment
                         });
             }
         });
+    }
+
+    private class TransportListenerDelegate extends TransportListenerMainThreadAdapter {
+        TransportListenerMainThreadAdapter listener;
+
+        TransportListenerDelegate(TransportListenerMainThreadAdapter listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        public void onStartMainThread() {
+            listener.onStartMainThread();
+        }
+
+        @Override
+        public void onRecordStartMainThread(DataRecord record) {
+            listener.onRecordStartMainThread(record);
+        }
+
+        @Override
+        public void onRecordProgressUpdateMainThread(DataRecord record, RecordEvent recordEvent, float progress) {
+            listener.onRecordProgressUpdateMainThread(record, recordEvent, progress);
+        }
+
+        @Override
+        public void onRecordSuccessMainThread(DataRecord record) {
+            listener.onRecordSuccessMainThread(record);
+        }
+
+        @Override
+        public void onRecordFailMainThread(DataRecord record, Throwable err) {
+            listener.onRecordFailMainThread(record, err);
+        }
+
+        @Override
+        public void onProgressUpdateMainThread(float progress) {
+            listener.onProgressUpdateMainThread(progress);
+        }
+
+        @Override
+        public void onCompleteMainThread() {
+            listener.onCompleteMainThread();
+        }
+
+        @Override
+        public void onAbortMainThread(Throwable err) {
+            listener.onAbortMainThread(err);
+
+            ErrDialog.attach(getActivity(), err,
+                    new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            TransitionSafeActivity transitionSafeActivity = (TransitionSafeActivity) getActivity();
+                            transitionSafeActivity.finish();
+                        }
+                    });
+        }
     }
 }

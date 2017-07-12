@@ -12,7 +12,6 @@ import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.widget.ViewAnimateUtils;
 import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
 
 import java.io.File;
@@ -28,45 +27,47 @@ import dev.nick.eventbus.EventBus;
  */
 public abstract class DataTransportManageFragment extends DataTransportLogicFragment {
 
-    protected TransportListener mExportListener = new TransportListenerMainThreadAdapter() {
-        @Override
-        public void onStartMainThread() {
-            super.onStartMainThread();
-        }
+    protected TransportListenerMainThreadAdapter onCreateTransportListener() {
+        return new TransportListenerMainThreadAdapter() {
+            @Override
+            public void onStartMainThread() {
+                super.onStartMainThread();
+            }
 
-        @Override
-        public void onCompleteMainThread() {
-            super.onCompleteMainThread();
-        }
+            @Override
+            public void onCompleteMainThread() {
+                super.onCompleteMainThread();
+            }
 
-        @Override
-        public void onRecordFailMainThread(DataRecord record, Throwable err) {
-            super.onRecordFailMainThread(record, err);
-        }
+            @Override
+            public void onRecordFailMainThread(DataRecord record, Throwable err) {
+                super.onRecordFailMainThread(record, err);
+            }
 
-        @Override
-        public void onRecordSuccessMainThread(DataRecord record) {
-            super.onRecordSuccessMainThread(record);
-        }
+            @Override
+            public void onRecordSuccessMainThread(DataRecord record) {
+                super.onRecordSuccessMainThread(record);
+            }
 
-        @Override
-        public void onRecordStartMainThread(DataRecord record) {
-            super.onRecordStartMainThread(record);
-            showCurrentRecordInUI(record);
-        }
+            @Override
+            public void onRecordStartMainThread(DataRecord record) {
+                super.onRecordStartMainThread(record);
+                showCurrentRecordInUI(record);
+            }
 
-        @Override
-        public void onRecordProgressUpdateMainThread(DataRecord record, RecordEvent recordEvent, float progress) {
-            super.onRecordProgressUpdateMainThread(record, recordEvent, progress);
-            showRecordProgressInUI(record, recordEvent, progress);
-        }
+            @Override
+            public void onRecordProgressUpdateMainThread(DataRecord record, RecordEvent recordEvent, float progress) {
+                super.onRecordProgressUpdateMainThread(record, recordEvent, progress);
+                showRecordProgressInUI(record, recordEvent, progress);
+            }
 
-        @Override
-        public void onProgressUpdateMainThread(float progress) {
-            super.onProgressUpdateMainThread(progress);
-            updateProgressWheel(progress);
-        }
-    };
+            @Override
+            public void onProgressUpdateMainThread(float progress) {
+                super.onProgressUpdateMainThread(progress);
+                updateProgressWheel(progress);
+            }
+        };
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -186,6 +187,7 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
 
     protected boolean validateInput(String currentName, CharSequence in) {
         return !TextUtils.isEmpty(in) && (!currentName.equals(in.toString()))
+                && !in.toString().contains(" ") // FIXME Tell user.
                 && !in.toString().contains("Tmp_")
                 && !in.toString().contains(File.separator);
     }
