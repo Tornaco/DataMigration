@@ -46,10 +46,6 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
 
     private Producer<String> mHostProducer;
 
-    private void showCurrentPieceInUI(DataRecord record) {
-        getConsoleTitleView().setText(record.getDisplayName());
-    }
-
     public interface LoaderSourceProvider {
         LoaderSource onRequestLoaderSource();
     }

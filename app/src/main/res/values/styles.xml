@@ -70,6 +70,12 @@
         <item name="android:textColor">@color/secondary_text</item>
     </style>
 
+    <style name="CardProgressText" parent="TextAppearance.AppCompat.Display2">
+        <item name="android:textStyle">normal</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
+
     <!-- The list item main text style/color -->
     <style name="ListItemMainText">
         <item name="android:textColor">@color/title</item>

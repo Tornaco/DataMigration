@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
-import android.view.View;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;
@@ -16,7 +15,6 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.repo.TransportEventRecordRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.activity.DataTransportActivity;
-import org.newstand.datamigration.ui.widget.ViewAnimateUtils;
 import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
@@ -64,11 +62,13 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
             @Override
             public void onRecordFailMainThread(DataRecord record, Throwable err) {
                 super.onRecordFailMainThread(record, err);
+                onNewFailure();
             }
 
             @Override
             public void onRecordSuccessMainThread(DataRecord record) {
                 super.onRecordSuccessMainThread(record);
+                onNewSuccess();
             }
 
             @Override
@@ -86,7 +86,7 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
             @Override
             public void onProgressUpdateMainThread(float progress) {
                 super.onProgressUpdateMainThread(progress);
-                updateProgressWheel(progress);
+                updateProgress(progress);
             }
         };
     }
@@ -112,7 +112,7 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
                 onTransportStart();
                 break;
             case STATE_TRANSPORT_PROGRESS_UPDATE:
-                updateProgressWheel((Float) obj);
+                updateProgress((Float) obj);
                 break;
             case STATE_TRANSPORT_END:
                 broadcastCompleteEvent();
@@ -129,7 +129,6 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
 
     private void onTransportStart() {
         updateConsoleTitleViewOnStart();
-        getFab().hide();
         initProgressOnStart();
 
         // Start log tracker.
@@ -142,28 +141,25 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
     }
 
     protected void updateConsoleTitleViewOnStart() {
-        getConsoleTitleView().setText(getStartTitle());
+        setRecordTitle(getStringSafety(getStartTitle()));
     }
 
     protected void initProgressOnStart() {
-        getProgressBar().setText(String.valueOf(0));
-        getProgressBar().setProgress(0);
-        getBottomProgressBar().setVisibility(View.VISIBLE);
+        setProgress(0);
     }
 
     protected void showCurrentRecordInUI(DataRecord record) {
-        getConsoleTitleView().setText(record.getDisplayName());
+        setRecordTitle(record.getDisplayName());
     }
 
     protected void showRecordProgressInUI(DataRecord record,
                                           RecordEvent recordEvent, float pieceProgress) {
-        getConsoleSummaryView().setText(getStringSafety(recordEvent.getDescription()));
-        getBottomProgressBar().setProgress((int) pieceProgress);
+        setRecordEvent(getStringSafety(recordEvent.getDescription()));
+        setRecordProgress((int) pieceProgress);
     }
 
-    protected void updateProgressWheel(float progress) {
-        getProgressBar().setText(String.valueOf((int) (progress)));
-        getProgressBar().setProgress((int) (progress / 100 * 360));
+    protected void updateProgress(float progress) {
+        setProgress((int) progress);
     }
 
     private void onComplete() {
@@ -176,25 +172,17 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
             }
         });
 
-        ViewAnimateUtils.alphaHide(getConsoleCardView(), new Runnable() {
-            @Override
-            public void run() {
-                getProgressBar().setText("100");
-                getProgressBar().setProgress(360);
+        setRecordProgress(100);
+        setProgress(100);
+        setRecordTitle(getStringSafety(getCompleteTitle()));
 
-                getConsoleTitleView().setText(getCompleteTitle());
-                updateCompleteSummary();
-                ViewAnimateUtils.alphaShow(getConsoleCardView());
-                getBottomProgressBar().setVisibility(View.INVISIBLE);
-                getFab().show();
-            }
-        });
+        updateCompleteSummary();
     }
 
     protected void updateCompleteSummary() {
         if (!isAlive()) return;
         String summary = onCreateCompleteSummary();
-        getConsoleSummaryView().setText(summary);
+        setRecordEvent(summary);
     }
 
     abstract String onCreateCompleteSummary();
