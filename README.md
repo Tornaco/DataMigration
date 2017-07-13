@@ -1,4 +1,6 @@
-### 数据迁移source code
+### 数据迁移OpenSource
+
+[![Build Status](https://travis-ci.org/Tornaco/DataMigration.svg?branch=master)](https://travis-ci.org/Tornaco/DataMigration)
 
 ## 准备编译
 
