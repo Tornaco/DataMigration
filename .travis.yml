@@ -20,8 +20,17 @@ before_script:
  - mkdir -p "$ANDROID_HOME/licenses"
  - cp ./android-sdk-license "$ANDROID_HOME/licenses/"
  
- - git clone https://github.com/anggrayudi/android-hidden-api
- - cp ./android-hidden-api/android-24/android.jar "$ANDROID_HOME/platforms/android-24/android.jar"
- 
  - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
  - export ANDROID_NDK_HOME=$HOME/android-ndk-root
+ 
+  - git clone https://github.com/anggrayudi/android-hidden-api
+  - ls -l "$ANDROID_HOME/platforms/"
+  - cp ./android-hidden-api/android-24/android.jar "$ANDROID_HOME/platforms/android-24/"
+
+notifications:
+  email:
+    recipients:
+      - tornaco@163.com
+    on_success: always # default: change
+    on_failure: always # default: always
+  
