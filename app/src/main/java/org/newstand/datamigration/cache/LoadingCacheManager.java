@@ -49,19 +49,16 @@ public abstract class LoadingCacheManager {
     }
 
     public static void createDroid(Context appContext) {
-        Logger.i("Creating droid cache");
         Droid.create(appContext);
         droid = Droid.sMe;
     }
 
     public static void createBK(Context appContext, Session session) {
-        Logger.i("Creating backup cache for session %s", session);
         BK.create(appContext, session);
         bk = BK.sMe;
     }
 
     public static void createReceived(Context appContext, Session session) {
-        Logger.i("Creating received cache for session %s", session);
         Received.create(appContext, session);
         received = Received.sMe;
     }
@@ -113,7 +110,6 @@ public abstract class LoadingCacheManager {
                                 return new ArrayList<>();
                             }
 
-                            Logger.d("CacheLoader, loading for:%s", key);
                             DataLoaderManager manager = DataLoaderManager.from(c);
                             return manager.load(LoaderSource.builder().parent(Android)
                                     .session(Session.create()).build(), key);
@@ -151,7 +147,6 @@ public abstract class LoadingCacheManager {
 
         @Override
         public void clear() {
-            Logger.d("clearing DROID");
             cache.cleanUp();
             cache.invalidateAll();
         }
@@ -210,7 +205,6 @@ public abstract class LoadingCacheManager {
 
         @Override
         public void clear() {
-            Logger.d("clearing BK");
             cache.cleanUp();
             cache.invalidateAll();
         }
@@ -270,7 +264,6 @@ public abstract class LoadingCacheManager {
 
         @Override
         public void clear() {
-            Logger.d("clearing Received");
             cache.cleanUp();
             cache.invalidateAll();
         }

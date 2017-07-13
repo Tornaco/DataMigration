@@ -29,4 +29,8 @@ public abstract class SharedExecutor {
     public static void runOnUIThread(Runnable runnable) {
         mUIThreadHandler.post(runnable);
     }
+
+    public static void runOnUIThreadDelayed(Runnable runnable, long delayMills) {
+        mUIThreadHandler.postDelayed(runnable, delayMills);
+    }
 }

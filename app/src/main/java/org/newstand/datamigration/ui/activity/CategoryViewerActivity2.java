@@ -39,6 +39,7 @@ import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
+import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.fragment.CategoryViewerFragment;
@@ -109,15 +110,15 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
     public void onAppBarLayoutStateChanged(AppBarLayout appBarLayout,
                                            final AppBarStateChangeListener.State state) {
-        Logger.i("onAppBarLayoutStateChanged:%s", state);
-        runOnUiThread(new Runnable() {
+        // Delay for better ui.
+        SharedExecutor.runOnUIThreadDelayed(new Runnable() {
             @Override
             public void run() {
                 if (state == AppBarStateChangeListener.State.EXPANDED && getAdapter().hasSelection()) {
                     buildFabIntro();
                 }
             }
-        });
+        }, 1200);
     }
 
     @Override
