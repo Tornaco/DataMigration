@@ -59,7 +59,6 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
                                 .fails(getContext(), dataCategory).size());
                     }
                 });
-
             }
 
             @Override
@@ -186,8 +185,8 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
                 getConsoleTitleView().setText(getCompleteTitle());
                 updateCompleteSummary();
                 ViewAnimateUtils.alphaShow(getConsoleCardView());
+                getBottomProgressBar().setVisibility(View.INVISIBLE);
                 getFab().show();
-                getBottomProgressBar().setVisibility(View.GONE);
             }
         });
     }
