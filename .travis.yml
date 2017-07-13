@@ -9,6 +9,7 @@ android:
   components:
   - build-tools-25.0.2
   - android-25
+  - android-24
   - extra-android-m2repository
   - extra-android-support
 
@@ -18,3 +19,9 @@ script:
 before_script:
  - mkdir -p "$ANDROID_HOME/licenses"
  - cp ./android-sdk-license "$ANDROID_HOME/licenses/"
+ 
+ - git clone https://github.com/anggrayudi/android-hidden-api
+ - cp ./android-hidden-api/android-24/android.jar "$ANDROID_HOME/platforms/android-24/android.jar"
+ 
+ - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
+ - export ANDROID_NDK_HOME=$HOME/android-ndk-root
