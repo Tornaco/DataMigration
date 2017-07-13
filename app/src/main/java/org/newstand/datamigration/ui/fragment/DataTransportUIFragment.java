@@ -57,6 +57,16 @@ public abstract class DataTransportUIFragment extends StateBasedFragment {
         bottomProgressBar = (ProgressBar) root.findViewById(R.id.progress_bar);
         fab = (FloatingActionButton) root.findViewById(R.id.fab);
         fab.hide();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onFabClick();
+            }
+        });
         return root;
+    }
+
+    protected void onFabClick() {
+
     }
 }

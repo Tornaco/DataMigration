@@ -3,9 +3,6 @@ package org.newstand.datamigration.ui.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
-import android.widget.TextView;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
@@ -22,19 +19,11 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.ReceivedSessionRepoService;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
-import org.newstand.datamigration.ui.widget.InputDialogCompat;
 import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
-import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
 
-import java.io.File;
-
-import cn.iwgang.simplifyspan.SimplifySpanBuild;
-import cn.iwgang.simplifyspan.other.OnClickableSpanListener;
-import cn.iwgang.simplifyspan.unit.SpecialClickableUnit;
-import cn.iwgang.simplifyspan.unit.SpecialTextUnit;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -56,11 +45,6 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     private TransportServer transportServer;
 
     private Producer<String> mHostProducer;
-
-    @Override
-    public boolean isCancelable() {
-        return isCancelable;
-    }
 
     private void showCurrentPieceInUI(DataRecord record) {
         getConsoleTitleView().setText(record.getDisplayName());
@@ -120,62 +104,8 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     }
 
     @Override
-    SimplifySpanBuild onCreateCompleteSummary() {
-        SimplifySpanBuild summary = new SimplifySpanBuild();
-        summary.append("\n\n");
-        summary.append(getStringSafety(R.string.action_remark_received));
-        summary.append(new SpecialTextUnit(getSession().getName())
-                .setTextColor(ContextCompat.getColor(getContext(), R.color.accent))
-                .showUnderline()
-                .useTextBold()
-                .showUnderline()
-                .setClickableUnit(new SpecialClickableUnit(getConsoleSummaryView(), new OnClickableSpanListener() {
-                    @Override
-                    public void onClick(TextView tv, String clickText) {
-                        showNameSettingsDialog(getSession().getName());
-                    }
-                })));
-        summary.append(getStringSafety(R.string.action_remark_tips));
-        summary.append(getStringSafety(R.string.action_viewer_tips_received));
-        return summary;
-    }
-
-    protected void showNameSettingsDialog(final String currentName) {
-        new InputDialogCompat.Builder(getActivity())
-                .setTitle(getString(R.string.action_remark_backup))
-                .setInputDefaultText(currentName)
-                .setInputMaxWords(32)
-                .setPositiveButton(getString(android.R.string.ok), new InputDialogCompat.ButtonActionListener() {
-                    @Override
-                    public void onClick(CharSequence inputText) {
-                        DataBackupManager.from(getContext())
-                                .renameSessionChecked(
-                                        LoaderSource.builder().parent(LoaderSource.Parent.Received).build(),
-                                        getSession(), inputText.toString().replace(" ", ""));
-                        ReceivedSessionRepoService.get().update(getContext(), getSession());
-                        updateCompleteSummary();
-                    }
-                })
-                .interceptButtonAction(new InputDialogCompat.ButtonActionIntercepter() {
-                    @Override
-                    public boolean onInterceptButtonAction(int whichButton, CharSequence inputText) {
-                        return whichButton == DialogInterface.BUTTON_POSITIVE
-                                && !validateInput(currentName, inputText);
-                    }
-                })
-                .setNegativeButton(getString(android.R.string.cancel), new InputDialogCompat.ButtonActionListener() {
-                    @Override
-                    public void onClick(CharSequence inputText) {
-                        // Nothing.
-                    }
-                })
-                .show();
-    }
-
-    protected boolean validateInput(String currentName, CharSequence in) {
-        return !TextUtils.isEmpty(in) && (!currentName.equals(in.toString()))
-                && !in.toString().contains("Tmp_")
-                && !in.toString().contains(File.separator);
+    String onCreateCompleteSummary() {
+        return getStringSafety(R.string.action_remark_received, getSession().getName());
     }
 
     @Override

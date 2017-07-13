@@ -1,24 +1,23 @@
 package org.newstand.datamigration.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
-import android.text.TextUtils;
 import android.view.View;
 
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.sync.SharedExecutor;
+import org.newstand.datamigration.ui.activity.DataTransportActivity;
 import org.newstand.datamigration.ui.widget.ViewAnimateUtils;
 import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
+import org.newstand.logger.Logger;
 
-import java.io.File;
-
-import cn.iwgang.simplifyspan.SimplifySpanBuild;
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
 
@@ -27,7 +26,14 @@ import dev.nick.eventbus.EventBus;
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-public abstract class DataTransportManageFragment extends DataTransportLogicFragment {
+public abstract class DataTransportManageFragment extends DataTransportLogicFragment implements DataTransportActivity.BackEventListener {
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        DataTransportActivity dataTransportActivity = (DataTransportActivity) getActivity();
+        dataTransportActivity.setBackEventListener(this);
+    }
 
     @MainThread
     protected TransportListenerMainThreadAdapter onCreateTransportListener() {
@@ -108,10 +114,6 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
     @StringRes
     abstract int getCompleteTitle();
 
-    protected boolean isCancelable() {
-        return true;
-    }
-
     private void onTransportStart() {
         updateConsoleTitleViewOnStart();
         getFab().hide();
@@ -178,11 +180,11 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
 
     protected void updateCompleteSummary() {
         if (!isAlive()) return;
-        SimplifySpanBuild summary = onCreateCompleteSummary();
-        getConsoleSummaryView().setText(summary.build());
+        String summary = onCreateCompleteSummary();
+        getConsoleSummaryView().setText(summary);
     }
 
-    abstract SimplifySpanBuild onCreateCompleteSummary();
+    abstract String onCreateCompleteSummary();
 
     protected void broadcastCompleteEvent() {
         EventBus.from(getContext()).publish(Event.builder()
@@ -190,10 +192,17 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
                 .obj(getSession()).build());
     }
 
-    protected boolean validateInput(String currentName, CharSequence in) {
-        return !TextUtils.isEmpty(in) && (!currentName.equals(in.toString()))
-                && !in.toString().contains(" ") // FIXME Tell user.
-                && !in.toString().contains("Tmp_")
-                && !in.toString().contains(File.separator);
+    @Override
+    public void onBackEvent() {
+        Logger.d("onBackEvent: state=%s", getState());
+        if (getState() == STATE_TRANSPORT_END) {
+            getActivity().finish();
+        }
+    }
+
+    @Override
+    protected void onFabClick() {
+        super.onFabClick();
+        getActivity().finish();
     }
 }

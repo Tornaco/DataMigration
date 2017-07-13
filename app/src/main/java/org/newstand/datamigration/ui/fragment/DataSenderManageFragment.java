@@ -24,7 +24,6 @@ import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
 import org.newstand.logger.Logger;
 
-import cn.iwgang.simplifyspan.SimplifySpanBuild;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -71,11 +70,6 @@ public class DataSenderManageFragment extends DataTransportManageFragment
         startClient();
     }
 
-    @Override
-    public boolean isCancelable() {
-        return isCancelable;
-    }
-
     private void startClient() {
         int[] ports = SettingsProvider.getTransportServerPorts();
         String host = mHostProducer.produce();
@@ -105,8 +99,8 @@ public class DataSenderManageFragment extends DataTransportManageFragment
     }
 
     @Override
-    SimplifySpanBuild onCreateCompleteSummary() {
-        return new SimplifySpanBuild();
+    String onCreateCompleteSummary() {
+        return "";
     }
 
     @Override

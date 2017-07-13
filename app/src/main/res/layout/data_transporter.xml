@@ -70,7 +70,6 @@
 
             <TextView
                 android:id="@android:id/title"
-                style="@style/ListItemMainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -78,11 +77,11 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:padding="@dimen/text_padding_medium"
                 android:singleLine="true"
-                android:text="@string/app_name" />
+                android:text="@string/app_name"
+                android:textAppearance="@style/ListItemMainText" />
 
             <TextView
                 android:id="@android:id/text1"
-                style="@style/ListItemSecondaryText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@android:id/title"
@@ -93,7 +92,8 @@
                 android:layout_marginTop="@dimen/activity_horizontal_margin_small"
                 android:lineSpacingMultiplier="1.2"
                 android:padding="@dimen/text_padding_medium"
-                android:text="@string/app_intro" />
+                android:text="@string/app_intro"
+                android:textAppearance="@style/ListItemSecondaryText" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"

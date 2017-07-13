@@ -12,11 +12,10 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 
 import java.util.Collection;
-
-import cn.iwgang.simplifyspan.SimplifySpanBuild;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/15 16:29
@@ -65,6 +64,8 @@ public class DataImportManageFragment extends DataTransportManageFragment {
 
         final DataBackupManager dataBackupManager = DataBackupManager.from(getContext(), getSession());
 
+        final TransportListener listener = onCreateTransportListener();
+
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
             public void accept(@NonNull DataCategory category) {
@@ -73,7 +74,7 @@ public class DataImportManageFragment extends DataTransportManageFragment {
                     return;
                 }
 
-                dataBackupManager.performRestore(dataRecords, category, onCreateTransportListener());
+                dataBackupManager.performRestore(dataRecords, category, listener);
             }
         }, new Runnable() {
             @Override
@@ -94,8 +95,8 @@ public class DataImportManageFragment extends DataTransportManageFragment {
     }
 
     @Override
-    SimplifySpanBuild onCreateCompleteSummary() {
-        return new SimplifySpanBuild();//FIXME
+    String onCreateCompleteSummary() {
+        return "";//FIXME
     }
 
     @Override

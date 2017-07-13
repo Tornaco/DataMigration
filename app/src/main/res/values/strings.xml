@@ -139,8 +139,8 @@
     <string name="action_log">查看日志</string>
     <string name="action_log_with_other_app">在其他应用打开</string>
     <string name="action_preparing">正在准备…</string>
-    <string name="action_remark_backup">此次备份的备注为：</string>
-    <string name="action_remark_received">此次接收记录的备注为：</string>
+    <string name="action_remark_backup">此次备份的备注为：%1$s, 你稍后可以在本地备份中进行查看或修改。</string>
+    <string name="action_remark_received">此次接收记录的备注为：%1$s, 你稍后可以在接收记录中进行查看或修改。</string>
     <string name="action_remark_tips">，点击可进行修改。</string>
     <string name="action_viewer_tips_received">你稍后可以在 主页-卡片-我接收到的文件 里查看或者导入你的设备。</string>
     <string name="title_backup_at">%1$s</string>

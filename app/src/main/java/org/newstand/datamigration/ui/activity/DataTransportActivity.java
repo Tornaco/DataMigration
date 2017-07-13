@@ -8,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.ThemeColor;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Created by Nick@NewStand.org on 2017/3/10 9:30
  * E-Mail: NewStand@163.com
@@ -15,6 +18,10 @@ import org.newstand.datamigration.provider.ThemeColor;
  */
 
 public class DataTransportActivity extends TransitionSafeActivity {
+
+    @Getter
+    @Setter
+    private BackEventListener backEventListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,4 +63,25 @@ public class DataTransportActivity extends TransitionSafeActivity {
         setTheme(themeRes);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (backEventListener != null) {
+            backEventListener.onBackEvent();
+            return; // We should not finish directly if transporting.
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected boolean interruptHomeOption() {
+        if (backEventListener != null) {
+            backEventListener.onBackEvent();
+            return true;
+        }
+        return super.interruptHomeOption();
+    }
+
+    public interface BackEventListener {
+        void onBackEvent();
+    }
 }

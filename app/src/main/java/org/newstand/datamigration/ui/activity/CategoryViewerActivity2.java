@@ -42,6 +42,7 @@ import org.newstand.datamigration.provider.ThemeColor;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.fragment.CategoryViewerFragment;
+import org.newstand.datamigration.ui.widget.AppBarStateChangeListener;
 import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.logger.Logger;
@@ -87,6 +88,12 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         appBarLayout.setExpanded(false, false);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                onAppBarLayoutStateChanged(appBarLayout, state);
+            }
+        });
 
         Toolbar toolbar = findView(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -98,6 +105,19 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
         setupView();
         showRetention();
+    }
+
+    public void onAppBarLayoutStateChanged(AppBarLayout appBarLayout,
+                                           final AppBarStateChangeListener.State state) {
+        Logger.i("onAppBarLayoutStateChanged:%s", state);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (state == AppBarStateChangeListener.State.EXPANDED && getAdapter().hasSelection()) {
+                    buildFabIntro();
+                }
+            }
+        });
     }
 
     @Override
@@ -493,7 +513,6 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         Logger.v("showFab:%s", show);
         if (show) {
             fab.show();
-            buildFabIntro();
         } else {
             fab.hide();
         }

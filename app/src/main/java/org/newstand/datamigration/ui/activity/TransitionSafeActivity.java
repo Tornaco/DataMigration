@@ -305,8 +305,16 @@ public class TransitionSafeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home) finishWithAfterTransition();
+        if (id == android.R.id.home) {
+            if (!interruptHomeOption()) {
+                finishWithAfterTransition();
+            }
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected boolean interruptHomeOption() {
+        return false;
     }
 
     @Override

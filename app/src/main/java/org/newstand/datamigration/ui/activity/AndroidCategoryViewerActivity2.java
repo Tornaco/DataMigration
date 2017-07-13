@@ -14,7 +14,6 @@ import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.ui.fragment.AndroidCategoryViewerFragment;
 import org.newstand.datamigration.ui.widget.AppBarStateChangeListener;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.logger.Logger;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
@@ -29,33 +28,33 @@ import dev.nick.eventbus.annotation.ReceiverMethod;
  */
 
 public class AndroidCategoryViewerActivity2 extends CategoryViewerActivity2 {
+    private String staticTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (LoadingCacheManager.droid() == null) {
             LoadingCacheManager.createDroid(getApplicationContext());
         }
+
+        EventBus.from(this).subscribe(this);
+        this.staticTitle = (String) getTitle();
         super.onCreate(savedInstanceState);
         showHomeAsUp();
-        EventBus.from(this).subscribe(this);
+    }
 
-        final String staticTitle = (String) getTitle();
-        getAppBarLayout().addOnOffsetChangedListener(new AppBarStateChangeListener() {
-            @Override
-            public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                Logger.d("AppBarLayout, onStateChanged:%s, size:%s", state, fileSize);
-                if (state == State.EXPANDED || state == State.IDLE) {
-                    if (isLoadingComplete()) {
-                        getCollapsingToolbarLayout().setTitle(getString(R.string.oc_storage,
-                                org.newstand.datamigration.utils.Files.formatSize(fileSize)));
-                    } else {
-                        getCollapsingToolbarLayout().setTitle(staticTitle);
-                    }
-                } else if (state == State.COLLAPSED) {
-                    getCollapsingToolbarLayout().setTitle(staticTitle);
-                }
+    @Override
+    public void onAppBarLayoutStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {
+        super.onAppBarLayoutStateChanged(appBarLayout, state);
+        if (state == AppBarStateChangeListener.State.EXPANDED || state == AppBarStateChangeListener.State.IDLE) {
+            if (isLoadingComplete()) {
+                getCollapsingToolbarLayout().setTitle(getString(R.string.oc_storage,
+                        org.newstand.datamigration.utils.Files.formatSize(fileSize)));
+            } else {
+                getCollapsingToolbarLayout().setTitle(staticTitle);
             }
-        });
+        } else if (state == AppBarStateChangeListener.State.COLLAPSED) {
+            getCollapsingToolbarLayout().setTitle(staticTitle);
+        }
     }
 
     @Override

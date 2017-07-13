@@ -16,7 +16,6 @@ import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.ui.fragment.BackupCategoryViewerFragment;
 import org.newstand.datamigration.ui.widget.AppBarStateChangeListener;
 import org.newstand.datamigration.worker.transport.Session;
-import org.newstand.logger.Logger;
 
 import dev.nick.eventbus.Event;
 import dev.nick.eventbus.EventBus;
@@ -39,24 +38,21 @@ public class BackupCategoryViewerActivity2 extends CategoryViewerActivity2 {
         resolveIntent();
         super.onCreate(savedInstanceState);
         showHomeAsUp();
-        setTitle(getTitle());
+    }
 
-        getAppBarLayout().addOnOffsetChangedListener(new AppBarStateChangeListener() {
-            @Override
-            public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                Logger.d("AppBarLayout, onStateChanged:%s, size:%s", state, fileSize);
-                if (state == State.EXPANDED || state == State.IDLE) {
-                    if (isLoadingComplete()) {
-                        getCollapsingToolbarLayout().setTitle(getString(R.string.oc_storage,
-                                org.newstand.datamigration.utils.Files.formatSize(fileSize)));
-                    } else {
-                        getCollapsingToolbarLayout().setTitle(mSource.getSession().getName());
-                    }
-                } else if (state == State.COLLAPSED) {
-                    getCollapsingToolbarLayout().setTitle(mSource.getSession().getName());
-                }
+    @Override
+    public void onAppBarLayoutStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {
+        super.onAppBarLayoutStateChanged(appBarLayout, state);
+        if (state == AppBarStateChangeListener.State.EXPANDED || state == AppBarStateChangeListener.State.IDLE) {
+            if (isLoadingComplete()) {
+                getCollapsingToolbarLayout().setTitle(getString(R.string.oc_storage,
+                        org.newstand.datamigration.utils.Files.formatSize(fileSize)));
+            } else {
+                getCollapsingToolbarLayout().setTitle(mSource.getSession().getName());
             }
-        });
+        } else if (state == AppBarStateChangeListener.State.COLLAPSED) {
+            getCollapsingToolbarLayout().setTitle(mSource.getSession().getName());
+        }
     }
 
     @Override
