@@ -148,6 +148,7 @@
     <string name="action_remark_tips">，点击可进行修改。</string>
     <string name="action_viewer_tips_received">你稍后可以在 主页-卡片-我接收到的文件 里查看或者导入你的设备。</string>
     <string name="title_backup_at">%1$s</string>
+    <string name="title_backup_at_invalid_date">无法获取备份时间</string>
     <string name="title_backup_default_name">我的备份</string>
     <string name="title_received_default_name">我收到的</string>
     <string name="title_backup_invalid">无效备份</string>

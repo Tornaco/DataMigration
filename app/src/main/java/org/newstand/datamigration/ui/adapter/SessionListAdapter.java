@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -74,8 +75,15 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListViewHold
     protected void onBindViewHolder(SessionListViewHolder holder, final Session r) {
         holder.getImageView().setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.ic_bk_session));
         holder.getLineOneTextView().setText(r.getName());
-        holder.getLineTwoTextView().setText(getContext().getString(R.string.title_backup_at,
-                FuzzyDateTimeFormatter.getTimeAgo(getContext(), new Date(r.getDate()))));
+        // Validate the session date.
+        long dateMills = r.getDate();
+        if (dateMills > System.currentTimeMillis()) {
+            Logger.w("Invalid date:%s, current:%s", dateMills, System.currentTimeMillis());
+            holder.getLineTwoTextView().setText(getContext().getString(R.string.title_backup_at_invalid_date));
+        } else {
+            holder.getLineTwoTextView().setText(getContext().getString(R.string.title_backup_at,
+                    FuzzyDateTimeFormatter.getTimeAgo(getContext(), new Date(r.getDate()))));
+        }
     }
 
     @Override

@@ -19,7 +19,8 @@ import org.newstand.logger.Logger;
  * All right reserved.
  */
 
-public class DataListHostActivity extends TransitionSafeActivity implements DataListViewerFragment.LoaderSourceProvider {
+public class DataListHostActivity extends TransitionSafeActivity
+        implements DataListViewerFragment.LoaderSourceProvider {
 
     private LoaderSource mLoaderSource;
 
@@ -37,11 +38,6 @@ public class DataListHostActivity extends TransitionSafeActivity implements Data
         setContentView(R.layout.activity_with_container_template);
         showHomeAsUp();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         resolveIntent();
     }
 
