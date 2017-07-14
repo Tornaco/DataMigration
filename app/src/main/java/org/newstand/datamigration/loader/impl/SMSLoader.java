@@ -22,6 +22,7 @@ import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.logger.Logger;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -90,6 +91,11 @@ public class SMSLoader extends BaseLoader {
         sms.setTime(c.getString(c.getColumnIndexOrThrow("date")));
         sms.setReadState(c.getString(c.getColumnIndexOrThrow("read")));
         sms.setDisplayName(sms.getMsg());
+        try {
+            sms.setSize(sms.calculateSize());
+        } catch (IOException e) {
+            Logger.e(e, "Fail get size");
+        }
         return sms;
     }
 
@@ -126,6 +132,8 @@ public class SMSLoader extends BaseLoader {
                         if (smsRecord != null) smsRecord.setPath(srcPath);
                         if (smsRecord != null && (filter == null
                                 || !filter.ignored(smsRecord))) {
+                            smsRecord.setPath(srcPath);
+                            smsRecord.setSize(smsRecord.calculateSize());
                             res.add(smsRecord);
                         }
                     } catch (ClassNotFoundException e) {

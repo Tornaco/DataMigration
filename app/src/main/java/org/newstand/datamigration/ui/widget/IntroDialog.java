@@ -26,7 +26,7 @@ public class IntroDialog {
         }
 
         new MaterialDialog.Builder(context)
-                .titleColorAttr(R.attr.colorPrimary)
+//                .titleColorAttr(R.attr.colorPrimary)
                 .title(R.string.title_user_notice)
                 .content(R.string.message_user_notice)
                 .negativeColorAttr(R.attr.colorAccent)

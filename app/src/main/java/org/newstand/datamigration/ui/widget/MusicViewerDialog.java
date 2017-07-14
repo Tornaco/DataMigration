@@ -99,7 +99,7 @@ public class MusicViewerDialog {
         });
         MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                 .title(titleStr)
-                .titleColorAttr(R.attr.colorAccent)
+//                .titleColorAttr(R.attr.colorAccent)
                 .customView(layout, true)
                 .positiveColorAttr(R.attr.colorAccent)
                 .positiveText(android.R.string.ok)

@@ -207,7 +207,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.AndroidCategoryViewerActivity2"
+            android:name=".ui.activity.AndroidCategoryViewerActivityCollapsing"
             android:label="@string/title_backup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -227,7 +227,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.BackupSessionPickerActivity2"
+            android:name=".ui.activity.BackupSessionPickerActivityCollapsing"
             android:label="@string/title_restore"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -242,7 +242,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.BackupCategoryViewerActivity2"
+            android:name=".ui.activity.BackupCategoryViewerActivityCollapsing"
             android:label="@string/title_restore"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />

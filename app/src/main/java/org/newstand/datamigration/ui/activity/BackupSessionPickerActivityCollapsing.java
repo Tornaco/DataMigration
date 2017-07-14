@@ -49,7 +49,7 @@ import lombok.Getter;
  * All right reserved.
  */
 
-public class BackupSessionPickerActivity2 extends TransitionSafeActivity implements BackupSessionPickerFragment.OnSessionSelectListener {
+public class BackupSessionPickerActivityCollapsing extends TransitionSafeActivity implements BackupSessionPickerFragment.OnSessionSelectListener {
 
     @Getter
     private RecyclerView recyclerView;
@@ -120,7 +120,7 @@ public class BackupSessionPickerActivity2 extends TransitionSafeActivity impleme
                 holder.getActionView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        PopupMenu popup = new PopupMenu(BackupSessionPickerActivity2.this, v);
+                        PopupMenu popup = new PopupMenu(BackupSessionPickerActivityCollapsing.this, v);
 
                         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                             @Override
@@ -161,7 +161,7 @@ public class BackupSessionPickerActivity2 extends TransitionSafeActivity impleme
 
         new MaterialDialog.Builder(this)
                 .title(R.string.action_details)
-                .titleColorAttr(R.attr.colorAccent)
+//                .titleColorAttr(R.attr.colorAccent)
                 .content(systemInfo == null ? getString(R.string.sys_info_not_found)
                         : buildSystemInfo(systemInfo))
                 .positiveText(android.R.string.ok)
@@ -396,7 +396,7 @@ public class BackupSessionPickerActivity2 extends TransitionSafeActivity impleme
 
     @Override
     public void onSessionSelect(Session session) {
-        Intent intent = new Intent(this, BackupCategoryViewerActivity2.class);
+        Intent intent = new Intent(this, BackupCategoryViewerActivityCollapsing.class);
         intent.putExtra(IntentEvents.KEY_SOURCE, LoaderSource.builder()
                 .parent(LoaderSource.Parent.Backup).session(session).build());
         transitionTo(intent);

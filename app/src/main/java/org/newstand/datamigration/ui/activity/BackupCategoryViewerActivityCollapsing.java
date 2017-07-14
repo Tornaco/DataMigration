@@ -29,7 +29,7 @@ import dev.nick.eventbus.annotation.ReceiverMethod;
  * All right reserved.
  */
 
-public class BackupCategoryViewerActivity2 extends CategoryViewerActivity2 {
+public class BackupCategoryViewerActivityCollapsing extends CategoryViewerActivityCollapsing {
 
     protected LoaderSource mSource;
 
@@ -45,8 +45,8 @@ public class BackupCategoryViewerActivity2 extends CategoryViewerActivity2 {
         super.onAppBarLayoutStateChanged(appBarLayout, state);
         if (state == AppBarStateChangeListener.State.EXPANDED || state == AppBarStateChangeListener.State.IDLE) {
             if (isLoadingComplete()) {
-                getCollapsingToolbarLayout().setTitle(getString(R.string.oc_storage,
-                        org.newstand.datamigration.utils.Files.formatSize(fileSize)));
+                getCollapsingToolbarLayout().setTitle(getString(R.string.oc_storage_backup,
+                        org.newstand.datamigration.utils.Files.formatSize(loadedRecordsFileSize)));
             } else {
                 getCollapsingToolbarLayout().setTitle(mSource.getSession().getName());
             }

@@ -3,16 +3,12 @@ package org.newstand.datamigration.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 
-import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;
-import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
-import org.newstand.datamigration.repo.TransportEventRecordRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.activity.DataTransportActivity;
 import org.newstand.datamigration.worker.transport.RecordEvent;
@@ -48,15 +44,6 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
             @Override
             public void onCompleteMainThread() {
                 super.onCompleteMainThread();
-                DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
-                    @Override
-                    public void accept(@NonNull DataCategory dataCategory) {
-                        Logger.d("Success:%s, %s", dataCategory, TransportEventRecordRepoService.from(getSession())
-                                .succeed(getContext(), dataCategory).size());
-                        Logger.d("Fail:%s, %s", dataCategory, TransportEventRecordRepoService.from(getSession())
-                                .fails(getContext(), dataCategory).size());
-                    }
-                });
             }
 
             @Override
@@ -130,6 +117,7 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
     private void onTransportStart() {
         updateConsoleTitleViewOnStart();
         initProgressOnStart();
+        getFab().setEnabled(false);
 
         // Start log tracker.
         SharedExecutor.execute(new Runnable() {
@@ -172,6 +160,7 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
             }
         });
 
+        getFab().setEnabled(true);
         setRecordProgress(100);
         setProgress(100);
         setRecordTitle(getStringSafety(getCompleteTitle()));
@@ -204,6 +193,8 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
     @Override
     protected void onFabClick() {
         super.onFabClick();
-        getActivity().finish();
+        if (getState() == STATE_TRANSPORT_END) {
+            getActivity().finish();
+        }
     }
 }

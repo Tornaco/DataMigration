@@ -1,5 +1,7 @@
 package org.newstand.datamigration.data.model;
 
+import java.io.IOException;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,5 +25,14 @@ public class CallLogRecord extends FileBasedRecord {
     @Override
     public DataCategory category() {
         return DataCategory.CallLog;
+    }
+
+    @Override
+    public long calculateSize() throws IOException {
+        if (getPath() == null) {
+            // A cal log backup file is estimated to 5kb.
+            return 5 * 1024 * 1024;
+        }
+        return super.calculateSize();
     }
 }

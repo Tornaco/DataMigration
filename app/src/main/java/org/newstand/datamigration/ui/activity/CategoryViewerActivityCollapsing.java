@@ -25,7 +25,6 @@ import android.view.View;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
-import com.google.common.io.Files;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.newstand.datamigration.R;
@@ -48,7 +47,6 @@ import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.logger.Logger;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -67,12 +65,17 @@ import dev.nick.eventbus.annotation.ReceiverMethod;
 import lombok.Getter;
 
 // With CollapsingToolbarLayout.
-public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
+public abstract class CategoryViewerActivityCollapsing extends TransitionSafeActivity {
 
     @Getter
     private AppBarLayout appBarLayout;
     @Getter
     private CollapsingToolbarLayout collapsingToolbarLayout;
+
+    @Getter
+    private AppBarStateChangeListener.State appBarState = AppBarStateChangeListener.State.IDLE;
+
+    private boolean hasEverExpandedToolbar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                appBarState = state;
                 onAppBarLayoutStateChanged(appBarLayout, state);
             }
         });
@@ -181,7 +185,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
     private final List<DataRecord> mokes = new ArrayList<>();
 
     @Getter
-    protected long fileSize = 0L;
+    protected long loadedRecordsFileSize = 0L;
 
     private LoaderState loaderState = LoaderState.IDLE;
 
@@ -286,7 +290,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
 
         Logger.i("startLoading delegate parent %s, cache %s", onRequestLoaderSource().getParent(), cache);
 
-        fileSize = 0L;
+        loadedRecordsFileSize = 0L;
 
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
@@ -311,8 +315,8 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
                             if (dataRecord instanceof FileBasedRecord) {
                                 FileBasedRecord fileBasedRecord = (FileBasedRecord) dataRecord;
                                 if (fileBasedRecord.getPath() != null) try {
-                                    long pieceSize = Files.asByteSource(new File(fileBasedRecord.getPath())).size();
-                                    fileSize += pieceSize;
+                                    long pieceSize = fileBasedRecord.calculateSize();
+                                    loadedRecordsFileSize += pieceSize;
                                 } catch (Throwable e) {
                                     Logger.e(e, "Fail query file size");
                                 }
@@ -487,8 +491,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         }
     }
 
-    private void updateSelectionCount(final DataCategory category, List<DataRecord> dataRecords) {
-
+    protected void updateSelectionCount(final DataCategory category, List<DataRecord> dataRecords) {
         final int total = dataRecords.size();
         final AtomicInteger selected = new AtomicInteger(0);
         Collections.consumeRemaining(dataRecords, new Consumer<DataRecord>() {
@@ -518,8 +521,9 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
                 getAdapter().onUpdate();
                 boolean hasSelection = getAdapter().hasSelection();
                 showFab(hasSelection);
-                if (hasSelection) {
+                if (!hasEverExpandedToolbar && hasSelection) {
                     getAppBarLayout().setExpanded(true, true);
+                    hasEverExpandedToolbar = true;
                 }
             }
         });

@@ -19,7 +19,7 @@ public class DefSmsChecker {
 
         if (weAreDef) {
             new MaterialDialog.Builder(context)
-                    .titleColorAttr(R.attr.colorAccent)
+//                    .titleColorAttr(R.attr.colorAccent)
                     .title(R.string.warn_def_sms_app_title)
                     .content(R.string.warn_def_sms_app_message)
                     .cancelable(false)

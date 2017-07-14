@@ -141,7 +141,7 @@
     <string name="action_remark_tips">，点击可进行修改。</string>
     <string name="action_viewer_tips_received">你稍后可以在 主页-卡片-我接收到的文件 里查看或者导入你的设备。</string>
     <string name="title_backup_at">%1$s</string>
-    <string name="title_backup_at_invalid_date">无法获取备份时间</string>
+    <string name="title_backup_at_invalid_date">无法获取时间</string>
     <string name="title_backup_default_name">我的备份</string>
     <string name="title_received_default_name">我收到的</string>
     <string name="title_backup_invalid">无效备份</string>
@@ -166,9 +166,10 @@
     <string name="enforcing">执行中</string>
     <string name="permissive">许可</string>
     <string name="empty_title">天哪</string>
-    <string name="empty_summary">没有找到任何内容，你可以去【指定加载数据类型】查看是否关闭了某些数据类型的加载，再来尝试。</string>
+    <string name="empty_summary">没有内容，你可以去【指定加载数据类型】查看是否关闭了某数据类型的加载</string>
 
-    <string name="oc_storage">存储统计：%1$s</string>
+    <string name="oc_storage_android">需要空间：%1$s</string>
+    <string name="oc_storage_backup">占用空间：%1$s</string>
 
     <string name="tile_category_storage">存储</string>
     <string name="tile_category_view">视觉（实验）</string>

@@ -19,8 +19,10 @@ import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.logger.Logger;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -66,6 +68,11 @@ public class ContactLoader extends BaseLoader {
                 ContactRecord record = new ContactRecord();
                 record.setDisplayName(file.getName());
                 record.setPath(file.getAbsolutePath());
+                try {
+                    record.setSize(record.calculateSize());
+                } catch (IOException e) {
+                    Logger.e(e, "Fail get size");
+                }
                 records.add(record);
             }
         });
@@ -137,6 +144,12 @@ public class ContactLoader extends BaseLoader {
 
         Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
         record.setUri(uri);
+
+        try {
+            record.setSize(record.calculateSize());
+        } catch (IOException e) {
+            Logger.e(e, "Fail get size");
+        }
 
         return record;
     }

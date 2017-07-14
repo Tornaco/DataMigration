@@ -29,6 +29,6 @@ public class DataRecord implements Checkable {
     }
 
     public DataCategory category() {
-        return DataCategory.App;
+        throw new UnsupportedOperationException("This method has not been override!");
     }
 }

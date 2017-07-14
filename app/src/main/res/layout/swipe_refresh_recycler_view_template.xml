@@ -10,7 +10,7 @@
     android:layout_marginRight="@dimen/activity_horizontal_margin_marco"
     android:layout_marginStart="@dimen/activity_horizontal_margin_marco"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.newstand.datamigration.ui.activity.BackupSessionPickerActivity2"
+    tools:context="org.newstand.datamigration.ui.activity.BackupSessionPickerActivityCollapsing"
     tools:showIn="@layout/activity_scrolling">
 
     <android.support.v7.widget.RecyclerView

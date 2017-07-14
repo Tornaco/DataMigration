@@ -105,6 +105,10 @@ public class MusicLoader extends BaseLoader {
         int duration = cursor.getInt(cursor
                 .getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DURATION));
 
+
+        long size = cursor.getInt(cursor
+                .getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.SIZE));
+
         String name = cursor.getString(cursor
                 .getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME));
 
@@ -120,6 +124,7 @@ public class MusicLoader extends BaseLoader {
         record.setPath(url);
         record.setId(String.valueOf(id));
         record.setDuration(duration);
+        record.setSize(size);
         record.setArtUri(sArtworkUri + File.separator + albumid);
         return record;
     }

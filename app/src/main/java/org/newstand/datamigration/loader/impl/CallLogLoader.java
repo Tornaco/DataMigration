@@ -21,6 +21,7 @@ import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.logger.Logger;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -61,6 +62,11 @@ public class CallLogLoader extends BaseLoader {
         callLogRecord.setName(cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME)));
         callLogRecord.setType(cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)));
         callLogRecord.setDisplayName(callLogRecord.getNum());
+        try {
+            callLogRecord.setSize(callLogRecord.calculateSize());
+        } catch (IOException e) {
+            Logger.e(e, "Fail query size");
+        }
         return callLogRecord;
     }
 
@@ -89,12 +95,13 @@ public class CallLogLoader extends BaseLoader {
                     CallLogRecord record = gson.fromJson(content, CallLogRecord.class);
                     record.setPath(file.getPath());
                     record.setChecked(false);
+                    record.setSize(Files.asByteSource(file).size());
                     records.add(record);
                     // Delete decrypted file
-                   if (fileToDecrypt != null) {
-                       File fileToDelete = new File(fileToDecrypt);
-                       if (fileToDelete.exists()) BlackHole.eat(fileToDelete.delete());
-                   }
+                    if (fileToDecrypt != null) {
+                        File fileToDelete = new File(fileToDecrypt);
+                        if (fileToDelete.exists()) BlackHole.eat(fileToDelete.delete());
+                    }
                 } catch (Throwable t) {
                     Logger.e(t, "Fail to parse call log");
                 }

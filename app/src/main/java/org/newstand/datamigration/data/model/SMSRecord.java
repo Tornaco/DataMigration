@@ -2,6 +2,7 @@ package org.newstand.datamigration.data.model;
 
 import android.os.Parcelable;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import lombok.Getter;
@@ -32,5 +33,14 @@ public class SMSRecord extends FileBasedRecord implements Serializable {
     @Override
     public DataCategory category() {
         return DataCategory.Sms;
+    }
+
+    @Override
+    public long calculateSize() throws IOException {
+        if (getPath() == null) {
+            // A sms backup file is estimated to 48kb.
+            return 48 * 1024 * 1024;
+        }
+        return super.calculateSize();
     }
 }

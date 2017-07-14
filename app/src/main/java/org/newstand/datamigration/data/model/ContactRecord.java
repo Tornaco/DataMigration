@@ -2,6 +2,8 @@ package org.newstand.datamigration.data.model;
 
 import android.net.Uri;
 
+import java.io.IOException;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,5 +27,14 @@ public class ContactRecord extends FileBasedRecord {
     @Override
     public DataCategory category() {
         return DataCategory.Contact;
+    }
+
+    @Override
+    public long calculateSize() throws IOException {
+        if (getPath() == null) {
+            // A contact backup file is estimated to 512kb.
+            return 512 * 1024 * 1024;
+        }
+        return super.calculateSize();
     }
 }

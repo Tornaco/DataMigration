@@ -1,5 +1,6 @@
 package org.newstand.datamigration.data.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class WifiRecord extends FileBasedRecord {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
 
         StringBuilder sb = new StringBuilder("\n\n");
         sb.append("network={")
@@ -38,5 +39,14 @@ public class WifiRecord extends FileBasedRecord {
         }
         sb.append("}");
         return sb.toString();
+    }
+
+    @Override
+    public long calculateSize() throws IOException {
+        if (getPath() == null) {
+            // A Wifi backup file is estimated to 48kb.
+            return 48 * 1024 * 1024;
+        }
+        return super.calculateSize();
     }
 }

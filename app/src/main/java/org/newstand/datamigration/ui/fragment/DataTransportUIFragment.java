@@ -118,7 +118,7 @@ public abstract class DataTransportUIFragment extends DashboardFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.data_transporter2;
+        return R.layout.data_transporter;
     }
 
     @Nullable
@@ -147,6 +147,7 @@ public abstract class DataTransportUIFragment extends DashboardFragment {
                 onFabClick();
             }
         });
+        fab.setEnabled(false);
 
         return root;
     }

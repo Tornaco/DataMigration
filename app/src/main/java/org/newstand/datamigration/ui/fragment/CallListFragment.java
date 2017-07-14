@@ -10,6 +10,7 @@ import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
+import org.newstand.logger.Logger;
 
 import java.util.Date;
 
@@ -47,7 +48,13 @@ public class CallListFragment extends DataListViewerFragment {
                     holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.ic_call_avatar));
                 }
 
-                holder.getLineTwoTextView().setText(FuzzyDateTimeFormatter.getTimeAgo(getContext(), new Date(callLogRecord.getDate())));
+                long dateMills = callLogRecord.getDate();
+                if (dateMills > System.currentTimeMillis()) {
+                    Logger.w("Invalid date:%s, current:%s", dateMills, System.currentTimeMillis());
+                    holder.getLineTwoTextView().setText(getContext().getString(R.string.title_backup_at_invalid_date));
+                } else {
+                    holder.getLineTwoTextView().setText(FuzzyDateTimeFormatter.getTimeAgo(getContext(), new Date(callLogRecord.getDate())));
+                }
                 super.onBindViewHolder(holder, record);
                 if (!TextUtils.isEmpty(callLogRecord.getName())) {
                     holder.getLineOneTextView().setText(callLogRecord.getName());

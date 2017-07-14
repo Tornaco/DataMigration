@@ -188,7 +188,7 @@ public class BackupSessionPickerFragment extends LoadingFragment<Collection<Sess
 
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.action_details)
-                .titleColorAttr(R.attr.colorAccent)
+//                .titleColorAttr(R.attr.colorAccent)
                 .content(systemInfo == null ? getStringSafety(R.string.sys_info_not_found)
                         : buildSystemInfo(systemInfo))
                 .positiveText(android.R.string.ok)

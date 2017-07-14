@@ -11,7 +11,7 @@ public class PermissionMissingDialog {
     public static void attach(Context context) {
         new MaterialDialog.Builder(context)
                 .title(R.string.permission_missing)
-                .titleColorAttr(R.attr.colorAccent)
+//                .titleColorAttr(R.attr.colorAccent)
                 .content(R.string.permission_missing_message)
                 .cancelable(false)
                 .positiveColorAttr(R.attr.colorAccent)
