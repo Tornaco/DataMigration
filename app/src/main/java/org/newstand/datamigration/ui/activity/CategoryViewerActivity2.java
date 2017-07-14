@@ -435,8 +435,12 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
         };
     }
 
-    private void onLoadComplete() {
+    private void postAdapterUpdate() {
         if (!isDestroyedCompat()) {
+
+            boolean empty = mokes.size() > 0;
+            if (empty) onNoDataLoaded();
+
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -444,6 +448,17 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
                 }
             });
         }
+    }
+
+    private void onNoDataLoaded() {
+        Snackbar.make(getAppBarLayout(), R.string.empty_summary, Snackbar.LENGTH_INDEFINITE)
+                .setAction(android.R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Empty for now.
+                    }
+                })
+                .show();
     }
 
     private void onStartLoading() {
@@ -466,7 +481,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
                             return r1.category().ordinal() < r2.category().ordinal() ? -1 : 1;
                         }
                     });
-                    onLoadComplete();// FIXME Another m name?
+                    postAdapterUpdate();
                 }
             });
         }

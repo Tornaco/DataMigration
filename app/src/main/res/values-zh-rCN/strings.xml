@@ -166,7 +166,7 @@
     <string name="enforcing">执行中</string>
     <string name="permissive">许可</string>
     <string name="empty_title">天哪</string>
-    <string name="empty_summary">这里没有内容</string>
+    <string name="empty_summary">没有找到任何内容，你可以去【指定加载数据类型】查看是否关闭了某些数据类型的加载，再来尝试。</string>
 
     <string name="oc_storage">存储统计：%1$s</string>
 

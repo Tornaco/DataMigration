@@ -137,11 +137,12 @@ public class AppLoader extends BaseLoader {
                 source.getParent() == LoaderSource.Parent.Received ?
                         SettingsProvider.getReceivedDirByCategory(getDateCategory(), session)
                         : SettingsProvider.getBackupDirByCategory(getDateCategory(), session);
+        Logger.i("Loading app from session:%s, dir:%s", session, dir);
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override
             public void accept(@NonNull File file) {
-
+                Logger.i("Parsing apk file:%s", file);
                 AppRecord record = new AppRecord();
                 // TODO Replace space with empty char.
                 record.setDisplayName(Files.getNameWithoutExtension(file.getPath()));
@@ -202,6 +203,7 @@ public class AppLoader extends BaseLoader {
                     }
                 } else {
                     // Find app record info.
+                    Logger.d("Apk not exist, try read app info");
                     String jsonPath = file.getPath() + File.separator + SettingsProvider.getBackupAppApkDirName()
                             + File.separator + record.getDisplayName() + AppRecord.APK_META_PREFIX;
                     File jsonFile = new File(jsonPath);
