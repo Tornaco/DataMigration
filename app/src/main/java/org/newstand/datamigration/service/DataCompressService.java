@@ -16,6 +16,7 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.ActionListener;
 import org.newstand.datamigration.utils.MediaScannerClient;
 import org.newstand.datamigration.utils.SevenZipper;
+import org.newstand.datamigration.utils.ZipUtils;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -64,8 +65,18 @@ public class DataCompressService extends Service implements DataCompresser {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                boolean res = SevenZipper.compressTar(src, dest);
+                boolean res = false;//SevenZipper.compressTar(src, dest);
+                File destFile = new File(dest);
+                try {
+                    ZipUtils.zip(src, destFile.getParent(), destFile.getName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (destFile.exists() && destFile.length() > 0) {
+                    res = true;
+                }
                 Logger.d("Compress complete");
+
                 if (res) {
                     try {
                         MediaScannerClient.scanSync(getApplicationContext(), dest);

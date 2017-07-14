@@ -194,7 +194,7 @@ public class BackupSessionPickerActivity2 extends TransitionSafeActivity impleme
 
                 File dir = new File(SettingsProvider.getBackupSessionDir(session));
 
-                final File dest = new File(SettingsProvider.getCompressedRootDir() + File.separator + session.getName() + ".7z");
+                final File dest = new File(SettingsProvider.getCompressedRootDir() + File.separator + session.getName() + ".zip");
 
                 new DataCompressServiceProxy(getApplicationContext())
                         .compressAsync(dir.getPath(), dest.getPath(), new ActionListener<Boolean>() {
