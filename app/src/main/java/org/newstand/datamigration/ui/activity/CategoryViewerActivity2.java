@@ -438,7 +438,7 @@ public abstract class CategoryViewerActivity2 extends TransitionSafeActivity {
     private void postAdapterUpdate() {
         if (!isDestroyedCompat()) {
 
-            boolean empty = mokes.size() > 0;
+            boolean empty = mokes.size() == 0;
             if (empty) onNoDataLoaded();
 
             this.runOnUiThread(new Runnable() {
