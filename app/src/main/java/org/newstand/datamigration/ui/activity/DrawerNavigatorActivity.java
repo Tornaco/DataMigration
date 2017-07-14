@@ -13,8 +13,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -31,6 +33,7 @@ import org.newstand.datamigration.ui.FragmentController;
 import org.newstand.datamigration.ui.fragment.BackupRestoreNavigatorFragment;
 import org.newstand.datamigration.ui.fragment.FTPServerNavigatorFragment;
 import org.newstand.datamigration.ui.fragment.SenderReceiverNavigatorFragment;
+import org.newstand.datamigration.utils.UserManagerCompat;
 
 import java.util.List;
 
@@ -66,6 +69,15 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
             startActivity(new Intent(this, AppIntroActivity.class));
         }
         showRetention();
+        updateUserName();
+    }
+
+    protected void updateUserName() {
+        TextView textView = (TextView) findViewById(R.id.user_name);
+        String name = UserManagerCompat.getCurrentUserName(this);
+        if (!TextUtils.isEmpty(name)) {
+            textView.setText(name);
+        }
     }
 
     private void requestPerms() {

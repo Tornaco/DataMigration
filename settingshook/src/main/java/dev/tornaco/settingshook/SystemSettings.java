@@ -1,5 +1,6 @@
 package dev.tornaco.settingshook;
 
+import android.Manifest;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
@@ -30,6 +31,7 @@ public enum SystemSettings {
             new SettingsItem(Settings.System.VOLUME_RING, "VOLUME_RING"),
             new SettingsItem(Settings.System.VOLUME_MUSIC, "VOLUME_MUSIC"),
             new SettingsItem(Settings.System.VOLUME_NOTIFICATION, "VOLUME_NOTIFICATION"),
+            new SettingsItem(Settings.System.SHOW_TOUCHES, "SHOW_TOUCHES"),
             new SettingsItem(Settings.System.VOLUME_SYSTEM, "VOLUME_SYSTEM"),
     });
 
