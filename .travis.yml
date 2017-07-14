@@ -25,7 +25,7 @@ before_script:
  
  - git clone https://github.com/anggrayudi/android-hidden-api
  - ls "$ANDROID_HOME/platforms/"
- - cp ./android-hidden-api/android-24/android.jar "$ANDROID_HOME/platforms/android-24/"
+#  - cp ./android-hidden-api/android-24/android.jar "$ANDROID_HOME/platforms/android-24/"
 
 notifications:
   email:
