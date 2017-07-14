@@ -46,7 +46,7 @@ public class DummySmsService extends Service {
                     stopSelf();
                     return;
                 }
-                SmsContentProviderCompat.restoreDefSmsAppCheckedAsync(getApplicationContext());
+                SmsContentProviderCompat.restoreDefSmsAppRetentionCheckedAsync(getApplicationContext());
                 handler.postDelayed(this, Interval.Minutes.getIntervalMills());
             }
         }, Interval.Minutes.getIntervalMills());

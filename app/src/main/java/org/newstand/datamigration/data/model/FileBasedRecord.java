@@ -25,7 +25,7 @@ public class FileBasedRecord extends DataRecord {
     private String path;
 
     public long calculateSize() throws IOException {
-        if (path == null || !new File(path).exists()) throw new FileNotFoundException();
+        if (path == null || !new File(path).exists()) throw new FileNotFoundException(path);
         return size == 0 ? Files.asByteSource(new File(path)).size() : size;
     }
 }

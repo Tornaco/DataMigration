@@ -315,7 +315,7 @@ public abstract class CategoryViewerActivityCollapsing extends TransitionSafeAct
                             if (dataRecord instanceof FileBasedRecord) {
                                 FileBasedRecord fileBasedRecord = (FileBasedRecord) dataRecord;
                                 if (fileBasedRecord.getPath() != null) try {
-                                    long pieceSize = fileBasedRecord.calculateSize();
+                                    long pieceSize = fileBasedRecord.getSize();
                                     loadedRecordsFileSize += pieceSize;
                                 } catch (Throwable e) {
                                     Logger.e(e, "Fail query file size");

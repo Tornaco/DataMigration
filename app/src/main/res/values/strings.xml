@@ -312,5 +312,5 @@
     <string name="title_dir_divider">多个目录使用英文逗号隔开</string>
 
     <string name="warn_def_sms_app_title">请修改设置</string>
-    <string name="warn_def_sms_app_message">检测到本应用是目前系统的默认短信应用，这很有可能是你在某次还原短信的时候，遇到了某种问题，导致我们没有指导你恢复系统默认短信应用的设置，现在请立即前往系统-设置-默认应用设置修改，不要将本应用设置成默认短信，否则你可能会无法接收到新的消息。</string>
+    <string name="warn_restore_def_sms_app_message">检测到本应用是目前系统的默认短信应用，这很有可能是你在某次还原短信的时候，遇到了某种问题，导致我们没有指导你恢复系统默认短信应用的设置，现在请立即前往系统-设置-默认应用设置修改，不要将本应用设置成默认短信，否则你可能会无法接收到新的消息。</string>
 </resources>

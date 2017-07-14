@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
 
@@ -98,6 +99,18 @@ public class TransitionSafeActivity extends AppCompatActivity {
         if (themeColor != newColor) {
             onThemeChange();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Restore SMS Settings if necessary.
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                SmsContentProviderCompat.restoreDefSmsAppRetentionCheckedAsync(TransitionSafeActivity.this);
+            }
+        });
     }
 
     protected void onThemeChange() {

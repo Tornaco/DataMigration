@@ -99,9 +99,4 @@ public class DataImportManageFragment extends DataTransportManageFragment {
         return "";//FIXME
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        SmsContentProviderCompat.restoreDefSmsAppCheckedAsync(getContext());
-    }
 }

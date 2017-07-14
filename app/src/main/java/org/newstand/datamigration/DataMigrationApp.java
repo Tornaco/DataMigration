@@ -14,7 +14,6 @@ import org.newstand.datamigration.secure.DonateQRPathRetriever;
 import org.newstand.datamigration.service.DummSmsServiceProxy;
 import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.service.schedule.SchedulerServiceProxy;
-import org.newstand.datamigration.utils.DefSmsChecker;
 import org.newstand.datamigration.utils.NoMediaUtil;
 import org.newstand.datamigration.utils.OnDeviceLogAdapter;
 import org.newstand.datamigration.utils.RootChecker;
@@ -76,14 +75,6 @@ public class DataMigrationApp extends Application {
             public void accept(@NonNull final Activity activity) {
                 Logger.d("MainActivity has been started, starting core service...");
                 startCore();
-
-                // Check sms App.
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DefSmsChecker.checkSmsAppSettings(activity);
-                    }
-                });
             }
         });
         registerActivityLifecycleCallbacks(topActivityObserver);

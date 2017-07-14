@@ -76,9 +76,10 @@ class SMSBackupAgent extends ProgressableBackupAgent<SMSBackupSettings, SMSResto
     public Res restore(SMSRestoreSettings restoreSettings) throws Exception {
         // Set us as Def Sms app
         SmsContentProviderCompat.setAsDefaultSmsApp(getContext());
-        boolean isDefSmsApp = SmsContentProviderCompat.waitUtilBecomeDefSmsApp(getContext(), 10);// FIXME
+        boolean isDefSmsApp = SmsContentProviderCompat.waitUtilBecomeDefSmsApp(getContext());
         if (!isDefSmsApp) {
-            Logger.e("Timeout waiting for DEF SMS APP setup, let it go?");
+            Logger.e("Timeout waiting for DEF SMS APP setup.");
+            return new NotDefaultSMSAppErr();
         }
         SMSRecord smsRecord = restoreSettings.getSmsRecord();
         writeSMS(smsRecord);

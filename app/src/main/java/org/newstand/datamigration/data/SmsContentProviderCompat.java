@@ -6,26 +6,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Telephony;
+import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 
-import org.newstand.datamigration.data.model.AppRecord;
-import org.newstand.datamigration.data.model.DataCategory;
-import org.newstand.datamigration.data.model.DataRecord;
-import org.newstand.datamigration.loader.DataLoaderManager;
-import org.newstand.datamigration.loader.LoaderSource;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+
+import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.logger.Logger;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/13 13:36
@@ -45,26 +42,49 @@ public class SmsContentProviderCompat {
     public static final String READ = "read";
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static void setAsDefaultSmsApp(Context context) {
+    public static void setAsDefaultSmsApp(final Context context) {
 
         String defaultSmsApp = null;
-        String currentPn = context.getPackageName();
+        final String us = context.getPackageName();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             defaultSmsApp = Telephony.Sms.getDefaultSmsPackage(context);
+            Logger.d("setAsDefaultSmsApp, current is:%s", defaultSmsApp);
         }
 
-        if (!TextUtils.isEmpty(defaultSmsApp)) {
-            SettingsProvider.setDefSmsApp(defaultSmsApp);
-        } else {
+        if (TextUtils.isEmpty(defaultSmsApp)) {
+            Logger.e("Fail get default SMS app");
             return;
         }
 
-        if (!defaultSmsApp.equals(currentPn)) {
-            Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
-            intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, currentPn);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+        if (!defaultSmsApp.equals(us)) {
+            SettingsProvider.setDefSmsApp(defaultSmsApp);
+            SharedExecutor.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    new MaterialStyledDialog.Builder(context)
+                            .setTitle(R.string.warn_def_sms_app_title)
+                            .setDescription(R.string.warn_need_def_sms_app_message)
+                            .setHeaderDrawable(R.drawable.photo_backup_help_card_header)
+                            .withDarkerOverlay(false)
+                            .setCancelable(false)
+                            .setPositiveText(android.R.string.ok)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog,
+                                                    @NonNull DialogAction which) {
+                                    Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+                                    intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, us);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(intent);
+                                }
+                            }).show();
+                }
+            });
         }
+    }
+
+    public static boolean waitUtilBecomeDefSmsApp(Context context) {
+        return waitUtilBecomeDefSmsApp(context, 10);
     }
 
     public static boolean waitUtilBecomeDefSmsApp(Context context, int maxTimes) {
@@ -99,20 +119,35 @@ public class SmsContentProviderCompat {
             return false;
         }
 
-        if (TextUtils.isEmpty(defaultSmsApp)) {
-            return false;
-        }
+        return !TextUtils.isEmpty(defaultSmsApp) && me.equals(defaultSmsApp);
 
-        return me.equals(defaultSmsApp);
     }
 
-    public static void restoreDefSmsAppCheckedAsync(final Context context) {
-        SharedExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                restoreDefSmsApp(context);
-            }
-        });
+    public static void restoreDefSmsAppRetentionCheckedAsync(final Context context) {
+        if (!areWeDefSmsApp(context)) {
+            Logger.v("restoreDefSmsAppRetentionCheckedAsync, we are not, no need");
+            return;
+        }
+        Logger.d("restoreDefSmsAppRetentionCheckedAsync");
+        new MaterialStyledDialog.Builder(context)
+                .setTitle(R.string.warn_def_sms_app_title)
+                .setDescription(R.string.warn_restore_def_sms_app_message)
+                .setHeaderDrawable(R.drawable.photo_backup_help_card_header)
+                .withDarkerOverlay(false)
+                .setCancelable(false)
+                .setPositiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog,
+                                        @NonNull DialogAction which) {
+                        SharedExecutor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                restoreDefSmsApp(context);
+                            }
+                        });
+                    }
+                }).show();
     }
 
     @WorkerThread
@@ -127,35 +162,18 @@ public class SmsContentProviderCompat {
         }
 
         if (TextUtils.isEmpty(defaultSmsApp)) {
+            Logger.e("Fail get default SMS app");
             return;
         }
 
         // Find the most like app.
         if (me.equals(defaultSmsApp)) {
-            Logger.w("Current def SMS app is me??? WTF??? ");
-
-            Collection<DataRecord> apps = DataLoaderManager.from(context)
-                    .load(LoaderSource.builder().parent(LoaderSource.Parent.Android).build(),
-                            DataCategory.App);
-
-            for (DataRecord record : apps) {
-                AppRecord appRecord = (AppRecord) record;
-                if (isAndroidMmsApp(context, appRecord.getPkgName())) {
-                    defaultSmsApp = appRecord.getPkgName();
-                    Logger.d("Now trying to use %s as def Sms app", defaultSmsApp);
-                    break;
-                }
+            Logger.w("Current def SMS app is us, restoring...");
+            String previousPkg = SettingsProvider.getDefSmsApp();
+            if (TextUtils.isEmpty(previousPkg)) {
+                Logger.e("No def SMS app stored in Settings");
+                return;
             }
-        }
-
-        String previousPkg = SettingsProvider.getDefSmsApp();
-
-        if (TextUtils.isEmpty(previousPkg)) return;
-
-        if (defaultSmsApp.equals(me)) {
-
-            Logger.v("Restoring sms app to %s", previousPkg);
-
             Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
             intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, previousPkg);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

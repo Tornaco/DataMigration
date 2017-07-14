@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 
+import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.sync.SharedExecutor;
@@ -196,5 +197,12 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
         if (getState() == STATE_TRANSPORT_END) {
             getActivity().finish();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Logger.v("DataTransportManageFragment::onDestroy");
+        // FIXME Why this is not Called?
     }
 }

@@ -109,7 +109,6 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
         super.onDestroy();
         // Save session info.
         ReceivedSessionRepoService.get().insert(getContext(), getSession());
-        SmsContentProviderCompat.restoreDefSmsAppCheckedAsync(getContext());
     }
 
     @Override
