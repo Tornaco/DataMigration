@@ -68,6 +68,7 @@ public class ThemeManager implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        if (!SettingsProvider.isChangeLauncherIconEnabled()) return;
         ThemeColor color = SettingsProvider.getThemeColor();
         if (color != themeColor) {
             themeColor = color;

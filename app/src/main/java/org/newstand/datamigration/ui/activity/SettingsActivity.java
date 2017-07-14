@@ -22,6 +22,7 @@ import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.tiles.AutoInstallTile;
+import org.newstand.datamigration.ui.tiles.ChangeLauncherIconTile;
 import org.newstand.datamigration.ui.tiles.DevTile;
 import org.newstand.datamigration.ui.tiles.EncryptTile;
 import org.newstand.datamigration.ui.tiles.InstallDataTile;
@@ -176,6 +177,7 @@ public class SettingsActivity extends TransitionSafeActivity {
             view.addTile(animationTile);
 
             view.addTile(new ThemeColorTile(getActivity()));
+            view.addTile(new ChangeLauncherIconTile(getActivity()));
 
             Category dev = new ThemedCategory();
             dev.titleRes = R.string.tile_category_dev;

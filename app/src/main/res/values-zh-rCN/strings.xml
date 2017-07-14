@@ -182,6 +182,7 @@
     <string name="summary_transition_animation">开启更活泼的动画</string>
     <string name="tile_theme_color">主色</string>
     <string name="tips_theme_color">更改主题也会更改应用图标，请等待应用被重新启用</string>
+    <string name="title_launcher_icon">更改应用图标</string>
     <string name="tile_work_mode_root">备份/还原应用数据(实验)</string>
     <string name="summary_work_mode_root">为具有root权限的设备备份/还原应用数据，稍后将会检查并申请root权限，请在收到申请提示后，选择允许。还原之前注意要先关闭正在运行的相关应用，否则可能造成应用的数据丢失</string>
     <string name="tile_dev_mode">调试模式</string>

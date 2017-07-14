@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <bool name="def_auto_connect_enabled">true</bool>
     <bool name="def_transition_animation_enabled">false</bool>
+    <bool name="def_change_launcher_icon_enabled">false</bool>
     <bool name="def_debug_enabled">false</bool>
 
 

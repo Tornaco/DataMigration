@@ -36,6 +36,7 @@ public class SettingsProvider extends Observable {
     private static final String KEY_AUTO_CONNECT_ENABLED = "key_auto_connect_enabled";
     private static final String KEY_DEVICE_NAME = "key_dev_name";
     private static final String KEY_TRANSITION_ANIMATION = "key_transition_animation";
+    private static final String KEY_CHANGE_LAUNCHER_ICON = "key_change_launcher_icon";
     private static final String KEY_SERVER_PORTS = "key_server_ports";
     private static final String KEY_WORK_MODE = "key_work_mode";
     private static final String KEY_DEBUG_ENABLED = "key_debug_mode";
@@ -297,6 +298,14 @@ public class SettingsProvider extends Observable {
 
     public static void setTransitionAnimationEnabled(boolean value) {
         sMe.writeBoolean(KEY_TRANSITION_ANIMATION, value);
+    }
+
+    public static boolean isChangeLauncherIconEnabled() {
+        return sMe.readBoolean(KEY_CHANGE_LAUNCHER_ICON, R.bool.def_change_launcher_icon_enabled);
+    }
+
+    public static void setChangeLauncherIconEnabled(boolean value) {
+        sMe.writeBoolean(KEY_CHANGE_LAUNCHER_ICON, value);
     }
 
     public static WorkMode getWorkMode() {
