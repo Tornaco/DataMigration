@@ -33,10 +33,6 @@ public abstract class DataTransportLogicFragment extends DataTransportUIFragment
     protected static final int STATE_TRANSPORT_PROGRESS_UPDATE = 0x5;
 
     @Getter
-    @Setter
-    private Session session;
-
-    @Getter
     private String logFileName = SettingsProvider.getLogDir() + File.separator + UUID.randomUUID().toString();
 
     @Override

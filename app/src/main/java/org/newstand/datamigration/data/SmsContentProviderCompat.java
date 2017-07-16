@@ -24,6 +24,8 @@ import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.sync.Sleeper;
 import org.newstand.logger.Logger;
 
+import java.util.concurrent.CountDownLatch;
+
 /**
  * Created by Nick@NewStand.org on 2017/3/13 13:36
  * E-Mail: NewStand@163.com
@@ -121,6 +123,45 @@ public class SmsContentProviderCompat {
 
         return !TextUtils.isEmpty(defaultSmsApp) && me.equals(defaultSmsApp);
 
+    }
+
+    public static void restoreDefSmsAppRetentionCheckedBlocked(final Context context) {
+        if (!areWeDefSmsApp(context)) {
+            Logger.v("restoreDefSmsAppRetentionCheckedAsync, we are not, no need");
+            return;
+        }
+        Logger.d("restoreDefSmsAppRetentionCheckedAsync");
+        final CountDownLatch latch = new CountDownLatch(1);
+        SharedExecutor.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                new MaterialStyledDialog.Builder(context)
+                        .setTitle(R.string.warn_def_sms_app_title)
+                        .setDescription(R.string.warn_restore_def_sms_app_message)
+                        .setHeaderDrawable(R.drawable.photo_backup_help_card_header)
+                        .withDarkerOverlay(false)
+                        .setCancelable(false)
+                        .setPositiveText(android.R.string.ok)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog,
+                                                @NonNull DialogAction which) {
+                                SharedExecutor.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        latch.countDown();
+                                        restoreDefSmsApp(context);
+                                    }
+                                });
+                            }
+                        }).show();
+            }
+        });
+        try {
+            latch.await();
+        } catch (InterruptedException ignored) {
+
+        }
     }
 
     public static void restoreDefSmsAppRetentionCheckedAsync(final Context context) {

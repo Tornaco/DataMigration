@@ -45,7 +45,7 @@ public class WifiRecord extends FileBasedRecord {
     public long calculateSize() throws IOException {
         if (getPath() == null) {
             // A Wifi backup file is estimated to 48kb.
-            return 48 * 1024 * 1024;
+            return 48 * 1024;
         }
         return super.calculateSize();
     }

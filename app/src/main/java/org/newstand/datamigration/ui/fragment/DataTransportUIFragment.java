@@ -19,11 +19,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
+import org.newstand.datamigration.ui.activity.TransportFailureStatsViewerActivity;
+import org.newstand.datamigration.ui.activity.TransportStatsViewerActivity;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.TypeFaceHelper;
+import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.logger.Logger;
 
 import java.util.List;
 
@@ -32,6 +37,7 @@ import dev.nick.tiles.tile.DashboardFragment;
 import dev.nick.tiles.tile.QuickTile;
 import dev.nick.tiles.tile.QuickTileView;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/29 13:25
@@ -44,6 +50,10 @@ public abstract class DataTransportUIFragment extends DashboardFragment {
 
     @Getter
     private ThemeColor themeColor;
+
+    @Getter
+    @Setter
+    private Session session;
 
     @Override
     public void onAttach(Context context) {
@@ -213,13 +223,26 @@ public abstract class DataTransportUIFragment extends DashboardFragment {
             return successCount;
         }
 
-        public SuccessTile(@NonNull Context context) {
+        public SuccessTile(@NonNull final Context context) {
             super(context, null);
 
             this.titleRes = R.string.title_transport_stats_success;
             this.iconRes = R.drawable.ic_ok;
             this.summary = String.valueOf(successCount);
-            this.tileView = new QuickTileView(context, this);
+            this.tileView = new QuickTileView(context, this) {
+                @Override
+                public void onClick(View v) {
+                    super.onClick(v);
+                    if (getSuccessCount() == 0) return;
+                    if (getSession() == null) {
+                        Logger.e("Session has not been ready");
+                        return;
+                    }
+                    Intent intent = new Intent(context, TransportStatsViewerActivity.class);
+                    intent.putExtra(IntentEvents.KEY_SOURCE, getSession());
+                    startActivity(intent);
+                }
+            };
         }
     }
 
@@ -236,13 +259,26 @@ public abstract class DataTransportUIFragment extends DashboardFragment {
             return failCount;
         }
 
-        public FailureTile(@NonNull Context context) {
+        public FailureTile(@NonNull final Context context) {
             super(context, null);
 
             this.titleRes = R.string.title_transport_stats_fail;
             this.iconRes = R.drawable.ic_face;
             this.summary = String.valueOf(failCount);
-            this.tileView = new QuickTileView(context, this);
+            this.tileView = new QuickTileView(context, this) {
+                @Override
+                public void onClick(View v) {
+                    super.onClick(v);
+                    if (getFailCount() == 0) return;
+                    if (getSession() == null) {
+                        Logger.e("Session has not been ready");
+                        return;
+                    }
+                    Intent intent = new Intent(context, TransportFailureStatsViewerActivity.class);
+                    intent.putExtra(IntentEvents.KEY_SOURCE, getSession());
+                    startActivity(intent);
+                }
+            };
         }
     }
 }

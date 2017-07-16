@@ -8,6 +8,7 @@ import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 
 import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeManager;
 import org.newstand.datamigration.secure.DonateQRPathRetriever;
@@ -75,6 +76,7 @@ public class DataMigrationApp extends Application {
             public void accept(@NonNull final Activity activity) {
                 Logger.d("MainActivity has been started, starting core service...");
                 startCore();
+                SmsContentProviderCompat.restoreDefSmsAppRetentionCheckedAsync(activity);
             }
         });
         registerActivityLifecycleCallbacks(topActivityObserver);

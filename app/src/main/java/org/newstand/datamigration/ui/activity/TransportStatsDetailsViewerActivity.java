@@ -22,7 +22,6 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.event.TransportEventRecord;
-import org.newstand.datamigration.data.model.CategoryRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.repo.TransportEventRecordRepoService;
@@ -34,12 +33,17 @@ import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import lombok.Getter;
 
-public class TransportStatsViewerActivity extends TransitionSafeActivity {
+/**
+ * Created by Tornaco on 2017/7/14.
+ * Licensed with Apache.
+ */
+
+public class TransportStatsDetailsViewerActivity extends TransitionSafeActivity {
+
 
     @Getter
     private Session session;
@@ -54,7 +58,10 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
     private CommonListAdapter adapter;
 
     @Getter
-    private final List<DataRecord> categoryRecords = new ArrayList<>();
+    private final List<DataRecord> records = new ArrayList<>();
+
+    @Getter
+    private DataCategory category;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +76,8 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
     private void resolveIntent() {
         Intent intent = getIntent();
         this.session = intent.getParcelableExtra(IntentEvents.KEY_SOURCE);
+        this.category = DataCategory.valueOf(intent.getStringExtra(IntentEvents.KEY_CATEGORY));
+        setTitle(getString(category.nameRes()));
     }
 
     private void setupView() {
@@ -167,17 +176,15 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
             public void run() {
                 final TransportEventRecordRepoService eventRecordRepoService = TransportEventRecordRepoService.from(getSession());
 
-                DataCategory.consumeAll(new Consumer<DataCategory>() {
+                List<TransportEventRecord> eventRecords = onQueryEvents(eventRecordRepoService, category);
+                if (Collections.isNullOrEmpty(eventRecords)) return;
+
+                getRecords().clear();
+
+                Collections.consumeRemaining(eventRecords, new Consumer<TransportEventRecord>() {
                     @Override
-                    public void accept(@NonNull DataCategory category) {
-                        List<TransportEventRecord> eventRecords = onQueryEvents(eventRecordRepoService, category);
-                        if (Collections.isNullOrEmpty(eventRecords)) return;
-                        CategoryRecord categoryRecord = new CategoryRecord();
-                        categoryRecord.setCategory(category);
-                        categoryRecord.setDisplayName(getString(category.nameRes()));
-                        categoryRecord.setSummary(String.valueOf(eventRecords.size()));
-                        categoryRecords.remove(categoryRecord);
-                        categoryRecords.add(categoryRecord);
+                    public void accept(@NonNull TransportEventRecord transportEventRecord) {
+                        getRecords().add(transportEventRecord);
                     }
                 });
 
@@ -196,13 +203,6 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
                 @Override
                 public void run() {
                     swipeRefreshLayout.setRefreshing(false);
-                    java.util.Collections.sort(getCategoryRecords(), new Comparator<DataRecord>() {
-                        @Override
-                        public int compare(DataRecord r1, DataRecord r2) {
-                            if (r1 == null || r2 == null) return 1;
-                            return r1.category().ordinal() < r2.category().ordinal() ? -1 : 1;
-                        }
-                    });
                     postAdapterUpdate();
                 }
             });
@@ -212,13 +212,13 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
     private void postAdapterUpdate() {
         if (!isDestroyedCompat()) {
 
-            boolean empty = getCategoryRecords().size() == 0;
+            boolean empty = getRecords().size() == 0;
             if (empty) onNoDataLoaded();
 
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    getAdapter().update(getCategoryRecords());
+                    getAdapter().update(getRecords());
                 }
             });
         }
@@ -228,15 +228,19 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
 
     }
 
-    private CommonListAdapter onCreateAdapter() {
+    protected CommonListAdapter onCreateAdapter() {
         return new CommonListAdapter(this) {
+
+            @Override
+            protected int getTemplateLayoutRes() {
+                return R.layout.data_item_template_with_checkable_single_line;
+            }
+
             @Override
             protected void onBindViewHolder(CommonListViewHolder holder, DataRecord r) {
-                CategoryRecord cr = (CategoryRecord) r;
                 holder.getLineOneTextView().setText(r.getDisplayName());
                 holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(),
-                        cr.getCategory().iconRes()));
-                holder.getLineTwoTextView().setText(cr.getSummary());
+                        getCategory().iconRes()));
             }
 
             @Override
@@ -247,20 +251,18 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
                     // which means before/under init???
                     return;
                 }
-                CategoryRecord cr = (CategoryRecord) getAdapter().getDataRecords().get(position);
-                onCategorySelect(cr);
+                DataRecord record = getAdapter().getDataRecords().get(position);
+                onRecordSelect(record);
             }
         };
     }
 
-    protected void onCategorySelect(CategoryRecord cr) {
-        Intent intent = new Intent(this, TransportStatsDetailsViewerActivity.class);
-        intent.putExtra(IntentEvents.KEY_SOURCE, getSession());
-        intent.putExtra(IntentEvents.KEY_CATEGORY, cr.category().name());
-        startActivity(intent);
+    protected void onRecordSelect(DataRecord r) {
+
     }
 
     protected List<TransportEventRecord> onQueryEvents(TransportEventRecordRepoService service, DataCategory category) {
         return service.succeed(getApplicationContext(), category);
     }
+
 }

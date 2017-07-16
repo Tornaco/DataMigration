@@ -31,7 +31,7 @@ public class CallLogRecord extends FileBasedRecord {
     public long calculateSize() throws IOException {
         if (getPath() == null) {
             // A cal log backup file is estimated to 5kb.
-            return 5 * 1024 * 1024;
+            return 5 * 1024;
         }
         return super.calculateSize();
     }

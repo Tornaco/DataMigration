@@ -79,6 +79,9 @@ public class DataImportManageFragment extends DataTransportManageFragment {
         }, new Runnable() {
             @Override
             public void run() {
+                // Let's Restore default SMS app.
+                // Both OK if we are not SMS app or not.
+                SmsContentProviderCompat.restoreDefSmsAppRetentionCheckedBlocked(getActivity());
                 enterState(STATE_TRANSPORT_END);
             }
         });

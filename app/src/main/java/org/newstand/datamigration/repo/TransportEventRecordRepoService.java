@@ -65,6 +65,23 @@ public class TransportEventRecordRepoService extends GsonBasedRepoService<Transp
         return fails;
     }
 
+    public List<TransportEventRecord> allOf(Context context, final DataCategory dataCategory) {
+        List<TransportEventRecord> all = findAll(context);
+        final List<TransportEventRecord> allOf = new ArrayList<>();
+        Collections.consumeRemaining(all, new Consumer<TransportEventRecord>() {
+            @Override
+            public void accept(@NonNull TransportEventRecord transportEventRecord) {
+                if (transportEventRecord.getCategory() == dataCategory) {
+                    allOf.add(transportEventRecord);
+                }
+            }
+        });
+        all.clear();
+        all = null;
+        return allOf;
+    }
+
+
     @Override
     protected String dataFileName() {
         return this.dataFileName;

@@ -101,18 +101,6 @@ public class TransitionSafeActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Restore SMS Settings if necessary.
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                SmsContentProviderCompat.restoreDefSmsAppRetentionCheckedAsync(TransitionSafeActivity.this);
-            }
-        });
-    }
-
     protected void onThemeChange() {
         recreate();
     }

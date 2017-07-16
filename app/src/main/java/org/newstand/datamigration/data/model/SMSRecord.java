@@ -39,7 +39,7 @@ public class SMSRecord extends FileBasedRecord implements Serializable {
     public long calculateSize() throws IOException {
         if (getPath() == null) {
             // A sms backup file is estimated to 48kb.
-            return 48 * 1024 * 1024;
+            return 48 * 1024;
         }
         return super.calculateSize();
     }

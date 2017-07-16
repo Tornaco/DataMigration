@@ -610,6 +610,8 @@ public class DataBackupManager {
                         .when(System.currentTimeMillis())
                         .build();
 
+                Logger.d("Created fail record event:%s", transportEventRecord);
+
                 TransportEventRecordRepoService.from(getSession()).insert(getContext(), transportEventRecord);
             } catch (Throwable e) {
                 Logger.e(e, "Fail insert event");

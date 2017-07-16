@@ -33,7 +33,7 @@ public class ContactRecord extends FileBasedRecord {
     public long calculateSize() throws IOException {
         if (getPath() == null) {
             // A contact backup file is estimated to 512kb.
-            return 512 * 1024 * 1024;
+            return 512 * 1024;
         }
         return super.calculateSize();
     }

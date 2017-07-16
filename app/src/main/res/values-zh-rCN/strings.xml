@@ -172,7 +172,7 @@
     <string name="oc_storage_backup">占用空间：%1$s</string>
 
     <string name="tile_category_storage">存储</string>
-    <string name="tile_category_view">视觉（实验）</string>
+    <string name="tile_category_view">界面</string>
     <string name="tile_category_about">关于</string>
     <string name="tile_category_in">反馈与支持</string>
     <string name="tile_category_strategy">策略</string>
@@ -306,5 +306,5 @@
 
     <string name="warn_def_sms_app_title">需要修改设置</string>
     <string name="warn_need_def_sms_app_message">需要设置本应用为默认短信才可以操作短信数据库。</string>
-    <string name="warn_restore_def_sms_app_message">检测到本应用是目前系统的默认短信应用，现在我们来恢复默认设置，如果设置失败，请手动去系统设置修改，否则你可能会无法接收到新的消息。</string>
+    <string name="warn_restore_def_sms_app_message">目前本应用是系统的默认短信应用，现在我们来还原默认系统的短信应用设置。\n注意：如果设置失败，请手动去 系统-设置-应用设置 修改，否则你可能会无法接收到新的消息。</string>
 </resources>

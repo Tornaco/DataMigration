@@ -10,7 +10,7 @@ import lombok.experimental.Builder;
 @Builder
 @Getter
 @ToString
-public class TransportEventRecord {
+public class TransportEventRecord extends DataRecord {
     private long when;
 
     private DataCategory category;
@@ -21,4 +21,14 @@ public class TransportEventRecord {
     private String errTrace;
 
     private boolean success;
+
+    @Override
+    public String getDisplayName() {
+        return dataRecord.getDisplayName();
+    }
+
+    @Override
+    public String getId() {
+        return dataRecord.getId();
+    }
 }
