@@ -45,6 +45,7 @@
     <string name="action_rename">修改备注</string>
     <string name="action_compress">压缩(实验)</string>
     <string name="action_details">系统信息</string>
+    <string name="action_backup_event">备份记录</string>
     <string name="action_compressed">压缩完成</string>
     <string name="action_compressing">正在进行压缩，文件较多，请耐心等待</string>
     <string name="action_compress_background">后台</string>
@@ -311,6 +312,7 @@
     <string name="title_not_set">尚未指定</string>
     <string name="title_dir_divider">多个目录使用英文逗号隔开</string>
 
-    <string name="warn_def_sms_app_title">请修改设置</string>
-    <string name="warn_restore_def_sms_app_message">检测到本应用是目前系统的默认短信应用，这很有可能是你在某次还原短信的时候，遇到了某种问题，导致我们没有指导你恢复系统默认短信应用的设置，现在请立即前往系统-设置-默认应用设置修改，不要将本应用设置成默认短信，否则你可能会无法接收到新的消息。</string>
+    <string name="warn_def_sms_app_title">需要修改设置</string>
+    <string name="warn_need_def_sms_app_message">需要设置本应用为默认短信才可以操作短信数据库。</string>
+    <string name="warn_restore_def_sms_app_message">目前本应用是系统的默认短信应用，现在我们来还原默认系统的短信应用设置。\n注意：如果设置失败，请手动去 系统-设置-应用设置 修改，否则你可能会无法接收到新的消息。</string>
 </resources>

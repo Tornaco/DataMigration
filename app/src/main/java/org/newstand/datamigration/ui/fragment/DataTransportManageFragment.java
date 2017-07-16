@@ -7,9 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 
-import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.repo.TransportEventRecordRepoService;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.activity.DataTransportActivity;
 import org.newstand.datamigration.worker.transport.RecordEvent;
@@ -88,6 +88,11 @@ public abstract class DataTransportManageFragment extends DataTransportLogicFrag
     protected void readyToGo() {
         enterState(STATE_TRANSPORT_START);
         setSession(onCreateSession());
+        // Drop exist logs.
+        if (!TransportEventRecordRepoService.from(getSession(), getTransportType())
+                .drop()) {
+            Logger.d("Fail drop exists events");
+        }
     }
 
     protected abstract Session onCreateSession();

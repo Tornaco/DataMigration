@@ -81,7 +81,7 @@ public class AppLoader extends BaseLoader {
                 Logger.e("Failed to query size for:%s", appRecord);
             }
 
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             OutputStream os = null;
             try {
                 Drawable icon = ApkUtil.loadIconByPkgName(getContext(), packageInfo.packageName);

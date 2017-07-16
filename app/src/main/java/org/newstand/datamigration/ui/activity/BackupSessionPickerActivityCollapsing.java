@@ -19,6 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.ActionListener;
+import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.SystemInfo;
 import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
@@ -101,6 +102,14 @@ public class BackupSessionPickerActivityCollapsing extends TransitionSafeActivit
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Let's Restore default SMS app.
+        // Both OK if we are not SMS app or not.
+        SmsContentProviderCompat.restoreDefSmsAppRetentionCheckedAsync(this);
+    }
+
     void onLoadingComplete(Collection<Session> sessions) {
         getAdapter().update(sessions);
     }
@@ -138,6 +147,8 @@ public class BackupSessionPickerActivityCollapsing extends TransitionSafeActivit
                                     case R.id.action_sys_details:
                                         onRequestDetails(holder.getAdapterPosition());
                                         break;
+                                    case R.id.action_backup_event:
+
                                 }
                                 return true;
                             }

@@ -28,6 +28,7 @@ import org.newstand.datamigration.ui.activity.TransportStatsViewerActivity;
 import org.newstand.datamigration.ui.tiles.ThemedCategory;
 import org.newstand.datamigration.ui.widget.TypeFaceHelper;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.backup.TransportType;
 import org.newstand.logger.Logger;
 
 import java.util.List;
@@ -54,6 +55,8 @@ public abstract class DataTransportUIFragment extends DashboardFragment {
     @Getter
     @Setter
     private Session session;
+
+    abstract TransportType getTransportType();
 
     @Override
     public void onAttach(Context context) {
@@ -240,6 +243,7 @@ public abstract class DataTransportUIFragment extends DashboardFragment {
                     }
                     Intent intent = new Intent(context, TransportStatsViewerActivity.class);
                     intent.putExtra(IntentEvents.KEY_SOURCE, getSession());
+                    intent.putExtra(IntentEvents.KEY_TRANSPORT_TYPE, getTransportType().name());
                     startActivity(intent);
                 }
             };
@@ -276,6 +280,7 @@ public abstract class DataTransportUIFragment extends DashboardFragment {
                     }
                     Intent intent = new Intent(context, TransportFailureStatsViewerActivity.class);
                     intent.putExtra(IntentEvents.KEY_SOURCE, getSession());
+                    intent.putExtra(IntentEvents.KEY_TRANSPORT_TYPE, getTransportType().name());
                     startActivity(intent);
                 }
             };

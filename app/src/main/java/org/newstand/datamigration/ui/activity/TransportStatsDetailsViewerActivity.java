@@ -31,6 +31,8 @@ import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.backup.TransportType;
+import org.newstand.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +46,11 @@ import lombok.Getter;
 
 public class TransportStatsDetailsViewerActivity extends TransitionSafeActivity {
 
-
     @Getter
     private Session session;
+
+    @Getter
+    private TransportType transportType;
 
     @Getter
     private RecyclerView recyclerView;
@@ -77,6 +81,7 @@ public class TransportStatsDetailsViewerActivity extends TransitionSafeActivity 
         Intent intent = getIntent();
         this.session = intent.getParcelableExtra(IntentEvents.KEY_SOURCE);
         this.category = DataCategory.valueOf(intent.getStringExtra(IntentEvents.KEY_CATEGORY));
+        this.transportType = TransportType.valueOf(intent.getStringExtra(IntentEvents.KEY_TRANSPORT_TYPE));
         setTitle(getString(category.nameRes()));
     }
 
@@ -174,16 +179,17 @@ public class TransportStatsDetailsViewerActivity extends TransitionSafeActivity 
         SharedExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                final TransportEventRecordRepoService eventRecordRepoService = TransportEventRecordRepoService.from(getSession());
+                final TransportEventRecordRepoService eventRecordRepoService
+                        = TransportEventRecordRepoService.from(getSession(), getTransportType());
 
                 List<TransportEventRecord> eventRecords = onQueryEvents(eventRecordRepoService, category);
-                if (Collections.isNullOrEmpty(eventRecords)) return;
 
                 getRecords().clear();
 
                 Collections.consumeRemaining(eventRecords, new Consumer<TransportEventRecord>() {
                     @Override
                     public void accept(@NonNull TransportEventRecord transportEventRecord) {
+                        Logger.v("Adding event to adapter:%s", transportEventRecord);
                         getRecords().add(transportEventRecord);
                     }
                 });

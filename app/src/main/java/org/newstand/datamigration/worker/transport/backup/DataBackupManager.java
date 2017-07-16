@@ -87,7 +87,8 @@ public class DataBackupManager {
     public void performBackup(final Collection<DataRecord> dataRecords,
                               final DataCategory dataCategory) {
         AbortSignal abortSignal = new AbortSignal();
-        BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), new TransportListenerAdapter(), getSession()),
+        BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy
+                .delegate(getContext(), new TransportListenerAdapter(), getSession(), TransportType.Backup),
                 dataRecords, dataCategory, abortSignal);
         worker.run();
     }
@@ -95,7 +96,8 @@ public class DataBackupManager {
     public void performBackup(TransportListener listener, final Collection<DataRecord> dataRecords,
                               final DataCategory dataCategory) {
         AbortSignal abortSignal = new AbortSignal();
-        BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), listener, getSession()),
+        BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy
+                .delegate(getContext(), listener, getSession(), TransportType.Backup),
                 dataRecords, dataCategory, abortSignal);
         worker.run();
     }
@@ -112,7 +114,8 @@ public class DataBackupManager {
                                           final StartSignal startSignal) {
 
         AbortSignal abortSignal = new AbortSignal();
-        final BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy.delegate(getContext(), listener, getSession()),
+        final BackupWorker worker = new BackupWorker(EventRecorderTransportListenerProxy
+                .delegate(getContext(), listener, getSession(), TransportType.Backup),
                 dataRecords, dataCategory, abortSignal);
         if (startSignal == null) {
             SharedExecutor.execute(worker);
@@ -131,8 +134,9 @@ public class DataBackupManager {
                                final DataCategory dataCategory,
                                final TransportListener listener) {
         final RestoreWorker worker = new RestoreWorker(EventRecorderTransportListenerProxy.delegate(
-                getContext(), listener, getSession()
-        ), dataRecords, dataCategory, new AbortSignal());
+                getContext(), listener, getSession(),
+                TransportType.Restore), dataRecords, dataCategory,
+                new AbortSignal());
         worker.run();
     }
 
@@ -148,8 +152,8 @@ public class DataBackupManager {
                                            final StartSignal startSignal) {
         AbortSignal abortSignal = new AbortSignal();
         final RestoreWorker worker = new RestoreWorker(EventRecorderTransportListenerProxy.delegate(
-                getContext(), listener, getSession()
-        ), dataRecords, dataCategory, abortSignal);
+                getContext(), listener, getSession(), TransportType.Restore),
+                dataRecords, dataCategory, abortSignal);
         if (startSignal == null) {
             SharedExecutor.execute(worker);
         } else {
@@ -540,8 +544,8 @@ public class DataBackupManager {
     }
 
     private static class EventRecorderTransportListenerProxy extends TransportListenerAdapter {
-        public static TransportListener delegate(Context context, TransportListener in, Session session) {
-            return new EventRecorderTransportListenerProxy(context, in, session);
+        public static TransportListener delegate(Context context, TransportListener in, Session session, TransportType transportType) {
+            return new EventRecorderTransportListenerProxy(context, in, session, transportType);
         }
 
         @Getter
@@ -551,10 +555,14 @@ public class DataBackupManager {
         @Getter
         private Session session;
 
-        EventRecorderTransportListenerProxy(Context context, TransportListener listener, Session session) {
+        @Getter
+        private TransportType transportType;
+
+        EventRecorderTransportListenerProxy(Context context, TransportListener listener, Session session, TransportType transportType) {
             this.context = context;
             this.listener = listener;
             this.session = session;
+            this.transportType = transportType;
         }
 
         @Override
@@ -589,7 +597,7 @@ public class DataBackupManager {
                         .when(System.currentTimeMillis())
                         .build();
 
-                TransportEventRecordRepoService.from(getSession()).insert(getContext(), transportEventRecord);
+                TransportEventRecordRepoService.from(getSession(), getTransportType()).insert(getContext(), transportEventRecord);
             } catch (Throwable e) {
                 Logger.e(e, "Fail insert event");
             }
@@ -599,7 +607,7 @@ public class DataBackupManager {
 
         @Override
         public void onRecordFail(DataRecord record, Throwable err) {
-
+            Logger.i("onRecordFail:%s", record);
             try {
                 TransportEventRecord transportEventRecord = TransportEventRecord.builder()
                         .category(record.category())
@@ -612,7 +620,8 @@ public class DataBackupManager {
 
                 Logger.d("Created fail record event:%s", transportEventRecord);
 
-                TransportEventRecordRepoService.from(getSession()).insert(getContext(), transportEventRecord);
+                TransportEventRecordRepoService.from(getSession(), getTransportType())
+                        .insert(getContext(), transportEventRecord);
             } catch (Throwable e) {
                 Logger.e(e, "Fail insert event");
             }

@@ -10,6 +10,7 @@ public interface IntentEvents {
 
     String KEY_CATEGORY = "category";
     String KEY_SOURCE = "session";
+    String KEY_TRANSPORT_TYPE = "transport_type";
     String KEY_HOST = "host";
     String KEY_USER_ACTION_FINGER_PRINT = "ua_fp";
     String KEY_PKG_NAME = "pkg";

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import org.newstand.datamigration.R;
+import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.ui.fragment.BackupSessionPickerFragment;
@@ -25,6 +26,14 @@ public class BackupSessionPickerActivity extends TransitionSafeActivity implemen
         setTitle(getTitle());
         setContentView(R.layout.activity_with_container_template);
         replaceV4(R.id.container, new BackupSessionPickerFragment(), null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Let's Restore default SMS app.
+        // Both OK if we are not SMS app or not.
+        SmsContentProviderCompat.restoreDefSmsAppRetentionCheckedAsync(this);
     }
 
     @Override

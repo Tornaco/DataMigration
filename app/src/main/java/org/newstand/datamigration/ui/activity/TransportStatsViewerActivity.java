@@ -32,6 +32,7 @@ import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.PermissionMissingDialog;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.backup.TransportType;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -43,6 +44,8 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
 
     @Getter
     private Session session;
+    @Getter
+    private TransportType transportType;
 
     @Getter
     private RecyclerView recyclerView;
@@ -69,6 +72,7 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
     private void resolveIntent() {
         Intent intent = getIntent();
         this.session = intent.getParcelableExtra(IntentEvents.KEY_SOURCE);
+        this.transportType = TransportType.valueOf(intent.getStringExtra(IntentEvents.KEY_TRANSPORT_TYPE));
     }
 
     private void setupView() {
@@ -165,7 +169,8 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
         SharedExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                final TransportEventRecordRepoService eventRecordRepoService = TransportEventRecordRepoService.from(getSession());
+                final TransportEventRecordRepoService eventRecordRepoService
+                        = TransportEventRecordRepoService.from(getSession(), getTransportType());
 
                 DataCategory.consumeAll(new Consumer<DataCategory>() {
                     @Override
@@ -257,6 +262,7 @@ public class TransportStatsViewerActivity extends TransitionSafeActivity {
         Intent intent = new Intent(this, TransportStatsDetailsViewerActivity.class);
         intent.putExtra(IntentEvents.KEY_SOURCE, getSession());
         intent.putExtra(IntentEvents.KEY_CATEGORY, cr.category().name());
+        intent.putExtra(IntentEvents.KEY_TRANSPORT_TYPE, getTransportType().name());
         startActivity(intent);
     }
 

@@ -13,9 +13,9 @@
         android:fitsSystemWindows="false">
 
         <RelativeLayout
+            android:id="@+id/card_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/card_container">
+            android:layout_height="match_parent">
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card"
@@ -93,8 +93,7 @@
                         android:layout_marginTop="@dimen/activity_horizontal_margin_small"
                         android:paddingEnd="@dimen/activity_vertical_margin"
                         android:paddingStart="@dimen/activity_vertical_margin"
-                        android:paddingTop="@dimen/activity_horizontal_margin"
-                        android:text="@string/transport_event_description_copy_apk" />
+                        android:paddingTop="@dimen/activity_horizontal_margin" />
 
                     <ProgressBar
                         android:id="@+id/progress_bar"
@@ -130,11 +129,11 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
-            android:layout_below="@+id/card_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_below="@+id/card_container"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:clickable="true"

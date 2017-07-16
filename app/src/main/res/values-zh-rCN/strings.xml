@@ -42,6 +42,7 @@
     <string name="action_rename">修改备注</string>
     <string name="action_compress">压缩(实验)</string>
     <string name="action_details">系统信息</string>
+    <string name="action_backup_event">备份记录</string>
     <string name="action_compressed">压缩完成</string>
     <string name="action_compressing">正在进行压缩，文件较多，请耐心等待</string>
     <string name="action_compress_background">后台</string>
@@ -83,6 +84,11 @@
     <string name="title_apk">安装包</string>
     <string name="title_data">数据</string>
     <string name="title_data_apk">下列全部</string>
+
+    <string name="title_transport_stats">状态与统计</string>
+    <string name="title_transport_stats_success">成功项</string>
+    <string name="title_transport_stats_fail">失败项</string>
+
 
     <string name="details_images_path">文件路径：%1$s</string>
 

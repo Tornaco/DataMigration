@@ -133,6 +133,7 @@ public class SMSLoader extends BaseLoader {
                         if (smsRecord != null && (filter == null
                                 || !filter.ignored(smsRecord))) {
                             smsRecord.setPath(srcPath);
+                            smsRecord.setDisplayName(smsRecord.getMsg());
                             smsRecord.setSize(smsRecord.calculateSize());
                             res.add(smsRecord);
                         }

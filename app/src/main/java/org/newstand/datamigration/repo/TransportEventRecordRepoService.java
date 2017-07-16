@@ -11,6 +11,8 @@ import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.backup.TransportType;
+import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,19 +20,27 @@ import java.util.List;
 
 public class TransportEventRecordRepoService extends GsonBasedRepoService<TransportEventRecord> {
 
-    private String dataFileName;
 
-    public static TransportEventRecordRepoService from(Session session) {
-        return new TransportEventRecordRepoService(session.getName());
+    private static final String DATA_FILE_NAME_FORMAT = "Records_%s.eve";
+
+    public static TransportEventRecordRepoService from(Session session, TransportType transportType) {
+        return new TransportEventRecordRepoService(session, transportType);
     }
 
-    public TransportEventRecordRepoService(String dataFileName) {
-        this.dataFileName = dataFileName;
+    public TransportEventRecordRepoService(Session session, TransportType transportType) {
         this.filePath =
-                SettingsProvider.getCommonDataDir()
-                        + File.separator + "Transports" + File.separator + dataFileName();
+                SettingsProvider.getBackupSessionDir(session)
+                        + File.separator +
+                        "Transports"
+                        + File.separator
+                        + String.format(DATA_FILE_NAME_FORMAT, transportType.name());
     }
 
+    @Override
+    public boolean drop() {
+        Logger.d("Dropping:%s", filePath);
+        return (!new File(filePath).exists()) || new File(filePath).delete();
+    }
 
     public List<TransportEventRecord> succeed(Context context, final DataCategory dataCategory) {
         List<TransportEventRecord> all = findAll(context);
@@ -84,7 +94,7 @@ public class TransportEventRecordRepoService extends GsonBasedRepoService<Transp
 
     @Override
     protected String dataFileName() {
-        return this.dataFileName;
+        return null;
     }
 
     @Override

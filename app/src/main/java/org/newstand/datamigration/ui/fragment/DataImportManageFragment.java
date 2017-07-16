@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.common.Consumer;
-import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
@@ -14,6 +13,7 @@ import org.newstand.datamigration.utils.Collections;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
+import org.newstand.datamigration.worker.transport.backup.TransportType;
 
 import java.util.Collection;
 
@@ -31,6 +31,11 @@ public class DataImportManageFragment extends DataTransportManageFragment {
     }
 
     private LoaderSourceProvider mLoaderSourceProvider;
+
+    @Override
+    TransportType getTransportType() {
+        return TransportType.Restore;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -79,9 +84,6 @@ public class DataImportManageFragment extends DataTransportManageFragment {
         }, new Runnable() {
             @Override
             public void run() {
-                // Let's Restore default SMS app.
-                // Both OK if we are not SMS app or not.
-                SmsContentProviderCompat.restoreDefSmsAppRetentionCheckedBlocked(getActivity());
                 enterState(STATE_TRANSPORT_END);
             }
         });

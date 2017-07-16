@@ -14,6 +14,8 @@ import android.support.annotation.RequiresApi;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 
+import org.newstand.logger.Logger;
+
 /**
  * Created by Nick on 2017/5/5 14:44
  * E-Mail: Tornaco@163.com
@@ -60,8 +62,13 @@ public abstract class BitmapUtils {
                 return getBitmap((VectorDrawable) drawable);
             }
             return null;
+        } else if ("android.graphics.drawable.AdaptiveIconDrawable"
+                .equals(drawable.getClass().getName())) {
+            Logger.w("AdaptiveIconDrawable on O is not supported for now.");
+            return null;
+
         } else {
-            throw new IllegalArgumentException("Unsupported drawable type");
+            throw new IllegalArgumentException("Unsupported drawable type:" + drawable);
         }
     }
 

@@ -3,9 +3,13 @@ package org.newstand.datamigration.ui.activity;
 import android.support.v4.content.ContextCompat;
 
 import org.newstand.datamigration.data.event.TransportEventRecord;
+import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
+import org.newstand.datamigration.repo.TransportEventRecordRepoService;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
+
+import java.util.List;
 
 /**
  * Created by Tornaco on 2017/7/14.
@@ -13,6 +17,12 @@ import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
  */
 
 public class TransportStatsFailureDetailsViewerActivity extends TransportStatsDetailsViewerActivity {
+
+    @Override
+    protected List<TransportEventRecord> onQueryEvents(TransportEventRecordRepoService service, DataCategory category) {
+        return service.fails(this, category);
+    }
+
     @Override
     protected CommonListAdapter onCreateAdapter() {
         return new CommonListAdapter(this) {
@@ -21,9 +31,7 @@ public class TransportStatsFailureDetailsViewerActivity extends TransportStatsDe
                 holder.getLineOneTextView().setText(r.getDisplayName());
                 holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(),
                         getCategory().iconRes()));
-                holder.getLineTwoTextView().setText(((TransportEventRecord) r).getErrMessage()
-                + "\n"
-                + ((TransportEventRecord) r).getErrTrace());
+                holder.getLineTwoTextView().setText(((TransportEventRecord) r).getErrTrace());
             }
 
             @Override

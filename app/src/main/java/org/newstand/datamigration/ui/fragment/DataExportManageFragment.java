@@ -13,6 +13,7 @@ import org.newstand.datamigration.utils.DateUtils;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
+import org.newstand.datamigration.worker.transport.backup.TransportType;
 
 import java.util.Collection;
 
@@ -72,5 +73,10 @@ public class DataExportManageFragment extends DataTransportManageFragment {
     @Override
     String onCreateCompleteSummary() {
         return getStringSafety(R.string.action_remark_backup, getSession().getName());
+    }
+
+    @Override
+    TransportType getTransportType() {
+        return TransportType.Backup;
     }
 }

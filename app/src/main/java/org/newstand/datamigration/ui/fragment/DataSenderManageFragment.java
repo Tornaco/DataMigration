@@ -22,6 +22,7 @@ import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
+import org.newstand.datamigration.worker.transport.backup.TransportType;
 import org.newstand.logger.Logger;
 
 import lombok.Getter;
@@ -50,6 +51,11 @@ public class DataSenderManageFragment extends DataTransportManageFragment
     }
 
     private LoaderSourceProvider mLoaderSourceProvider;
+
+    @Override
+    TransportType getTransportType() {
+        return TransportType.Send;
+    }
 
     @SuppressWarnings("unchecked")
     @Override

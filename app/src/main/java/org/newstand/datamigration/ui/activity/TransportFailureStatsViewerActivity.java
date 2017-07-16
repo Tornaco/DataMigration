@@ -26,6 +26,7 @@ public class TransportFailureStatsViewerActivity extends TransportStatsViewerAct
         Intent intent = new Intent(this, TransportStatsFailureDetailsViewerActivity.class);
         intent.putExtra(IntentEvents.KEY_SOURCE, getSession());
         intent.putExtra(IntentEvents.KEY_CATEGORY, cr.category().name());
+        intent.putExtra(IntentEvents.KEY_TRANSPORT_TYPE, getTransportType().name());
         startActivity(intent);
     }
 }
