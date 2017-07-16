@@ -15,6 +15,7 @@ public enum RecordEvent {
     CopyApk(R.string.transport_event_description_copy_apk),
     CopyData(R.string.transport_event_description_copy_data),
     InstallApk(R.string.transport_event_description_install_apk),
+    InstallApkWaitForResult(R.string.transport_event_description_install_apk_wait_for_res),
     InstallData(R.string.transport_event_description_install_data),
     InstallExtraData(R.string.transport_event_description_install_extra_data),
     CreateDir(R.string.transport_event_description_create_dir),

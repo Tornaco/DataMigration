@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.logger.Logger;
 
 import java.util.concurrent.CountDownLatch;
@@ -41,15 +42,21 @@ class PackageInstallReceiver extends BroadcastReceiver {
         context.unregisterReceiver(this);
     }
 
-    public boolean waitUtilInstalled() {
-        while (true) {
+    public boolean waitUtilInstalled(final ProgressListener listener) {
+        final long timeout = SettingsProvider.getAppInstallerTimeout().timeMills;
+        final long interval = 1000;
+        final int waitTimes = (int) (timeout / 1000);
+        Logger.i("Wait %s times", waitTimes);
+        for (int i = 1; i <= waitTimes; i++) {
             try {
-                return latch.await(SettingsProvider.getAppInstallerTimeout().timeMills,
-                        TimeUnit.MILLISECONDS);
+                listener.onProgress(RecordEvent.InstallApkWaitForResult, 100 * ((float) i / (float) waitTimes));
+                boolean ok = latch.await(interval, TimeUnit.MILLISECONDS);
+                if (ok) return true;
             } catch (InterruptedException ignored) {
 
             }
         }
+        return false;
     }
 
     @Override

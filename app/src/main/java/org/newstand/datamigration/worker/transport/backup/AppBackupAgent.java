@@ -155,7 +155,7 @@ class AppBackupAgent extends ProgressableBackupAgent<AppBackupSettings, AppResto
             }
 
             try {
-                if (!installReceiver.waitUtilInstalled()) {
+                if (!installReceiver.waitUtilInstalled(getProgressListener())) {
                     Logger.e("Timeout waiting for apk installer");
                     return new ApkInstallFailException();
                 }

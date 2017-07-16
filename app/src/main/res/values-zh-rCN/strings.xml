@@ -28,6 +28,7 @@
     <string name="transport_event_description_copy_apk">复制APK</string>
     <string name="transport_event_description_copy_data">复制应用数据</string>
     <string name="transport_event_description_install_apk">安装应用</string>
+    <string name="transport_event_description_install_apk_wait_for_res">等待安装结果</string>
     <string name="transport_event_description_install_data">安装数据</string>
     <string name="transport_event_description_wait_for_def_sms_app">等待设置为默认短信应用</string>
     <string name="transport_event_description_install_extra_data">安装附加数据</string>
