@@ -22,13 +22,14 @@
 
 
     <string name="transport_event_description_init">初始化</string>
-    <string name="transport_event_description_insert">插入</string>
+    <string name="transport_event_description_insert">插入数据库</string>
     <string name="transport_event_description_create_dir">创建文件夹</string>
     <string name="transport_event_description_copy_file">复制文件</string>
     <string name="transport_event_description_copy_apk">复制APK</string>
     <string name="transport_event_description_copy_data">复制应用数据</string>
     <string name="transport_event_description_install_apk">安装应用</string>
     <string name="transport_event_description_install_data">安装数据</string>
+    <string name="transport_event_description_wait_for_def_sms_app">等待设置为默认短信应用</string>
     <string name="transport_event_description_install_extra_data">安装附加数据</string>
     <string name="transport_event_description_token_divider">&#160;</string>
 
@@ -312,5 +313,7 @@
 
     <string name="warn_def_sms_app_title">需要修改设置</string>
     <string name="warn_need_def_sms_app_message">需要设置本应用为默认短信才可以操作短信数据库。</string>
-    <string name="warn_restore_def_sms_app_message">目前本应用是系统的默认短信应用，现在我们来还原默认系统的短信应用设置。\n注意：如果设置失败，请手动去 系统-设置-应用设置 修改，否则你可能会无法接收到新的消息。</string>
+    <string name="warn_restore_def_sms_app_message">目前本应用是系统的默认短信应用，现在我们来还原默认系统的短信应用设置。
+        \n\n如果设置失败，请手动去 系统-设置-应用设置 修改，否则你可能会无法接收到新的消息。
+    \n\nEMUI上设置完成后可能会导致本应用强制退出。</string>
 </resources>

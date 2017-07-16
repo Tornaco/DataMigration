@@ -19,7 +19,8 @@ public enum RecordEvent {
     InstallExtraData(R.string.transport_event_description_install_extra_data),
     CreateDir(R.string.transport_event_description_create_dir),
     Init(R.string.transport_event_description_init),
-    Insert(R.string.transport_event_description_insert);
+    Insert(R.string.transport_event_description_insert),
+    WaitForSMSDefApp(R.string.transport_event_description_wait_for_def_sms_app);
 
 
     @Getter

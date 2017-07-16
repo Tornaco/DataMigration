@@ -22,13 +22,14 @@
 
 
     <string name="transport_event_description_init">初始化</string>
-    <string name="transport_event_description_insert">插入</string>
+    <string name="transport_event_description_insert">插入数据库</string>
     <string name="transport_event_description_create_dir">创建文件夹</string>
     <string name="transport_event_description_copy_file">复制文件</string>
     <string name="transport_event_description_copy_apk">复制APK</string>
     <string name="transport_event_description_copy_data">复制应用数据</string>
     <string name="transport_event_description_install_apk">安装应用</string>
     <string name="transport_event_description_install_data">安装数据</string>
+    <string name="transport_event_description_wait_for_def_sms_app">等待设置为默认短信应用</string>
     <string name="transport_event_description_install_extra_data">安装附加数据</string>
     <string name="transport_event_description_token_divider">&#160;</string>
 

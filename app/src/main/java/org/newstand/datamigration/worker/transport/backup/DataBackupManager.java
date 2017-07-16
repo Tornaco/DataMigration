@@ -607,7 +607,6 @@ public class DataBackupManager {
 
         @Override
         public void onRecordFail(DataRecord record, Throwable err) {
-            Logger.i("onRecordFail:%s", record);
             try {
                 TransportEventRecord transportEventRecord = TransportEventRecord.builder()
                         .category(record.category())
@@ -617,9 +616,6 @@ public class DataBackupManager {
                         .errTrace(Logger.getStackTraceString(err))
                         .when(System.currentTimeMillis())
                         .build();
-
-                Logger.d("Created fail record event:%s", transportEventRecord);
-
                 TransportEventRecordRepoService.from(getSession(), getTransportType())
                         .insert(getContext(), transportEventRecord);
             } catch (Throwable e) {
