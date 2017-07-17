@@ -5,6 +5,24 @@ jdk: oraclejdk8
 cache: false
 sudo: false
 
+addons:
+  apt:
+    packages:
+      - build-essential
+      - libgl1-mesa-dev
+      - libglu1-mesa-dev
+      - cmake
+      - aria2
+      - ant
+      - lib32stdc++6
+      - lib32z1
+      - lib32z1-dev
+      - lib32bz2-1.0
+
+cache:
+  - apt
+  - ccache
+
 android:
   components:
   - build-tools-25.0.2
@@ -18,9 +36,6 @@ script:
 before_script:
  - mkdir -p "$ANDROID_HOME/licenses"
  - cp ./android-sdk-license "$ANDROID_HOME/licenses/"
- 
- - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
- - export ANDROID_NDK_HOME=$HOME/android-ndk-root
 
 notifications:
   email:
