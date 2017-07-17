@@ -9,13 +9,10 @@ android:
   components:
   - build-tools-25.0.2
   - android-25
-  - android-24
   - extra-android-m2repository
   - extra-android-support
 
 script:
-  - git clone https://github.com/anggrayudi/android-hidden-api
-  - cp ./android-hidden-api/android-24/android.jar "$ANDROID_HOME/platforms/android-24"
   - "./gradlew assembleDebug"
 
 before_script:
