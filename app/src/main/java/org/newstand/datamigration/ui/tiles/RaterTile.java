@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import org.codechimp.apprater.AppRater;
 import org.newstand.datamigration.R;
 
 import dev.nick.tiles.tile.QuickTileView;
@@ -32,7 +31,6 @@ public class RaterTile extends ThemedTile {
             @Override
             public void onClick(View v) {
                 super.onClick(v);
-                AppRater.rateNow(context);
             }
         };
     }

@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/DataMigration.iml" filepath="$PROJECT_DIR$/DataMigration.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/eventbus/eventbus.iml" filepath="$PROJECT_DIR$/eventbus/eventbus.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ftpserver/ftpserver.iml" filepath="$PROJECT_DIR$/ftpserver/ftpserver.iml" />
       <module fileurl="file://$PROJECT_DIR$/interface-adapter-annotation/interface-adapter-annotation.iml" filepath="$PROJECT_DIR$/interface-adapter-annotation/interface-adapter-annotation.iml" />
       <module fileurl="file://$PROJECT_DIR$/interface-adapter-generator/interface-adapter-generator.iml" filepath="$PROJECT_DIR$/interface-adapter-generator/interface-adapter-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/materialicons/materialicons.iml" filepath="$PROJECT_DIR$/materialicons/materialicons.iml" />

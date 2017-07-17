@@ -32,14 +32,14 @@ public class InstallerTimeoutTile extends ThemedTile {
 
         this.summary = context.getString(R.string.summery_install_timeout, String.valueOf(current.timeMills));
 
-        final List<InstallerTimeout> allColor = new ArrayList<>();
+        final List<InstallerTimeout> allTimes = new ArrayList<>();
 
         final List<String> allName = new ArrayList<>();
         org.newstand.datamigration.utils.Collections.consumeRemaining(InstallerTimeout.values(),
                 new Consumer<InstallerTimeout>() {
                     @Override
                     public void accept(@NonNull InstallerTimeout timeout) {
-                        allColor.add(timeout);
+                        allTimes.add(timeout);
                         allName.add(String.valueOf(timeout.timeMills));
                     }
                 });
@@ -62,7 +62,7 @@ public class InstallerTimeoutTile extends ThemedTile {
             @Override
             protected void onItemSelected(int position) {
                 super.onItemSelected(position);
-                InstallerTimeout timeout = allColor.get(position);
+                InstallerTimeout timeout = allTimes.get(position);
                 if (timeout == SettingsProvider.getAppInstallerTimeout()) {
                     return;
                 }
