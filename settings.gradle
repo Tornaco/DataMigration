@@ -1,1 +1,1 @@
-include ':app', ':vcard-android', ':eventbus', ':progress-activity', ':tiles', ':statemachine', ':wfdhook', ':mediahook', ':roottools', ':interface-adapter-generator', ':interface-adapter-annotation', ':materialicons', ':settingshook'
+include ':app', ':vcard-android', ':eventbus', ':progress-activity', ':tiles', ':statemachine', ':roottools', ':interface-adapter-generator', ':interface-adapter-annotation', ':settingshook'

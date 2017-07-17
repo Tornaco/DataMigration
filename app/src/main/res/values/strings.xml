@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <string name="app_name">Migrate</string>
-    <string name="app_intro">Data backup and migrate assistant</string>
+    <string name="app_name">X-Backup</string>
+    <string name="app_intro">Data backup and restore assistant</string>
     <string name="card_intro">Click card to expand the menu</string>
     <string name="fab_intro_list">Click this button to return to the overview page</string>
     <string name="fab_intro_category_backup">Click this button to start backup</string>
@@ -10,7 +10,6 @@
     <string name="backup_intro_actions">This card contains</string>
     <string name="backup_intro_and">and</string>
     <string name="backup_intro">支持联系人，短信，通话记录，多媒体，无线局域网等数据备份与应用（数据）的本地备份。\n\n需要你授予联系人，电话，短信，文件读写等权限。</string>
-    <string name="transport_intro">你现在可以在两台设备之间，快速互相传输文件。\n\n需要你授予位置信息权限。\n</string>
 
     <string name="title_activity_navigator">@string/app_name</string>
 

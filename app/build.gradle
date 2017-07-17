@@ -35,15 +35,6 @@ android {
             path "CMakeLists.txt"
         }
     }
-
-    packagingOptions {
-        // required due to jars
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/BCKEY.SF'
-        exclude 'META-INF/BCKEY.DSA'
-    }
 }
 
 dependencies {
@@ -72,9 +63,7 @@ dependencies {
     compile project(':progress-activity')
     compile project(':tiles')
     compile project(':statemachine')
-    compile project(path: ':wfdhook')
     compile project(path: ':roottools')
-    compile project(':materialicons')
     compile project(':settingshook')
     provided project(':interface-adapter-annotation')
     apt project(':interface-adapter-generator')

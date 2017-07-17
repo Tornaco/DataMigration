@@ -3,16 +3,12 @@
     package="org.newstand.datamigration">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
@@ -32,21 +28,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.bugsnag.android.API_KEY"
-            android:value="60f3f20bc06ef7b326523f6c7844e4bb" />
-
-        <activity
-            android:name=".ui.activity.DrawerNavigatorActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <!-- Themed Activity -->
         <activity
@@ -58,7 +39,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -203,11 +183,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.SenderCategoryViewerActivity"
-            android:label="@string/title_transport_sender"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".ui.activity.ReceivedCategoryViewerActivity"
             android:label="@string/title_transport_received_viewer"
             android:screenOrientation="portrait"
@@ -289,14 +264,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.WFDDataSenderActivity"
-            android:label="@string/title_setup_wfd_sender"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.WFDDataReceiverActivity"
-            android:label="@string/title_setup_wfd_receiver"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.SettingsActivity"
             android:label="@string/action_settings"
             android:screenOrientation="portrait" />
@@ -309,24 +276,15 @@
             android:label="@string/tile_category_in"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.UserActionViewerActivity"
-            android:label="@string/action_user_actions"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.LogViewerActivity"
             android:label="@string/action_user_actions"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LicenseViewerActivity"
             android:label="@string/title_license" />
-        <activity android:name=".ui.activity.DataSenderActivity" />
-        <activity android:name=".ui.activity.DataReceiverActivity" />
         <activity
             android:name=".ui.activity.HelpActivity"
             android:label="@string/title_help" />
-        <activity
-            android:name=".ui.activity.AdActivity"
-            android:label="@string/title_show_ads" />
         <activity
             android:name=".ui.activity.TransportStatsViewerActivity"
             android:label="@string/title_transport_stats_success" />
@@ -355,8 +313,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-        <service android:name=".service.UserActionService" />
 
         <!-- For Sms -->
         <!-- BroadcastReceiver that listens for incoming SMS messages -->

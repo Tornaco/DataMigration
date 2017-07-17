@@ -17,7 +17,7 @@ public enum ThemeColor implements ThemeResBinder {
 
         @Override
         public int colorRes() {
-            return R.color.primary;
+            return R.color.blue_grey;
         }
     },
     White {

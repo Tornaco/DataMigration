@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <string name="app_name">数据迁移</string>
+    <string name="app_name">X备份</string>
     <string name="app_intro">数据备份以及迁移助手</string>
     <string name="card_intro">点击卡片可以展开菜单</string>
     <string name="fab_intro_list">当你完成数据选择时，点击此处完成选择并返回汇总页</string>
@@ -10,7 +10,6 @@
     <string name="backup_intro_actions">此卡片包括</string>
     <string name="backup_intro_and">和</string>
     <string name="backup_intro">支持联系人，短信，通话记录，多媒体，无线局域网等数据备份与应用（数据）的本地备份。\n\n需要你授予联系人，电话，短信，文件读写等权限。</string>
-    <string name="transport_intro">你现在可以在两台设备之间，快速互相传输文件。\n\n需要你授予位置信息权限。\n</string>
 
     <string name="title_activity_navigator">@string/app_name</string>
 

@@ -28,7 +28,6 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.provider.ThemeColor;
 import org.newstand.datamigration.ui.FragmentController;
 import org.newstand.datamigration.ui.fragment.BackupRestoreNavigatorFragment;
-import org.newstand.datamigration.ui.fragment.SenderReceiverNavigatorFragment;
 import org.newstand.datamigration.utils.UserManagerCompat;
 
 import java.util.List;
@@ -40,7 +39,6 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int INDEX_BACKUP_RESTORE = 0;
-    private static final int INDEX_SENDER_RECEIVER = 1;
 
     @Getter
     private FragmentController cardController;
@@ -107,7 +105,8 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
                     })
                     .onNegative(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        public void onClick(@NonNull MaterialDialog dialog,
+                                            @NonNull DialogAction which) {
                             finish();
                         }
                     })
@@ -152,8 +151,7 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
     protected void setupFragment() {
         final List<? extends Fragment> cards =
                 ImmutableList.of(
-                        BackupRestoreNavigatorFragment.create(),
-                        SenderReceiverNavigatorFragment.create());
+                        BackupRestoreNavigatorFragment.create());
         cardController = new FragmentController(getSupportFragmentManager(), cards, R.id.container);
         cardController.setDefaultIndex(INDEX_BACKUP_RESTORE);
         cardController.setCurrent(INDEX_BACKUP_RESTORE);
@@ -183,10 +181,6 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         switch (id) {
             case R.id.nav_backup_restore:
                 getCardController().setCurrent(INDEX_BACKUP_RESTORE);
-                updateTitle();
-                break;
-            case R.id.nav_sender_receiver:
-                getCardController().setCurrent(INDEX_SENDER_RECEIVER);
                 updateTitle();
                 break;
             case R.id.nav_settings:
@@ -234,13 +228,14 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // No need for now.
         switch (getThemeColor()) {
-            case White:
-                getMenuInflater().inflate(R.menu.trend_dark, menu);
-                break;
-            default:
-                getMenuInflater().inflate(R.menu.trend, menu);
-                break;
+//            case White:
+//                getMenuInflater().inflate(R.menu.trend_dark, menu);
+//                break;
+//            default:
+//                getMenuInflater().inflate(R.menu.trend, menu);
+//                break;
         }
         return true;
     }

@@ -13,7 +13,6 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeManager;
 import org.newstand.datamigration.secure.DonateQRPathRetriever;
 import org.newstand.datamigration.service.DummSmsServiceProxy;
-import org.newstand.datamigration.service.UserActionServiceProxy;
 import org.newstand.datamigration.service.schedule.SchedulerServiceProxy;
 import org.newstand.datamigration.utils.NoMediaUtil;
 import org.newstand.datamigration.utils.OnDeviceLogAdapter;
@@ -89,11 +88,9 @@ public class DataMigrationApp extends Application {
 
     private void startCore() {
         DummSmsServiceProxy.startService(this);
-        UserActionServiceProxy.startService(getApplicationContext());
         SchedulerServiceProxy.start(this);
     }
 
     private void cleanup() {
-        UserActionServiceProxy.stopService(getApplicationContext());
     }
 }
