@@ -7,6 +7,7 @@ import android.support.annotation.WorkerThread;
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
+import org.newstand.datamigration.data.event.TransportEventRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.net.BadResError;
@@ -19,9 +20,13 @@ import org.newstand.datamigration.net.OverViewSender;
 import org.newstand.datamigration.net.PathCreator;
 import org.newstand.datamigration.net.server.TransportClient;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.repo.TransportEventRecordRepoService;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
+import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
+import org.newstand.datamigration.worker.transport.backup.TransportType;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -50,14 +55,19 @@ public class DataSenderProxy {
 
     @WorkerThread
     public static void send(final Context context, final TransportClient client,
+                            final Session session,
                             final TransportListener listener, AbortSignal abortSignal) {
-        new DataSenderProxy().sendInternal(context, client, listener, abortSignal);
+        new DataSenderProxy().sendInternal(context, client,
+                EventRecorderTransportListenerProxy.delegate(context, listener, session,
+                        TransportType.Send), abortSignal);
     }
 
     @WorkerThread
     public static void send(final Context context, final TransportClient client,
+                            final Session session,
                             final TransportListener listener) {
-        new DataSenderProxy().sendInternal(context, client, listener, new AbortSignal());
+        new DataSenderProxy().sendInternal(context, client, EventRecorderTransportListenerProxy
+                .delegate(context, listener, session, TransportType.Send), new AbortSignal());
     }
 
 
@@ -158,5 +168,99 @@ public class DataSenderProxy {
 
         // Clean up Session
         org.newstand.datamigration.utils.Files.deleteDir(new File(SettingsProvider.getBackupSessionDir(session)));
+    }
+
+
+    private static class EventRecorderTransportListenerProxy extends TransportListenerAdapter {
+        public static TransportListener delegate(Context context, TransportListener in, Session session, TransportType transportType) {
+            return new EventRecorderTransportListenerProxy(context, in, session, transportType);
+        }
+
+        @Getter
+        private Context context;
+
+        private TransportListener listener;
+        @Getter
+        private Session session;
+
+        @Getter
+        private TransportType transportType;
+
+        EventRecorderTransportListenerProxy(Context context, TransportListener listener, Session session, TransportType transportType) {
+            this.context = context;
+            this.listener = listener;
+            this.session = session;
+            this.transportType = transportType;
+        }
+
+        @Override
+        public void onStart() {
+            listener.onStart();
+        }
+
+        @Override
+        public void onRecordStart(DataRecord record) {
+            listener.onRecordStart(record);
+        }
+
+        @Override
+        public void onRecordProgressUpdate(DataRecord record, RecordEvent recordEvent, float progress) {
+            listener.onRecordProgressUpdate(record, recordEvent, progress);
+        }
+
+        @Override
+        public void onProgressUpdate(float progress) {
+            super.onProgressUpdate(progress);
+            listener.onProgressUpdate(progress);
+        }
+
+        @Override
+        public void onRecordSuccess(DataRecord record) {
+
+            try {
+                TransportEventRecord transportEventRecord = TransportEventRecord.builder()
+                        .category(record.category())
+                        .dataRecord(record)
+                        .success(true)
+                        .when(System.currentTimeMillis())
+                        .build();
+
+                TransportEventRecordRepoService.from(getSession(), getTransportType()).insert(getContext(), transportEventRecord);
+            } catch (Throwable e) {
+                Logger.e(e, "Fail insert event");
+            }
+
+            listener.onRecordSuccess(record);
+        }
+
+        @Override
+        public void onRecordFail(DataRecord record, Throwable err) {
+            try {
+                TransportEventRecord transportEventRecord = TransportEventRecord.builder()
+                        .category(record.category())
+                        .dataRecord(record)
+                        .success(false)
+                        .errMessage(err.getMessage())
+                        .errTrace(Logger.getStackTraceString(err))
+                        .when(System.currentTimeMillis())
+                        .build();
+                TransportEventRecordRepoService.from(getSession(), getTransportType())
+                        .insert(getContext(), transportEventRecord);
+            } catch (Throwable e) {
+                Logger.e(e, "Fail insert event");
+            }
+
+            listener.onRecordFail(record, err);
+        }
+
+        @Override
+        public void onComplete() {
+            listener.onComplete();
+        }
+
+        @Override
+        public void onAbort(Throwable err) {
+            listener.onAbort(err);
+        }
     }
 }

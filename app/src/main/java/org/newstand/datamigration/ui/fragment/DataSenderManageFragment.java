@@ -8,7 +8,6 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.AbortSignal;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.Producer;
-import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.net.protocol.DataSenderProxy;
@@ -21,6 +20,7 @@ import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
 import org.newstand.datamigration.worker.transport.backup.TransportType;
 import org.newstand.logger.Logger;
@@ -77,6 +77,8 @@ public class DataSenderManageFragment extends DataTransportManageFragment
     }
 
     private void startClient() {
+        transportListener = new TransportListenerDelegate(onCreateTransportListener());
+
         int[] ports = SettingsProvider.getTransportServerPorts();
         String host = mHostProducer.produce();
         TransportClientProxy.startWithPenitentialPortsAsync(host, ports, this, new Consumer<TransportClient>() {
@@ -87,10 +89,12 @@ public class DataSenderManageFragment extends DataTransportManageFragment
         });
     }
 
+    private TransportListener transportListener;
+
     private void send() {
         AbortSignal abortSignal = new AbortSignal();
-        DataSenderProxy.send(getActivity(), getClient(),
-                new TransportListenerDelegate(onCreateTransportListener()), abortSignal);
+        DataSenderProxy.send(getActivity(), getClient(), getSession(),
+                transportListener, abortSignal);
         enterState(STATE_TRANSPORT_END);
     }
 

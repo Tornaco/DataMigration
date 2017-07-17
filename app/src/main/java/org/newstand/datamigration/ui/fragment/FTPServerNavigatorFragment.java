@@ -12,6 +12,7 @@ import android.widget.Toast;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Producer;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.ui.activity.HelpActivity;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.tiles.AdsTile;
 import org.newstand.datamigration.ui.tiles.FTPControlTile;
@@ -100,6 +101,12 @@ public class FTPServerNavigatorFragment extends DashboardFragment implements Pro
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Toast.makeText(getActivity(), EmojiUtils.getEmojiByUnicode(0x1F60F), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        findView(rootView, R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                transitionTo(new Intent(getContext(), HelpActivity.class));
             }
         });
     }

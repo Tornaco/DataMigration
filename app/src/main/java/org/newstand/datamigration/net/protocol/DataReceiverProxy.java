@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.Holder;
+import org.newstand.datamigration.data.event.TransportEventRecord;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.net.BadResError;
@@ -20,12 +21,18 @@ import org.newstand.datamigration.net.OverviewReceiver;
 import org.newstand.datamigration.net.ReceiveSettings;
 import org.newstand.datamigration.net.server.TransportServer;
 import org.newstand.datamigration.provider.SettingsProvider;
+import org.newstand.datamigration.repo.TransportEventRecordRepoService;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
+import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
+import org.newstand.datamigration.worker.transport.backup.TransportType;
 import org.newstand.logger.Logger;
 
 import java.io.IOException;
 import java.util.Set;
+
+import lombok.Getter;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/14 10:29
@@ -38,13 +45,16 @@ public class DataReceiverProxy {
     @WorkerThread
     public static void receive(final Context context, final TransportServer transportServer,
                                final TransportListener listener, Session session) {
-        receiveInternal(context, transportServer, listener, session);
+        receiveInternal(context, transportServer, EventRecorderTransportListenerProxy
+                .delegate(context, listener, session, TransportType.Receive), session);
     }
 
     @WorkerThread
     public static void receive(final Context context, final TransportServer transportServer,
                                final TransportListener listener) {
-        receiveInternal(context, transportServer, listener, Session.create());
+        Session session = Session.create();
+        receiveInternal(context, transportServer, EventRecorderTransportListenerProxy
+                .delegate(context, listener, session, TransportType.Receive), session);
     }
 
     private static void receiveInternal(final Context context, final TransportServer transportServer,
@@ -83,7 +93,7 @@ public class DataReceiverProxy {
 
                 CategoryHeader categoryHeader = categoryReceiver.getHeader();
 
-                DataCategory category = categoryHeader.getDataCategory();
+                final DataCategory category = categoryHeader.getDataCategory();
 
                 int FILE_COUNT = categoryHeader.getFileCount();
 
@@ -106,7 +116,12 @@ public class DataReceiverProxy {
                     int res = DataRecordReceiver.with(transportServer.getInputStream(),
                             transportServer.getOutputStream())
                             .receive(settings);
-                    DataRecord record = new DataRecord();
+                    DataRecord record = new DataRecord(){
+                        @Override
+                        public DataCategory category() {
+                            return category;
+                        }
+                    };
                     record.setDisplayName(fileNameHolder.getData());
                     if (res == IORES.OK) {
                         listener.onRecordSuccess(record);
@@ -137,5 +152,98 @@ public class DataReceiverProxy {
         listener.onComplete();
 
         transportServer.stop();
+    }
+
+    private static class EventRecorderTransportListenerProxy extends TransportListenerAdapter {
+        public static TransportListener delegate(Context context, TransportListener in, Session session, TransportType transportType) {
+            return new EventRecorderTransportListenerProxy(context, in, session, transportType);
+        }
+
+        @Getter
+        private Context context;
+
+        private TransportListener listener;
+        @Getter
+        private Session session;
+
+        @Getter
+        private TransportType transportType;
+
+        EventRecorderTransportListenerProxy(Context context, TransportListener listener, Session session, TransportType transportType) {
+            this.context = context;
+            this.listener = listener;
+            this.session = session;
+            this.transportType = transportType;
+        }
+
+        @Override
+        public void onStart() {
+            listener.onStart();
+        }
+
+        @Override
+        public void onRecordStart(DataRecord record) {
+            listener.onRecordStart(record);
+        }
+
+        @Override
+        public void onRecordProgressUpdate(DataRecord record, RecordEvent recordEvent, float progress) {
+            listener.onRecordProgressUpdate(record, recordEvent, progress);
+        }
+
+        @Override
+        public void onProgressUpdate(float progress) {
+            super.onProgressUpdate(progress);
+            listener.onProgressUpdate(progress);
+        }
+
+        @Override
+        public void onRecordSuccess(DataRecord record) {
+
+            try {
+                TransportEventRecord transportEventRecord = TransportEventRecord.builder()
+                        .category(record.category())
+                        .dataRecord(record)
+                        .success(true)
+                        .when(System.currentTimeMillis())
+                        .build();
+
+                TransportEventRecordRepoService.from(getSession(), getTransportType()).insert(getContext(), transportEventRecord);
+            } catch (Throwable e) {
+                Logger.e(e, "Fail insert event");
+            }
+
+            listener.onRecordSuccess(record);
+        }
+
+        @Override
+        public void onRecordFail(DataRecord record, Throwable err) {
+            try {
+                TransportEventRecord transportEventRecord = TransportEventRecord.builder()
+                        .category(record.category())
+                        .dataRecord(record)
+                        .success(false)
+                        .errMessage(err.getMessage())
+                        .errTrace(Logger.getStackTraceString(err))
+                        .when(System.currentTimeMillis())
+                        .build();
+                TransportEventRecordRepoService.from(getSession(), getTransportType())
+                        .insert(getContext(), transportEventRecord);
+            } catch (Throwable e) {
+                Logger.e(e, "Fail insert event");
+            }
+
+            listener.onRecordFail(record, err);
+        }
+
+        @Override
+        public void onComplete() {
+            listener.onComplete();
+        }
+
+        @Override
+        public void onAbort(Throwable err) {
+            listener.onAbort(err);
+        }
     }
 }

@@ -17,6 +17,7 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.secure.VersionCheckResult;
 import org.newstand.datamigration.secure.VersionInfo;
 import org.newstand.datamigration.secure.VersionRetriever;
+import org.newstand.datamigration.ui.activity.HelpActivity;
 import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.tiles.AdsTile;
 import org.newstand.datamigration.ui.tiles.ReceiveTile;
@@ -103,6 +104,13 @@ public class SenderReceiverNavigatorFragment extends DashboardFragment implement
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Toast.makeText(getActivity(), EmojiUtils.getEmojiByUnicode(0x1F680), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        findView(rootView, R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                transitionTo(new Intent(getContext(), HelpActivity.class));
             }
         });
 

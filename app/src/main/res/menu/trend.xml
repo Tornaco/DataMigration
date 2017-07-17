@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_trend"
-        android:icon="@drawable/ic_trend_light"
+        android:icon="@drawable/ic_help"
         android:title="@string/title_help"
         app:showAsAction="always" />
 

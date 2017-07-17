@@ -267,7 +267,7 @@ public abstract class DataTransportUIFragment extends DashboardFragment {
             super(context, null);
 
             this.titleRes = R.string.title_transport_stats_fail;
-            this.iconRes = R.drawable.ic_face;
+            this.iconRes = R.drawable.ic_fail;
             this.summary = String.valueOf(failCount);
             this.tileView = new QuickTileView(context, this) {
                 @Override

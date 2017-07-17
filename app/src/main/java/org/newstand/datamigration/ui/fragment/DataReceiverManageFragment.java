@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.common.Producer;
-import org.newstand.datamigration.data.SmsContentProviderCompat;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.loader.LoaderSource;
 import org.newstand.datamigration.net.protocol.DataReceiverProxy;
@@ -21,6 +20,7 @@ import org.newstand.datamigration.ui.activity.TransitionSafeActivity;
 import org.newstand.datamigration.ui.widget.ErrDialog;
 import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.TransportListener;
 import org.newstand.datamigration.worker.transport.TransportListenerMainThreadAdapter;
 import org.newstand.datamigration.worker.transport.backup.TransportType;
 import org.newstand.logger.Logger;
@@ -78,6 +78,7 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
     }
 
     private void startServer() {
+        transportListener = new TransportListenerDelegate(onCreateTransportListener());
         String host = mHostProducer.produce();
         int[] ports = SettingsProvider.getTransportServerPorts();
         TransportServerProxy.startWithPenitentialPortsAsync(host, ports,
@@ -89,9 +90,11 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
                 });
     }
 
+    private TransportListener transportListener;
+
     private void receive() {
         DataReceiverProxy.receive(getActivity(), getTransportServer(),
-                new TransportListenerDelegate(onCreateTransportListener()), getSession());
+                transportListener, getSession());
         enterState(STATE_TRANSPORT_END);
     }
 
@@ -174,11 +177,13 @@ public class DataReceiverManageFragment extends DataTransportManageFragment
         @Override
         public void onRecordSuccessMainThread(DataRecord record) {
             listener.onRecordSuccessMainThread(record);
+            Logger.v("onRecordSuccessMainThread:%s", record);
         }
 
         @Override
         public void onRecordFailMainThread(DataRecord record, Throwable err) {
             listener.onRecordFailMainThread(record, err);
+            Logger.v("onRecordFailMainThread:%s", record);
         }
 
         @Override

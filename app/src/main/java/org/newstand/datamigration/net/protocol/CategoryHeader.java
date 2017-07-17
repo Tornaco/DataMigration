@@ -1,7 +1,6 @@
 package org.newstand.datamigration.net.protocol;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
@@ -20,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -115,7 +115,11 @@ public class CategoryHeader implements Serializable, DeSerializable, ByteWriter 
         byte[] categories = new byte[Ints.BYTES];
         System.arraycopy(data, Ints.BYTES + Longs.BYTES, categories, 0, categories.length);
         dataCategory = DataCategory.fromInt(Ints.fromByteArray(categories));
+        Logger.d("CategoryHeader:inflateWithBytes:%s", dataCategory);
 
+        if (dataCategory==null){
+            Logger.e("Error parsing CategoryHeade:%s", Arrays.toString(data));
+        }
     }
 
     @Override

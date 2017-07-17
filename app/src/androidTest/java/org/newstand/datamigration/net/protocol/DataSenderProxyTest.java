@@ -155,48 +155,49 @@ public class DataSenderProxyTest {
 
         final AbortSignal abortSignal = new AbortSignal();
 
-        DataSenderProxy.send(InstrumentationRegistry.getTargetContext(), mClient, new TransportListenerAdapter() {
+        DataSenderProxy.send(InstrumentationRegistry.getTargetContext(), mClient, Session.create(),
+                new TransportListenerAdapter() {
 
-            @Override
-            public void onStart() {
-                super.onStart();
-            }
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                    }
 
-            @Override
-            public void onRecordSuccess(DataRecord record) {
-                super.onRecordSuccess(record);
+                    @Override
+                    public void onRecordSuccess(DataRecord record) {
+                        super.onRecordSuccess(record);
 
-                // Cancel?
-                if (isCancelable()) {
-                    Logger.w("*********************Aborting ~~~~~~~~~~~~~~~~~~");
-                    abortSignal.abort();
-                }
-            }
+                        // Cancel?
+                        if (isCancelable()) {
+                            Logger.w("*********************Aborting ~~~~~~~~~~~~~~~~~~");
+                            abortSignal.abort();
+                        }
+                    }
 
-            @Override
-            public void onRecordFail(DataRecord record, Throwable err) {
-                super.onRecordFail(record, err);
-                Logger.d("send onRecordFail %s", record);
-            }
+                    @Override
+                    public void onRecordFail(DataRecord record, Throwable err) {
+                        super.onRecordFail(record, err);
+                        Logger.d("send onRecordFail %s", record);
+                    }
 
-            @Override
-            public void onRecordStart(DataRecord record) {
-                super.onRecordStart(record);
-                Logger.d("send onRecordStart %s", record);
-            }
+                    @Override
+                    public void onRecordStart(DataRecord record) {
+                        super.onRecordStart(record);
+                        Logger.d("send onRecordStart %s", record);
+                    }
 
-            @Override
-            public void onComplete() {
-                super.onComplete();
-                Logger.d("send onComplete~~");
-            }
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        Logger.d("send onComplete~~");
+                    }
 
-            @Override
-            public void onAbort(Throwable err) {
-                super.onAbort(err);
-                Logger.d("send onAbort %s", Logger.getStackTraceString(err));
-            }
-        }, abortSignal);
+                    @Override
+                    public void onAbort(Throwable err) {
+                        super.onAbort(err);
+                        Logger.d("send onAbort %s", Logger.getStackTraceString(err));
+                    }
+                }, abortSignal);
     }
 
     private void mokeReceive() {
