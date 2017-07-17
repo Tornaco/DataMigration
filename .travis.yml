@@ -36,6 +36,8 @@ script:
 before_script:
  - mkdir -p "$ANDROID_HOME/licenses"
  - cp ./android-sdk-license "$ANDROID_HOME/licenses/"
+ - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
+ - export ANDROID_NDK_HOME=$HOME/android-ndk-root
 
 notifications:
   email:
