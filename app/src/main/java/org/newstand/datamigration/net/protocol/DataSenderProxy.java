@@ -31,6 +31,7 @@ import org.newstand.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
@@ -102,7 +103,8 @@ public class DataSenderProxy {
 
         try {
             Logger.d("Sending overviewHeader: %s", overviewHeader);
-            OverViewSender.with(transportClient.getInputStream(), transportClient.getOutputStream()).send(overviewHeader);
+            OverViewSender.with(transportClient.getInputStream(),
+                    transportClient.getOutputStream()).send(overviewHeader);
         } catch (IOException e) {
             transportListener.onAbort(e);
             // Serious err.
@@ -122,7 +124,8 @@ public class DataSenderProxy {
             CategoryHeader categoryHeader = CategoryHeader.from(category);
             categoryHeader.add(records);
 
-            Logger.d("Sending categoryHeader: %s", categoryHeader);
+            Logger.d("Sending categoryHeader: %s, byte content:%s",
+                    categoryHeader, Arrays.toString(categoryHeader.toBytes()));
 
             try {
                 CategorySender.with(transportClient.getInputStream(), transportClient.getOutputStream()).send(categoryHeader);
