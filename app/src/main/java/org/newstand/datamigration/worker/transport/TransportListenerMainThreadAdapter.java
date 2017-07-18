@@ -3,7 +3,6 @@ package org.newstand.datamigration.worker.transport;
 import android.os.Handler;
 
 import org.newstand.datamigration.data.model.DataRecord;
-import org.newstand.logger.Logger;
 
 
 /**
@@ -31,6 +30,16 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
     }
 
     @Override
+    public final void onEvent(final Event event) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                onEventMainThread(event);
+            }
+        });
+    }
+
+    @Override
     public final void onRecordStart(final DataRecord record) {
         handler.post(new Runnable() {
             @Override
@@ -42,7 +51,7 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
 
     @Override
     public final void onRecordProgressUpdate(final DataRecord record, final RecordEvent recordEvent,
-                                       final float progress) {
+                                             final float progress) {
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -99,6 +108,9 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
                 onAbortMainThread(err);
             }
         });
+    }
+
+    public void onEventMainThread(Event event) {
     }
 
     public void onStartMainThread() {

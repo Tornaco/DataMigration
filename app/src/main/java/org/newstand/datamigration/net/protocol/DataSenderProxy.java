@@ -17,11 +17,11 @@ import org.newstand.datamigration.net.DataRecordSender;
 import org.newstand.datamigration.net.IORES;
 import org.newstand.datamigration.net.NextPlanSender;
 import org.newstand.datamigration.net.OverViewSender;
-import org.newstand.datamigration.net.PathCreator;
 import org.newstand.datamigration.net.server.TransportClient;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.repo.TransportEventRecordRepoService;
 import org.newstand.datamigration.utils.Collections;
+import org.newstand.datamigration.worker.transport.Event;
 import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListener;
@@ -82,6 +82,8 @@ public class DataSenderProxy {
             }
         });
 
+        transportListener.onEvent(Event.Prepare);
+
         final LoadingCacheManager cacheManager = LoadingCacheManager.droid();
 
         // Create a session, later we saved it to receiver.
@@ -94,12 +96,12 @@ public class DataSenderProxy {
             @Override
             public void accept(@NonNull DataCategory category) {
                 Collection<DataRecord> records = cacheManager.checked(category);
-
-                PathCreator.createIfNull(context, session, records);
-
+                Logger.v("Adding %s of size %s to overview header", category, records.size());
                 overviewHeader.add(category, records);
             }
         });
+
+        transportListener.onEvent(Event.ReadyToTransport);
 
         try {
             Logger.d("Sending overviewHeader: %s", overviewHeader);
@@ -120,6 +122,7 @@ public class DataSenderProxy {
             // Do not send anything if empty.
             if (Collections.isNullOrEmpty(records)) continue;
 
+
             // Send category header
             CategoryHeader categoryHeader = CategoryHeader.from(category);
             categoryHeader.add(records);
@@ -129,17 +132,26 @@ public class DataSenderProxy {
 
             try {
                 CategorySender.with(transportClient.getInputStream(), transportClient.getOutputStream()).send(categoryHeader);
-
+                float pending = records.size();
+                float sent = 0f;
                 for (DataRecord dataRecord : records) {
+
                     try {
                         transportListener.onRecordStart(dataRecord);
-                        int res = DataRecordSender.with(transportClient.getOutputStream(),
-                                transportClient.getInputStream())
-                                .send(dataRecord);
-                        if (res == IORES.OK) {
-                            transportListener.onRecordSuccess(dataRecord);
-                        } else {
-                            transportListener.onRecordFail(dataRecord, new BadResError(res));
+                        DataRecordSender recordSender = DataRecordSender.with(transportClient.getOutputStream(),
+                                transportClient.getInputStream(), session);
+                        recordSender.wire(context);
+                        int res = recordSender.send(dataRecord);
+
+                        try {
+                            if (res == IORES.OK) {
+                                transportListener.onRecordSuccess(dataRecord);
+                            } else {
+                                transportListener.onRecordFail(dataRecord, new BadResError(res));
+                            }
+                        } finally {
+                            sent = sent + 1;
+                            transportListener.onProgressUpdate((sent / pending) * 100);
                         }
 
                         // Send next plan, to cancel or continue?

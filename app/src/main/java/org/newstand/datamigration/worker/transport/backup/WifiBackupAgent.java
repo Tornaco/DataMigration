@@ -28,7 +28,7 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class WifiBackupAgent extends ProgressableBackupAgent<WifiBackupSettings, WifiRestoreSettings>
+class WifiBackupAgent extends ProgressableBackupAgent<WifiBackupSettings, WifiRestoreSettings>
         implements ContextWireable {
 
     @Getter
@@ -57,8 +57,8 @@ public class WifiBackupAgent extends ProgressableBackupAgent<WifiBackupSettings,
             Logger.i("Encrypt ok, assigning file to %s", encrypted);
             destPath = encrypted;
         }
-
         // Update file path
+        Logger.d("Updating path to: %s", destPath);
         backupSettings.getRecord().setPath(destPath);
         return Res.OK;
     }

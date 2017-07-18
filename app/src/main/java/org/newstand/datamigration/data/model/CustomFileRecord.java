@@ -17,4 +17,9 @@ import lombok.ToString;
 @Getter
 public class CustomFileRecord extends FileBasedRecord {
     private boolean isDir;
+
+    @Override
+    public DataCategory category() {
+        return DataCategory.CustomFile;
+    }
 }

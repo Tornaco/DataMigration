@@ -19,6 +19,7 @@ import org.newstand.datamigration.net.ReceiveSettings;
 import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.sync.Sleeper;
+import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.logger.Logger;
 
 import java.io.IOException;
@@ -169,7 +170,7 @@ public class TransportServerTest implements Consumer<Exception> {
         OutputStream outputStream = transportServer.getOutputStream();
         InputStream inputStream = transportServer.getInputStream();
 
-        DataRecordSender sender = DataRecordSender.with(outputStream, inputStream);
+        DataRecordSender sender = DataRecordSender.with(outputStream, inputStream, Session.create());//FIXMRE Use same session.
 
         sender.setContext(InstrumentationRegistry.getTargetContext());
 

@@ -95,7 +95,7 @@ public class DataReceiverProxy {
 
                 final DataCategory category = categoryHeader.getDataCategory();
 
-                int FILE_COUNT = categoryHeader.getFileCount();
+                float FILE_COUNT = categoryHeader.getFileCount();
 
                 ReceiveSettings settings = new ReceiveSettings();
 
@@ -112,36 +112,40 @@ public class DataReceiverProxy {
 
                 settings.setRootDir(SettingsProvider.getReceivedDirByCategory(category, session));
 
-                for (int c = 0; c < FILE_COUNT; c++) {
+                for (float c = 0; c < FILE_COUNT; c++) {
                     int res = DataRecordReceiver.with(transportServer.getInputStream(),
                             transportServer.getOutputStream())
                             .receive(settings);
-                    DataRecord record = new DataRecord(){
+                    DataRecord record = new DataRecord() {
                         @Override
                         public DataCategory category() {
                             return category;
                         }
                     };
                     record.setDisplayName(fileNameHolder.getData());
-                    if (res == IORES.OK) {
-                        listener.onRecordSuccess(record);
+                    try {
+                        if (res == IORES.OK) {
+                            listener.onRecordSuccess(record);
 
-                        // Check next plan~
-                        NextPlanReceiver nextPlanReceiver = NextPlanReceiver.with(transportServer.getInputStream(),
-                                transportServer.getOutputStream());
-                        nextPlanReceiver.receive(null);
-                        Plans plan = nextPlanReceiver.getPlan();
+                            // Check next plan~
+                            NextPlanReceiver nextPlanReceiver = NextPlanReceiver.with(transportServer.getInputStream(),
+                                    transportServer.getOutputStream());
+                            nextPlanReceiver.receive(null);
+                            Plans plan = nextPlanReceiver.getPlan();
 
-                        Logger.i("Next plan %s", plan);
+                            Logger.i("Next plan %s", plan);
 
-                        if (plan == Plans.CANCEL) {
-                            listener.onAbort(new CanceledError());
-                            transportServer.stop();
-                            return;
+                            if (plan == Plans.CANCEL) {
+                                listener.onAbort(new CanceledError());
+                                transportServer.stop();
+                                return;
+                            }
+
+                        } else {
+                            listener.onRecordFail(record, new BadResError(res));
                         }
-
-                    } else {
-                        listener.onRecordFail(record, new BadResError(res));
+                    } finally {
+                        listener.onProgressUpdate((c / FILE_COUNT) * 100);
                     }
                 } // End for
             } catch (IOException e) {

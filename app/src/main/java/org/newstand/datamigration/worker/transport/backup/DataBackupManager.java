@@ -239,7 +239,7 @@ public class DataBackupManager {
                         + File.separator
                         + "wpa_supplicant"
                         + "_"
-                        + record.getDisplayName()
+                        + mixedName(record.getDisplayName())
                         + WifiBackupSettings.SUBFIX);
                 return wifiBackupSettings;
             case SystemSettings:

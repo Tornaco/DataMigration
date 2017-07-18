@@ -25,6 +25,7 @@ public class SystemSettingsBackupAgent
         if (!writen) {
             return new WriteFailError();
         }
+        settingsRecord.setPath(dest);
         return Res.OK;
     }
 
