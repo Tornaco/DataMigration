@@ -45,39 +45,16 @@ public class DataSenderProxyTest {
     @Setter
     private boolean cancelable;
 
-    private void mokeChooseData() {
+    private void mokeChooseData(DataCategory category) {
 
         LoadingCacheManager.createDroid(InstrumentationRegistry.getTargetContext());
         final LoadingCacheManager cacheManager = LoadingCacheManager.droid();
         Assert.assertTrue(cacheManager != null);
 
-        DataCategory.consumeAll(new Consumer<DataCategory>() {
+        Collections.consumeRemaining(cacheManager.get(category), new Consumer<DataRecord>() {
             @Override
-            public void accept(@NonNull DataCategory category) {
-                if (category == DataCategory.Music) {
-                    return;
-                }
-                if (category == DataCategory.Video) {
-                    return;
-                }
-                if (category == DataCategory.Photo) {
-                    return;
-                }
-                if (category == DataCategory.CustomFile) {
-                    return;
-                }
-                if (category == DataCategory.App) {
-                    return;
-                }
-                if (category == DataCategory.SystemApp) {
-                    return;
-                }
-                Collections.consumeRemaining(cacheManager.get(category), new Consumer<DataRecord>() {
-                    @Override
-                    public void accept(@NonNull DataRecord dataRecord) {
-                        dataRecord.setChecked(true);
-                    }
-                });
+            public void accept(@NonNull DataRecord dataRecord) {
+                dataRecord.setChecked(true);
             }
         });
     }
@@ -249,8 +226,7 @@ public class DataSenderProxyTest {
 
     @Test
     public void send() throws Exception {
-        mokeChooseData();
-
+        mokeChooseData(DataCategory.App);
         mokeServerThenClient();
 
         Sleeper.sleepQuietly(Interval.Day.getIntervalMills());
@@ -261,7 +237,7 @@ public class DataSenderProxyTest {
 
         setCancelable(true);
 
-        mokeChooseData();
+        mokeChooseData(DataCategory.CallLog);
 
         mokeServerThenClient();
 

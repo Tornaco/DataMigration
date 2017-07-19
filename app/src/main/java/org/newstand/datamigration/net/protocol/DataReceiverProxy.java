@@ -113,39 +113,41 @@ public class DataReceiverProxy {
                 settings.setRootDir(SettingsProvider.getReceivedDirByCategory(category, session));
 
                 for (float c = 0; c < FILE_COUNT; c++) {
-                    int res = DataRecordReceiver.with(transportServer.getInputStream(),
-                            transportServer.getOutputStream())
-                            .receive(settings);
-                    DataRecord record = new DataRecord() {
-                        @Override
-                        public DataCategory category() {
-                            return category;
-                        }
-                    };
-                    record.setDisplayName(fileNameHolder.getData());
+
                     try {
+                        int res = DataRecordReceiver.with(transportServer.getInputStream(),
+                                transportServer.getOutputStream())
+                                .receive(settings);
+                        DataRecord record = new DataRecord() {
+                            @Override
+                            public DataCategory category() {
+                                return category;
+                            }
+                        };
+                        record.setDisplayName(fileNameHolder.getData());
                         if (res == IORES.OK) {
                             listener.onRecordSuccess(record);
-
-                            // Check next plan~
-                            NextPlanReceiver nextPlanReceiver = NextPlanReceiver.with(transportServer.getInputStream(),
-                                    transportServer.getOutputStream());
-                            nextPlanReceiver.receive(null);
-                            Plans plan = nextPlanReceiver.getPlan();
-
-                            Logger.i("Next plan %s", plan);
-
-                            if (plan == Plans.CANCEL) {
-                                listener.onAbort(new CanceledError());
-                                transportServer.stop();
-                                return;
-                            }
 
                         } else {
                             listener.onRecordFail(record, new BadResError(res));
                         }
+                    } catch (Throwable e) {
+                        Logger.e(e, "Record receive fail"); // FIXME Handle this?
                     } finally {
                         listener.onProgressUpdate((c / FILE_COUNT) * 100);
+                    }
+                    // Check next plan~
+                    NextPlanReceiver nextPlanReceiver = NextPlanReceiver.with(transportServer.getInputStream(),
+                            transportServer.getOutputStream());
+                    nextPlanReceiver.receive(null);
+                    Plans plan = nextPlanReceiver.getPlan();
+
+                    Logger.i("Next plan %s", plan);
+
+                    if (plan == Plans.CANCEL) {
+                        listener.onAbort(new CanceledError());
+                        transportServer.stop();
+                        return;
                     }
                 } // End for
             } catch (IOException e) {

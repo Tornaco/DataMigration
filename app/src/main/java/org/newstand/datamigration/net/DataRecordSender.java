@@ -11,6 +11,7 @@ import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -57,7 +58,7 @@ public class DataRecordSender extends AbsSender<DataRecord> {
         String name = null;
         switch (dataRecord.category()) {
             default:
-                name = fileBasedRecord.getDisplayName();
+                name = new File(path).getName().replace(" ", "");// Remove space.
                 break;
         }
 

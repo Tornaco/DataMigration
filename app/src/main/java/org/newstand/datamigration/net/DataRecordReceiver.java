@@ -1,7 +1,6 @@
 package org.newstand.datamigration.net;
 
 import com.google.common.io.Files;
-import com.google.common.primitives.Ints;
 
 import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.net.protocol.Acknowledge;
@@ -45,7 +44,7 @@ public class DataRecordReceiver implements Receiver<ReceiveSettings> {
 
         FileHeader fileHeader = FileHeader.from(in);
 
-        Logger.d("Receiving: %s", fileHeader.toString());
+        Logger.i("Receiving: %s", fileHeader.toString());
 
         Acknowledge.okTo(os);
 
@@ -79,8 +78,6 @@ public class DataRecordReceiver implements Receiver<ReceiveSettings> {
 
         Logger.i("Using %s for dest path", destPath);
 
-        int sizeInt = Ints.checkedCast(size);// FIXME
-
         BlackHole.eat(new File(destPath).delete());
 
         Files.createParentDirs(new File(destPath));
@@ -89,7 +86,7 @@ public class DataRecordReceiver implements Receiver<ReceiveSettings> {
 
         int total = 0;
         byte[] buffer = createBuffer();
-        while (total < sizeInt) {
+        while (total < size) {
             int result = in.read(buffer);
             outputStream.write(buffer, 0, result);
             if (result == -1) {

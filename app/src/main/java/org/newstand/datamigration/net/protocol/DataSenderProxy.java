@@ -141,14 +141,17 @@ public class DataSenderProxy {
                         DataRecordSender recordSender = DataRecordSender.with(transportClient.getOutputStream(),
                                 transportClient.getInputStream(), session);
                         recordSender.wire(context);
-                        int res = recordSender.send(dataRecord);
+
 
                         try {
+                            int res = recordSender.send(dataRecord);
                             if (res == IORES.OK) {
                                 transportListener.onRecordSuccess(dataRecord);
                             } else {
                                 transportListener.onRecordFail(dataRecord, new BadResError(res));
                             }
+                        } catch (Throwable e) {
+                            transportListener.onRecordFail(dataRecord, e);
                         } finally {
                             sent = sent + 1;
                             transportListener.onProgressUpdate((sent / pending) * 100);
