@@ -283,6 +283,10 @@ public abstract class CategoryViewerActivityCollapsing extends TransitionSafeAct
         }
     }
 
+    public boolean isLoadEnabledForCategory(DataCategory category) {
+        return SettingsProvider.isLoadEnabledForCategory(category);
+    }
+
     private void startLoading() {
         onStartLoading();
         LoaderSource.Parent parent = onRequestLoaderSource().getParent();
@@ -295,7 +299,7 @@ public abstract class CategoryViewerActivityCollapsing extends TransitionSafeAct
         DataCategory.consumeAllInWorkerThread(new Consumer<DataCategory>() {
             @Override
             public void accept(@NonNull final DataCategory category) {
-                if (!SettingsProvider.isLoadEnabledForCategory(category)) {
+                if (!isLoadEnabledForCategory(category)) {
                     return;
                 }
                 if (isDestroyedCompat()) return;

@@ -7,6 +7,7 @@ import android.support.annotation.Keep;
 import android.support.v4.app.Fragment;
 
 import org.newstand.datamigration.data.event.IntentEvents;
+import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.ui.fragment.SenderCategoryViewerFragment;
 
 import dev.nick.eventbus.Event;
@@ -55,5 +56,15 @@ public class SenderCategoryViewerActivity extends AndroidCategoryViewerActivityC
     @Override
     protected Class<? extends Activity> getListHostActivityClz() {
         return SenderDataListHostActivity.class;
+    }
+
+    @Override
+    public boolean isLoadEnabledForCategory(DataCategory category) {
+        if (category == DataCategory.CustomFile) return false;
+        if (category == DataCategory.Alarm) return false;
+        if (category == DataCategory.SystemApp) return false;
+        if (category == DataCategory.SystemSettings) return false;
+        if (category == DataCategory.Wifi) return false;
+        return super.isLoadEnabledForCategory(category);
     }
 }
