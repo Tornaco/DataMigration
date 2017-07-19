@@ -234,14 +234,14 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        switch (getThemeColor()) {
-            case White:
-                getMenuInflater().inflate(R.menu.trend_dark, menu);
-                break;
-            default:
-                getMenuInflater().inflate(R.menu.trend, menu);
-                break;
-        }
+//        switch (getThemeColor()) {
+//            case White:
+//                getMenuInflater().inflate(R.menu.trend_dark, menu);
+//                break;
+//            default:
+//                getMenuInflater().inflate(R.menu.trend, menu);
+//                break;
+//        }
         return true;
     }
 
