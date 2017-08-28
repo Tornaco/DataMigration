@@ -1,9 +1,9 @@
 package org.newstand.datamigration.worker.transport;
 
 import android.os.Handler;
+import android.os.Message;
 
 import org.newstand.datamigration.data.model.DataRecord;
-import org.newstand.logger.Logger;
 
 
 /**
@@ -12,12 +12,14 @@ import org.newstand.logger.Logger;
  * All right reserved.
  */
 
-public class TransportListenerMainThreadAdapter extends TransportListener {
+public class TransportListenerMainThreadAdapter extends TransportListener implements Handler.Callback {
+
+    private static final int MSG_PROGRESS_UPDATE = 0X100;
 
     private Handler handler;
 
     public TransportListenerMainThreadAdapter() {
-        handler = new Handler();
+        handler = new Handler(this);
     }
 
     @Override
@@ -42,7 +44,7 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
 
     @Override
     public final void onRecordProgressUpdate(final DataRecord record, final RecordEvent recordEvent,
-                                       final float progress) {
+                                             final float progress) {
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -83,12 +85,7 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
 
     @Override
     public final void onProgressUpdate(final float progress) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                onProgressUpdateMainThread(progress);
-            }
-        });
+        handler.obtainMessage(MSG_PROGRESS_UPDATE, progress).sendToTarget();
     }
 
     @Override
@@ -125,5 +122,15 @@ public class TransportListenerMainThreadAdapter extends TransportListener {
 
     public void onAbortMainThread(Throwable err) {
 
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what) {
+            case MSG_PROGRESS_UPDATE:
+                onProgressUpdateMainThread((Float) msg.obj);
+                return true;
+        }
+        return false;
     }
 }

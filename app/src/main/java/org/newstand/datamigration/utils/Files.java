@@ -70,6 +70,13 @@ public abstract class Files {
         }
         Closer.closeQuietly(fis);
         Closer.closeQuietly(fos);
+
+        // FIXME Why should sleep???
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ignored) {
+
+        }
     }
 
     public static String formatSize(long fileSize) {

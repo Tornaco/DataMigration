@@ -137,7 +137,7 @@ public class AppLoader extends BaseLoader {
                 source.getParent() == LoaderSource.Parent.Received ?
                         SettingsProvider.getReceivedDirByCategory(getDateCategory(), session)
                         : SettingsProvider.getBackupDirByCategory(getDateCategory(), session);
-        Logger.i("Loading app from session:%s, dir:%s", session, dir);
+        Logger.i("Loading app init session:%s, dir:%s", session, dir);
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override

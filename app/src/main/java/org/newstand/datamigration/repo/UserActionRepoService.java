@@ -1,6 +1,7 @@
 package org.newstand.datamigration.repo;
 
 import android.content.Context;
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 
 import com.google.gson.reflect.TypeToken;
@@ -15,7 +16,7 @@ import java.util.List;
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-
+@Keep
 public class UserActionRepoService extends GsonBasedRepoService<UserAction> {
 
     private static UserActionRepoService sMe;

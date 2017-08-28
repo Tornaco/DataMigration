@@ -1,6 +1,7 @@
 package org.newstand.datamigration.repo;
 
 import android.content.Context;
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 
 import com.google.gson.reflect.TypeToken;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@Keep
 public class TransportEventRecordRepoService extends GsonBasedRepoService<TransportEventRecord> {
 
 

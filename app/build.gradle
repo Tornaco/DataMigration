@@ -23,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -88,7 +88,6 @@ dependencies {
     compile 'com.nononsenseapps:filepicker:4.1.0'
     compile 'com.github.codechimp-org.apprater:library:1.0.29'
     compile 'com.github.Tornaco:Logger:1.1'
-
     compile 'com.github.bumptech.glide:glide:3.8.0'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
     // Intro
@@ -96,12 +95,10 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile project(':settingshook')
     compile project(':ftpserver')
-
     // https://github.com/afollestad/material-dialogs
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
-
     // https://github.com/javiersantos/MaterialStyledDialogs
     compile 'com.github.javiersantos:MaterialStyledDialogs:2.1'
-
+    compile project(':vangoghcore')
 }

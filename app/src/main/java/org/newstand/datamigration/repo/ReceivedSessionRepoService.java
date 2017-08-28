@@ -1,5 +1,7 @@
 package org.newstand.datamigration.repo;
 
+import android.support.annotation.Keep;
+
 import com.google.gson.reflect.TypeToken;
 
 import org.newstand.datamigration.worker.transport.Session;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-
+@Keep
 public class ReceivedSessionRepoService extends GsonBasedRepoService<Session> {
 
     private static ReceivedSessionRepoService sMe;

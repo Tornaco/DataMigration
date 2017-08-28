@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
-import com.github.paolorotolo.appintro.BuildConfig;
 import com.google.common.collect.ImmutableList;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -65,9 +64,6 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
                 break;
         }
         handler = new Handler();
-        if (!SettingsProvider.isAppIntroNoticed(BuildConfig.VERSION_NAME)) {
-            startActivity(new Intent(this, AppIntroActivity.class));
-        }
         showRetention();
         updateUserName();
     }

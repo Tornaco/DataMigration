@@ -3,8 +3,6 @@ package org.newstand.datamigration.ui.fragment;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.bumptech.glide.Glide;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
@@ -14,7 +12,9 @@ import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.MusicViewerDialog;
 import org.newstand.datamigration.utils.Files;
 
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import dev.tornaco.vangogh.Vangogh;
+import dev.tornaco.vangogh.display.CircleImageEffect;
+import dev.tornaco.vangogh.display.FadeInApplier;
 
 
 /**
@@ -49,12 +49,20 @@ public class MusicListFragment extends DataListViewerFragment {
                     holder.getLineTwoTextView().setText(artist);
                 }
 
-                Glide.with(getContext())
+//                Glide.with(getContext())
+//                        .load(musicRecord.getArtUri())
+//                        .centerCrop()
+//                        .crossFade()
+//                        .bitmapTransform(new CropCircleTransformation(getContext()))
+//                        .error(R.mipmap.ic_music_avatar)
+//                        .into(holder.getCheckableImageView());
+
+                Vangogh.from(getContext())
                         .load(musicRecord.getArtUri())
-                        .centerCrop()
-                        .crossFade()
-                        .bitmapTransform(new CropCircleTransformation(getContext()))
-                        .error(R.mipmap.ic_music_avatar)
+                        .fallback(R.mipmap.ic_music_avatar)
+                        .placeHolder(R.mipmap.ic_music_avatar)
+                        .effect(new CircleImageEffect())
+                        .applier(new FadeInApplier())
                         .into(holder.getCheckableImageView());
 
 
