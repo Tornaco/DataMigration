@@ -1,6 +1,5 @@
 package org.newstand.datamigration.ui.fragment;
 
-import com.bumptech.glide.Glide;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
@@ -11,7 +10,9 @@ import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.ImageViewerDialog;
 import org.newstand.datamigration.utils.Files;
 
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import dev.tornaco.vangogh.Vangogh;
+import dev.tornaco.vangogh.display.CircleImageEffect;
+import dev.tornaco.vangogh.display.appliers.FadeInApplier;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -34,11 +35,11 @@ public class PhotoListFragment extends DataListViewerFragment {
                 PhotoRecord photoRecord = (PhotoRecord) record;
                 holder.getLineTwoTextView().setText(Files.formatSize(photoRecord.getSize()));
 
-                Glide.with(getContext())
+                Vangogh.with(getContext())
                         .load(photoRecord.getPath())
-                        .crossFade()
-                        .bitmapTransform(new CropCircleTransformation(getContext()))
-                        .error(R.drawable.aio_image_default)
+                        .effect(new CircleImageEffect())
+                        .applier(new FadeInApplier())
+                        .fallback(R.drawable.aio_image_default)
                         .into(holder.getCheckableImageView());
 
                 super.onBindViewHolder(holder, record);

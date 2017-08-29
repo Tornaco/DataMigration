@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.HelpInfo;
 
@@ -16,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import dev.tornaco.vangogh.Vangogh;
 import lombok.Getter;
 
 /**
@@ -80,13 +79,13 @@ public class HelpListAdapter extends RecyclerView.Adapter<HelpViewHolder> {
         holder.getUserNameView().setText(helpInfo.getQuestion());
         holder.getFeedText().setText(helpInfo.getAnswer().getText());
         holder.getFeedText().setAutoLinkMask(Linkify.ALL);
-        Glide.with(getContext()).load(helpInfo.getAskerAvatar())
-                .error(R.mipmap.ic_help_avatar)
+        Vangogh.with(getContext()).load(helpInfo.getAskerAvatar())
+                .fallback(R.mipmap.ic_help_avatar)
                 .into(holder.getUserProfileView());
         if (helpInfo.getAnswer().getImageUrls() != null && helpInfo.getAnswer().getImageUrls().length > 0) {
             holder.getFeedImageView().setVisibility(View.VISIBLE);
-            Glide.with(getContext()).load(helpInfo.getAnswer().getImageUrls()[0])
-                    .error(R.mipmap.ic_help_avatar)
+            Vangogh.with(getContext()).load(helpInfo.getAnswer().getImageUrls()[0])
+                    .fallback(R.mipmap.ic_help_avatar)
                     .into(holder.getFeedImageView());
         } else {
             holder.getFeedImageView().setVisibility(View.GONE);

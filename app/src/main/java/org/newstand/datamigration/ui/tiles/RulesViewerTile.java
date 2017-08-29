@@ -7,9 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.policy.ExtraDataRule;
@@ -23,6 +20,7 @@ import java.io.File;
 
 import dev.nick.tiles.tile.QuickTile;
 import dev.nick.tiles.tile.SwitchTileView;
+import dev.tornaco.vangogh.Vangogh;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/6 18:26
@@ -75,11 +73,11 @@ public class RulesViewerTile extends QuickTile {
                 // Load icon.
                 // Workaround: Do not work when fragment resumed.
                 String iconUrl = SettingsProvider.getAppIconCacheRootDir() + File.separator + rule.getPackageName();
-                Glide.with(RulesViewerTile.this.getContext().getApplicationContext())
+                Vangogh.with(RulesViewerTile.this.getContext().getApplicationContext())
                         .load(iconUrl)
                         .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .crossFade().error(R.drawable.ic_settings_app).into(getImageView());
+                        .fallback(R.drawable.ic_settings_app)
+                        .into(getImageView());
             }
         };
     }

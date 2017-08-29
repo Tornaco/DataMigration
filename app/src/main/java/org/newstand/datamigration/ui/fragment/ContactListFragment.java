@@ -6,8 +6,6 @@ import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
-import com.bumptech.glide.Glide;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.ContactRecord;
 import org.newstand.datamigration.data.model.DataCategory;
@@ -15,7 +13,9 @@ import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import dev.tornaco.vangogh.Vangogh;
+import dev.tornaco.vangogh.display.CircleImageEffect;
+import dev.tornaco.vangogh.display.appliers.FadeInApplier;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -41,10 +41,10 @@ public class ContactListFragment extends DataListViewerFragment {
                 if (!TextUtils.isEmpty(id)) {
                     Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
                             Long.parseLong(id));
-                    Glide.with(ContactListFragment.this).load(uri)
-                            .crossFade()
-                            .bitmapTransform(new CropCircleTransformation(getContext()))
-                            .error(R.mipmap.ic_contacts_avatar)
+                    Vangogh.with(ContactListFragment.this).load(uri)
+                            .effect(new CircleImageEffect())
+                            .fallback(R.mipmap.ic_contacts_avatar)
+                            .applier(new FadeInApplier())
                             .into(holder.getCheckableImageView());
                 } else {
                     holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(),

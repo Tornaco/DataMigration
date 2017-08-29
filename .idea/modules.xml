@@ -15,6 +15,7 @@
       <module fileurl="file://$PROJECT_DIR$/settingshook/settingshook.iml" filepath="$PROJECT_DIR$/settingshook/settingshook.iml" />
       <module fileurl="file://$PROJECT_DIR$/statemachine/statemachine.iml" filepath="$PROJECT_DIR$/statemachine/statemachine.iml" />
       <module fileurl="file://$PROJECT_DIR$/tiles/tiles.iml" filepath="$PROJECT_DIR$/tiles/tiles.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vangoghcore/vangoghcore.iml" filepath="$PROJECT_DIR$/vangoghcore/vangoghcore.iml" />
       <module fileurl="file://$PROJECT_DIR$/vcard-android/vcard-android.iml" filepath="$PROJECT_DIR$/vcard-android/vcard-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/wfdhook/wfdhook.iml" filepath="$PROJECT_DIR$/wfdhook/wfdhook.iml" />
     </modules>

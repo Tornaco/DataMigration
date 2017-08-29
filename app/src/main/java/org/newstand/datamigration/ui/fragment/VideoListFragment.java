@@ -1,7 +1,5 @@
 package org.newstand.datamigration.ui.fragment;
 
-import com.bumptech.glide.Glide;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
@@ -10,7 +8,9 @@ import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.utils.Files;
 
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import dev.tornaco.vangogh.Vangogh;
+import dev.tornaco.vangogh.display.CircleImageEffect;
+import dev.tornaco.vangogh.display.appliers.FadeInApplier;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -32,13 +32,12 @@ public class VideoListFragment extends DataListViewerFragment {
             public void onBindViewHolder(CommonListViewHolder holder, DataRecord record) {
                 VideoRecord videoRecord = (VideoRecord) record;
                 holder.getLineTwoTextView().setText(Files.formatSize(videoRecord.getSize()));
-                Glide.with(VideoListFragment.this)
+                Vangogh.with(VideoListFragment.this)
                         .load(videoRecord.getPath())
-                        .centerCrop()
-                        .bitmapTransform(new CropCircleTransformation(getContext()))
-                        .animate(R.anim.fade_in)
-                        .placeholder(R.mipmap.ic_video_avatar)
-                        .error(R.mipmap.ic_video_avatar)
+                        .effect(new CircleImageEffect())
+                        .applier(new FadeInApplier())
+                        .placeHolder(R.mipmap.ic_video_avatar)
+                        .fallback(R.mipmap.ic_video_avatar)
                         .into(holder.getCheckableImageView());
                 super.onBindViewHolder(holder, record);
 

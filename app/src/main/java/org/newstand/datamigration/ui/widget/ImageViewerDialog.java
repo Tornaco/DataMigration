@@ -7,9 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.bumptech.glide.Glide;
 
 import org.newstand.datamigration.R;
+
+import dev.tornaco.vangogh.Vangogh;
 
 /**
  * Created by guohao4 on 2017/7/7.
@@ -32,10 +33,8 @@ public class ImageViewerDialog {
                 .canceledOnTouchOutside(true)
                 .build();
         materialDialog.show();
-        Glide.with(context).load(path)
-                .asBitmap()
-                .crossFade()
-                .error(R.drawable.ic_media_empty)
+        Vangogh.with(context).load(path)
+                .fallback(R.drawable.ic_media_empty)
                 .into(imageView);
         textView.setText(context.getString(R.string.details_images_path, path));
     }

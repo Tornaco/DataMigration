@@ -6,8 +6,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.bumptech.glide.Glide;
-
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.AppRecord;
 import org.newstand.datamigration.data.model.DataCategory;
@@ -16,6 +14,8 @@ import org.newstand.datamigration.ui.adapter.CommonListAdapter;
 import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.ui.widget.ApkDataPickerDialog;
 import org.newstand.datamigration.utils.Files;
+
+import dev.tornaco.vangogh.Vangogh;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -57,10 +57,9 @@ public class AppListFragment extends DataListViewerFragment {
                         getStringSafety(appRecord.isHandleApk() ? R.string.yes : R.string.no),
                         getStringSafety(appRecord.isHandleData() ? R.string.yes : R.string.no));
                 holder.getLineTwoTextView().setText(summary);
-                Glide.with(AppListFragment.this)
+                Vangogh.with(AppListFragment.this)
                         .load(appRecord.getIconUrl())
-                        .crossFade()
-                        .error(R.mipmap.ic_ext_avatar)
+                        .fallback(R.mipmap.ic_ext_avatar)
                         .into(holder.getCheckableImageView());
                 super.onBindViewHolder(holder, record);
             }
