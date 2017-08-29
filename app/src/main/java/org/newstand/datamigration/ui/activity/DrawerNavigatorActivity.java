@@ -25,12 +25,9 @@ import com.google.common.collect.ImmutableList;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.newstand.datamigration.R;
-import org.newstand.datamigration.common.Producer;
-import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.provider.ThemeColor;
 import org.newstand.datamigration.ui.FragmentController;
 import org.newstand.datamigration.ui.fragment.BackupRestoreNavigatorFragment;
-import org.newstand.datamigration.ui.fragment.FTPServerNavigatorFragment;
 import org.newstand.datamigration.ui.fragment.SenderReceiverNavigatorFragment;
 import org.newstand.datamigration.utils.UserManagerCompat;
 
@@ -44,7 +41,6 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
 
     private static final int INDEX_BACKUP_RESTORE = 0;
     private static final int INDEX_SENDER_RECEIVER = 1;
-    private static final int INDEX_FTP_SERVER = 2;
 
     @Getter
     private FragmentController cardController;
@@ -148,7 +144,6 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         toggle.syncState();
 
         NavigationView navigationView = findView(R.id.nav_view);
-        navigationView.getMenu().findItem(R.id.nav_ftp).setVisible(SettingsProvider.isDebugEnabled());
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.setCheckedItem(R.id.nav_backup_restore);
@@ -158,8 +153,7 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
         final List<? extends Fragment> cards =
                 ImmutableList.of(
                         BackupRestoreNavigatorFragment.create(),
-                        SenderReceiverNavigatorFragment.create(),
-                        FTPServerNavigatorFragment.create());
+                        SenderReceiverNavigatorFragment.create());
         cardController = new FragmentController(getSupportFragmentManager(), cards, R.id.container);
         cardController.setDefaultIndex(INDEX_BACKUP_RESTORE);
         cardController.setCurrent(INDEX_BACKUP_RESTORE);
@@ -193,10 +187,6 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
                 break;
             case R.id.nav_sender_receiver:
                 getCardController().setCurrent(INDEX_SENDER_RECEIVER);
-                updateTitle();
-                break;
-            case R.id.nav_ftp:
-                getCardController().setCurrent(INDEX_FTP_SERVER);
                 updateTitle();
                 break;
             case R.id.nav_settings:
@@ -244,14 +234,14 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        switch (getThemeColor()) {
-            case White:
-                getMenuInflater().inflate(R.menu.trend_dark, menu);
-                break;
-            default:
-                getMenuInflater().inflate(R.menu.trend, menu);
-                break;
-        }
+//        switch (getThemeColor()) {
+//            case White:
+//                getMenuInflater().inflate(R.menu.trend_dark, menu);
+//                break;
+//            default:
+//                getMenuInflater().inflate(R.menu.trend, menu);
+//                break;
+//        }
         return true;
     }
 
@@ -264,9 +254,6 @@ public class DrawerNavigatorActivity extends BaseNavigatorActivity
     }
 
     private void updateTitle() {
-        Fragment card = getCardController().getCurrent();
-        @SuppressWarnings("unchecked") Producer<Integer> titleProducer = (Producer<Integer>) card;
-        // setTitle(titleProducer.produce());
     }
 
     @Override

@@ -14,6 +14,11 @@ public class TransportListenerAdapter extends TransportListener {
     }
 
     @Override
+    public void onEvent(Event event) {
+
+    }
+
+    @Override
     public void onRecordStart(DataRecord record) {
     }
 

@@ -236,7 +236,7 @@ public class ProgressWheel extends View {
     }
 
     /**
-     * Parse the attributes passed to the view init the XML
+     * Parse the attributes passed to the view from the XML
      *
      * @param a the attributes to parse
      */

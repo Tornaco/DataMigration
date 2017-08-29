@@ -10,10 +10,6 @@
             android:id="@+id/nav_sender_receiver"
             android:icon="@drawable/ic_transport"
             android:title="@string/title_transport_sender_receiver" />
-        <item
-            android:id="@+id/nav_ftp"
-            android:icon="@drawable/ic_ftp"
-            android:title="@string/title_ftp" />
     </group>
 
     <item android:title="@string/title_others">

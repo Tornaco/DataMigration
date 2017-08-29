@@ -1,7 +1,6 @@
 package org.newstand.datamigration.repo;
 
 import android.content.Context;
-import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -18,7 +17,7 @@ import java.util.List;
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-@Keep
+
 public class ExtraDataRulesRepoService extends GsonBasedRepoService<ExtraDataRule> {
 
     private static ExtraDataRulesRepoService sMe;

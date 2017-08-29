@@ -8,7 +8,10 @@ public enum InstallerTimeout {
 
     Long(5 * 60 * 1000),
     Medium(3 * 60 * 1000),
-    Short(60 * 1000);
+    Short(60 * 1000),
+    VeryShort(30 * 1000),
+    VeryVeryShort(15 * 1000);
+
 
     public long timeMills;
 

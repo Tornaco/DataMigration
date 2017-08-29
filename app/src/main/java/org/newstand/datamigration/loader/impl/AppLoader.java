@@ -54,8 +54,15 @@ public class AppLoader extends BaseLoader {
         for (PackageInfo packageInfo : packages) {
 
             AppRecord appRecord = new AppRecord();
-            // TODO Replace space with empty char.
-            appRecord.setDisplayName(packageInfo.applicationInfo.loadLabel(pm).toString());
+
+            String name = packageInfo.applicationInfo.loadLabel(pm).toString();
+            if (!TextUtils.isEmpty(name)) {
+                name = name.replace(" ", "");
+            } else {
+                Logger.w("Ignored app with empty name:%s", packageInfo);
+                continue;
+            }
+            appRecord.setDisplayName(name);
             appRecord.setPkgName(packageInfo.packageName);
             appRecord.setPath(packageInfo.applicationInfo.publicSourceDir);
 
@@ -137,7 +144,7 @@ public class AppLoader extends BaseLoader {
                 source.getParent() == LoaderSource.Parent.Received ?
                         SettingsProvider.getReceivedDirByCategory(getDateCategory(), session)
                         : SettingsProvider.getBackupDirByCategory(getDateCategory(), session);
-        Logger.i("Loading app init session:%s, dir:%s", session, dir);
+        Logger.i("Loading app from session:%s, dir:%s", session, dir);
         Iterable<File> iterable = Files.fileTreeTraverser().children(new File(dir));
         Collections.consumeRemaining(iterable, new Consumer<File>() {
             @Override

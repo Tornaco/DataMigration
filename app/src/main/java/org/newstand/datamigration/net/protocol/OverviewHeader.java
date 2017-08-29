@@ -1,10 +1,7 @@
 package org.newstand.datamigration.net.protocol;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.google.common.base.Preconditions;
-import com.google.common.io.Files;
 import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
@@ -16,7 +13,6 @@ import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.utils.Collections;
 import org.newstand.logger.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,7 +28,7 @@ import lombok.ToString;
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-@ToString(exclude = "filesSet")
+@ToString()
 public class OverviewHeader implements Serializable, DeSerializable, ByteWriter {
 
     @Getter
@@ -43,10 +39,8 @@ public class OverviewHeader implements Serializable, DeSerializable, ByteWriter 
     @Getter
     private long fileSize;
 
-    private Set<String> filesSet;
 
     private OverviewHeader() {
-        filesSet = new HashSet<>();
         dataCategories = new HashSet<>();
     }
 
@@ -111,22 +105,16 @@ public class OverviewHeader implements Serializable, DeSerializable, ByteWriter 
             @Override
             public void accept(@NonNull DataRecord dataRecord) {
                 FileBasedRecord fb = (FileBasedRecord) dataRecord;
-                String path = fb.getPath();
 
-                Preconditions.checkNotNull(path);
-
-                if (!filesSet.contains(path)) {
-                    filesSet.add(path);
-
-                    try {
-                        long size = Files.asByteSource(new File(path)).size();
-                        fileSize += size;
-                    } catch (IOException e) {
-                        Logger.e(e, "Fail to get file size: %s", path);
-                    }
-
-                    fileCount++;
+                long size = 0;
+                try {
+                    size = fb.calculateSize();
+                } catch (IOException e) {
+                    Logger.e(e, "Fail calculate size:" + fb);
                 }
+                fileSize += size;
+
+                fileCount++;
             }
         });
 

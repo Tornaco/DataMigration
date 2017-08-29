@@ -1,7 +1,6 @@
 package org.newstand.datamigration.worker.transport;
 
 import android.os.Handler;
-import android.os.Message;
 
 import org.newstand.datamigration.data.model.DataRecord;
 
@@ -12,14 +11,12 @@ import org.newstand.datamigration.data.model.DataRecord;
  * All right reserved.
  */
 
-public class TransportListenerMainThreadAdapter extends TransportListener implements Handler.Callback {
-
-    private static final int MSG_PROGRESS_UPDATE = 0X100;
+public class TransportListenerMainThreadAdapter extends TransportListener {
 
     private Handler handler;
 
     public TransportListenerMainThreadAdapter() {
-        handler = new Handler(this);
+        handler = new Handler();
     }
 
     @Override
@@ -28,6 +25,16 @@ public class TransportListenerMainThreadAdapter extends TransportListener implem
             @Override
             public void run() {
                 onStartMainThread();
+            }
+        });
+    }
+
+    @Override
+    public final void onEvent(final Event event) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                onEventMainThread(event);
             }
         });
     }
@@ -85,7 +92,12 @@ public class TransportListenerMainThreadAdapter extends TransportListener implem
 
     @Override
     public final void onProgressUpdate(final float progress) {
-        handler.obtainMessage(MSG_PROGRESS_UPDATE, progress).sendToTarget();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                onProgressUpdateMainThread(progress);
+            }
+        });
     }
 
     @Override
@@ -96,6 +108,9 @@ public class TransportListenerMainThreadAdapter extends TransportListener implem
                 onAbortMainThread(err);
             }
         });
+    }
+
+    public void onEventMainThread(Event event) {
     }
 
     public void onStartMainThread() {
@@ -122,15 +137,5 @@ public class TransportListenerMainThreadAdapter extends TransportListener implem
 
     public void onAbortMainThread(Throwable err) {
 
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-        switch (msg.what) {
-            case MSG_PROGRESS_UPDATE:
-                onProgressUpdateMainThread((Float) msg.obj);
-                return true;
-        }
-        return false;
     }
 }

@@ -24,7 +24,7 @@ public class OnDeviceLogAdapter implements LogAdapter, Closeable {
         exe.execute(new Runnable() {
             @Override
             public void run() {
-                Log.e(tag, message);
+                Log.d(tag, message);
             }
         });
     }
@@ -64,7 +64,7 @@ public class OnDeviceLogAdapter implements LogAdapter, Closeable {
         exe.execute(new Runnable() {
             @Override
             public void run() {
-                Log.e(tag, message);
+                Log.v(tag, message);
             }
         });
     }

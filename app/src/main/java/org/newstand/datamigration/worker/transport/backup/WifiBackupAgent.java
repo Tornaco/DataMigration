@@ -13,6 +13,7 @@ import org.newstand.datamigration.provider.SettingsProvider;
 import org.newstand.datamigration.secure.EncryptManager;
 import org.newstand.datamigration.utils.BlackHole;
 import org.newstand.datamigration.utils.WifiUtils;
+import org.newstand.datamigration.worker.transport.RecordEvent;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -27,7 +28,8 @@ import lombok.Setter;
  * All right reserved.
  */
 
-public class WifiBackupAgent extends ProgressableBackupAgent<WifiBackupSettings, WifiRestoreSettings> implements ContextWireable {
+class WifiBackupAgent extends ProgressableBackupAgent<WifiBackupSettings, WifiRestoreSettings>
+        implements ContextWireable {
 
     @Getter
     @Setter
@@ -38,10 +40,13 @@ public class WifiBackupAgent extends ProgressableBackupAgent<WifiBackupSettings,
         String destPath = backupSettings.getDestPath();
         Files.createParentDirs(new File(destPath));
 
+        getProgressListener().onProgress(RecordEvent.FileCopy, 0);
         Gson gson = new Gson();
-        String callStr = gson.toJson(backupSettings.getRecord());
-        boolean ok = org.newstand.datamigration.utils.Files.writeString(callStr, destPath);
+        String str = gson.toJson(backupSettings.getRecord());
+        getProgressListener().onProgress(RecordEvent.FileCopy, 50);
+        boolean ok = org.newstand.datamigration.utils.Files.writeString(str, destPath);
         if (!ok) return new WriteFailError();
+        getProgressListener().onProgress(RecordEvent.FileCopy, 100);
 
         // Encrypt
         boolean encrypt = SettingsProvider.isEncryptEnabled();
@@ -52,8 +57,8 @@ public class WifiBackupAgent extends ProgressableBackupAgent<WifiBackupSettings,
             Logger.i("Encrypt ok, assigning file to %s", encrypted);
             destPath = encrypted;
         }
-
         // Update file path
+        Logger.d("Updating path to: %s", destPath);
         backupSettings.getRecord().setPath(destPath);
         return Res.OK;
     }
@@ -78,12 +83,14 @@ public class WifiBackupAgent extends ProgressableBackupAgent<WifiBackupSettings,
             return new WriteFailError();
         }
 
+        getProgressListener().onProgress(RecordEvent.Insert, 0);
         String cmd = String.format("cat %s >> %s", randomFilePath, destPath);
 
         Result startRes = RootManager.getInstance().runCommand(cmd);
         Logger.v("Write start cmd:%s,\n msg: %s, res: %s", cmd, startRes.getMessage(), startRes.getResult());
 
         BlackHole.eat(new File(randomFilePath));
+        getProgressListener().onProgress(RecordEvent.Insert, 100);
 
         return Res.OK;
     }

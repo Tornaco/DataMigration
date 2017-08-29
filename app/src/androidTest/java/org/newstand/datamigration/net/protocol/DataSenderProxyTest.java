@@ -27,8 +27,6 @@ import org.newstand.datamigration.worker.transport.Session;
 import org.newstand.datamigration.worker.transport.TransportListenerAdapter;
 import org.newstand.logger.Logger;
 
-import java.util.Random;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,46 +45,13 @@ public class DataSenderProxyTest {
     @Setter
     private boolean cancelable;
 
-    private void mokeChooseData() {
+    private void mokeChooseData(DataCategory category) {
 
         LoadingCacheManager.createDroid(InstrumentationRegistry.getTargetContext());
-        LoadingCacheManager cacheManager = LoadingCacheManager.droid();
+        final LoadingCacheManager cacheManager = LoadingCacheManager.droid();
         Assert.assertTrue(cacheManager != null);
 
-        Collections.consumeRemaining(cacheManager.get(DataCategory.Contact), new Consumer<DataRecord>() {
-            @Override
-            public void accept(@NonNull DataRecord dataRecord) {
-                dataRecord.setChecked(new Random().nextBoolean());
-            }
-        });
-        Collections.consumeRemaining(cacheManager.get(DataCategory.Photo), new Consumer<DataRecord>() {
-            @Override
-            public void accept(@NonNull DataRecord dataRecord) {
-                dataRecord.setChecked(new Random().nextBoolean());
-            }
-        });
-        Collections.consumeRemaining(cacheManager.get(DataCategory.App), new Consumer<DataRecord>() {
-            @Override
-            public void accept(@NonNull DataRecord dataRecord) {
-                dataRecord.setChecked(new Random().nextBoolean());
-            }
-        });
-
-        Collections.consumeRemaining(cacheManager.get(DataCategory.Sms), new Consumer<DataRecord>() {
-            @Override
-            public void accept(@NonNull DataRecord dataRecord) {
-                dataRecord.setChecked(true);
-            }
-        });
-
-        Collections.consumeRemaining(cacheManager.get(DataCategory.CallLog), new Consumer<DataRecord>() {
-            @Override
-            public void accept(@NonNull DataRecord dataRecord) {
-                dataRecord.setChecked(true);
-            }
-        });
-
-        Collections.consumeRemaining(cacheManager.get(DataCategory.Wifi), new Consumer<DataRecord>() {
+        Collections.consumeRemaining(cacheManager.get(category), new Consumer<DataRecord>() {
             @Override
             public void accept(@NonNull DataRecord dataRecord) {
                 dataRecord.setChecked(true);
@@ -95,7 +60,8 @@ public class DataSenderProxyTest {
     }
 
     private void mokeServerThenClient() {
-        TransportServerProxy.startWithPenitentialPortsAsync("localhost", SettingsProvider.getTransportServerPorts(),
+        TransportServerProxy.startWithPenitentialPortsAsync("localhost",
+                SettingsProvider.getTransportServerPorts(),
                 new TransportServer.ChannelHandlerAdapter() {
                     @Override
                     public void onServerCreateFail(ErrorCode errCode) {
@@ -122,7 +88,8 @@ public class DataSenderProxyTest {
     }
 
     private void mokeClient() {
-        TransportClientProxy.startWithPenitentialPortsAsync("localhost", SettingsProvider.getTransportServerPorts(),
+        TransportClientProxy.startWithPenitentialPortsAsync("localhost",
+                SettingsProvider.getTransportServerPorts(),
                 new TransportClient.ChannelHandler() {
                     @Override
                     public void onServerChannelConnected() {
@@ -197,6 +164,12 @@ public class DataSenderProxyTest {
                         super.onAbort(err);
                         Logger.d("send onAbort %s", Logger.getStackTraceString(err));
                     }
+
+                    @Override
+                    public void onProgressUpdate(float progress) {
+                        super.onProgressUpdate(progress);
+                        Logger.d("send onProgressUpdate:%s", progress);
+                    }
                 }, abortSignal);
     }
 
@@ -209,13 +182,13 @@ public class DataSenderProxyTest {
                     @Override
                     public void onRecordSuccess(DataRecord record) {
                         super.onRecordSuccess(record);
-                        Logger.d("receive onRecordSuccess %s %s", record);
+                        Logger.d("receive onRecordSuccess %s", record);
                     }
 
                     @Override
                     public void onRecordFail(DataRecord record, Throwable err) {
                         super.onRecordFail(record, err);
-                        Logger.d("receive onRecordFail %s %s", record);
+                        Logger.d("receive onRecordFail %s", record);
                     }
 
                     @Override
@@ -235,7 +208,13 @@ public class DataSenderProxyTest {
                     @Override
                     public void onAbort(Throwable err) {
                         super.onAbort(err);
-                        Logger.d("receive onAbort %s", Logger.getStackTraceString(err));
+                        Logger.d("receive onAbort: %s", Logger.getStackTraceString(err));
+                    }
+
+                    @Override
+                    public void onProgressUpdate(float progress) {
+                        super.onProgressUpdate(progress);
+                        Logger.d("receive onProgressUpdate:%s", progress);
                     }
                 }, session);
     }
@@ -247,8 +226,7 @@ public class DataSenderProxyTest {
 
     @Test
     public void send() throws Exception {
-        mokeChooseData();
-
+        mokeChooseData(DataCategory.App);
         mokeServerThenClient();
 
         Sleeper.sleepQuietly(Interval.Day.getIntervalMills());
@@ -259,7 +237,7 @@ public class DataSenderProxyTest {
 
         setCancelable(true);
 
-        mokeChooseData();
+        mokeChooseData(DataCategory.CallLog);
 
         mokeServerThenClient();
 

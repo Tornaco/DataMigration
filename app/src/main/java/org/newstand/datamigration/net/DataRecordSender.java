@@ -2,13 +2,16 @@ package org.newstand.datamigration.net;
 
 import android.text.TextUtils;
 
-import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.FileBasedRecord;
 import org.newstand.datamigration.net.protocol.FileHeader;
+import org.newstand.datamigration.worker.transport.Session;
+import org.newstand.datamigration.worker.transport.backup.DataBackupManager;
 import org.newstand.logger.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,14 +27,16 @@ public class DataRecordSender extends AbsSender<DataRecord> {
 
     private OutputStream os;
     private InputStream is;
+    private Session session;
 
-    private DataRecordSender(OutputStream os, InputStream is) {
+    private DataRecordSender(OutputStream os, InputStream is, Session session) {
         this.os = os;
         this.is = is;
+        this.session = session;
     }
 
-    public static DataRecordSender with(OutputStream os, InputStream is) {
-        return new DataRecordSender(os, is);
+    public static DataRecordSender with(OutputStream os, InputStream is, Session session) {
+        return new DataRecordSender(os, is, session);
     }
 
     @Override
@@ -41,12 +46,23 @@ public class DataRecordSender extends AbsSender<DataRecord> {
 
         String path = fileBasedRecord.getPath();
 
-        //noinspection ResultOfMethodCallIgnored
-        Preconditions.checkNotNull(path);
+        // Check if we need to export to tmp first.
+        if (path == null) {
+            DataBackupManager.from(getContext(), session).performBackup(Lists.newArrayList(dataRecord),
+                    dataRecord.category());
+            path = fileBasedRecord.getPath();
+        }
 
-        FileHeader fileHeader = FileHeader.from(fileBasedRecord.getPath(),
-                fixedName(fileBasedRecord.getDisplayName())
-                        + UniqueIdFactory.next());
+        Logger.d("DataRecordSender, path=%s", path);
+
+        String name = null;
+        switch (dataRecord.category()) {
+            default:
+                name = new File(path).getName().replace(" ", "");// Remove space.
+                break;
+        }
+
+        FileHeader fileHeader = FileHeader.from(fileBasedRecord.getPath(), fixedName(name));
 
         Logger.d("Sending: %s", fileHeader.toString());
 

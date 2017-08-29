@@ -12,6 +12,8 @@ public abstract class TransportListener {
 
     public abstract void onStart();
 
+    public abstract void onEvent(Event event);
+
     public abstract void onRecordStart(DataRecord record);
 
     public abstract void onRecordProgressUpdate(DataRecord record, RecordEvent recordEvent, float progress);

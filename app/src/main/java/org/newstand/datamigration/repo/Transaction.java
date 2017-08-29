@@ -1,7 +1,5 @@
 package org.newstand.datamigration.repo;
 
-import android.support.annotation.Keep;
-
 import org.newstand.datamigration.utils.Closer;
 
 import java.io.Closeable;
@@ -11,7 +9,6 @@ import java.io.Closeable;
  * E-Mail: NewStand@163.com
  * All right reserved.
  */
-@Keep
 public class Transaction<T extends Closeable> {
 
     public Transaction(T host) {

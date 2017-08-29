@@ -131,6 +131,32 @@ public abstract class SessionLoader {
                             res.add(Session.from(session));
                         }
                     });
+
+                    String root = SettingsProvider.getReceivedRootDir();
+                    // Check missing.
+                    Iterable<File> iterable = Files.fileTreeTraverser().children(new File(root));
+
+                    if (iterable != null) {
+                        Collections.consumeRemaining(iterable, new Consumer<File>() {
+                            @Override
+                            public void accept(@NonNull File file) {
+                                if (file.isDirectory()) {
+                                    String name = Files.getNameWithoutExtension(file.getPath());
+                                    if (!TextUtils.isEmpty(name) && !isSameFileExistInSessions(res, name)) {
+                                        Logger.d("Found maybe missing received dir: %s, importing...", file);
+                                        if (!org.newstand.datamigration.utils.Files.isEmptyDir(file)) {
+                                            // Now import it into db.
+                                            Session session = Session.from(name, file.lastModified());
+                                            Logger.d("Created new session: %s for received", session);
+                                            ReceivedSessionRepoService.get().insert(context, session);
+                                            res.add(session);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
                     java.util.Collections.sort(res, new SessionComparator());
                     loaderListener.onComplete(res);
                 } catch (Throwable throwable) {

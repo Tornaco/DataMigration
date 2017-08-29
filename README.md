@@ -21,12 +21,3 @@
 ```
 ./gradlew app:assembleDebug
 ```
-
-
-## ART
-![1](art/Screenshots/1.png)
-![1](art/Screenshots/2.png)
-![1](art/Screenshots/3.png)
-![1](art/Screenshots/4.png)
-![1](art/Screenshots/5.png)
-![1](art/Screenshots/6.png)
