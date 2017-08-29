@@ -14,4 +14,6 @@ public interface Dispatcher<T> {
     boolean cancel(@NonNull T t, boolean interruptRunning);
 
     void cancelAll(boolean interruptRunning);
+
+    void quit();
 }

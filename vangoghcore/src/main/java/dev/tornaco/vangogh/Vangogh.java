@@ -1,5 +1,8 @@
 package dev.tornaco.vangogh;
 
+import android.app.Activity;
+import android.app.Application;
+import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
@@ -13,9 +16,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import dev.tornaco.vangogh.display.ImageApplier;
 import dev.tornaco.vangogh.display.ImageDisplayer;
 import dev.tornaco.vangogh.display.ImageEffect;
-import dev.tornaco.vangogh.display.ImageRequest;
 import dev.tornaco.vangogh.display.ImageViewDisplayer;
+import dev.tornaco.vangogh.loader.LoaderObserver;
 import dev.tornaco.vangogh.media.ImageSource;
+import dev.tornaco.vangogh.request.ImageRequest;
 import dev.tornaco.vangogh.request.RequestDispatcherTornaco;
 import dev.tornaco.vangogh.request.RequestLooper;
 import lombok.Getter;
@@ -26,8 +30,6 @@ import lombok.Getter;
  */
 
 public class Vangogh {
-
-    private static Vangogh sMe;
 
     private RequestLooper mLooper;
 
@@ -43,11 +45,26 @@ public class Vangogh {
         VangoghContext.setRequestPoolSize(requestPoolSize);
     }
 
-    public synchronized static Vangogh from(Context context) {
+    public static Vangogh from(Context context) {
         Assert.assertNotNull("Context is null", context);
-        VangoghContext.setContext(context);
-        if (sMe == null) sMe = new Vangogh();
-        return sMe;
+        VangoghContext.setContext(context.getApplicationContext());
+        return new Vangogh();
+    }
+
+    public static Vangogh with(Fragment fragment) {
+        return with(fragment.getActivity());
+    }
+
+    public static Vangogh with(android.support.v4.app.Fragment fragment) {
+        return with(fragment.getActivity());
+    }
+
+    public static Vangogh with(Activity activity) {
+        Assert.assertNotNull("Activity is null", activity);
+        VangoghContext.setContext(activity.getApplicationContext());
+        Vangogh v = new Vangogh();
+        v.registerLifeCycleListener(activity);
+        return v;
     }
 
     public VangoghRequest load(String url) {
@@ -62,6 +79,37 @@ public class Vangogh {
         return load(uri.toString());
     }
 
+    public void pause() {
+        mLooper.pause();
+    }
+
+    public void resume() {
+        mLooper.resume();
+    }
+
+    public ImageRequest[] clearPendingRequests() {
+        return mLooper.clearPendingRequests();
+    }
+
+    public void quit() {
+        mLooper.quit();
+    }
+
+    private void registerLifeCycleListener(final Activity targetActivity) {
+        Application application = targetActivity.getApplication();
+        application.registerActivityLifecycleCallbacks(new LifecycleCallbacksAdapter() {
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                super.onActivityDestroyed(activity);
+                if (activity == targetActivity) {
+                    pause();
+                    clearPendingRequests();
+                    quit();
+                }
+            }
+        });
+    }
+
     @Getter
     public class VangoghRequest {
 
@@ -69,6 +117,8 @@ public class Vangogh {
         private ImageDisplayer imageDisplayer;
         private ImageApplier applier;
         private ImageEffect[] effect;
+
+        private LoaderObserver observer;
 
         private VangoghRequest source(ImageSource source) {
             this.source = source;
@@ -105,6 +155,11 @@ public class Vangogh {
             return this;
         }
 
+        public VangoghRequest observer(LoaderObserver observer) {
+            this.observer = observer;
+            return this;
+        }
+
         public ImageRequest into(ImageView imageView) {
             return into(new ImageViewDisplayer(imageView));
         }
@@ -121,6 +176,7 @@ public class Vangogh {
                             .applier(applier)
                             .effect(effect)
                             .id(RequestIdFactory.next())
+                            .observer(observer)
                             .build();
             mLooper.onNewRequest(imageRequest);
             return imageRequest;

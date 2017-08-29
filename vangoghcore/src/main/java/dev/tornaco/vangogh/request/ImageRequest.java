@@ -1,5 +1,9 @@
-package dev.tornaco.vangogh.display;
+package dev.tornaco.vangogh.request;
 
+import dev.tornaco.vangogh.display.ImageApplier;
+import dev.tornaco.vangogh.display.ImageDisplayer;
+import dev.tornaco.vangogh.display.ImageEffect;
+import dev.tornaco.vangogh.loader.LoaderObserver;
 import dev.tornaco.vangogh.media.ImageSource;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,6 +27,8 @@ public class ImageRequest {
     private ImageDisplayer displayer;
     private ImageApplier applier;
     private ImageEffect[] effect;
+
+    private LoaderObserver observer;
 
     private boolean dirty;
 

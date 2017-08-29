@@ -1,5 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
+import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.data.model.DataRecord;
 import org.newstand.datamigration.data.model.PhotoRecord;
@@ -42,6 +43,8 @@ public class PhotoListFragment extends DataListViewerFragment {
 
                 Vangogh.from(getContext())
                         .load(photoRecord.getPath())
+                        .placeHolder(R.mipmap.ic_photo_avatar)
+                        .fallback(R.drawable.aio_image_default)
                         .effect(new CircleImageEffect())
                         .applier(new FadeInApplier())
                         .into(holder.getCheckableImageView());

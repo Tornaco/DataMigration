@@ -32,7 +32,7 @@ public class CircleImageEffect implements ImageEffect {
         canvas.drawCircle(min / 2, min / 2, min / 2, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(source, 0, 0, paint);
-        source.recycle();
+        source = null;
         return target;
     }
 }

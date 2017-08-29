@@ -44,11 +44,13 @@ public class ImageViewDisplayer implements ImageDisplayer {
     public void display(@Nullable Image image) {
         Drawable drawable = image != null ? image.asDrawable() : null;
         if (drawable != null) {
+            target.setImageBitmap(null);
             target.setImageDrawable(drawable);
             return;
         }
         Bitmap bitmap = image == null ? null : image.asBitmap();
         Logger.v("ImageViewDisplayer, display: %s", bitmap);
+        target.setImageDrawable(null);
         target.setImageBitmap(bitmap);
     }
 

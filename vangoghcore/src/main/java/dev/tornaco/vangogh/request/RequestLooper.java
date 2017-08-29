@@ -9,10 +9,11 @@ import android.support.annotation.NonNull;
 
 import junit.framework.Assert;
 
+import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import dev.tornaco.vangogh.display.ImageRequest;
+import lombok.Getter;
 
 /**
  * Created by guohao4 on 2017/8/24.
@@ -32,9 +33,15 @@ public class RequestLooper {
 
     private AtomicBoolean hasQuit = new AtomicBoolean(false);
 
+    private LinkedList<ImageRequest> pendingQueue;
+
+    @Getter
+    private LooperState looperState = LooperState.IDLE;
+
     private RequestLooper(RequestDispatcher dispatcher, Seq seq) {
         this.hr = new HandlerThread("RequestLooper#" + LOOP_ID.getAndIncrement());
         this.hr.start();
+        this.looperState = LooperState.LOOP_REQUESTED;
         Looper looper = hr.getLooper();
         this.handler = new Handler(looper) {
             @Override
@@ -43,6 +50,7 @@ public class RequestLooper {
                 RequestLooper.this.handleMessage(msg);
             }
         };
+        this.looperState = LooperState.LOOPING;
         this.seq = seq;
         this.dispatcher = dispatcher;
     }
@@ -58,7 +66,22 @@ public class RequestLooper {
     }
 
     public void onNewRequest(@NonNull ImageRequest imageRequest) {
-        Assert.assertFalse("Looper has quit", hasQuit.get());
+        if (hasQuit.get()) return;
+
+        if (looperState == LooperState.PAUSED) {
+
+            switch (this.seq) {
+                case FIFO:
+                    this.pendingQueue.addFirst(imageRequest);
+                    break;
+                case FILO:
+                    this.pendingQueue.addLast(imageRequest);
+                    break;
+            }
+
+            return;
+        }
+
         switch (this.seq) {
             case FIFO:
                 this.handler.sendMessage(this.handler.obtainMessage(MSG_HANDLE_NEW_REQUEST, imageRequest));
@@ -69,15 +92,51 @@ public class RequestLooper {
         }
     }
 
+    public void pause() {
+        if (looperState == LooperState.PAUSE_REQUESTED || looperState == LooperState.PAUSED) {
+            return;
+        }
+        looperState = LooperState.PAUSE_REQUESTED;
+        onRequestPause();
+    }
+
+    private synchronized void onRequestPause() {
+        if (pendingQueue == null) pendingQueue = new LinkedList<>();
+        looperState = LooperState.PAUSED;
+    }
+
+    public ImageRequest[] clearPendingRequests() {
+        if (pendingQueue == null) return new ImageRequest[0];
+        ImageRequest[] requests = (ImageRequest[]) pendingQueue.toArray();
+        pendingQueue.clear();
+        return requests;
+    }
+
+    public void resume() {
+        if (looperState == LooperState.PAUSE_REQUESTED || looperState == LooperState.PAUSED) {
+            looperState = LooperState.LOOP_REQUESTED;
+
+            ImageRequest[] requests = clearPendingRequests();
+            looperState = LooperState.LOOPING;
+
+            for (ImageRequest r : requests) {
+                onNewRequest(r);
+            }
+        }
+    }
+
     public void quit() {
         hasQuit.set(true);
         hr.quit();
+        looperState = LooperState.QUIT;
+        dispatcher.quit();
     }
 
     public void quitSafely() {
         hasQuit.set(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             hr.quitSafely();
+            looperState = LooperState.QUIT;
         } else {
             quit();
         }
@@ -85,5 +144,9 @@ public class RequestLooper {
 
     private void handleMessage(Message message) {
         this.dispatcher.dispatch((ImageRequest) message.obj);
+    }
+
+    private enum LooperState {
+        IDLE, LOOP_REQUESTED, LOOPING, PAUSE_REQUESTED, PAUSED, QUIT
     }
 }

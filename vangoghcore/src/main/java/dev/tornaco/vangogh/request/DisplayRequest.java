@@ -2,7 +2,6 @@ package dev.tornaco.vangogh.request;
 
 import org.newstand.logger.Logger;
 
-import dev.tornaco.vangogh.display.ImageRequest;
 import dev.tornaco.vangogh.media.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

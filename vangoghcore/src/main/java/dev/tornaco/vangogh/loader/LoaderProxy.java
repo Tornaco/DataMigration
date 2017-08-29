@@ -16,7 +16,7 @@ import dev.tornaco.vangogh.VangoghContext;
 import dev.tornaco.vangogh.common.Error;
 import dev.tornaco.vangogh.media.Image;
 import dev.tornaco.vangogh.media.ImageSource;
-import dev.tornaco.vangogh.display.ImageRequest;
+import dev.tornaco.vangogh.request.ImageRequest;
 
 /**
  * Created by guohao4 on 2017/8/24.
@@ -32,7 +32,8 @@ public class LoaderProxy {
         LOADERS.add(new CacheLoader());
         LOADERS.add(new FileLoader());
         LOADERS.add(new ContentLoader());
-
+        LOADERS.add(new FallbackLoader());
+        LOADERS.add(new NetworkImageLoader());
 
         // Read loader init Manifest.
         ApplicationInfo applicationInfo = null;
@@ -84,11 +85,13 @@ public class LoaderProxy {
 
         for (Loader<Image> imageLoader : LOADERS) {
             Image image = imageLoader.load(imageRequest.getImageSource(), delegate);
+            Logger.v("LoaderProxy, loader: %s, res: %s", imageLoader, image);
             if (image != null && (image.asBitmap() != null || image.asDrawable() != null))
                 return image;
         }
 
         // We got null image, or invalid image.
+        // FIXME Is this needed?
         delegate.onImageFailure(Error.builder()
                 .errorCode(Error.ERR_CODE_GENERIC).throwable(new Throwable()).build());
 
@@ -107,6 +110,13 @@ public class LoaderProxy {
         public void onImageLoading(@NonNull ImageSource source) {
             if (observer != null) {
                 observer.onImageLoading(source);
+            }
+        }
+
+        @Override
+        public void onProgressUpdate(float progress) {
+            if (observer != null) {
+                observer.onProgressUpdate(progress);
             }
         }
 

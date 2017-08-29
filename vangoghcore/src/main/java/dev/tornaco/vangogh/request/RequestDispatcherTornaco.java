@@ -17,7 +17,6 @@ import java.util.concurrent.FutureTask;
 
 import dev.tornaco.vangogh.VangoghContext;
 import dev.tornaco.vangogh.common.Error;
-import dev.tornaco.vangogh.display.ImageRequest;
 import dev.tornaco.vangogh.loader.LoaderObserver;
 import dev.tornaco.vangogh.loader.LoaderObserverAdapter;
 import dev.tornaco.vangogh.loader.LoaderProxy;
@@ -66,37 +65,29 @@ public class RequestDispatcherTornaco implements RequestDispatcher {
 
         cancel(imageRequest, true);
 
+        final LoaderObserver observer = imageRequest.getObserver();
 
         this.executorService.execute(new RequestFuture(imageRequest,
                 new LoaderObserverAdapter() {
                     @Override
                     public void onImageFailure(@NonNull Error error) {
                         super.onImageFailure(error);
+                        if (observer != null) observer.onImageFailure(error);
                         Logger.v("RequestDispatcherTornaco.LoaderObserverAdapter, onImageFailure: %s", error);
-
-                        // Apply fallback.
-                        ImageSource source = imageRequest.getImageSource();
-                        if (source.getFallback() > 0) {
-                            Drawable fallbackDrawable = VangoghContext.getContext().getResources()
-                                    .getDrawable(source.getFallback());
-                            if (fallbackDrawable != null) {
-                                displayRequestDispatcher.dispatch(new DisplayRequest(
-                                        new DrawableImage(fallbackDrawable),
-                                        imageRequest, "no-applier"
-                                ));
-                            }
-                        }
                     }
 
                     @Override
                     public void onImageLoading(@NonNull ImageSource source) {
                         super.onImageLoading(source);
+                        if (observer != null) observer.onImageLoading(source);
                         Logger.v("RequestDispatcherTornaco.LoaderObserverAdapter, onImageLoading: %s", source);
                     }
 
                     @Override
                     public void onImageReady(@NonNull Image image) {
+                        if (observer != null) observer.onImageReady(image);
                         Logger.v("RequestDispatcherTornaco.LoaderObserverAdapter, onImageReady: %s", image);
+
                         RequestDispatcherTornaco.this.onImageReady(imageRequest, image);
 
                         CacheManager.getInstance().onImageReady(source, image);
@@ -128,6 +119,15 @@ public class RequestDispatcherTornaco implements RequestDispatcher {
             }
             REQUESTS.clear();
         }
+    }
+
+    @Override
+    public void quit() {
+        executorService.shutdownNow();
+        synchronized (REQUESTS) {
+            REQUESTS.clear();
+        }
+        displayRequestDispatcher.quit();
     }
 
     private void onImageReady(ImageRequest request, @NonNull Image image) {

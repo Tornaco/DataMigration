@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class ImageSource {
+public class ImageSource implements Cloneable {
     private String url;
     @DrawableRes
     private int placeHolder;
@@ -22,6 +22,10 @@ public class ImageSource {
 
     private boolean skipDiskCache;
     private boolean skipMemoryCache;
+
+    public ImageSource duplicate() throws CloneNotSupportedException {
+        return (ImageSource) clone();
+    }
 
     @Override
     public boolean equals(Object o) {

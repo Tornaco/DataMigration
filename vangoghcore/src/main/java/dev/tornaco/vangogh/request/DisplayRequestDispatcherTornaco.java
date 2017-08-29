@@ -20,7 +20,7 @@ import dev.tornaco.vangogh.media.Image;
  * Email: Tornaco@163.com
  */
 
-public class DisplayRequestDispatcherTornaco implements DisplayRequestDispatcher {
+class DisplayRequestDispatcherTornaco implements DisplayRequestDispatcher {
 
     private final Handler mainThreadHandler;
 
@@ -28,18 +28,19 @@ public class DisplayRequestDispatcherTornaco implements DisplayRequestDispatcher
 
     private final Set<Integer> DIRTY_REQUESTS = new HashSet<>();
 
-    public DisplayRequestDispatcherTornaco() {
+    DisplayRequestDispatcherTornaco() {
         this.mainThreadHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 int id = msg.what;
+                DisplayRequest request = (DisplayRequest) msg.obj;
                 if (DIRTY_REQUESTS.contains(id)) {
-                    Logger.v("DisplayRequestDispatcherTornaco, Request of ID:%s is canceled", id);
+                    Logger.v("DisplayRequestDispatcherTornaco, Request :%s is canceled", request);
                     return;
                 }
-                Logger.v("DisplayRequestDispatcherTornaco, Request of ID:%s will run", id);
-                DisplayRequest request = (DisplayRequest) msg.obj;
+                Logger.v("DisplayRequestDispatcherTornaco, Request %s will execute", request);
+
                 request.run();
             }
         };
@@ -81,5 +82,11 @@ public class DisplayRequestDispatcherTornaco implements DisplayRequestDispatcher
     @Override
     public void cancelAll(boolean interruptRunning) {
         mainThreadHandler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public void quit() {
+        executorService.shutdownNow();
+        DIRTY_REQUESTS.clear();
     }
 }

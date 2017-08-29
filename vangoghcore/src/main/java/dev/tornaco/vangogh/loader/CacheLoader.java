@@ -44,6 +44,9 @@ public class CacheLoader extends BaseImageLoader {
         if (image == null) {
             image = source.isSkipDiskCache() ? null : diskCache.get(source);
         }
+        if (observer != null && image != null) {
+            observer.onImageReady(image);
+        }
         return image;
     }
 }

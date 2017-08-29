@@ -2,7 +2,6 @@ package dev.tornaco.vangogh.media;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**

@@ -15,6 +15,8 @@ public interface LoaderObserver {
 
     void onImageLoading(@NonNull ImageSource source);
 
+    void onProgressUpdate(float progress);
+
     void onImageReady(@NonNull Image image);
 
     void onImageFailure(@NonNull Error error);

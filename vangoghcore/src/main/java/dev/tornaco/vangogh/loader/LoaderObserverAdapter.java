@@ -18,6 +18,11 @@ public class LoaderObserverAdapter implements LoaderObserver {
     }
 
     @Override
+    public void onProgressUpdate(float progress) {
+
+    }
+
+    @Override
     public void onImageReady(@NonNull Image image) {
 
     }
