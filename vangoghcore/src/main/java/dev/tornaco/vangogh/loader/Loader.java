@@ -11,8 +11,19 @@ import dev.tornaco.vangogh.media.ImageSource;
  */
 
 public interface Loader<T> {
+    /**
+     * @param source   {@link ImageSource} source of the {@link dev.tornaco.vangogh.media.Image} to load.
+     * @param observer The instance of the {@link LoaderObserver}, may be null.
+     * @return Loading result.
+     */
     @Nullable
     T load(@NonNull ImageSource source, @Nullable LoaderObserver observer);
 
+    /**
+     * Range from -{@link Integer#MAX_VALUE} to {@link Integer#MAX_VALUE},
+     * You git high priority with smaller value.
+     *
+     * @return Your loader's.
+     */
     int priority();
 }

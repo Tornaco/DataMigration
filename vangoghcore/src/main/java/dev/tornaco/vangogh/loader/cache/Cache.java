@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
  * Email: Tornaco@163.com
  */
 
-public interface Cache<K, V> {
+interface Cache<K, V> {
     @Nullable
     V get(@NonNull K k);
 

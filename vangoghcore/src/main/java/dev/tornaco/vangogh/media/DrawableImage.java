@@ -28,4 +28,24 @@ public class DrawableImage implements Image {
     public Drawable asDrawable(@NonNull Context context) {
         return this.drawable;
     }
+
+    @Override
+    public void recycle() {
+        drawable = null;
+    }
+
+    @Override
+    public boolean isRecycled() {
+        return drawable == null;
+    }
+
+    @Override
+    public boolean cachable() {
+        return false;
+    }
+
+    @Override
+    public long size() {
+        return 1024;
+    }
 }

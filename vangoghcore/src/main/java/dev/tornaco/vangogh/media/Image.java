@@ -18,4 +18,12 @@ public interface Image {
 
     @Nullable
     Drawable asDrawable(@NonNull Context context);
+
+    void recycle();
+
+    boolean isRecycled();
+
+    boolean cachable();
+
+    long size();
 }

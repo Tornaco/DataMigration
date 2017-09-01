@@ -14,7 +14,7 @@ import org.newstand.datamigration.utils.Files;
 
 import dev.tornaco.vangogh.Vangogh;
 import dev.tornaco.vangogh.display.CircleImageEffect;
-import dev.tornaco.vangogh.display.appliers.FadeInApplier;
+import dev.tornaco.vangogh.display.appliers.FadeOutFadeInApplier;
 
 
 /**
@@ -52,7 +52,7 @@ public class MusicListFragment extends DataListViewerFragment {
                 Vangogh.with(getContext())
                         .load(musicRecord.getArtUri())
                         .effect(new CircleImageEffect())
-                        .applier(new FadeInApplier())
+                        .applier(new FadeOutFadeInApplier())
                         .fallback(R.mipmap.ic_music_avatar)
                         .into(holder.getCheckableImageView());
 

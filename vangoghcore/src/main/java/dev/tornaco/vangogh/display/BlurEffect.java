@@ -25,6 +25,6 @@ public class BlurEffect implements ImageEffect {
     @NonNull
     @Override
     public Image process(Context context, @NonNull Image image) {
-        return new BitmapImage(BitmapUtil.createBlurredBitmap(image.asBitmap(context), this.radius));
+        return new BitmapImage(BitmapUtil.createBlurredBitmap(image.asBitmap(context), this.radius), "blur");
     }
 }

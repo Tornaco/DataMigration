@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 
 import junit.framework.Assert;
 
+import org.newstand.logger.Logger;
+
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -101,6 +103,7 @@ public class RequestLooper {
     }
 
     private synchronized void onRequestPause() {
+        Logger.v("RequestLooper, onRequestPause");
         if (pendingQueue == null) pendingQueue = new LinkedList<>();
         looperState = LooperState.PAUSED;
     }
@@ -119,6 +122,8 @@ public class RequestLooper {
     public void resume() {
         if (looperState == LooperState.PAUSE_REQUESTED || looperState == LooperState.PAUSED) {
             looperState = LooperState.LOOP_REQUESTED;
+
+            Logger.v("RequestLooper, resume");
 
             ImageRequest[] requests = clearPendingRequests();
             looperState = LooperState.LOOPING;

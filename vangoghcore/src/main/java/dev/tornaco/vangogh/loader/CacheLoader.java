@@ -3,6 +3,8 @@ package dev.tornaco.vangogh.loader;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.newstand.logger.Logger;
+
 import dev.tornaco.vangogh.loader.cache.CacheManager;
 import dev.tornaco.vangogh.media.Image;
 import dev.tornaco.vangogh.media.ImageSource;
@@ -33,10 +35,8 @@ class CacheLoader extends BaseImageLoader {
     @Nullable
     @Override
     Image doLoad(@NonNull ImageSource source, @Nullable LoaderObserver observer) {
-        Image image = source.isSkipMemoryCache() ? null : cacheManager.getMemCache().get(source);
-        if (image == null) {
-            image = source.isSkipDiskCache() ? null : cacheManager.getDiskCache().get(source);
-        }
+        Image image = cacheManager.get(source);
+        Logger.v("CacheLoader, got from cache: %s", image);
         if (observer != null && image != null) {
             observer.onImageReady(image);
         }

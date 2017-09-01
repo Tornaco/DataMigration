@@ -26,13 +26,13 @@ public class VangoghConfig {
     private int requestPoolSize;
     private int memCachePoolSize;
 
-    public static VangoghConfig defaultConfig(Context context) {
+    static VangoghConfig defaultConfig(Context context) {
         return VangoghConfig
                 .builder()
                 .context(context)
                 .diskCacheDir(new File(context.getCacheDir().getPath() + File.separator + "disk_cache"))
-                .memCachePoolSize((int) (Runtime.getRuntime().maxMemory() / 12))
-                .requestPoolSize(Runtime.getRuntime().availableProcessors() / 4 + 1)
+                .memCachePoolSize(64)
+                .requestPoolSize(Runtime.getRuntime().availableProcessors() / 4)
                 .build();
     }
 

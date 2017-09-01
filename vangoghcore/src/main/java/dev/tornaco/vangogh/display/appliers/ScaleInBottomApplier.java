@@ -35,4 +35,9 @@ public class ScaleInBottomApplier implements ImageApplier {
                 })
                 .start();
     }
+
+    @Override
+    public long duration() {
+        return 500;
+    }
 }

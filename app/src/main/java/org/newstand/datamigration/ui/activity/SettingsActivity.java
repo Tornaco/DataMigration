@@ -2,7 +2,6 @@ package org.newstand.datamigration.ui.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,9 +9,6 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.nononsenseapps.filepicker.Utils;
 
@@ -20,7 +16,6 @@ import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.ActionListenerMainThreadAdapter;
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.provider.SettingsProvider;
-import org.newstand.datamigration.sync.SharedExecutor;
 import org.newstand.datamigration.ui.tiles.AutoInstallTile;
 import org.newstand.datamigration.ui.tiles.ChangeLauncherIconTile;
 import org.newstand.datamigration.ui.tiles.DevTile;
@@ -34,8 +29,6 @@ import org.newstand.datamigration.ui.tiles.TransitionAnimationTile;
 import org.newstand.datamigration.ui.widget.ProgressDialogCompat;
 import org.newstand.datamigration.utils.FilePickerUtils;
 import org.newstand.datamigration.utils.Files;
-import org.newstand.datamigration.utils.SeLinuxEnabler;
-import org.newstand.datamigration.utils.SeLinuxState;
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -137,31 +130,6 @@ public class SettingsActivity extends TransitionSafeActivity {
     }
 
     public static class SettingsFragment extends DashboardFragment {
-
-        @Override
-        public void onAttach(Context context) {
-            super.onAttach(context);
-        }
-
-        @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(R.menu.settings, menu);
-            super.onCreateOptionsMenu(menu, inflater);
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            if (item.getItemId() == R.id.action_disable_selinux) {
-                SharedExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        SeLinuxEnabler.setState(SeLinuxState.Permissive);
-                    }
-                });
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
 
         public static SettingsFragment getInstance() {
             return new SettingsFragment();

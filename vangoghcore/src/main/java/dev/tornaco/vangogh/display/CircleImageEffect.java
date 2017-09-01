@@ -8,6 +8,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.support.annotation.NonNull;
 
+import org.newstand.logger.Logger;
+
 import dev.tornaco.vangogh.media.BitmapImage;
 import dev.tornaco.vangogh.media.Image;
 
@@ -22,18 +24,24 @@ public class CircleImageEffect implements ImageEffect {
     public Image process(Context context, @NonNull Image image) {
         if (image.asBitmap(context) == null) return image;
         return new BitmapImage(createCircleImage(image.asBitmap(context),
-                Math.min(image.asBitmap(context).getWidth(), image.asBitmap(context).getHeight())));
+                Math.min(image.asBitmap(context).getWidth(), image.asBitmap(context).getHeight())), "circle");
     }
 
     private static Bitmap createCircleImage(Bitmap source, int min) {
-        final Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        Bitmap target = Bitmap.createBitmap(min, min, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(target);
-        canvas.drawCircle(min / 2, min / 2, min / 2, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(source, 0, 0, paint);
-        source = null;
-        return target;
+        try {
+            final Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            Bitmap target = Bitmap.createBitmap(min, min, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(target);
+            canvas.drawCircle(min / 2, min / 2, min / 2, paint);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            canvas.drawBitmap(source, 0, 0, paint);
+            source = null;
+            return target;
+        } catch (OutOfMemoryError oom) {
+            Logger.e(oom, "Out of memory");
+            System.gc();
+            return source;
+        }
     }
 }

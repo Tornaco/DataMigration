@@ -5,7 +5,9 @@ import android.content.Context;
 import dev.tornaco.vangogh.display.ImageApplier;
 import dev.tornaco.vangogh.display.ImageDisplayer;
 import dev.tornaco.vangogh.display.ImageEffect;
+import dev.tornaco.vangogh.loader.Loader;
 import dev.tornaco.vangogh.loader.LoaderObserver;
+import dev.tornaco.vangogh.media.Image;
 import dev.tornaco.vangogh.media.ImageSource;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,11 +32,12 @@ public class ImageRequest {
     private ImageSource imageSource;
     private ImageDisplayer displayer;
     private ImageApplier applier;
-    private ImageEffect[] effect;
 
     private LoaderObserver observer;
 
     private boolean dirty;
+
+    private Loader<Image> loader;
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;

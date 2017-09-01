@@ -1,5 +1,10 @@
 package dev.tornaco.vangogh.loader.cache;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import org.newstand.logger.Logger;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
@@ -9,7 +14,6 @@ import dev.tornaco.vangogh.VangoghConfigManager;
 import dev.tornaco.vangogh.media.Image;
 import dev.tornaco.vangogh.media.ImageSource;
 import dev.tornaco.vangogh.request.ImageManager;
-import lombok.Getter;
 
 /**
  * Created by guohao4 on 2017/8/28.
@@ -18,8 +22,7 @@ import lombok.Getter;
 
 public class CacheManager {
 
-    @Getter
-    Cache<ImageSource, Image> diskCache, memCache;
+    private Cache<ImageSource, Image> diskCache, memCache;
 
     private Observer imageReadyObserver = new Observer() {
         @Override
@@ -56,15 +59,27 @@ public class CacheManager {
         VangoghConfigManager.getInstance().addObserver(confObserver);
     }
 
-    public void onImageReady(final ImageSource source, final Image image) {
+    private void onImageReady(final ImageSource source, final Image image) {
+        if (!image.cachable()) return;
         if (image.asBitmap(source.getContext()) == null) return;
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                memCache.put(source, image);
                 diskCache.put(source, image);
+                memCache.put(source, image);
             }
         });
+    }
+
+    public
+    @Nullable
+    Image get(@NonNull ImageSource source) {
+        Image image = source.isSkipMemoryCache() ? null : memCache.get(source);
+        Logger.v("CacheManager, get from mem: %s", image);
+        if (image == null) {
+            image = source.isSkipDiskCache() ? null : diskCache.get(source);
+        }
+        return image;
     }
 
     public void quit() {

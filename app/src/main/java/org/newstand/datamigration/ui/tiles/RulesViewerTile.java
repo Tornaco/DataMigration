@@ -21,6 +21,7 @@ import java.io.File;
 import dev.nick.tiles.tile.QuickTile;
 import dev.nick.tiles.tile.SwitchTileView;
 import dev.tornaco.vangogh.Vangogh;
+import dev.tornaco.vangogh.display.appliers.FadeOutFadeInApplier;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/6 18:26
@@ -76,6 +77,7 @@ public class RulesViewerTile extends QuickTile {
                 Vangogh.with(RulesViewerTile.this.getContext().getApplicationContext())
                         .load(iconUrl)
                         .skipMemoryCache(true)
+                        .applier(new FadeOutFadeInApplier())
                         .fallback(R.drawable.ic_settings_app)
                         .into(getImageView());
             }

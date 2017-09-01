@@ -11,4 +11,9 @@ import dev.tornaco.vangogh.media.Image;
 
 public interface ImageApplier {
     void apply(@NonNull ImageDisplayer displayer, @NonNull Image image);
+
+    /**
+     * @return The total time for your animation, if you apply with any.
+     */
+    long duration();
 }

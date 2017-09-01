@@ -23,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -96,5 +96,5 @@ dependencies {
     compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
     // https://github.com/javiersantos/MaterialStyledDialogs
     compile 'com.github.javiersantos:MaterialStyledDialogs:2.1'
-    compile project(':vangoghcore')
+    compile 'com.github.Tornaco:VanGogh:v0.7-alpha'
 }

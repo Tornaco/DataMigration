@@ -50,19 +50,6 @@ public class AboutActivity extends TransitionSafeActivity {
             super.onCreateOptionsMenu(menu, inflater);
         }
 
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            if (item.getItemId() == R.id.action_disable_selinux) {
-                SharedExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        SeLinuxEnabler.setState(SeLinuxState.Permissive);
-                    }
-                });
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
 
         public static SettingsFragment getInstance() {
             return new SettingsFragment();

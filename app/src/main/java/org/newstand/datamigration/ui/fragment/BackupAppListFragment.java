@@ -12,6 +12,7 @@ import org.newstand.datamigration.ui.widget.ApkDataPickerDialog;
 import org.newstand.datamigration.utils.Files;
 
 import dev.tornaco.vangogh.Vangogh;
+import dev.tornaco.vangogh.display.appliers.FadeOutFadeInApplier;
 
 /**
  * Created by Nick@NewStand.org on 2017/4/7 15:26
@@ -43,6 +44,7 @@ public class BackupAppListFragment extends AppListFragment {
                 holder.getLineTwoTextView().setText(summary);
                 Vangogh.with(BackupAppListFragment.this)
                         .load(appRecord.getIconUrl())
+                        .applier(new FadeOutFadeInApplier())
                         .fallback(R.mipmap.ic_ext_avatar)
                         .into(holder.getCheckableImageView());
                 super.onBindViewHolder(holder, record);

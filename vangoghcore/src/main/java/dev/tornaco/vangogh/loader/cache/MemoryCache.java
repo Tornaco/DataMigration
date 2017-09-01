@@ -6,6 +6,9 @@ import android.support.v4.util.LruCache;
 
 import junit.framework.Assert;
 
+import org.newstand.logger.Logger;
+
+import dev.tornaco.vangogh.media.BitmapImage;
 import dev.tornaco.vangogh.media.Image;
 import dev.tornaco.vangogh.media.ImageSource;
 
@@ -19,18 +22,15 @@ class MemoryCache implements Cache<ImageSource, Image> {
     private LruCache<ImageSource, Image> mLruCache;
 
     MemoryCache(int poolSize) {
-        mLruCache = new LruCache<ImageSource, Image>(poolSize) {
-            @SuppressWarnings("ConstantConditions")
-            @Override
-            protected int sizeOf(ImageSource key, Image value) {
-                if (value == null || value.asBitmap(key.getContext()) == null) return 0;
-                return value.asBitmap(key.getContext()).getWidth() * value.asBitmap(key.getContext()).getHeight();
-            }
+        Logger.v("MemoryCache, using pool size: %s", poolSize);
 
+        mLruCache = new LruCache<ImageSource, Image>(poolSize) {
             @Override
             protected void entryRemoved(boolean evicted, ImageSource key, Image oldValue, Image newValue) {
                 super.entryRemoved(evicted, key, oldValue, newValue);
+                key = null;
                 oldValue = null;
+                System.gc();
             }
         };
     }
@@ -39,7 +39,13 @@ class MemoryCache implements Cache<ImageSource, Image> {
     @Override
     public Image get(@NonNull ImageSource source) {
         Assert.assertNotNull("Source is null", source);
-        return mLruCache.get(source);
+        Image image = mLruCache.get(source);
+        if (image != null && image.isRecycled()) {
+            Logger.v("MemoryCache, removing recycled cache image");
+            mLruCache.remove(source);
+            return null;
+        }
+        return image;
     }
 
     @Override
@@ -48,7 +54,19 @@ class MemoryCache implements Cache<ImageSource, Image> {
         Assert.assertNotNull(image);
         if (image.asBitmap(source.getContext()) == null)
             return false;
-        mLruCache.put(source, image);
+
+        // Only for debug.
+        if (image instanceof BitmapImage) {
+            ((BitmapImage) image).setAlias("in-mem-cache");
+        }
+
+        try {
+            mLruCache.put(source, image);
+        } catch (Throwable e) {
+            Logger.e(e, "Fail put to mem cache");
+            mLruCache.evictAll();
+            return false;
+        }
         return true;
     }
 

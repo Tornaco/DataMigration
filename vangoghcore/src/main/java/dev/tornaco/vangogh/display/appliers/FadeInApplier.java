@@ -35,4 +35,9 @@ public class FadeInApplier implements ImageApplier {
         });
         animator.start();
     }
+
+    @Override
+    public long duration() {
+        return 500;
+    }
 }

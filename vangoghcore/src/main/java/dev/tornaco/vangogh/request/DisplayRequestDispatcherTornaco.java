@@ -12,15 +12,15 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import dev.tornaco.vangogh.display.ImageEffect;
-import dev.tornaco.vangogh.media.Image;
-
 /**
  * Created by guohao4 on 2017/8/25.
  * Email: Tornaco@163.com
  */
 
 class DisplayRequestDispatcherTornaco implements DisplayRequestDispatcher {
+
+    private static final int MSG_DISPLAY = 0x1;
+    private static final int MSG_DISPLAY_COMPLETE = 0x2;
 
     private final Handler mainThreadHandler;
 
@@ -36,14 +36,15 @@ class DisplayRequestDispatcherTornaco implements DisplayRequestDispatcher {
                 int id = msg.what;
                 DisplayRequest request = (DisplayRequest) msg.obj;
                 if (DIRTY_REQUESTS.contains(id)) {
-                    Logger.v("DisplayRequestDispatcherTornaco, Request :%s is canceled", request);
+                    Logger.v("DisplayRequestDispatcherTornaco, Request: %s is canceled", request);
                     return;
                 }
                 Logger.v("DisplayRequestDispatcherTornaco, Request %s will execute", request);
 
-                request.run();
+                request.callApply();
             }
         };
+
         this.executorService = Executors.newSingleThreadExecutor();
     }
 
@@ -57,19 +58,10 @@ class DisplayRequestDispatcherTornaco implements DisplayRequestDispatcher {
                     Logger.v("DisplayRequestDispatcherTornaco, Request of ID:%s is canceled", displayRequest.getId());
                     return;
                 }
-                ImageEffect[] effect = displayRequest.getEffect();
-                Image effectedImage = displayRequest.getImage();
-                if (effect != null) {
-                    for (ImageEffect e : effect) {
-                        effectedImage = e.process(displayRequest.getContext(), effectedImage);
-                    }
-                    displayRequest.setImage(effectedImage);
-                }
                 mainThreadHandler.obtainMessage(displayRequest.getId(), displayRequest).sendToTarget();
             }
         });
     }
-
 
     @Override
     public boolean cancel(@NonNull DisplayRequest displayRequest, boolean interruptRunning) {

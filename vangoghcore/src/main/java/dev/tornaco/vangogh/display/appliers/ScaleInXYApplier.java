@@ -37,4 +37,9 @@ public class ScaleInXYApplier implements ImageApplier {
         });
         animator.start();
     }
+
+    @Override
+    public long duration() {
+        return 500;
+    }
 }

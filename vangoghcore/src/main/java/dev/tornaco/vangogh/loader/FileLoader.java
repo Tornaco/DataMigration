@@ -64,7 +64,7 @@ public class FileLoader extends BaseImageLoader {
 
         Logger.i("decodeFile bitmap: %s", bitmap);
 
-        Image image = new BitmapImage(bitmap);
+        Image image = new BitmapImage(bitmap, "file");
         if (observer != null) {
             observer.onImageReady(image);
         }

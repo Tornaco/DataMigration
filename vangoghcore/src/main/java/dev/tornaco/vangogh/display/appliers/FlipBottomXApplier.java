@@ -33,4 +33,9 @@ public class FlipBottomXApplier implements ImageApplier {
                 })
                 .start();
     }
+
+    @Override
+    public long duration() {
+        return 700;
+    }
 }

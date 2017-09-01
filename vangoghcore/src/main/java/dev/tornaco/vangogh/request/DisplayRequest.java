@@ -17,20 +17,31 @@ import lombok.experimental.Delegate;
 @Getter
 @Setter
 @ToString
-public class DisplayRequest implements Runnable {
+class DisplayRequest {
     private Image image;
     @Delegate
     private ImageRequest imageRequest;
     private Object arg;
 
-    @Override
-    public void run() {
+    long getPossibleDurationOpt() {
+        long timeTaken = 0;
+        if (imageRequest.getApplier() != null && arg == null) {
+            timeTaken = imageRequest.getApplier().duration();
+        }
+        if (timeTaken > 120) timeTaken = 120;
+        return timeTaken;
+    }
+
+    long callApply() {
         Logger.v("DisplayRequest, run, arg: %s", arg);
+        long timeTaken = 52;
         if (imageRequest.getApplier() != null && arg == null) {
             imageRequest.getApplier().apply(imageRequest.getDisplayer(), image);
+            timeTaken = imageRequest.getApplier().duration();
         } else {
             imageRequest.getDisplayer().display(image);
         }
+        return timeTaken;
     }
 
     @Override

@@ -12,7 +12,7 @@ import org.newstand.datamigration.utils.Files;
 
 import dev.tornaco.vangogh.Vangogh;
 import dev.tornaco.vangogh.display.CircleImageEffect;
-import dev.tornaco.vangogh.display.appliers.FadeInApplier;
+import dev.tornaco.vangogh.display.appliers.FadeOutFadeInApplier;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -38,7 +38,7 @@ public class PhotoListFragment extends DataListViewerFragment {
                 Vangogh.with(getContext())
                         .load(photoRecord.getPath())
                         .effect(new CircleImageEffect())
-                        .applier(new FadeInApplier())
+                        .applier(new FadeOutFadeInApplier())
                         .fallback(R.drawable.aio_image_default)
                         .into(holder.getCheckableImageView());
 

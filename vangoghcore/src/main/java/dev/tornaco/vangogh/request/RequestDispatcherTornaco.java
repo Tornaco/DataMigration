@@ -16,12 +16,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 import dev.tornaco.vangogh.common.Error;
+import dev.tornaco.vangogh.display.ImageEffect;
 import dev.tornaco.vangogh.loader.LoaderObserver;
 import dev.tornaco.vangogh.loader.LoaderObserverAdapter;
 import dev.tornaco.vangogh.loader.LoaderProxy;
 import dev.tornaco.vangogh.media.DrawableImage;
 import dev.tornaco.vangogh.media.Image;
 import dev.tornaco.vangogh.media.ImageSource;
+import lombok.Synchronized;
 
 /**
  * Created by guohao4 on 2017/8/24.
@@ -43,6 +45,7 @@ public class RequestDispatcherTornaco implements RequestDispatcher {
     }
 
     @Override
+    @Synchronized
     public void dispatch(@NonNull final ImageRequest imageRequest) {
         Logger.v("RequestDispatcherTornaco, dispatch: %s", imageRequest);
         Assert.assertNotNull("ImageRequest is null", imageRequest);
@@ -50,15 +53,15 @@ public class RequestDispatcherTornaco implements RequestDispatcher {
 
         // Apply placeholder.
         final ImageSource source = imageRequest.getImageSource();
-        if (source.getPlaceHolder() > 0) {
-            Drawable placeHolderDrawable = imageRequest.getContext().getResources()
-                    .getDrawable(source.getPlaceHolder());
-            if (placeHolderDrawable != null) {
-                displayRequestDispatcher.dispatch(new DisplayRequest(
-                        new DrawableImage(placeHolderDrawable),
-                        imageRequest, "no-applier"
-                ));
-            }
+        if (source.getPlaceHolder() >= 0) {
+            Drawable placeHolderDrawable =
+                    source.getPlaceHolder() > 0 ?
+                            imageRequest.getContext().getResources()
+                                    .getDrawable(source.getPlaceHolder())
+                            : null;
+            displayRequestDispatcher.dispatch(new DisplayRequest(
+                    new DrawableImage(placeHolderDrawable),
+                    imageRequest, "no-applier"));
         }
 
         cancel(imageRequest, true);
@@ -71,7 +74,8 @@ public class RequestDispatcherTornaco implements RequestDispatcher {
                     public void onImageFailure(@NonNull Error error) {
                         super.onImageFailure(error);
                         if (observer != null) observer.onImageFailure(error);
-                        Logger.v("RequestDispatcherTornaco.LoaderObserverAdapter, onImageFailure: %s", error);
+                        Logger.v("RequestDispatcherTornaco.LoaderObserverAdapter, onImageFailure: %s",
+                                Logger.getStackTraceString(error.getThrowable()));
                     }
 
                     @Override
@@ -84,11 +88,9 @@ public class RequestDispatcherTornaco implements RequestDispatcher {
                     @Override
                     public void onImageReady(@NonNull Image image) {
                         if (observer != null) observer.onImageReady(image);
-                        Logger.v("RequestDispatcherTornaco.LoaderObserverAdapter, onImageReady: %s", image);
+                        Logger.v("RequestDispatcherTornaco.LoaderObserverAdapter, onImageReadyToDisplay: %s", image);
 
                         RequestDispatcherTornaco.this.onImageReady(imageRequest, image);
-
-                        ImageManager.getInstance().onImageReady(source, image);
                     }
                 }));
     }
@@ -101,6 +103,7 @@ public class RequestDispatcherTornaco implements RequestDispatcher {
         Logger.i("RequestDispatcherTornaco, cancel future: %s", future);
 
         if (future == null) return false;
+
         // FIXME. Too ugly.
         // Hook ID.
         DisplayRequest proxyRequest = new DisplayRequest(null, ImageRequest.builder().id(future.id).build(), null);
@@ -129,8 +132,18 @@ public class RequestDispatcherTornaco implements RequestDispatcher {
     }
 
     private void onImageReady(ImageRequest request, @NonNull Image image) {
-        displayRequestDispatcher
-                .dispatch(new DisplayRequest(image, request, null));
+        DisplayRequest displayRequest = new DisplayRequest(image, request, null);
+        ImageEffect[] effects = displayRequest.getImageSource().getEffect();
+        Image effectedImage = displayRequest.getImage();
+        if (effects != null) {
+            for (ImageEffect e : effects) {
+                effectedImage = e.process(displayRequest.getContext(), effectedImage);
+            }
+            displayRequest.setImage(effectedImage);
+        }
+        displayRequestDispatcher.dispatch(displayRequest);
+        // Publish used image.
+        ImageManager.getInstance().onImageReadyToDisplay(displayRequest.getImageSource(), effectedImage);
     }
 
     private class RequestFuture extends FutureTask<Image> {

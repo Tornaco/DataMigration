@@ -33,4 +33,9 @@ public class SlideInLeftApplier implements ImageApplier {
                 })
                 .start();
     }
+
+    @Override
+    public long duration() {
+        return 500;
+    }
 }

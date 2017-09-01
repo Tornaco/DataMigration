@@ -34,7 +34,7 @@ public class LoaderProxy {
         LOADERS.add(new NetworkImageLoader());
 
         // FIXME
-        // Read loader init Manifest.
+        // Read usingLoader init Manifest.
 //        ApplicationInfo applicationInfo = null;
 //        try {
 //            applicationInfo = VangoghConfig.getContext().getPackageManager()
@@ -42,7 +42,7 @@ public class LoaderProxy {
 //                            PackageManager.GET_META_DATA);
 //
 //            if (applicationInfo != null && applicationInfo.metaData != null) {
-//                String loaderClass = applicationInfo.metaData.getString("vangogh.image.loader.CLASSNAME");
+//                String loaderClass = applicationInfo.metaData.getString("vangogh.image.usingLoader.CLASSNAME");
 //                Logger.v("LoaderProxy, loaderClass: %s", loaderClass);
 //                if (loaderClass != null) {
 //                    try {
@@ -51,7 +51,7 @@ public class LoaderProxy {
 //                        //noinspection unchecked
 //                        LOADERS.add((Loader<Image>) obj);
 //                    } catch (Throwable e) {
-//                        Logger.e(e, "LoaderProxy, Fail create loader instance.");
+//                        Logger.e(e, "LoaderProxy, Fail create usingLoader instance.");
 //                    }
 //                }
 //            } else {
@@ -78,11 +78,34 @@ public class LoaderProxy {
 
         LoaderObserverDelegate delegate = new LoaderObserverDelegate(observer);
 
-        for (Loader<Image> imageLoader : LOADERS) {
-            Image image = imageLoader.load(imageRequest.getImageSource(), delegate);
-            Logger.v("LoaderProxy, loader: %s, res: %s", imageLoader, image);
-            if (image != null && (image.asBitmap(imageRequest.getContext()) != null || image.asDrawable(imageRequest.getContext()) != null))
-                return image;
+        List<Loader<Image>> usingLoaders = new ArrayList<>(LOADERS.size() + 1);
+        usingLoaders.addAll(LOADERS);
+        if (imageRequest.getLoader() != null) {
+            usingLoaders.add(imageRequest.getLoader());
+
+            Collections.sort(LOADERS, new Comparator<Loader<Image>>() {
+                @Override
+                public int compare(Loader<Image> l1, Loader<Image> l2) {
+                    if (l1.priority() > l2.priority()) return 1;
+                    return -1;
+                }
+            });
+        }
+
+        try {
+            for (Loader<Image> imageLoader : usingLoaders) {
+                try {
+                    Image image = imageLoader.load(imageRequest.getImageSource(), delegate);
+                    Logger.v("LoaderProxy, usingLoader: %s, res: %s", imageLoader, image);
+                    if (image != null && (image.asBitmap(imageRequest.getContext()) != null
+                            || image.asDrawable(imageRequest.getContext()) != null))
+                        return image;
+                } catch (Throwable e) {
+                    Logger.e(e, "Error thrown from loader:" + imageLoader);
+                }
+            }
+        } finally {
+            usingLoaders.clear();
         }
 
         // We got null image, or invalid image.

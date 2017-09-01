@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import junit.framework.Assert;
-
 import org.newstand.logger.Logger;
 
 import java.io.File;
@@ -45,7 +43,8 @@ class DiskCache implements Cache<ImageSource, Image> {
         File cacheFile = new File(filePath);
         if (!cacheFile.exists()) return null;
         try {
-            return new BitmapImage(BitmapUtil.decodeFile(source.getContext(), filePath));
+            return new BitmapImage(BitmapUtil.decodeFile(source.getContext(), filePath),
+                    "dick-cache");
         } catch (IOException e) {
             Logger.e(e, "Error when decode file");
         }
@@ -58,7 +57,8 @@ class DiskCache implements Cache<ImageSource, Image> {
     }
 
     private boolean putLocked(@NonNull ImageSource source, @NonNull Image image) {
-        Assert.assertNotNull("Bitmap is null", image.asBitmap(source.getContext()));
+        if (image.asBitmap(source.getContext()) == null) return false;
+
         String fileName = createFileNameFromSource(source);
         String filePath = cacheDir.getPath() + File.separator + fileName;
         File cacheFile = new File(filePath);
