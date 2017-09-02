@@ -2,13 +2,7 @@
 
 ## 部分截图
 
-![flow1](art/1.png)
-![flow1](art/2.png)
-![flow1](art/3.png)
-![flow1](art/4.png)
-![flow1](art/5.png)
-![flow1](art/6.png)
-![flow1](art/7.png)
+![flow1](art/overview.jpg)
 
 
 --------------
