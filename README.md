@@ -3,6 +3,7 @@
 ## 部分截图
 
 ![flow1](art/overview.jpg)
+![flow2](art/overvie2.jpg)
 
 
 --------------
