@@ -1,12 +1,21 @@
 ## 数据迁移OpenSource
 
-![Logo](app/src/main/res/mipmap-xhdpi/ic_launcher_dark.png)
+## 部分截图
+
+![flow1](art/1.png)
+![flow1](art/2.png)
+![flow1](art/3.png)
+![flow1](art/4.png)
+![flow1](art/5.png)
+![flow1](art/6.png)
+![flow1](art/7.png)
+
 
 --------------
 
-[![Build Status](https://travis-ci.org/Tornaco/DataMigration.svg?branch=master)](https://travis-ci.org/Tornaco/DataMigration)
-
 ## 编译
+
+[![Build Status](https://travis-ci.org/Tornaco/DataMigration.svg?branch=master)](https://travis-ci.org/Tornaco/DataMigration)
 
 > 编译开始前
 **wfdhook** 模块使用了一些android隐藏api，我们需要去 [Android-Hidden-API](https://github.com/anggrayudi/android-hidden-api) 或者 [24版本](https://github.com/Tornaco/Hidden-api-android-24)或者[百度网盘](http://pan.baidu.com/s/1dF6EcSx)下载隐藏版本sdk。
