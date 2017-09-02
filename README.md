@@ -25,6 +25,7 @@
 ```
 ./gradlew app:assembleDebug
 ```
+--------------
 
 ## 应用模块以及介绍
 
@@ -39,6 +40,27 @@
 令见：此模块单独的REPO：https://github.com/Tornaco/VanGogh
 
 
+### EventBus:通讯模块
+
+支持跨进程，支持@annotation的android事件总线通信模块。
+
+令见，模块单独REPO：https://github.com/Tornaco/EventBus_Android
+注：@NickAndroid是我的另一个废弃的github账户。
+
+### Tiles
+
+材料设计风格的设置项库，参见：https://github.com/Tornaco/MaterialTile_Android
+注：@NickAndroid是我的另一个废弃的github账户。
+
+
+--------------
+
+## 应用核心组件
+
+### 备份
+
+* Loader 数据加载器。
+* XXX
 
 
 
@@ -57,3 +79,7 @@
 
 
 
+
+
+
+TBC
