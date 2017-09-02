@@ -6,7 +6,7 @@
 
 [![Build Status](https://travis-ci.org/Tornaco/DataMigration.svg?branch=master)](https://travis-ci.org/Tornaco/DataMigration)
 
-### 准备编译
+## 编译
 
 > 编译开始前
 **wfdhook** 模块使用了一些android隐藏api，我们需要去 [Android-Hidden-API](https://github.com/anggrayudi/android-hidden-api) 或者 [24版本](https://github.com/Tornaco/Hidden-api-android-24)或者[百度网盘](http://pan.baidu.com/s/1dF6EcSx)下载隐藏版本sdk。
@@ -21,3 +21,35 @@
 ```
 ./gradlew app:assembleDebug
 ```
+
+## 应用模块以及介绍
+
+### Vangogh：图片加载框架
+
+一个简单流畅的的，具有以下feature的加载器：
+1. 自定义的loader。
+2. 自定义的动画 图形效果。
+3. 自定义的Displayer。
+4. 平滑，以及其他基本的参数定义。
+
+令见：此模块单独的REPO：https://github.com/Tornaco/VanGogh
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
