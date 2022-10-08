@@ -1,7 +1,7 @@
 package dev.tornaco.vangogh.loader.cache;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.newstand.logger.Logger;
 
@@ -24,7 +24,7 @@ public class CacheManager {
 
     private Cache<ImageSource, Image> diskCache, memCache;
 
-    private Observer imageReadyObserver = new Observer() {
+    private final Observer imageReadyObserver = new Observer() {
         @Override
         public void update(Observable o, Object arg) {
             onImageReady(((ImageManager.ImageArgs) arg).getSource(),
@@ -32,7 +32,7 @@ public class CacheManager {
         }
     };
 
-    private Observer confObserver = new Observer() {
+    private final Observer confObserver = new Observer() {
         @Override
         public void update(Observable o, Object arg) {
             // Recreate caches.
@@ -44,7 +44,7 @@ public class CacheManager {
 
     private static CacheManager cacheManager;
 
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public synchronized static CacheManager getInstance() {
         if (cacheManager == null) cacheManager = new CacheManager();

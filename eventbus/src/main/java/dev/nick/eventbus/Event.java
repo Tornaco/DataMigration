@@ -19,7 +19,7 @@ package dev.nick.eventbus;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import dev.nick.eventbus.utils.Preconditions;
 

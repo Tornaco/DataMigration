@@ -10,7 +10,7 @@ import org.newstand.datamigration.utils.Files;
 
 import dev.tornaco.vangogh.Vangogh;
 import dev.tornaco.vangogh.display.CircleImageEffect;
-import dev.tornaco.vangogh.display.appliers.FadeOutFadeInApplier;
+import dev.tornaco.vangogh.display.appliers.FadeInApplier;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -35,7 +35,7 @@ public class VideoListFragment extends DataListViewerFragment {
                 Vangogh.with(VideoListFragment.this)
                         .load(videoRecord.getPath())
                         .effect(new CircleImageEffect())
-                        .applier(new FadeOutFadeInApplier())
+                        .applier(new FadeInApplier())
                         .placeHolder(R.mipmap.ic_video_avatar)
                         .fallback(R.mipmap.ic_video_avatar)
                         .into(holder.getCheckableImageView());

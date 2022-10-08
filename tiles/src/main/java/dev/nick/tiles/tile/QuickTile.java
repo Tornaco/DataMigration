@@ -1,7 +1,7 @@
 package dev.nick.tiles.tile;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public abstract class QuickTile extends Tile {
 

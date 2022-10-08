@@ -3,7 +3,7 @@ package org.newstand.datamigration.worker.transport.backup;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.android.vcard.VCardComposer;
 import com.android.vcard.VCardEntry;

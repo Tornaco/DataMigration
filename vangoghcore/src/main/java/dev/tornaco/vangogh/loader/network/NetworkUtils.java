@@ -41,13 +41,13 @@ public abstract class NetworkUtils {
                 }
             }
         } else {
-        /* Wi-Fi connection */
+            /* Wi-Fi connection */
             NetworkInfo wifiNetwork = connectivityManager
                     .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             if (wifiNetwork != null) {
                 state = wifiNetwork.isConnectedOrConnecting();
             }
-        /* Other networks */
+            /* Other networks */
             NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
             if (activeNetwork != null) {
                 state = activeNetwork.isConnectedOrConnecting();
@@ -72,7 +72,7 @@ public abstract class NetworkUtils {
                 }
             }
         } else {
-        /* Mobile data connection */
+            /* Mobile data connection */
             NetworkInfo mobileNetwork = connectivityManager
                     .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
             if (mobileNetwork != null) {

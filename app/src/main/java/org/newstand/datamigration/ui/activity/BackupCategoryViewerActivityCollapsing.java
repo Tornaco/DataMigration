@@ -3,9 +3,9 @@ package org.newstand.datamigration.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Keep;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.Fragment;
+import androidx.annotation.Keep;
+import com.google.android.material.appbar.AppBarLayout;
+import androidx.fragment.app.Fragment;
 
 import com.google.common.base.Preconditions;
 

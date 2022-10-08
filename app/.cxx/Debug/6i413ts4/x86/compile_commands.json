@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/Users/guohao/Documents/Workspace/DataMigration/app/.cxx/Debug/6i413ts4/x86",
+  "command": "/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=i686-none-linux-android16 --gcc-toolchain=/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Daio_lib_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -O0 -fno-limit-debug-info  -fPIC -o CMakeFiles/aio-lib.dir/src/main/cpp/DonateQRPathJniStub.cpp.o -c /Users/guohao/Documents/Workspace/DataMigration/app/src/main/cpp/DonateQRPathJniStub.cpp",
+  "file": "/Users/guohao/Documents/Workspace/DataMigration/app/src/main/cpp/DonateQRPathJniStub.cpp"
+},
+{
+  "directory": "/Users/guohao/Documents/Workspace/DataMigration/app/.cxx/Debug/6i413ts4/x86",
+  "command": "/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=i686-none-linux-android16 --gcc-toolchain=/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Daio_lib_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -O0 -fno-limit-debug-info  -fPIC -o CMakeFiles/aio-lib.dir/src/main/cpp/AudioJniStub.cpp.o -c /Users/guohao/Documents/Workspace/DataMigration/app/src/main/cpp/AudioJniStub.cpp",
+  "file": "/Users/guohao/Documents/Workspace/DataMigration/app/src/main/cpp/AudioJniStub.cpp"
+},
+{
+  "directory": "/Users/guohao/Documents/Workspace/DataMigration/app/.cxx/Debug/6i413ts4/x86",
+  "command": "/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=i686-none-linux-android16 --gcc-toolchain=/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Daio_lib_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -O0 -fno-limit-debug-info  -fPIC -o CMakeFiles/aio-lib.dir/src/main/cpp/SecretKey.cpp.o -c /Users/guohao/Documents/Workspace/DataMigration/app/src/main/cpp/SecretKey.cpp",
+  "file": "/Users/guohao/Documents/Workspace/DataMigration/app/src/main/cpp/SecretKey.cpp"
+},
+{
+  "directory": "/Users/guohao/Documents/Workspace/DataMigration/app/.cxx/Debug/6i413ts4/x86",
+  "command": "/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=i686-none-linux-android16 --gcc-toolchain=/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Daio_lib_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -O0 -fno-limit-debug-info  -fPIC -o CMakeFiles/aio-lib.dir/src/main/cpp/mp3/mp3.cpp.o -c /Users/guohao/Documents/Workspace/DataMigration/app/src/main/cpp/mp3/mp3.cpp",
+  "file": "/Users/guohao/Documents/Workspace/DataMigration/app/src/main/cpp/mp3/mp3.cpp"
+},
+{
+  "directory": "/Users/guohao/Documents/Workspace/DataMigration/app/.cxx/Debug/6i413ts4/x86",
+  "command": "/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=i686-none-linux-android16 --gcc-toolchain=/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/guohao/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Daio_lib_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -O0 -fno-limit-debug-info  -fPIC -o CMakeFiles/aio-lib.dir/src/main/cpp/mp3/mp3frame.cpp.o -c /Users/guohao/Documents/Workspace/DataMigration/app/src/main/cpp/mp3/mp3frame.cpp",
+  "file": "/Users/guohao/Documents/Workspace/DataMigration/app/src/main/cpp/mp3/mp3frame.cpp"
+}
+]

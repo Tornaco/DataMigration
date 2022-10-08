@@ -16,7 +16,7 @@ public class VangoghConfigManager extends Observable {
     @Getter
     private VangoghConfig config;
 
-    private static VangoghConfigManager sMe = new VangoghConfigManager();
+    private static final VangoghConfigManager sMe = new VangoghConfigManager();
 
     public static VangoghConfigManager getInstance() {
         return sMe;

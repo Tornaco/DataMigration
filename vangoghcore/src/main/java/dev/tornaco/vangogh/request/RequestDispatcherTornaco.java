@@ -2,9 +2,8 @@ package dev.tornaco.vangogh.request;
 
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
 
-import junit.framework.Assert;
+import androidx.annotation.NonNull;
 
 import org.newstand.logger.Logger;
 
@@ -31,8 +30,8 @@ import lombok.Synchronized;
  */
 public class RequestDispatcherTornaco implements RequestDispatcher {
 
-    private LoaderProxy proxy;
-    private ExecutorService executorService;
+    private final LoaderProxy proxy;
+    private final ExecutorService executorService;
 
     private final DisplayRequestDispatcher displayRequestDispatcher;
 
@@ -48,8 +47,6 @@ public class RequestDispatcherTornaco implements RequestDispatcher {
     @Synchronized
     public void dispatch(@NonNull final ImageRequest imageRequest) {
         Logger.v("RequestDispatcherTornaco, dispatch: %s", imageRequest);
-        Assert.assertNotNull("ImageRequest is null", imageRequest);
-        Assert.assertNotNull("Image source is null", imageRequest.getImageSource());
 
         // Apply placeholder.
         final ImageSource source = imageRequest.getImageSource();
@@ -148,7 +145,7 @@ public class RequestDispatcherTornaco implements RequestDispatcher {
 
     private class RequestFuture extends FutureTask<Image> {
 
-        private int id;
+        private final int id;
 
         RequestFuture(final ImageRequest imageRequest, final LoaderObserver observer) {
 

@@ -1,6 +1,6 @@
 package org.newstand.datamigration.data.model;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.newstand.datamigration.loader.DataLoader;
 

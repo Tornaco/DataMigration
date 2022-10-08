@@ -4,10 +4,11 @@ import android.content.ContentUris;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.ContactRecord;
@@ -20,7 +21,7 @@ import java.io.InputStream;
 
 import dev.tornaco.vangogh.Vangogh;
 import dev.tornaco.vangogh.display.CircleImageEffect;
-import dev.tornaco.vangogh.display.appliers.FadeOutFadeInApplier;
+import dev.tornaco.vangogh.display.appliers.FadeInApplier;
 import dev.tornaco.vangogh.loader.Loader;
 import dev.tornaco.vangogh.loader.LoaderObserver;
 import dev.tornaco.vangogh.media.BitmapImage;
@@ -57,7 +58,7 @@ public class ContactListFragment extends DataListViewerFragment {
                             .effect(new CircleImageEffect())
                             .usingLoader(contactsLoader)
                             .fallback(R.mipmap.ic_contacts_avatar)
-                            .applier(new FadeOutFadeInApplier())
+                            .applier(new FadeInApplier())
                             .into(holder.getCheckableImageView());
                 } else {
                     holder.getCheckableImageView().setImageDrawable(ContextCompat.getDrawable(getContext(),

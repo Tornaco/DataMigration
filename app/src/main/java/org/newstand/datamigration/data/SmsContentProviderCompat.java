@@ -10,8 +10,8 @@ import android.content.pm.ServiceInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Telephony;
-import android.support.annotation.NonNull;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
 import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.DialogAction;

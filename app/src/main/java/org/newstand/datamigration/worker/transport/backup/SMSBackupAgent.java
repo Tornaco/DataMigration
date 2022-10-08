@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.provider.Telephony;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.io.Files;
 

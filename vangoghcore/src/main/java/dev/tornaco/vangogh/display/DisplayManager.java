@@ -1,6 +1,6 @@
 package dev.tornaco.vangogh.display;
 
-import android.support.v4.util.LruCache;
+import androidx.collection.LruCache;
 
 import dev.tornaco.vangogh.media.Image;
 
@@ -11,9 +11,9 @@ import dev.tornaco.vangogh.media.Image;
 
 class DisplayManager {
 
-    private LruCache<Integer, Image> mLruCache;
+    private final LruCache<Integer, Image> mLruCache;
 
-    private static DisplayManager sMe = new DisplayManager();
+    private static final DisplayManager sMe = new DisplayManager();
 
     static DisplayManager getManager() {
         return sMe;

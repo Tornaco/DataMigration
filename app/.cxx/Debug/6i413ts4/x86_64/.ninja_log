@@ -1,0 +1,7 @@
+# ninja log v5
+2	1137	1665208955	CMakeFiles/aio-lib.dir/src/main/cpp/SecretKey.cpp.o	e4da952c862b0086
+0	1898	1665208956	CMakeFiles/aio-lib.dir/src/main/cpp/AudioJniStub.cpp.o	ee6f40c9e657efbf
+2	1903	1665208956	CMakeFiles/aio-lib.dir/src/main/cpp/DonateQRPathJniStub.cpp.o	e7dbe729d6342b0e
+4	1998	1665208956	CMakeFiles/aio-lib.dir/src/main/cpp/mp3/mp3frame.cpp.o	4cd68c701855655a
+3	2320	1665208956	CMakeFiles/aio-lib.dir/src/main/cpp/mp3/mp3.cpp.o	cfbeb38fb4293d95
+2320	2564	1665208956	../../../../build/intermediates/cxx/Debug/6i413ts4/obj/x86_64/libaio-lib.so	57fbf4bd73fdd709

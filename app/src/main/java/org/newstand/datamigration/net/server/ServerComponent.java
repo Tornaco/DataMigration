@@ -1,6 +1,6 @@
 package org.newstand.datamigration.net.server;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import org.newstand.datamigration.common.Consumer;
 

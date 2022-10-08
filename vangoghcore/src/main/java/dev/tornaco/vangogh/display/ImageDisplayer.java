@@ -1,8 +1,9 @@
 package dev.tornaco.vangogh.display;
 
-import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
 
 import dev.tornaco.vangogh.media.Image;
 

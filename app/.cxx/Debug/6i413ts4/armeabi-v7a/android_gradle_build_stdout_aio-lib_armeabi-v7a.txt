@@ -1,0 +1,2 @@
+ninja: Entering directory `/Users/guohao/Documents/Workspace/DataMigration/app/.cxx/Debug/6i413ts4/armeabi-v7a'
+ninja: no work to do.

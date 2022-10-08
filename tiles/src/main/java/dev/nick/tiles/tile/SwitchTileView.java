@@ -3,7 +3,7 @@ package dev.nick.tiles.tile;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v7.widget.SwitchCompat;
+import androidx.appcompat.widget.SwitchCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Checkable;

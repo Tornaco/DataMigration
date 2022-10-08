@@ -1,7 +1,8 @@
 package dev.tornaco.vangogh;
 
-import android.support.annotation.NonNull;
 import android.support.test.runner.AndroidJUnit4;
+
+import androidx.annotation.NonNull;
 
 import junit.framework.AssertionFailedError;
 

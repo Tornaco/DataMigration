@@ -4,10 +4,10 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.annotation.Keep;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.event.UserAction;

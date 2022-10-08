@@ -1,10 +1,9 @@
 package dev.tornaco.vangogh.loader;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import junit.framework.Assert;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.newstand.logger.Logger;
 
@@ -48,7 +47,6 @@ public abstract class BaseImageLoader implements Loader<Image>, ContextWireable 
     @Nullable
     private ImageSource.SourceType getSourceType(ImageSource source) {
         String url = source.getUrl();
-        Assert.assertNotNull("Url is null", url);
         ImageSource.SourceType[] types = ImageSource.SourceType.values();
         for (ImageSource.SourceType t : types) {
             if (url.startsWith(t.prefix)) {
@@ -63,7 +61,7 @@ public abstract class BaseImageLoader implements Loader<Image>, ContextWireable 
 
     String getSplitPath(ImageSource source, ImageSource.SourceType sourceType) {
         if (source.getUrl().startsWith(sourceType.prefix))
-            return source.getUrl().substring(sourceType.prefix.length(), source.getUrl().length());
+            return source.getUrl().substring(sourceType.prefix.length());
         return source.getUrl();
     }
 }

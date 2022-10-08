@@ -1,7 +1,7 @@
 package org.newstand.datamigration.ui.activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.ui.fragment.ScheduledTaskViewerFragment;

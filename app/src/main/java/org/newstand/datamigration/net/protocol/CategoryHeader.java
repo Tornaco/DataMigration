@@ -1,6 +1,6 @@
 package org.newstand.datamigration.net.protocol;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Ints;

@@ -16,7 +16,7 @@
 
 package dev.nick.eventbus.internal;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

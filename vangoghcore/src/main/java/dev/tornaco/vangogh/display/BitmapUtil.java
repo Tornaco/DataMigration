@@ -93,15 +93,15 @@ final class BitmapUtil {
         final int wh = w * h;
         final int div = radius + radius + 1;
 
-        final int r[] = new int[wh];
-        final int g[] = new int[wh];
-        final int b[] = new int[wh];
-        final int vmin[] = new int[Math.max(w, h)];
+        final int[] r = new int[wh];
+        final int[] g = new int[wh];
+        final int[] b = new int[wh];
+        final int[] vmin = new int[Math.max(w, h)];
         int rsum, gsum, bsum, x, y, i, p, yp, yi, yw;
 
         int divsum = div + 1 >> 1;
         divsum *= divsum;
-        final int dv[] = new int[256 * divsum];
+        final int[] dv = new int[256 * divsum];
         for (i = 0; i < 256 * divsum; i++) {
             dv[i] = i / divsum;
         }

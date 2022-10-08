@@ -13,7 +13,7 @@ import org.newstand.datamigration.ui.adapter.CommonListViewHolder;
 import org.newstand.datamigration.utils.Files;
 
 import dev.tornaco.vangogh.Vangogh;
-import dev.tornaco.vangogh.display.appliers.FadeOutFadeInApplier;
+import dev.tornaco.vangogh.display.appliers.FadeInApplier;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 15:35
@@ -51,7 +51,7 @@ public class AppOnlyApkListFragment extends DataListViewerFragment {
                 Vangogh.with(AppOnlyApkListFragment.this)
                         .load(appRecord.getIconUrl())
                         .fallback(R.mipmap.ic_ext_avatar)
-                        .applier(new FadeOutFadeInApplier())
+                        .applier(new FadeInApplier())
                         .into(holder.getCheckableImageView());
                 super.onBindViewHolder(holder, record);
             }

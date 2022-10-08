@@ -1,7 +1,7 @@
 package dev.tornaco.vangogh.loader;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.newstand.logger.Logger;
 
@@ -119,7 +119,7 @@ public class LoaderProxy {
     private class LoaderObserverDelegate implements LoaderObserver {
 
         @Nullable
-        private LoaderObserver observer;
+        private final LoaderObserver observer;
 
         LoaderObserverDelegate(@Nullable LoaderObserver observer) {
             this.observer = observer;

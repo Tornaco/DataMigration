@@ -3,7 +3,7 @@ package org.newstand.datamigration.loader.impl;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 

@@ -2,9 +2,9 @@ package org.newstand.datamigration.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.IdRes;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
+import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
 import android.view.View;
 
 import org.newstand.datamigration.provider.SettingsProvider;

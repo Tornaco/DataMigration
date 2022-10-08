@@ -5,7 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/13 9:56

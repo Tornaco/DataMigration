@@ -1,7 +1,7 @@
 package org.newstand.datamigration.secure;
 
 import android.content.Context;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 
 import com.facebook.android.crypto.keychain.AndroidConceal;
 import com.facebook.android.crypto.keychain.SharedPrefsBackedKeyChain;

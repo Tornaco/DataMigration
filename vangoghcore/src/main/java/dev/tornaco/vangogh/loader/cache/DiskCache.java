@@ -1,8 +1,9 @@
 package dev.tornaco.vangogh.loader.cache;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.newstand.logger.Logger;
 
@@ -23,7 +24,7 @@ import dev.tornaco.vangogh.media.ImageSource;
 
 class DiskCache implements Cache<ImageSource, Image> {
 
-    private File cacheDir;
+    private final File cacheDir;
 
     private final Object lock = new Object();
 

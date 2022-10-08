@@ -2,7 +2,7 @@ package org.newstand.datamigration.ui.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

@@ -1,0 +1,7 @@
+Executable : /Users/guohao/Library/Android/sdk/cmake/3.18.1/bin/ninja
+arguments : 
+-C
+/Users/guohao/Documents/Workspace/DataMigration/app/.cxx/Debug/6i413ts4/armeabi-v7a
+aio-lib
+jvmArgs : 
+

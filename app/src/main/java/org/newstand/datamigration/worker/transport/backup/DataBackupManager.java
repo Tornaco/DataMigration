@@ -1,7 +1,7 @@
 package org.newstand.datamigration.worker.transport.backup;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;

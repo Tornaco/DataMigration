@@ -1,7 +1,7 @@
 package org.newstand.datamigration.service.schedule;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import java.util.List;
 

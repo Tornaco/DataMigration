@@ -1,7 +1,8 @@
 package dev.tornaco.vangogh.display;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import dev.tornaco.vangogh.media.Image;
 

@@ -12,7 +12,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import com.google.common.base.Preconditions;
 

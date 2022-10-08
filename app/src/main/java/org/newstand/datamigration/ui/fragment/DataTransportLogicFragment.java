@@ -1,7 +1,7 @@
 package org.newstand.datamigration.ui.fragment;
 
 import android.content.Context;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 
 import com.google.common.io.Files;
 

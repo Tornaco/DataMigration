@@ -2,7 +2,7 @@ package org.newstand.datamigration.ui.widget;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/14 16:00

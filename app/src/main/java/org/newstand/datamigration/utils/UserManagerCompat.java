@@ -1,7 +1,7 @@
 package org.newstand.datamigration.utils;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Tornaco on 2017/7/14.

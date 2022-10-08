@@ -16,7 +16,7 @@
 
 package dev.nick.eventbus;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by nick on 16-4-1.

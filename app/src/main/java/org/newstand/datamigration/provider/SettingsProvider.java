@@ -6,9 +6,9 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.annotation.BoolRes;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import androidx.annotation.BoolRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;

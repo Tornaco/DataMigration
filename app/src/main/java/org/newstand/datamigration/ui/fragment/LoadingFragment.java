@@ -1,6 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
-import android.support.annotation.UiThread;
+import androidx.annotation.UiThread;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/30 10:33

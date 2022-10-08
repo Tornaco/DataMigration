@@ -4,7 +4,6 @@ import android.content.Context;
 
 import dev.tornaco.vangogh.display.ImageApplier;
 import dev.tornaco.vangogh.display.ImageDisplayer;
-import dev.tornaco.vangogh.display.ImageEffect;
 import dev.tornaco.vangogh.loader.Loader;
 import dev.tornaco.vangogh.loader.LoaderObserver;
 import dev.tornaco.vangogh.media.Image;

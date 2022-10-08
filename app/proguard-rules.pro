@@ -27,7 +27,7 @@
 -keepattributes *Annotation*
 
 -keep public class * extends android.app.Activity
--keep public class * extends android.support.v4.app.Fragment
+-keep public class * extends androidx.core.app.Fragment
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
@@ -39,11 +39,11 @@
 # http://tools.android.com/tech-docs/support-annotations
 -dontskipnonpubliclibraryclassmembers
 -printconfiguration
--keep,allowobfuscation @interface android.support.annotation.Keep
+-keep,allowobfuscation @interface androidx.annotation.Keep
 
--keep @android.support.annotation.Keep class *
+-keep @androidx.annotation.Keep class *
 -keepclassmembers class * {
-    @android.support.annotation.Keep *;
+    @androidx.annotation.Keep *;
 }
 
 # Supports

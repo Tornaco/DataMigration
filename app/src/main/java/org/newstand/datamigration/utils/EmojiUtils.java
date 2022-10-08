@@ -1,7 +1,7 @@
 package org.newstand.datamigration.utils;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 /**
  * Created by Nick@NewStand.org on 2017/5/2 11:13

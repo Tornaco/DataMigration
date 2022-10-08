@@ -1,6 +1,6 @@
 package org.newstand.datamigration.common;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.newstand.lib.iface.Adapter;
 

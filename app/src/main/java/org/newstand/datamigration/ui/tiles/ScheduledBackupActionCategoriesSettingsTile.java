@@ -1,8 +1,8 @@
 package org.newstand.datamigration.ui.tiles;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.PopupMenu;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;

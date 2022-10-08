@@ -1,6 +1,6 @@
 package org.newstand.datamigration.service;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.newstand.datamigration.data.event.UserAction;
 

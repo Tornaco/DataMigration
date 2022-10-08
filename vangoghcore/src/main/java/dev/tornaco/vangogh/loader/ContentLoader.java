@@ -2,14 +2,14 @@ package dev.tornaco.vangogh.loader;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.newstand.logger.Logger;
 
 import java.io.IOException;
 
-import dev.tornaco.vangogh.VangoghConfig;
 import dev.tornaco.vangogh.common.Error;
 import dev.tornaco.vangogh.media.BitmapImage;
 import dev.tornaco.vangogh.media.Image;

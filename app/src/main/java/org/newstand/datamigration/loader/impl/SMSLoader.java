@@ -2,7 +2,7 @@ package org.newstand.datamigration.loader.impl;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.io.Files;
 

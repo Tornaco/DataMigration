@@ -1,8 +1,8 @@
 package org.newstand.datamigration.ui.widget;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
+
+import androidx.recyclerview.widget.DividerItemDecoration;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/29 15:25

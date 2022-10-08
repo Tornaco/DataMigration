@@ -4,7 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import org.newstand.logger.Logger;
 

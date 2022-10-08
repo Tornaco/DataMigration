@@ -22,7 +22,7 @@ public class ImageManager extends Observable {
     }
 
     @Getter
-    private static ImageManager instance = new ImageManager();
+    private static final ImageManager instance = new ImageManager();
 
     void onImageReadyToDisplay(ImageSource source, Image image) {
         setChanged();

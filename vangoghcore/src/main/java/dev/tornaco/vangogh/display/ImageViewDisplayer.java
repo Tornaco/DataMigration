@@ -4,10 +4,11 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.FloatRange;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.FloatRange;
+import androidx.annotation.Nullable;
 
 import org.newstand.logger.Logger;
 
@@ -20,7 +21,7 @@ import dev.tornaco.vangogh.media.Image;
 
 public class ImageViewDisplayer implements ImageDisplayer {
 
-    private ImageView target;
+    private final ImageView target;
 
     public ImageViewDisplayer(ImageView target) {
         this.target = target;

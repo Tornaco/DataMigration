@@ -3,8 +3,8 @@ package org.newstand.datamigration.ui.activity;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.event.IntentEvents;

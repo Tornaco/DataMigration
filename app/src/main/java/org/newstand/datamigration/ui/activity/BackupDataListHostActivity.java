@@ -1,6 +1,6 @@
 package org.newstand.datamigration.ui.activity;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import org.newstand.datamigration.data.model.DataCategory;
 import org.newstand.datamigration.provider.SettingsProvider;

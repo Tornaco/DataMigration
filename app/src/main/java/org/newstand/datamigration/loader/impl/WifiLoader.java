@@ -1,7 +1,7 @@
 package org.newstand.datamigration.loader.impl;
 
 import android.net.wifi.WifiConfiguration;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.chrisplus.rootmanager.RootManager;
 import com.google.common.io.Files;

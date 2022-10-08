@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.io.Files;
 

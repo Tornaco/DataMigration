@@ -1,6 +1,6 @@
 package dev.tornaco.vangogh.media;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;

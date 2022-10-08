@@ -1,6 +1,8 @@
 package org.newstand.datamigration.ui.widget;
 
-import android.support.design.widget.AppBarLayout;
+import com.google.android.material.appbar.AppBarLayout;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 /**
  * Created by guohao4 on 2017/7/7.

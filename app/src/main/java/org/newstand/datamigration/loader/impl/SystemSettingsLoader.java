@@ -2,7 +2,7 @@ package org.newstand.datamigration.loader.impl;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.chrisplus.rootmanager.RootManager;
 import com.chrisplus.rootmanager.container.Result;

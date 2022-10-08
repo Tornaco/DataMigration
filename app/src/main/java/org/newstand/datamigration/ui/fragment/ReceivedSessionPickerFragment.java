@@ -3,18 +3,19 @@ package org.newstand.datamigration.ui.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.loader.LoaderListenerMainThreadAdapter;
@@ -178,8 +179,8 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
 
     private void showRemoveResult(final Session session, boolean removed) {
         Snackbar.make(getRootView(), removed ?
-                getString(R.string.title_removed, session.getName())
-                : getString(R.string.title_remove_failed, session.getName()), Snackbar.LENGTH_LONG)
+                        getString(R.string.title_removed, session.getName())
+                        : getString(R.string.title_remove_failed, session.getName()), Snackbar.LENGTH_LONG)
                 .setAction(R.string.title_remove_z, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -278,8 +279,8 @@ public class ReceivedSessionPickerFragment extends LoadingFragment<Collection<Se
 
     private void showRenameResult(Session session, boolean res) {
         Snackbar.make(getRootView(), res ?
-                getString(R.string.action_renamed_to, session.getName())
-                : getString(R.string.action_rename_fail), Snackbar.LENGTH_LONG)
+                        getString(R.string.action_renamed_to, session.getName())
+                        : getString(R.string.action_rename_fail), Snackbar.LENGTH_LONG)
                 .setAction(android.R.string.ok, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

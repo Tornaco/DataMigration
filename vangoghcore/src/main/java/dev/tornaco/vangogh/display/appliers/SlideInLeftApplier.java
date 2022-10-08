@@ -1,9 +1,10 @@
 package dev.tornaco.vangogh.display.appliers;
 
-import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewPropertyAnimatorListenerAdapter;
 
 import dev.tornaco.vangogh.display.ImageApplier;
 import dev.tornaco.vangogh.display.ImageDisplayer;

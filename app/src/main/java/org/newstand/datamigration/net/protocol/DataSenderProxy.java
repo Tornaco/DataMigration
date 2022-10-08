@@ -1,8 +1,8 @@
 package org.newstand.datamigration.net.protocol;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
 
 import org.newstand.datamigration.cache.LoadingCacheManager;
 import org.newstand.datamigration.common.AbortSignal;

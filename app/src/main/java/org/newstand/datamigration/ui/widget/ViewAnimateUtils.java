@@ -3,7 +3,7 @@ package org.newstand.datamigration.ui.widget;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 public class ViewAnimateUtils {

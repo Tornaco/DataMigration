@@ -1,6 +1,6 @@
 package org.newstand.datamigration.repo;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 
 import org.junit.Assert;

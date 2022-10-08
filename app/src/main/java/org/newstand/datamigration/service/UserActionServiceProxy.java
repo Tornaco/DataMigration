@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
 

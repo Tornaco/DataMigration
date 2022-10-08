@@ -3,7 +3,7 @@ package org.newstand.datamigration.ui.widget;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;

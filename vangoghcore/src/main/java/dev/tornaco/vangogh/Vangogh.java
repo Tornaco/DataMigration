@@ -2,15 +2,14 @@ package dev.tornaco.vangogh;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
-import junit.framework.Assert;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,13 +43,11 @@ public class Vangogh {
     private static final Map<View, Object> ABS_LIST_DETECTORS = new HashMap<>();
 
     public static Vangogh unLinkScrollState(@NonNull View view) {
-        Assert.assertNotNull(view);
         ABS_LIST_DETECTORS.remove(view);
         return sMe;
     }
 
     public static Vangogh linkScrollState(@NonNull RecyclerView recyclerView) {
-        Assert.assertNotNull(recyclerView);
         RecyclerView.OnScrollListener listener = new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -71,7 +68,6 @@ public class Vangogh {
     }
 
     public static Vangogh linkScrollState(@NonNull AbsListView absListView) {
-        Assert.assertNotNull(absListView);
 
         if (ABS_LIST_DETECTORS.containsKey(absListView)) return sMe;
 
@@ -120,8 +116,6 @@ public class Vangogh {
      * @return Vangogh single instance.
      */
     public static VangoghRequest with(Context c, VangoghConfig config) {
-        Assert.assertNotNull("Context can not be null", c);
-        Assert.assertNotNull("VangoghConfig can not be null", config);
         return sMe.createRequest(c, config);
     }
 
@@ -212,7 +206,6 @@ public class Vangogh {
         }
 
         public VangoghRequest effect(ImageEffect... effect) {
-            Assert.assertNotNull("Set image source first", source);
             this.source.setEffect(effect);
             return this;
         }
@@ -233,35 +226,17 @@ public class Vangogh {
         }
 
         public VangoghRequest usingLoader(@NonNull Loader<Image> loader) {
-            Assert.assertNotNull("Loader is null", loader);
             this.loader = loader;
             return this;
         }
 
         public ImageRequest into(@NonNull ImageView imageView) {
-            Assert.assertNotNull(imageView);
             return into(new ImageViewDisplayer(imageView));
         }
 
         public ImageRequest into(@NonNull ImageDisplayer imageDisplayer) {
             this.imageDisplayer = imageDisplayer;
-
-            // Check if we got valid params.
-            Assert.assertNotNull(this.source);
-            Assert.assertNotNull(this.imageDisplayer);
-            Assert.assertNotNull(this.context);
-
-            ImageRequest imageRequest =
-                    ImageRequest.builder()
-                            .context(context)
-                            .requestTimeMills(System.currentTimeMillis())
-                            .alias("abc")
-                            .displayer(this.imageDisplayer)
-                            .imageSource(this.source)
-                            .applier(applier)
-                            .id(RequestIdFactory.next())
-                            .observer(observer)
-                            .build();
+            ImageRequest imageRequest = ImageRequest.builder().context(context).requestTimeMills(System.currentTimeMillis()).alias("abc").displayer(this.imageDisplayer).imageSource(this.source).applier(applier).id(RequestIdFactory.next()).observer(observer).build();
             looper.onNewRequest(imageRequest);
             return imageRequest;
         }

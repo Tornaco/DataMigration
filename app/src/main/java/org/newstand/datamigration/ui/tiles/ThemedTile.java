@@ -1,7 +1,7 @@
 package org.newstand.datamigration.ui.tiles;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import dev.nick.tiles.tile.QuickTile;
 import dev.nick.tiles.tile.TileListener;

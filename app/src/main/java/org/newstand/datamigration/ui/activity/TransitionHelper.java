@@ -9,9 +9,9 @@ package org.newstand.datamigration.ui.activity;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import android.view.View;
 
 import java.util.ArrayList;

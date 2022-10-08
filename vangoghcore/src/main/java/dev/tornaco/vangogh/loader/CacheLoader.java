@@ -1,7 +1,7 @@
 package dev.tornaco.vangogh.loader;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.newstand.logger.Logger;
 
@@ -16,7 +16,7 @@ import dev.tornaco.vangogh.media.ImageSource;
 
 class CacheLoader extends BaseImageLoader {
 
-    private CacheManager cacheManager;
+    private final CacheManager cacheManager;
 
     public CacheLoader() {
         cacheManager = CacheManager.getInstance();

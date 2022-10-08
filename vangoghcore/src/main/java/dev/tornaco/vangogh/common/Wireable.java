@@ -1,6 +1,6 @@
 package dev.tornaco.vangogh.common;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by guohao4 on 2017/8/28.

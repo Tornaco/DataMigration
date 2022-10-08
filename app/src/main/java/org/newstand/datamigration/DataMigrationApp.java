@@ -2,10 +2,9 @@ package org.newstand.datamigration;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.multidex.MultiDex;
-import android.support.v7.app.AppCompatDelegate;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.SmsContentProviderCompat;
@@ -43,12 +42,6 @@ public class DataMigrationApp extends Application {
     private TopActivityObserver topActivityObserver = new TopActivityObserver();
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
-    }
-
-    @Override
     public void onCreate() {
         super.onCreate();
 
@@ -60,7 +53,7 @@ public class DataMigrationApp extends Application {
                 .logAdapter(new OnDeviceLogAdapter())
                 .build());
 
-        DonateQRPathRetriever.loadAndCache(this);
+        // DonateQRPathRetriever.loadAndCache(this);
 
         // Setup observer
         topActivityObserver.setOnMainActivityDestroyConsumer(new Consumer<Activity>() {

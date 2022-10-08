@@ -5,9 +5,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
 
-import junit.framework.Assert;
+import androidx.annotation.NonNull;
 
 import org.newstand.logger.Logger;
 
@@ -27,13 +26,13 @@ public class RequestLooper {
 
     private static final int MSG_HANDLE_NEW_REQUEST = 0x1;
 
-    private HandlerThread hr;
+    private final HandlerThread hr;
 
     private final Handler handler;
     private final Seq seq;
     private final RequestDispatcher dispatcher;
 
-    private AtomicBoolean hasQuit = new AtomicBoolean(false);
+    private final AtomicBoolean hasQuit = new AtomicBoolean(false);
 
     private LinkedList<ImageRequest> pendingQueue;
 
@@ -62,8 +61,6 @@ public class RequestLooper {
     }
 
     public static RequestLooper newInstance(RequestDispatcher dispatcher, Seq seq) {
-        Assert.assertNotNull("RequestDispatcher is null", dispatcher);
-        Assert.assertNotNull("Seq is null", seq);
         return new RequestLooper(dispatcher, seq);
     }
 

@@ -6,14 +6,15 @@ import android.content.DialogInterface;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nick.yinheng.model.IMediaTrack;
 import com.nick.yinheng.service.IMusicPlayerService;
 

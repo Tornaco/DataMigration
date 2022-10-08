@@ -1,7 +1,7 @@
 package org.newstand.datamigration.data.model;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/7 17:42

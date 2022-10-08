@@ -1,10 +1,8 @@
 package dev.tornaco.vangogh.loader.cache;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.util.LruCache;
-
-import junit.framework.Assert;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.collection.LruCache;
 
 import org.newstand.logger.Logger;
 
@@ -19,7 +17,7 @@ import dev.tornaco.vangogh.media.ImageSource;
 
 class MemoryCache implements Cache<ImageSource, Image> {
 
-    private LruCache<ImageSource, Image> mLruCache;
+    private final LruCache<ImageSource, Image> mLruCache;
 
     MemoryCache(int poolSize) {
         Logger.v("MemoryCache, using pool size: %s", poolSize);
@@ -38,7 +36,6 @@ class MemoryCache implements Cache<ImageSource, Image> {
     @Nullable
     @Override
     public Image get(@NonNull ImageSource source) {
-        Assert.assertNotNull("Source is null", source);
         Image image = mLruCache.get(source);
         if (image != null && image.isRecycled()) {
             Logger.v("MemoryCache, removing recycled cache image");
@@ -50,8 +47,6 @@ class MemoryCache implements Cache<ImageSource, Image> {
 
     @Override
     public boolean put(@NonNull ImageSource source, @NonNull Image image) {
-        Assert.assertNotNull(source);
-        Assert.assertNotNull(image);
         if (image.asBitmap(source.getContext()) == null)
             return false;
 

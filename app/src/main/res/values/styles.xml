@@ -53,7 +53,7 @@
         <item name="android:ellipsize">marquee</item>
     </style>
 
-    <style name="CollapsedTitleExpanded" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+    <style name="CollapsedTitleExpanded" parent="TextAppearance.AppCompat.Medium">
         <item name="android:singleLine">false</item>
     </style>
 

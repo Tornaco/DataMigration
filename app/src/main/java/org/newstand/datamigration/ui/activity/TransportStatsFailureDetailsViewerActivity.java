@@ -1,6 +1,6 @@
 package org.newstand.datamigration.ui.activity;
 
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import org.newstand.datamigration.data.event.TransportEventRecord;
 import org.newstand.datamigration.data.model.DataCategory;

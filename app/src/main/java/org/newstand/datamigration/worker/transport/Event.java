@@ -1,6 +1,6 @@
 package org.newstand.datamigration.worker.transport;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import org.newstand.datamigration.R;
 

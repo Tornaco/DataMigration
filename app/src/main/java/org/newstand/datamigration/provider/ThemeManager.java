@@ -3,7 +3,7 @@ package org.newstand.datamigration.provider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.ui.activity.NavigatorActivity;

@@ -1,7 +1,7 @@
 package org.newstand.datamigration.ui.fragment;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.cache.LoadingCacheManager;

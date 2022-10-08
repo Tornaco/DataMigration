@@ -5,7 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import org.newstand.logger.Logger;
 
@@ -69,24 +70,24 @@ public class BitmapUtil {
     }
 
     /*
-    * Compute the sample size as a function of minSideLength
-    * and maxNumOfPixels.
-    * minSideLength is used to specify that minimal width or height of a
-    * bitmap.
-    * maxNumOfPixels is used to specify the maximal size in pixels that is
-    * tolerable in terms of memory usage.
-    *
-    * The function returns a sample size based on the constraints.
-    * Both size and minSideLength can be passed in as IImage.UNCONSTRAINED,
-    * which indicates no care of the corresponding constraint.
-    * The functions prefers returning a sample size that
-    * generates a smaller bitmap, unless minSideLength = IImage.UNCONSTRAINED.
-    *
-    * Also, the function rounds up the sample size to a power of 2 or multiple
-    * of 8 because BitmapFactory only honors sample size this way.
-    * For example, BitmapFactory downsamples an image by 2 even though the
-    * request is 3. So we round up the sample size to avoid OOM.
-    */
+     * Compute the sample size as a function of minSideLength
+     * and maxNumOfPixels.
+     * minSideLength is used to specify that minimal width or height of a
+     * bitmap.
+     * maxNumOfPixels is used to specify the maximal size in pixels that is
+     * tolerable in terms of memory usage.
+     *
+     * The function returns a sample size based on the constraints.
+     * Both size and minSideLength can be passed in as IImage.UNCONSTRAINED,
+     * which indicates no care of the corresponding constraint.
+     * The functions prefers returning a sample size that
+     * generates a smaller bitmap, unless minSideLength = IImage.UNCONSTRAINED.
+     *
+     * Also, the function rounds up the sample size to a power of 2 or multiple
+     * of 8 because BitmapFactory only honors sample size this way.
+     * For example, BitmapFactory downsamples an image by 2 even though the
+     * request is 3. So we round up the sample size to avoid OOM.
+     */
     static int computeSampleSize(BitmapFactory.Options options,
                                  int minSideLength, int maxNumOfPixels) {
         int initialSize = computeInitialSampleSize(options, minSideLength,

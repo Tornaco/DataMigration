@@ -1,0 +1,3 @@
+/Users/guohao/Documents/Workspace/DataMigration/app/.cxx/Debug/6i413ts4/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/guohao/Documents/Workspace/DataMigration/app/.cxx/Debug/6i413ts4/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/guohao/Documents/Workspace/DataMigration/app/.cxx/Debug/6i413ts4/armeabi-v7a/CMakeFiles/aio-lib.dir

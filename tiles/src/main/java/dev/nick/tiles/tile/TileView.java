@@ -18,7 +18,7 @@ package dev.nick.tiles.tile;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -28,6 +28,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import dev.nick.tiles.R;
 

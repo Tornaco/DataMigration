@@ -10,7 +10,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.common.ActionListener;

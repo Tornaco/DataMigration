@@ -8,8 +8,8 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.newstand.logger.Logger;
 
-import dev.tornaco.vangogh.media.Image;
 import dev.tornaco.vangogh.display.ImageDisplayer;
+import dev.tornaco.vangogh.media.Image;
 
 /**
  * Created by guohao4 on 2017/8/25.
@@ -23,7 +23,7 @@ public class VangoghTest {
         vangogh.load("file://abc")
                 .into(new ImageDisplayer() {
                     @Override
-                    public void display(@android.support.annotation.NonNull @NonNull Image image) {
+                    public void display(@androidx.annotation.NonNull @NonNull Image image) {
                         Logger.d("display: %s", image);
                     }
                 });

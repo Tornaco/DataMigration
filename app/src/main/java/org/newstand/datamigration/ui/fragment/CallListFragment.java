@@ -1,6 +1,6 @@
 package org.newstand.datamigration.ui.fragment;
 
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 
 import org.newstand.datamigration.R;

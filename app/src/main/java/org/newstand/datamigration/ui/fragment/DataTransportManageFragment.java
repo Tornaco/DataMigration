@@ -2,10 +2,10 @@ package org.newstand.datamigration.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.annotation.UiThread;
+import androidx.annotation.MainThread;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.annotation.UiThread;
 
 import org.newstand.datamigration.data.event.IntentEvents;
 import org.newstand.datamigration.data.model.DataRecord;

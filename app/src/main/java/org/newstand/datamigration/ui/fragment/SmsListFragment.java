@@ -1,7 +1,7 @@
 package org.newstand.datamigration.ui.fragment;
 
 import android.icu.text.SimpleDateFormat;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.model.DataCategory;

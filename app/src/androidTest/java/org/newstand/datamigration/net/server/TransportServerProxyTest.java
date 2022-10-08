@@ -1,6 +1,6 @@
 package org.newstand.datamigration.net.server;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.junit.Assert;
 import org.junit.Test;

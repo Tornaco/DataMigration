@@ -38,6 +38,7 @@
 
         <activity
             android:name=".ui.activity.DrawerNavigatorActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -52,6 +53,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityDefault"
             android:enabled="true"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -65,6 +67,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityRed"
             android:enabled="false"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher_red"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -78,6 +81,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityTeal"
             android:enabled="false"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher_tea"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -91,6 +95,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityWhite"
             android:enabled="false"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher_white"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -104,6 +109,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityCoolDark"
             android:enabled="false"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher_dark"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -117,6 +123,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityPink"
             android:enabled="false"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher_pink"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -130,6 +137,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityAmber"
             android:enabled="false"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher_amber"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -143,6 +151,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityCoolApk"
             android:enabled="false"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher_blue"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -156,6 +165,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityPurple"
             android:enabled="false"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher_purple"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -169,6 +179,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityBrown"
             android:enabled="false"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher_brown"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -182,6 +193,7 @@
         <activity
             android:name=".ui.activity.NavigatorActivityBlueGrey"
             android:enabled="false"
+            android:exported="true"
             android:icon="@mipmap/ic_launcher_blue_grey"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -194,149 +206,218 @@
         </activity>
         <activity
             android:name=".ui.activity.AndroidCategoryViewerActivity"
+            android:exported="false"
             android:label="@string/title_backup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.AndroidCategoryViewerActivityCollapsing"
+            android:exported="false"
             android:label="@string/title_backup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.SenderCategoryViewerActivity"
+            android:exported="false"
             android:label="@string/title_transport_sender"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ReceivedCategoryViewerActivity"
+            android:exported="false"
             android:label="@string/title_transport_received_viewer"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupSessionPickerActivity"
+            android:exported="false"
             android:label="@string/title_restore"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupSessionPickerActivityCollapsing"
+
+            android:exported="false"
             android:label="@string/title_restore"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ReceivedSessionPickerActivity"
+
+            android:exported="false"
             android:label="@string/title_transport_received_viewer"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupCategoryViewerActivity"
+
+            android:exported="false"
             android:label="@string/title_restore"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupCategoryViewerActivityCollapsing"
+
+            android:exported="false"
             android:label="@string/title_restore"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ScheduledTaskViewerActivity"
+
+            android:exported="false"
             android:label="@string/action_scheduler_viewer"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.LoaderConfigCategorySettingsActivity"
+
+            android:exported="false"
             android:label="@string/action_set_categories_to_load"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ExtraRulesViewerActivity"
+
+            android:exported="false"
             android:label="@string/action_extra_data_rules_viewer"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ScheduledTaskCreatorActivity"
+
+            android:exported="false"
             android:label="@string/action_scheduler_creator"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.RulesCreatorActivity"
+
+            android:exported="false"
             android:label="@string/action_extra_data_rules_creator"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.AndroidDataListHostActivity"
+
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.SenderDataListHostActivity"
+
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.ReceivedDataListHostActivity"
+
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.BackupDataListHostActivity"
+
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.DataImportActivity"
+
+            android:exported="false"
             android:label="@string/title_restore_import"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.DataExportActivity"
+
+            android:exported="false"
             android:label="@string/title_backup_export"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.WFDDataSenderActivity"
+
+            android:exported="false"
             android:label="@string/title_setup_wfd_sender"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.WFDDataReceiverActivity"
+
+            android:exported="false"
             android:label="@string/title_setup_wfd_receiver"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingsActivity"
+
+            android:exported="false"
             android:label="@string/action_settings"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AboutActivity"
+
+            android:exported="false"
             android:label="@string/tile_category_about"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ComeInActivity"
+
+            android:exported="false"
             android:label="@string/tile_category_in"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.UserActionViewerActivity"
+
+            android:exported="false"
             android:label="@string/action_user_actions"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LogViewerActivity"
+
+            android:exported="false"
             android:label="@string/action_user_actions"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LicenseViewerActivity"
+
+            android:exported="false"
             android:label="@string/title_license" />
-        <activity android:name=".ui.activity.DataSenderActivity" />
-        <activity android:name=".ui.activity.DataReceiverActivity" />
+        <activity
+            android:name=".ui.activity.DataSenderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.DataReceiverActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.HelpActivity"
+
+            android:exported="false"
             android:label="@string/title_help" />
         <activity
             android:name=".ui.activity.AdActivity"
+
+            android:exported="false"
             android:label="@string/title_show_ads" />
         <activity
             android:name=".ui.activity.TransportStatsViewerActivity"
+
+            android:exported="false"
             android:label="@string/title_transport_stats_success" />
         <activity
             android:name=".ui.activity.TransportFailureStatsViewerActivity"
+
+            android:exported="false"
             android:label="@string/title_transport_stats_fail" />
-        <activity android:name=".ui.activity.TransportStatsDetailsViewerActivity" />
-        <activity android:name=".ui.activity.TransportStatsFailureDetailsViewerActivity" />
+        <activity
+            android:name=".ui.activity.TransportStatsDetailsViewerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.TransportStatsFailureDetailsViewerActivity"
+            android:exported="false" />
         <activity
             android:name="com.nononsenseapps.filepicker.FilePickerActivity"
+
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/FilePickerTheme">
             <intent-filter>
@@ -347,7 +428,7 @@
         </activity>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -362,6 +443,8 @@
         <!-- BroadcastReceiver that listens for incoming SMS messages -->
         <receiver
             android:name=".broadcast.DummySmsReceiver"
+
+            android:exported="false"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_DELIVER" />
@@ -370,6 +453,8 @@
         <!-- BroadcastReceiver that listens for incoming MMS messages -->
         <receiver
             android:name=".broadcast.DummyMMSReceiver"
+
+            android:exported="false"
             android:permission="android.permission.BROADCAST_WAP_PUSH">
             <intent-filter>
                 <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
@@ -378,7 +463,9 @@
             </intent-filter>
         </receiver>
         <!-- Activity that allows the user to send new SMS/MMS messages -->
-        <activity android:name=".ui.activity.DummyComposeSmsActivity">
+        <activity
+            android:name=".ui.activity.DummyComposeSmsActivity"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
@@ -419,7 +506,9 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".broadcast.BootReceiver">
+        <receiver
+            android:name=".broadcast.BootReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

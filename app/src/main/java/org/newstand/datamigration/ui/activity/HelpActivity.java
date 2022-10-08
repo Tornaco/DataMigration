@@ -1,18 +1,15 @@
 package org.newstand.datamigration.ui.activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.koushikdutta.async.http.AsyncHttpClient;
-import com.koushikdutta.async.http.AsyncHttpGet;
-import com.koushikdutta.async.http.AsyncHttpResponse;
 import com.vlonjatg.progressactivity.ProgressRelativeLayout;
 
 import org.newstand.datamigration.R;
@@ -78,21 +75,6 @@ public class HelpActivity extends TransitionSafeActivity {
             Logger.e("Fail to create parent dir %s", Logger.getStackTraceString(e));
             return;
         }
-
-        AsyncHttpClient.getDefaultInstance().executeFile(new AsyncHttpGet(helpUrl),
-                fileName,
-                new AsyncHttpClient.FileCallback() {
-                    @Override
-                    public void onCompleted(Exception e, AsyncHttpResponse source, File result) {
-                        Logger.d("onCompleted %s, %s", e, result);
-                        if (e == null) {
-                            decodeHelpInfo(result);
-                        } else {
-                            onError();
-                        }
-                    }
-                });
-
     }
 
     private void decodeHelpInfo(final File file) {

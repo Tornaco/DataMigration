@@ -2,7 +2,7 @@ package org.newstand.datamigration.ui.fragment;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.UiThread;
+import androidx.annotation.UiThread;
 
 import lombok.Getter;
 

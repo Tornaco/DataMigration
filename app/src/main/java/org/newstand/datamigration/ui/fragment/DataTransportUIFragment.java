@@ -6,17 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.annotation.UiThread;
-import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.annotation.UiThread;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.newstand.datamigration.R;
 import org.newstand.datamigration.data.event.IntentEvents;

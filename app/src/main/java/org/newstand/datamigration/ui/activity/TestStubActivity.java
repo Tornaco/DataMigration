@@ -1,6 +1,6 @@
 package org.newstand.datamigration.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by Nick on 2017/5/8 15:03

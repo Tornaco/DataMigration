@@ -1,6 +1,6 @@
 package org.newstand.datamigration.common;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Nick@NewStand.org on 2017/3/10 9:43

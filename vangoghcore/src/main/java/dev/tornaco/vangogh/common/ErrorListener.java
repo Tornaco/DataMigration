@@ -16,7 +16,7 @@
 
 package dev.tornaco.vangogh.common;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface ErrorListener {
     void onError(@NonNull Error cause);

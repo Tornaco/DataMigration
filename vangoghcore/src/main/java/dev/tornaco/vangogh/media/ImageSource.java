@@ -1,7 +1,8 @@
 package dev.tornaco.vangogh.media;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
+
+import androidx.annotation.DrawableRes;
 
 import dev.tornaco.vangogh.VangoghConfig;
 import dev.tornaco.vangogh.display.ImageEffect;

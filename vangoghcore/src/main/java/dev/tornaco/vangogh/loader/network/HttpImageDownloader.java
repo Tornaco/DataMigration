@@ -31,8 +31,8 @@ import dev.tornaco.vangogh.common.ProgressListener;
 
 public class HttpImageDownloader implements ImageDownloader<String> {
 
-    private File mTmpDir;
-    private ByteReadingListener mByteReadingListener;
+    private final File mTmpDir;
+    private final ByteReadingListener mByteReadingListener;
 
     public HttpImageDownloader(File tmpDir, ByteReadingListener listener) {
         this.mTmpDir = tmpDir;

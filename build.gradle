@@ -4,22 +4,21 @@ buildscript {
     repositories {
         jcenter()
         maven { url 'https://jitpack.io' }
+        google()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.android.tools.build:gradle:7.2.1'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        google()
+        mavenCentral()
 
         maven { url 'https://jitpack.io' }
-
-        flatDir {
-            dirs 'aar'
-        }
     }
 }
 

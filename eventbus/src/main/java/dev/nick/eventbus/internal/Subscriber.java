@@ -16,7 +16,7 @@
 
 package dev.nick.eventbus.internal;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import dev.nick.eventbus.EventReceiver;
 import dev.nick.eventbus.IEventReceiver;

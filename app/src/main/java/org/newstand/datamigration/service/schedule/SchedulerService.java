@@ -8,8 +8,8 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.newstand.datamigration.common.Consumer;
 import org.newstand.datamigration.data.event.IntentEvents;

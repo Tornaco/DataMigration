@@ -1,6 +1,6 @@
 package dev.tornaco.vangogh.loader;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import dev.tornaco.vangogh.common.Error;
 import dev.tornaco.vangogh.media.Image;
